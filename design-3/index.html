@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primal Moves Venice — Design 3: Cinematic</title>
+<meta name="description" content="Primal Moves Venice — a daily movement practice by the boardwalk.">
+<link rel="icon" href="../assets/images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;1,400;1,500&family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#060504; --bone:#EDE6D8; --amber:#D98A3D; --dim:#8A8378;
+    --serif:"Bodoni Moda",Georgia,serif;
+    --sans:"Barlow Condensed",-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{overflow-x:hidden;max-width:100%}
+  body{overflow-x:hidden;max-width:100%;background:var(--void);color:var(--bone);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{opacity:0;transition:opacity 1.6s cubic-bezier(.16,.8,.24,1)}
+    .reveal.in{opacity:1}
+    .reveal img{transform:scale(1.06);transition:transform 2.4s cubic-bezier(.16,.8,.24,1)}
+    .reveal.in img{transform:scale(1)}
+    .rise{opacity:0;transform:translateY(22px);transition:opacity 1.3s ease,transform 1.3s ease}
+    .rise.in{opacity:1;transform:translateY(0)}
+  }
+
+  /* ---- corner mark ---- */
+  .mark{position:fixed;top:26px;left:26px;z-index:40;display:flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:500;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--bone);opacity:0;transition:opacity 1s ease 1s}
+  .mark.in{opacity:.82}
+  .mark img{height:17px;width:auto;filter:invert(.92) sepia(.2)}
+
+  /* ---- frame (full viewport image, minimal chrome) ---- */
+  .frame{position:relative;height:100vh;min-height:560px;width:100%;overflow:hidden}
+  .frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .frame::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,5,4,.5) 0%,rgba(6,5,4,0) 22%,rgba(6,5,4,0) 68%,rgba(6,5,4,.72) 100%)}
+  .frame-tag{position:absolute;left:26px;bottom:26px;z-index:2;font-family:var(--sans);font-weight:500;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--bone);opacity:.78}
+  .frame-open{display:flex;align-items:center;justify-content:center}
+  .frame-open .center{position:relative;z-index:2;text-align:center}
+  .frame-open .kicker{font-family:var(--sans);font-weight:500;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--amber);margin-bottom:18px}
+  .frame-open h1{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(48px,10vw,120px);letter-spacing:.01em}
+
+  /* ---- title card (pure void, one line) ---- */
+  .card{min-height:62vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:8vh 8vw}
+  .card p{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(26px,4.6vw,46px);line-height:1.4;letter-spacing:.005em;text-wrap:balance;max-width:16em}
+
+  /* ---- credits (closing) ---- */
+  .credits{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10vh 8vw;position:relative}
+  .credits::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(217,138,61,.07),transparent 60%)}
+  .credits-inner{position:relative;z-index:1}
+  .credits .kicker{font-family:var(--sans);font-weight:500;font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-bottom:26px}
+  .credits h2{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(30px,5vw,52px);margin-bottom:56px;text-wrap:balance}
+  .credit-line{font-family:var(--sans);font-weight:500;font-size:15px;letter-spacing:.04em;margin:10px 0}
+  .credit-line a{text-decoration:none;border-bottom:1px solid rgba(237,230,216,.3);padding-bottom:2px}
+  .credit-line a:hover{border-color:var(--amber);color:var(--amber)}
+  .book-btn{display:inline-block;margin-top:40px;border:1px solid rgba(237,230,216,.55);color:var(--bone);font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;padding:17px 38px;transition:background .25s ease,color .25s ease,border-color .25s ease}
+  .book-btn:hover{background:var(--amber);border-color:var(--amber);color:#1a1208}
+
+  @media (max-width:620px){
+    .mark{top:20px;left:20px}
+    .frame-tag{left:20px;bottom:20px}
+    .card{min-height:50vh}
+    .credits{padding:9vh 7vw}
+  }
+</style>
+</head>
+<body>
+
+<a class="mark" id="mark" href="#top"><img src="../assets/images/primal-moves-icon.svg" alt="">Primal Moves</a>
+
+<section class="frame frame-open reveal in" id="top">
+  <img src="../assets/images/venice-03.jpg" alt="Primal Moves Venice studio">
+  <div class="center">
+    <div class="kicker">Venice, California</div>
+    <h1>Primal Moves</h1>
+  </div>
+</section>
+
+<section class="frame reveal" data-reveal>
+  <img src="../assets/images/venice-01.jpg" alt="Primal Moves Venice">
+  <div class="frame-tag">Venice — Daily Practice</div>
+</section>
+
+<section class="card rise" data-reveal>
+  <p>Think less.<br>Move more.<br>Breathe.</p>
+</section>
+
+<section class="frame reveal" data-reveal>
+  <img src="../assets/images/venice-04.jpg" alt="Primal Moves Venice">
+</section>
+
+<section class="frame reveal" data-reveal>
+  <img src="../assets/images/venice-02.jpg" alt="Primal Moves Venice studio wide">
+  <div class="frame-tag">11,000 ft² — Steps From the Boardwalk</div>
+</section>
+
+<section class="frame reveal" data-reveal>
+  <img src="../assets/images/venice-05.jpg" alt="Primal Moves Venice">
+</section>
+
+<section class="credits rise" data-reveal>
+  <div class="credits-inner">
+    <div class="kicker">Primal Moves — Venice</div>
+    <h2>A daily movement practice, by the boardwalk.</h2>
+    <div class="credit-line"><a href="mailto:hello@venice.primalmoves.com">hello@venice.primalmoves.com</a></div>
+    <div class="credit-line"><a href="https://www.instagram.com/primalmovesvenice" target="_blank" rel="noopener">@primalmovesvenice</a></div>
+    <a class="book-btn" href="https://app.primalmoves.com/login/" target="_blank" rel="noopener">Book a Class</a>
+  </div>
+</section>
+
+<script>
+  document.getElementById('mark').classList.add('in');
+  if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.22 });
+    document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('in'));
+  }
+</script>
+
+</body>
+</html>

@@ -87,6 +87,14 @@
   @media (max-width:860px){ .benefit-grid{grid-template-columns:1fr 1fr} }
   @media (max-width:520px){ .benefit-grid{grid-template-columns:1fr} }
 
+  .faq-list{margin-top:36px;border-top:1px solid var(--line)}
+  .faq-list details{border-bottom:1px solid var(--line);padding:18px 0}
+  .faq-list summary{cursor:pointer;font-weight:600;font-size:16px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  .faq-list summary::-webkit-details-marker{display:none}
+  .faq-list summary::after{content:"+";color:var(--verm);font-size:22px;font-weight:400;flex:none;margin-left:16px}
+  .faq-list details[open] summary::after{content:"–"}
+  .faq-list p{color:var(--faded);font-size:14.5px;margin-top:12px;max-width:44em}
+
   .placeholder{border:1.5px dashed #6a5442;background:rgba(201,106,61,.08);border-radius:10px;padding:22px 24px;margin-top:24px}
   .placeholder .tag{display:inline-block;background:var(--verm);color:var(--ink);font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:5px;margin-bottom:10px}
   .placeholder p{color:#d9cdc2;font-size:14.5px;line-height:1.6}
@@ -132,6 +140,7 @@
         <a href="#method">Our Method</a>
         <a href="#benefits">Benefits</a>
         <a href="#schedule">Schedule</a>
+        <a href="#faq">FAQ</a>
         <a href="#contact">Contact</a>
       </nav>
       <a class="btn" href="https://app.primalmoves.com/login/" target="_blank" rel="noopener">Book a Class</a>
@@ -150,6 +159,15 @@
       <a class="btn" href="https://app.primalmoves.com/login/" target="_blank" rel="noopener">Book a Class</a>
       <a class="btn ghost" href="#contact">Get Directions</a>
     </div>
+  </div>
+</section>
+
+<!-- ======================= MANIFESTO ======================= -->
+<section class="tight" style="background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap" style="max-width:52em">
+    <div class="section-kicker">Primal Moves is a product of practice</div>
+    <p class="lede" style="color:#cfccc4;font-size:18px">In a world that isolates, digitises and individualises wellness, we invite you to remember what has innately existed long before gyms did — collective effort, play, shared spaces and presence. We believe strength grows exponentially through community, and that movement is a social language. Belonging is built through moving forward together, side by side.</p>
+    <p class="lede" style="color:#cfccc4;font-size:18px">Primal is not only about optimising life. It is about participating in it fully, with integrity, honesty and together. Primal is an agitator. It moves that which is stuck.</p>
   </div>
 </section>
 
@@ -262,12 +280,24 @@
     <h2>Secure your spot — simple and convenient.</h2>
     <p class="lede">Book classes, manage your membership, and stay in the loop on Venice events through the Primal Moves app.</p>
     <div class="cta-row" style="margin-top:26px">
-      <a class="btn" href="https://app.primalmoves.com/login/" target="_blank" rel="noopener">Open Booking App</a>
+      <a class="btn" href="https://apps.apple.com/app/id6749153748" target="_blank" rel="noopener">Get the App (iOS)</a>
+      <a class="btn ghost" href="https://app.primalmoves.com/login/" target="_blank" rel="noopener">Open Booking App</a>
+    </div>
+
+    <h3 style="font-size:19px;margin-top:52px;margin-bottom:6px">Class formats on the schedule</h3>
+    <p class="lede" style="margin-top:0">Verified via our Mindbody listing (member reviews, July 2026) — exact days/times are booked through the app, not listed here.</p>
+    <div class="benefit-grid">
+      <div class="benefit-card"><h3>Primal Hybrid</h3><p>75-minute full-practice class blending the tiered movement system.</p></div>
+      <div class="benefit-card"><h3>Primal Compound</h3><p>Guided weightlifting session.</p></div>
+      <div class="benefit-card"><h3>Primal Moves — Core / Stretch</h3><p>Focused sessions on core strength and mobility/stretch work.</p></div>
+      <div class="benefit-card"><h3>Handstands</h3><p>Inversion-focused skill work.</p></div>
+      <div class="benefit-card"><h3>Primal Kids</h3><p>Family-friendly movement class.</p></div>
+      <div class="benefit-card"><h3>Team Practice</h3><p>Requires approval — for established members.</p></div>
     </div>
 
     <div class="placeholder">
       <span class="tag">Placeholder — needs Venice info</span>
-      <p><strong>Weekly class schedule not yet available.</strong> The source site doesn't publish a public class grid for Venice either (booking runs entirely through the app) — insert the current Venice weekly schedule here once you have it: class names, days/times, and instructor per class.</p>
+      <p><strong>Exact weekly day/time grid not available.</strong> Confirmed as of July 2026: neither primalmoves.com nor our Mindbody listing publish a public class calendar for Venice — booking runs entirely through the app (link above), and Mindbody's own "Classes" tab for this location shows nothing bookable there (only spa/bodywork appointments — see Contact below). Insert the current weekly grid here once you have it: class name, day/time, instructor.</p>
     </div>
   </div>
 </section>
@@ -279,9 +309,37 @@
     <h2>Acrobats, stuntwomen, somatic practitioners — and a few "burners."</h2>
     <p class="team-note">Our unique energy is curated by a remarkable team, each bringing a distinctive blend of expertise and passion. This diverse staff infuses the space with an unparalleled vibrancy, creating an atmosphere that inspires growth, encourages authentic expression, and embodies the very best of California's holistic and free-spirited ethos.</p>
 
+    <p class="lede" style="margin-top:32px">Some of the team, verified via our Mindbody listing (July 2026):</p>
+    <div class="benefit-grid">
+      <div class="benefit-card"><h3>Olivia Jaye Brown</h3><p>Gym classes · Gymnastics · Strength training</p></div>
+      <div class="benefit-card"><h3>Travis Brewer</h3><p>Strength training</p></div>
+      <div class="benefit-card"><h3>Gus</h3><p>Gym classes · Gymnastics · Strength training</p></div>
+      <div class="benefit-card"><h3>Tyler Gustafson</h3><p>Meditation</p></div>
+      <div class="benefit-card"><h3>Sabrina Rose</h3><p>Yoga</p></div>
+      <div class="benefit-card"><h3>Zagreus</h3><p>Bodywork &amp; guided weightlifting</p></div>
+    </div>
+    <p class="lede" style="margin-top:20px;font-size:14.5px">Also mentioned in recent member reviews: Michelle (bodywork), Caley Alyssa, Miki Ash, Jacy Cunningham, and the Primal Kids team, Travis &amp; Mandyjane.</p>
+
     <div class="placeholder">
       <span class="tag">Placeholder — needs Venice info</span>
-      <p><strong>Instructor roster not yet listed.</strong> The source site doesn't name individual Venice instructors publicly. Add names, headshots, and short bios for the current Venice teaching team here.</p>
+      <p><strong>Full roster, headshots, and bios not yet added.</strong> The names above are real (pulled from our Mindbody listing's staff list and member reviews, July 2026 — Mindbody lists 58 staff total across services), but we don't have photos, titles, or bios to publish yet. Swap in the current teaching team's headshots and short bios when ready.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= FAQ ======================= -->
+<section id="faq" class="tight">
+  <div class="wrap" style="max-width:52em">
+    <div class="section-kicker">FAQ</div>
+    <h2>Frequently asked questions.</h2>
+    <p class="lede">primalmoves.com's own dedicated FAQ page is currently empty — this content is pulled from the real Q&amp;A published on their "Our Method" page instead, since it's brand-wide and accurate for every location, including Venice.</p>
+    <div class="faq-list">
+      <details><summary>What is Primal Moves?</summary><p>Primal Moves™ is a systematized movement method — a bipedal and quadrupedal, flow-based system that trains a foundational base. The multi-joint, multi-planar movements develop a physicality that is stable, strong, and mobile with excellent muscle tone. It's a progressive 4-series system, and sessions are primarily in a group format for a sense of community.</p></details>
+      <details><summary>How is Primal Moves different from other training methods?</summary><p>It's accessible to anyone wanting strength, fitness, mobility, flexibility, and body awareness. It doesn't train advanced gymnastics moves like the planche, front/back lever, or one-arm pull-ups, which long-term don't serve as functional to the body.</p></details>
+      <details><summary>I'm new to Primal Moves. Where should I start?</summary><p>Show up and try the entry-level classes, which build full-body awareness and a strong foundation — they're designed to be fun, dynamic, and community-building.</p></details>
+      <details><summary>I can't do a handstand. Can I still do Primal Moves?</summary><p>Yes — Primal Moves isn't specific handstand training, though it uses some of its methods to help train body awareness and posture.</p></details>
+      <details><summary>How long has Primal Moves been around, and who created it?</summary><p>Primal Moves was born in Ibiza in 2016. Founder Nick Brewer created the system after decades of training across many movement modalities, wanting something accessible to all while still physically challenging and skill-building (like handstands).</p></details>
+      <details><summary>Is this just yoga, Animal Flow, or Capoeira?</summary><p>You'll see characteristics shared with gymnastics, pilates, and yoga, but Primal Moves is a structured, systemized method with its own tiered progressive system — not a traditional mat-based asana practice.</p></details>
     </div>
   </div>
 </section>
@@ -297,15 +355,15 @@
         <ul class="contact-list">
           <li>
             <div class="label">Address</div>
-            <div class="val">[PLACEHOLDER — exact street address not published on primalmoves.com; Venice, CA — insert full studio address]</div>
+            <div class="val">1038 Princeton Dr, Ste B<br>Marina del Rey, CA 90292</div>
           </li>
           <li>
             <div class="label">Hours</div>
-            <div class="val">[PLACEHOLDER — class hours not published; insert current Venice studio hours]</div>
+            <div class="val">Confirmed opens 6:30 AM Mondays (Google Business Profile, checked July 2026).</div>
           </li>
           <li>
             <div class="label">Phone</div>
-            <div class="val">[PLACEHOLDER — no phone number published; insert if Venice has a direct line]</div>
+            <a class="val" href="tel:+13108007061">(310) 800-7061</a>
           </li>
           <li>
             <div class="label">Email</div>
@@ -315,19 +373,19 @@
             <div class="label">Instagram</div>
             <a class="val" href="https://www.instagram.com/primalmovesvenice" target="_blank" rel="noopener">@primalmovesvenice</a>
           </li>
+          <li>
+            <div class="label">Book / Bodywork &amp; Sauna</div>
+            <a class="val" href="https://www.mindbodyonline.com/explore/locations/primal-moves-venice-beach" target="_blank" rel="noopener">Mindbody listing →</a>
+          </li>
         </ul>
         <div class="placeholder" style="margin-top:28px">
           <span class="tag">Placeholder — needs Venice info</span>
-          <ul>
-            <li>Exact street address (map below is approximate — "Venice, CA" only)</li>
-            <li>Studio hours / class-day hours</li>
-            <li>Direct phone line, if there is one</li>
-            <li>Current pricing / membership tiers (source site's pricing is app-only, not published)</li>
-          </ul>
+          <p><strong>Full weekly hours</strong> — we could only directly confirm the Monday opening time above (checked July 2026); Google's own listing truncates the rest without signing in, and third-party sites (Yelp, Apple Maps, Wellhub) show conflicting hours for each other, so we didn't guess. Call the number above or check Google Maps for the current full schedule.</p>
+          <p style="margin-top:10px"><strong>Pricing / membership tiers</strong> — gated behind Mindbody account sign-in as of July 2026; we didn't create an account to bypass it. Insert current class-pack/membership pricing here once you have it.</p>
         </div>
       </div>
       <div class="map-embed">
-        <iframe src="https://maps.google.com/maps?q=venice+beach+ca&t=&z=14&ie=UTF8&iwloc=&output=embed" loading="lazy" title="Venice, CA — approximate location, pending exact studio address"></iframe>
+        <iframe src="https://maps.google.com/maps?q=Primal+Moves,+1038+Princeton+Dr+Ste+B,+Marina+del+Rey,+CA+90292&t=&z=15&ie=UTF8&iwloc=&output=embed" loading="lazy" title="Primal Moves Venice — 1038 Princeton Dr Ste B, Marina del Rey, CA 90292"></iframe>
       </div>
     </div>
   </div>
@@ -357,15 +415,18 @@
         <h4>Visit</h4>
         <ul>
           <li><a href="#schedule">Schedule</a></li>
+          <li><a href="#faq">FAQ</a></li>
           <li><a href="#contact">Contact</a></li>
           <li><a href="https://app.primalmoves.com/login/" target="_blank" rel="noopener">Book a Class</a></li>
         </ul>
       </div>
       <div>
-        <h4>Follow</h4>
+        <h4>The Wider Brand</h4>
         <ul>
+          <li><a href="https://primalmoves.com/digital-studio/" target="_blank" rel="noopener">Digital Studio (from $12.99/mo)</a></li>
+          <li><a href="https://primalmoves.com/teacher-training/" target="_blank" rel="noopener">Teacher Training (Ibiza)</a></li>
+          <li><a href="https://primalmoves.com/accredited-coaches/" target="_blank" rel="noopener">Accredited Coaches</a></li>
           <li><a href="https://www.instagram.com/primalmovesvenice" target="_blank" rel="noopener">Instagram</a></li>
-          <li><a href="mailto:hello@venice.primalmoves.com">Email us</a></li>
         </ul>
       </div>
     </div>
@@ -373,7 +434,7 @@
       <div>Copyright 2026 © Primal Moves Venice</div>
       <div>
         <a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a>
-        <a href="https://primalmoves.com/frequently-asked-questions/" target="_blank" rel="noopener">FAQs</a>
+        <a href="#faq">FAQs</a>
       </div>
     </div>
   </div>

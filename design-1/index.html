@@ -69,10 +69,46 @@
   .colophon-links a:hover{border-color:#F3EFE6}
   .book-btn{display:inline-block;background:#F3EFE6;color:var(--ink);font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:15px 30px;border-radius:2px;white-space:nowrap}
 
+  /* ---- method list ---- */
+  .method-block{padding:14vh 0 16vh}
+  .method-block .head,.benefits-block .head,.info-block .head{max-width:640px;margin-bottom:52px}
+  .method-block .tiny,.benefits-block .tiny,.info-block .tiny{font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  .method-block h2,.benefits-block h2,.info-block h2{font-family:var(--serif);font-style:italic;font-weight:340;font-size:clamp(32px,5vw,52px);line-height:1.05;letter-spacing:-.005em}
+  .method-list{display:grid;grid-template-columns:repeat(2,1fr);gap:40px 56px}
+  .method-item{border-top:1px solid var(--paper-deep);padding-top:20px}
+  .method-item .num{font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:.1em;color:var(--accent);margin-bottom:8px}
+  .method-item h3{font-family:var(--serif);font-style:italic;font-weight:440;font-size:24px;margin-bottom:8px}
+  .method-item p{font-family:var(--sans);font-size:14.5px;line-height:1.6;color:var(--ink-soft);max-width:32em}
+
+  /* ---- benefits ---- */
+  .benefits-block{padding:12vh 0;background:var(--paper-deep)}
+  .benefits-list{display:grid;grid-template-columns:repeat(2,1fr);gap:0 48px;margin-top:40px}
+  .benefits-list div{border-top:1px solid rgba(24,20,15,.14);padding:16px 0;display:flex;justify-content:space-between;gap:20px;font-family:var(--sans);font-size:14px}
+  .benefits-list .b-label{font-weight:600;white-space:nowrap}
+  .benefits-list .b-val{color:var(--ink-soft);text-align:right}
+
+  /* ---- practical info ---- */
+  .info-block{padding:14vh 0}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 56px;margin-top:40px}
+  .info-row{border-top:1px solid var(--paper-deep);padding:18px 0}
+  .info-row .i-label{font-family:var(--sans);font-weight:600;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+  .info-row .i-val{font-family:var(--sans);font-size:15px;line-height:1.55}
+  .info-row .i-val a{color:inherit}
+  .info-note{font-size:12.5px;color:var(--ink-soft);margin-top:6px;font-style:italic}
+
+  @media (max-width:700px){
+    .method-list{grid-template-columns:1fr;gap:28px}
+    .benefits-list{grid-template-columns:1fr}
+    .benefits-list div{flex-direction:column;gap:4px}
+    .benefits-list .b-val{text-align:left}
+    .info-grid{grid-template-columns:1fr}
+  }
+
   @media (max-width:620px){
     .hero-copy{padding:0 6vw 40px}
     .scroll-cue{display:none}
     .breather{padding:14vh 0}
+    .method-block,.info-block{padding:11vh 0}
     .colophon{flex-direction:column;align-items:flex-start;gap:22px}
   }
 </style>
@@ -103,16 +139,101 @@
   <div class="caption">Daily practice — Venice</div>
 </section>
 
+<section class="method-block">
+  <div class="wrap">
+    <div class="head">
+      <div class="tiny">The Method</div>
+      <h2>Four series. One practice.</h2>
+    </div>
+    <div class="method-list">
+      <div class="method-item">
+        <div class="num">01</div>
+        <h3>Primal</h3>
+        <p>A functional bodyweight strength practice, balancing push and pull. Where everyone starts.</p>
+      </div>
+      <div class="method-item">
+        <div class="num">02</div>
+        <h3>Moves</h3>
+        <p>Progressive strength and mobility, building real capacity in the spine, shoulders, hips, and hands.</p>
+      </div>
+      <div class="method-item">
+        <div class="num">03</div>
+        <h3>Progressions</h3>
+        <p>Intermediate skill work — dynamic-to-static holds, hand-supported transitions. For movers ready to go further.</p>
+      </div>
+      <div class="method-item">
+        <div class="num">04</div>
+        <h3>Handstand</h3>
+        <p>Complex sequences and inversions. Only achievable once the foundation is solid.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="breather">
   <div class="wrap">
     <div class="tiny">The Studio</div>
-    <p>A quiet corner of Venice, steps from the boardwalk. Community, movement, and heat.</p>
+    <p>11,000 sq ft in a quiet part of Venice, steps from the boardwalk — sauna and ice bath for recovery, and a team of acrobats, stuntwomen, and somatic practitioners leading the way.</p>
   </div>
 </section>
 
 <section class="spread">
   <figure><img src="../assets/images/venice-04.jpg" alt="Primal Moves Venice, studio detail"></figure>
   <figure><img src="../assets/images/venice-02.jpg" alt="Primal Moves Venice, studio wide shot"></figure>
+</section>
+
+<section class="benefits-block">
+  <div class="wrap">
+    <div class="head">
+      <div class="tiny">Benefits</div>
+      <h2>What it does.</h2>
+    </div>
+    <div class="benefits-list">
+      <div><span class="b-label">Motor control</span><span class="b-val">Sharper left-right balance &amp; coordination</span></div>
+      <div><span class="b-label">Structural efficiency</span><span class="b-val">Joints load evenly, posture improves</span></div>
+      <div><span class="b-label">Fitness</span><span class="b-val">Real gains in ~3 months of regular practice</span></div>
+      <div><span class="b-label">Sauna</span><span class="b-val">Circulation, recovery, stress relief</span></div>
+      <div><span class="b-label">Ice bath</span><span class="b-val">Mental resilience, less muscle soreness</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="info-block">
+  <div class="wrap">
+    <div class="head">
+      <div class="tiny">Visit</div>
+      <h2>Find us.</h2>
+    </div>
+    <div class="info-grid">
+      <div class="info-row">
+        <div class="i-label">Address</div>
+        <div class="i-val">1038 Princeton Dr, Ste B<br>Marina del Rey, CA 90292</div>
+      </div>
+      <div class="info-row">
+        <div class="i-label">Phone</div>
+        <div class="i-val"><a href="tel:+13108007061">(310) 800-7061</a></div>
+      </div>
+      <div class="info-row">
+        <div class="i-label">Hours</div>
+        <div class="i-val">Opens 6:30am Mondays (confirmed)</div>
+        <div class="info-note">Full weekly hours vary by source — call ahead to confirm.</div>
+      </div>
+      <div class="info-row">
+        <div class="i-label">Membership</div>
+        <div class="i-val">Pricing isn't published online</div>
+        <div class="info-note">Ask in the app or call for current rates.</div>
+      </div>
+      <div class="info-row" style="grid-column:1/-1">
+        <div class="i-label">On the Schedule</div>
+        <div class="i-val">Primal Hybrid · Primal Compound · Core · Stretch · Handstands · Primal Kids · Team Practice</div>
+        <div class="info-note">Exact days/times are booked in the app — no public weekly grid.</div>
+      </div>
+    </div>
+    <div class="cta-row" style="margin-top:44px;display:flex;gap:14px;flex-wrap:wrap">
+      <a class="book-btn" style="border-radius:2px" href="https://app.primalmoves.com/login/" target="_blank" rel="noopener">Book a Class</a>
+      <a class="book-btn" style="border-radius:2px;background:transparent;border:1px solid var(--ink);color:var(--ink)" href="https://apps.apple.com/app/id6749153748" target="_blank" rel="noopener">Get the App (iOS)</a>
+    </div>
+  </div>
 </section>
 
 <section class="closer">

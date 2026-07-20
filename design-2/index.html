@@ -3,276 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Primal Moves Venice — Design 2: Bold Grid</title>
-<meta name="description" content="Primal Moves Venice — a daily movement practice by the boardwalk.">
+<title>Primal Moves Venice</title>
+<meta name="description" content="Primal Moves Venice — a daily movement practice by the boardwalk. 11,000 sq ft, sauna, ice bath.">
 <link rel="icon" href="../assets/images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;700;800&family=Archivo+Expanded:wght@600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --paper:#F4F3EE; --line-c:#0A0A0A; --ink:#0A0A0A; --accent:#2A3EFF; --grey:#B6B1A6;
-    --display:"Anton",Impact,sans-serif;
-    --sans:"Archivo",-apple-system,"Helvetica Neue",Arial,sans-serif;
-    --exp:"Archivo Expanded",var(--sans);
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{overflow-x:hidden;max-width:100%}
-  body{overflow-x:hidden;max-width:100%;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.4;-webkit-font-smoothing:antialiased}
-  img{max-width:100%;display:block}
-  a{color:inherit;text-decoration:none}
-  .wrap{max-width:1400px;margin:0 auto;padding:0 20px;width:100%}
-
-  /* ---- top bar ---- */
-  .topbar{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:3px solid var(--ink)}
-  .topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;max-width:1400px;margin:0 auto}
-  .logo{display:flex;align-items:center;gap:9px;font-family:var(--exp);font-weight:700;font-size:14px;letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}
-  .logo img{height:22px;width:auto}
-  .book-btn{background:var(--ink);color:var(--paper);font-family:var(--exp);font-weight:700;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;padding:12px 20px;white-space:nowrap}
-  .book-btn:hover{background:var(--accent);color:#fff}
-
-  /* ---- hero ---- */
-  .hero{border-bottom:3px solid var(--ink)}
-  .hero-grid{display:grid;grid-template-columns:1.3fr 1fr}
-  .hero-text{padding:8vh 24px 6vh;display:flex;flex-direction:column;justify-content:center;border-right:3px solid var(--ink)}
-  .geo{font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:.12em;color:var(--accent);margin-bottom:18px;font-variant-numeric:tabular-nums}
-  .hero-text h1{font-family:var(--display);font-weight:400;font-size:clamp(58px,10.5vw,150px);line-height:.82;letter-spacing:.005em;text-transform:uppercase}
-  .hero-img{position:relative;overflow:hidden;min-height:52vh}
-  .hero-img img{width:100%;height:100%;object-fit:cover}
-  @media (max-width:860px){
-    .hero-grid{grid-template-columns:1fr}
-    .hero-text{border-right:0;border-bottom:3px solid var(--ink);padding:7vh 20px 5vh}
-    .hero-img{min-height:52vh}
-  }
-
-  /* ---- photo grid blocks ---- */
-  .block-row{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:3px solid var(--ink)}
-  .block-row.two{grid-template-columns:1fr 1fr}
-  .block-row > *{border-right:3px solid var(--ink);min-height:38vh;position:relative;overflow:hidden}
-  .block-row > *:last-child{border-right:0}
-  .block-row img{width:100%;height:100%;object-fit:cover}
-  .block-row .word{background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;padding:24px}
-  .block-row .word span{font-family:var(--display);font-weight:400;font-size:clamp(34px,5.5vw,64px);line-height:.92;text-transform:uppercase;text-align:center}
-  .block-row .accent{background:var(--accent);color:#fff}
-  @media (max-width:860px){
-    .block-row{grid-template-columns:1fr}
-    .block-row > *{border-right:0;border-bottom:3px solid var(--ink);min-height:46vh}
-    .block-row > *:last-child{border-bottom:0}
-  }
-
-  /* ---- statement / color panel ---- */
-  .panel{background:var(--accent);color:#fff;border-bottom:3px solid var(--ink);padding:9vh 24px}
-  .panel .wrap{max-width:1100px}
-  .panel h2{font-family:var(--display);font-weight:400;font-size:clamp(38px,7.5vw,96px);line-height:.92;text-transform:uppercase;text-wrap:balance}
-  .panel .tag{font-family:var(--sans);font-weight:700;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px;opacity:.9}
-
-  /* ---- wide image with coordinate frame ---- */
-  .wide{position:relative;border-bottom:3px solid var(--ink);min-height:60vh;overflow:hidden}
-  .wide img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-  .frame-label{position:absolute;z-index:2;font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:var(--paper);border:3px solid var(--ink);padding:8px 14px;font-variant-numeric:tabular-nums}
-  .frame-label.tl{top:20px;left:20px}
-  .frame-label.br{bottom:20px;right:20px}
-
-  /* ---- section eyebrow ---- */
-  .eyebrow{padding:26px 24px 0;font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
-
-  /* ---- method modules ---- */
-  .method-row{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:3px solid var(--ink)}
-  .method-mod{border-right:3px solid var(--ink);padding:30px 22px 34px}
-  .method-row .method-mod:last-child{border-right:0}
-  .method-mod .n{font-family:var(--sans);font-weight:800;font-size:12px;letter-spacing:.1em;color:var(--accent);margin-bottom:14px;font-variant-numeric:tabular-nums}
-  .method-mod h3{font-family:var(--display);font-weight:400;font-size:26px;text-transform:uppercase;margin-bottom:10px;line-height:.95}
-  .method-mod p{font-family:var(--sans);font-size:13.5px;line-height:1.5;color:#3a3a38}
-  @media (max-width:860px){
-    .method-row{grid-template-columns:1fr 1fr}
-    .method-mod{border-right:3px solid var(--ink);border-bottom:3px solid var(--ink)}
-    .method-row .method-mod:nth-child(2n){border-right:0}
-  }
-  @media (max-width:520px){
-    .method-row{grid-template-columns:1fr}
-    .method-row .method-mod{border-right:0}
-  }
-
-  /* ---- text block (location substance) ---- */
-  .text-block{border-bottom:3px solid var(--ink);padding:7vh 24px}
-  .text-block .wrap{max-width:900px}
-  .text-block h2{font-family:var(--display);font-weight:400;font-size:clamp(28px,4.6vw,46px);text-transform:uppercase;margin-bottom:18px;line-height:.95}
-  .text-block p{font-family:var(--sans);font-size:16px;line-height:1.6;color:#2a2a28;max-width:38em}
-
-  /* ---- benefits data list ---- */
-  .data-list{border-bottom:3px solid var(--ink)}
-  .data-row{display:flex;justify-content:space-between;align-items:baseline;gap:24px;padding:18px 24px;border-top:3px solid var(--ink)}
-  .data-row:first-child{border-top:0}
-  .data-row .d-label{font-family:var(--exp);font-weight:700;font-size:15px;text-transform:uppercase;white-space:nowrap}
-  .data-row .d-val{font-family:var(--sans);font-size:13.5px;color:#3a3a38;text-align:right}
-  @media (max-width:600px){
-    .data-row{flex-direction:column;gap:4px}
-    .data-row .d-val{text-align:left}
-  }
-
-  /* ---- practical info spec sheet ---- */
-  .spec-sheet{border-bottom:3px solid var(--ink)}
-  .spec-row{display:grid;grid-template-columns:200px 1fr;border-top:3px solid var(--ink)}
-  .spec-row:first-child{border-top:0}
-  .spec-row .s-label{font-family:var(--sans);font-weight:800;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);padding:20px 24px;border-right:3px solid var(--ink)}
-  .spec-row .s-val{padding:20px 24px;font-family:var(--exp);font-weight:600;font-size:16px}
-  .spec-row .s-note{font-family:var(--sans);font-weight:500;font-size:12.5px;color:var(--grey);margin-top:6px;text-transform:none;letter-spacing:0}
-  .spec-cta{padding:28px 24px;display:flex;gap:14px;flex-wrap:wrap}
-  .spec-cta a{background:var(--ink);color:var(--paper);font-family:var(--exp);font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;padding:16px 26px}
-  .spec-cta a:hover{background:var(--accent);color:#fff}
-  .spec-cta a.ghost{background:transparent;border:2px solid var(--ink);color:var(--ink)}
-  @media (max-width:640px){
-    .spec-row{grid-template-columns:1fr}
-    .spec-row .s-label{border-right:0;border-bottom:3px solid var(--ink);padding:14px 20px}
-    .spec-row .s-val{padding:14px 20px}
-  }
-
-  /* ---- footer / cta ---- */
-  footer{padding:8vh 24px 6vh}
-  footer .wrap{max-width:1200px}
-  .foot-head{font-family:var(--display);font-weight:400;font-size:clamp(40px,8vw,110px);line-height:.86;text-transform:uppercase;margin-bottom:6vh;text-wrap:balance}
-  .foot-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;border-top:3px solid var(--ink);padding-top:28px}
-  .foot-grid .label{font-family:var(--sans);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-bottom:8px}
-  .foot-grid .val{font-family:var(--exp);font-weight:600;font-size:16px}
-  .foot-grid a.val:hover{color:var(--accent)}
-  .foot-book{display:inline-block;margin-top:6vh;background:var(--ink);color:var(--paper);font-family:var(--exp);font-weight:700;font-size:15px;letter-spacing:.05em;text-transform:uppercase;padding:20px 40px}
-  .foot-book:hover{background:var(--accent);color:#fff}
-  @media (max-width:760px){
-    .foot-grid{grid-template-columns:1fr;gap:22px}
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-inner">
-    <a class="logo" href="#top"><img src="../assets/images/primal-moves-icon.svg" alt="">Primal Moves</a>
-    <a class="book-btn" href="https://app.primalmoves.com/login/" target="_blank" rel="noopener">Book</a>
+<header class="site">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a class="pill-btn" href="https://app.primalmoves.com/login/" target="_blank" rel="noopener">Schedule</a>
+      <a class="nav-link" href="schedule/">Schedule</a>
+    </div>
+    <a href="index.html"><img class="logo-mark" src="../assets/images/primal-moves-icon.svg" alt="Primal Moves"></a>
+    <div class="nav-right">
+      <a class="nav-link" href="method/">Our Method</a>
+      <a class="nav-link" href="benefits/">Benefits</a>
+      <a class="nav-link" href="contact/">Contact</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <img src="../assets/images/venice-03.jpg" alt="Primal Moves Venice studio">
+  <div class="hero-kicker">Venice, California</div>
+  <div class="hero-center"><h1>Venice</h1></div>
+</section>
+
+<div class="subnav">
+  <div class="subnav-inner">
+    <a class="active" href="index.html">Overview</a>
+    <a href="schedule/">Schedule</a>
+    <a href="benefits/">The Space</a>
+    <svg class="ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1"/></svg>
   </div>
 </div>
 
-<section class="hero" id="top">
-  <div class="hero-grid">
-    <div class="hero-text">
-      <div class="geo">33.9860° N · 118.4636° W — VENICE, CA</div>
-      <h1>Think<br>Less</h1>
-    </div>
-    <div class="hero-img">
-      <img src="../assets/images/venice-03.jpg" alt="Primal Moves Venice studio">
-    </div>
-  </div>
-</section>
-
-<section class="block-row">
-  <div><img src="../assets/images/venice-01.jpg" alt="Primal Moves Venice"></div>
-  <div class="word accent"><span>Move<br>More</span></div>
-  <div><img src="../assets/images/venice-04.jpg" alt="Primal Moves Venice"></div>
-</section>
-
-<div class="eyebrow">The Method — Four Series, One Practice</div>
-<section class="method-row">
-  <div class="method-mod">
-    <div class="n">01</div>
-    <h3>Primal</h3>
-    <p>Functional bodyweight strength. Push-pull balance. Where everyone starts.</p>
-  </div>
-  <div class="method-mod">
-    <div class="n">02</div>
-    <h3>Moves</h3>
-    <p>Progressive strength &amp; mobility. Spine, shoulders, hips, hands.</p>
-  </div>
-  <div class="method-mod">
-    <div class="n">03</div>
-    <h3>Progressions</h3>
-    <p>Dynamic-to-static holds. For movers ready to go further.</p>
-  </div>
-  <div class="method-mod">
-    <div class="n">04</div>
-    <h3>Handstand</h3>
-    <p>Complex sequences, inversions. Solid foundation required.</p>
-  </div>
-</section>
-
-<section class="panel">
+<section class="light">
   <div class="wrap">
-    <div class="tag">Primal Moves — Venice</div>
-    <h2>Breathe.</h2>
+    <div class="split">
+      <div>
+        <span class="stat-badge">11,000 ft² Studio</span>
+        <h2>Primal Moves Venice</h2>
+        <p>A quiet corner of Venice, walking distance from the boardwalk. Sauna and ice bath on-site. Not just a gym — a community hub for events and shared practice, led by a team of acrobats, stuntwomen, and somatic practitioners.</p>
+        <div class="cta-row" style="margin-top:28px">
+          <a class="btn solid" href="https://app.primalmoves.com/login/" target="_blank" rel="noopener">Book a Class</a>
+          <a class="btn" href="method/">Our Method</a>
+        </div>
+      </div>
+      <img src="../assets/images/venice-01.jpg" alt="Movement practice at Primal Moves Venice">
+    </div>
   </div>
 </section>
 
-<section class="text-block">
+<section class="dark">
   <div class="wrap">
-    <h2>11,000 FT². Steps From the Boardwalk.</h2>
-    <p>A quiet corner of Venice with sauna and ice bath on-site. Not just a gym — a community hub for events and shared practice, led by a team of acrobats, stuntwomen, and somatic practitioners.</p>
+    <div class="section-kicker">The Method</div>
+    <h2 style="font-size:clamp(28px,4vw,44px);margin-bottom:8px">Four series. One practice.</h2>
+    <div class="item-list" style="margin-top:36px">
+      <div class="item-row">
+        <div class="n">01</div>
+        <div><h3>Primal</h3><p>Functional bodyweight strength, push-pull balance. Where everyone starts.</p></div>
+      </div>
+      <div class="item-row">
+        <div class="n">02</div>
+        <div><h3>Moves</h3><p>Progressive strength &amp; mobility — real capacity in the spine, shoulders, hips, hands.</p></div>
+      </div>
+      <div class="item-row">
+        <div class="n">03</div>
+        <div><h3>Progressions</h3><p>Dynamic-to-static skill work. For movers ready to go further.</p></div>
+      </div>
+      <div class="item-row">
+        <div class="n">04</div>
+        <div><h3>Handstand</h3><p>Complex sequences, inversions. Solid foundation required.</p></div>
+      </div>
+    </div>
+    <div class="cta-row" style="margin-top:32px">
+      <a class="btn on-dark" href="method/">Read the full method →</a>
+    </div>
   </div>
 </section>
 
-<section class="wide">
-  <img src="../assets/images/venice-02.jpg" alt="Primal Moves Venice studio wide">
-  <div class="frame-label tl">Frame 04 / Venice</div>
-  <div class="frame-label br">11,000 FT²</div>
-</section>
-
-<div class="eyebrow">Benefits</div>
-<section class="data-list">
-  <div class="data-row"><span class="d-label">Motor Control</span><span class="d-val">Sharper left-right balance &amp; coordination</span></div>
-  <div class="data-row"><span class="d-label">Structural Efficiency</span><span class="d-val">Joints load evenly, posture improves</span></div>
-  <div class="data-row"><span class="d-label">Fitness</span><span class="d-val">Real gains in ~3 months of regular practice</span></div>
-  <div class="data-row"><span class="d-label">Sauna</span><span class="d-val">Circulation, recovery, stress relief</span></div>
-  <div class="data-row"><span class="d-label">Ice Bath</span><span class="d-val">Mental resilience, less muscle soreness</span></div>
-</section>
-
-<section class="block-row two">
-  <div class="word"><span>Community<br>Wellness<br>Club</span></div>
-  <div><img src="../assets/images/venice-05.jpg" alt="Primal Moves Venice"></div>
-</section>
-
-<div class="eyebrow">Visit</div>
-<section class="spec-sheet">
-  <div class="spec-row">
-    <div class="s-label">Address</div>
-    <div class="s-val">1038 Princeton Dr, Ste B, Marina del Rey, CA 90292</div>
-  </div>
-  <div class="spec-row">
-    <div class="s-label">Phone</div>
-    <div class="s-val"><a href="tel:+13108007061">(310) 800-7061</a></div>
-  </div>
-  <div class="spec-row">
-    <div class="s-label">Hours</div>
-    <div class="s-val">Opens 6:30am Mondays (confirmed)<div class="s-note">Full weekly hours vary by source — call ahead to confirm.</div></div>
-  </div>
-  <div class="spec-row">
-    <div class="s-label">Membership</div>
-    <div class="s-val">Pricing isn't published online<div class="s-note">Ask in the app or call for current rates.</div></div>
-  </div>
-  <div class="spec-row">
-    <div class="s-label">Schedule</div>
-    <div class="s-val">Primal Hybrid · Primal Compound · Core · Stretch · Handstands · Primal Kids · Team Practice<div class="s-note">Exact days/times are booked in the app — no public weekly grid.</div></div>
-  </div>
-  <div class="spec-cta">
-    <a href="https://app.primalmoves.com/login/" target="_blank" rel="noopener">Book a Class</a>
-    <a class="ghost" href="https://apps.apple.com/app/id6749153748" target="_blank" rel="noopener">Get the App (iOS)</a>
+<section class="light">
+  <div class="wrap">
+    <div class="section-kicker">The Space</div>
+    <div class="gallery">
+      <img src="../assets/images/venice-02.jpg" alt="Primal Moves Venice studio">
+      <img src="../assets/images/venice-04.jpg" alt="Primal Moves Venice studio">
+      <img src="../assets/images/venice-05.jpg" alt="Primal Moves Venice studio">
+    </div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <div class="foot-head">Get After It.</div>
     <div class="foot-grid">
       <div>
-        <div class="label">Email</div>
-        <a class="val" href="mailto:hello@venice.primalmoves.com">hello@venice.primalmoves.com</a>
+        <h4>Primal Moves</h4>
+        <p style="color:#c9c9c9;font-size:13.5px;max-width:24em">Part of the Primal Moves family — Ibiza · Barcelona · Lisbon · Venice. <a href="https://primalmoves.com" target="_blank" rel="noopener" style="text-decoration:underline">See all locations →</a></p>
       </div>
       <div>
-        <div class="label">Instagram</div>
-        <a class="val" href="https://www.instagram.com/primalmovesvenice" target="_blank" rel="noopener">@primalmovesvenice</a>
+        <h4>Studio</h4>
+        <ul>
+          <li><a href="method/">Our Method</a></li>
+          <li><a href="benefits/">Benefits</a></li>
+          <li><a href="schedule/">Schedule</a></li>
+        </ul>
       </div>
       <div>
-        <div class="label">Location</div>
-        <div class="val">Venice, California</div>
+        <h4>Visit</h4>
+        <ul>
+          <li><a href="contact/">Contact</a></li>
+          <li><a href="https://app.primalmoves.com/login/" target="_blank" rel="noopener">Book a Class</a></li>
+          <li><a href="https://apps.apple.com/app/id6749153748" target="_blank" rel="noopener">Get the App</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/primalmovesvenice" target="_blank" rel="noopener">@primalmovesvenice</a></li>
+          <li><a href="mailto:hello@venice.primalmoves.com">hello@venice.primalmoves.com</a></li>
+        </ul>
       </div>
     </div>
-    <a class="foot-book" href="https://app.primalmoves.com/login/" target="_blank" rel="noopener">Book a Class →</a>
+    <div class="foot-bottom">
+      <div>Copyright 2026 © Primal Moves Venice</div>
+      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a></div>
+    </div>
   </div>
 </footer>
 

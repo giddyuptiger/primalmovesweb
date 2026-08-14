@@ -9,12 +9,16 @@
 window.PM_CONFIG = {
 
   /* --- LUMA EVENTS ------------------------------------------------------- */
-  // Your public Luma calendar page.  e.g. "https://lu.ma/primalmovesvenice"
-  lumaPageUrl: "",
+  // Public Luma page people can browse and subscribe to.
+  // Currently our HOST PROFILE (33 events hosted). This works as a link.
+  lumaPageUrl: "https://luma.com/user/PrimalMoves",
 
-  // Luma embed URL. Get it from: your Luma calendar → Manage Calendar →
-  // Embed → "Embed Calendar", then copy the src="..." out of the snippet.
-  // Looks like: "https://lu.ma/embed/calendar/cal-XXXXXXXXXXXXXXX/events"
+  // Luma embed URL — ONLY works for a Luma *Calendar*, not a host profile.
+  // Luma has no embed for user profiles, so this stays blank until we create
+  // a Calendar: luma.com → Calendars → Create Calendar → move//host events
+  // there → Manage Calendar → Embed → copy the src="..." out of the snippet.
+  // It looks like: "https://lu.ma/embed/calendar/cal-XXXXXXXXXXXXXXX/events"
+  // Until then the Events page links out to lumaPageUrl instead.
   lumaEmbedUrl: "",
 
 
@@ -103,15 +107,27 @@ window.PM_CONFIG = {
         el.innerHTML = "";
         el.appendChild(f);
       } else {
+        // No embed available. If a fallback link is configured, show a real
+        // call-to-action rather than anything that reads as broken.
+        var fbKey = el.getAttribute("data-pm-embed-fallback");
+        var fbUrl = fbKey ? C[fbKey] : "";
         el.classList.remove("embed");
         el.classList.add("embed-placeholder");
         el.innerHTML =
           '<div class="ph-title">' +
-            (el.getAttribute("data-pm-embed-label") || "Not connected yet") +
+            (el.getAttribute("data-pm-embed-label") || "Coming soon") +
           "</div>" +
           "<p>" + (el.getAttribute("data-pm-embed-hint") || "") + "</p>" +
-          '<p style="margin-top:10px">Set <code>' + key +
-          "</code> in <code>design-4/config.js</code> to switch this on.</p>";
+          (fbUrl
+            ? '<div class="cta-row" style="justify-content:center;margin-top:22px">' +
+              '<a class="btn" href="' + fbUrl + '" target="_blank" rel="noopener">' +
+              (el.getAttribute("data-pm-embed-cta") || "Open in a new tab ↗") +
+              "</a></div>"
+            : "");
+        // Dev note goes to the console, never onto the live page.
+        if (window.console && console.warn) {
+          console.warn("[PM_CONFIG] Set `" + key + "` in design-4/config.js to enable this embed.");
+        }
       }
     });
 

@@ -18,9 +18,20 @@ window.PM_CONFIG = {
   onlineTrialUrl: "https://app.primalmoves.com/register/trial/",
   onlineTrialLabel: "1 week free",
 
-  /* --- BOOKING / SCHEDULE ------------------------------------------------ */
+  /* --- BOOKING / SCHEDULE ------------------------------------------------
+     IMPORTANT: Mindbody's own schedule page (clients.mindbodyonline.com)
+     sends `X-Frame-Options: SAMEORIGIN`, so it CANNOT be put in an iframe
+     on our domain — it renders as a blank white box in every browser.
+
+     The only supported way to show the live timetable inline is a
+     Healcode / Branded Web widget, generated inside your Mindbody account:
+       Mindbody → Home → Branded Web (Healcode) → Widgets → New Schedule
+     It gives you a snippet containing data-widget-id="XXXXXXXXXX".
+     Paste just that ID below and the real schedule renders on the page.
+     Leave it blank and visitors get a clean "Book through Mindbody"
+     card with a working button instead of an empty frame.            */
   mindbodySiteId: "5745965",             // verified: Primal Moves Venice Beach
-  mindbodyEmbedOverride: "",             // paste a Healcode widget src to override
+  healcodeWidgetId: "",                  // <-- paste the Healcode widget ID here
 
   /* --- EVENTS ------------------------------------------------------------ */
   // Events are native to this site (per the brief). These are only for
@@ -55,9 +66,9 @@ window.PM_CONFIG = {
 (function () {
   var C = window.PM_CONFIG;
 
-  C.mindbodyScheduleUrl = C.mindbodyEmbedOverride ||
-    ("https://clients.mindbodyonline.com/classic/ws?studioid=" + C.mindbodySiteId +
-     "&stype=-7&sView=week&sLoc=0&sTG=0");
+  C.mindbodyScheduleUrl =
+    "https://clients.mindbodyonline.com/classic/ws?studioid=" + C.mindbodySiteId +
+    "&stype=-7&sView=week&sLoc=0&sTG=0";
   C.mindbodyPricingUrl =
     "https://clients.mindbodyonline.com/classic/ws?studioid=" + C.mindbodySiteId + "&stype=-98";
   if (!C.veniceTrialUrl) C.veniceTrialUrl = C.mindbodyPricingUrl;
@@ -112,6 +123,42 @@ window.PM_CONFIG = {
                  (el.getAttribute("data-pm-embed-cta") || "Open in a new tab") + "</a></div>" : "");
       if (window.console && console.warn) {
         console.warn("[PM_CONFIG] Set `" + key + "` in design-5/config.js to enable this embed.");
+      }
+    });
+
+    // data-pm-schedule → Healcode widget if configured, otherwise a real
+    // call-to-action. Never an iframe: Mindbody blocks framing outright.
+    document.querySelectorAll("[data-pm-schedule]").forEach(function (el) {
+      if (C.healcodeWidgetId) {
+        var w = document.createElement("healcode-widget");
+        w.setAttribute("data-type", "schedules");
+        w.setAttribute("data-widget-partner", "object");
+        w.setAttribute("data-widget-id", C.healcodeWidgetId);
+        w.setAttribute("data-widget-version", "1");
+        el.classList.add("schedule-widget");
+        el.innerHTML = "";
+        el.appendChild(w);
+        if (!document.getElementById("healcode-js")) {
+          var s = document.createElement("script");
+          s.id = "healcode-js";
+          s.src = "https://widgets.mindbodyonline.com/javascripts/healcode.js";
+          s.async = true;
+          document.body.appendChild(s);
+        }
+        return;
+      }
+      el.classList.add("embed-placeholder");
+      el.innerHTML =
+        '<div class="ph-title">' +
+          (el.getAttribute("data-pm-schedule-label") || "Book through Mindbody") +
+        "</div>" +
+        "<p>" + (el.getAttribute("data-pm-schedule-hint") || "") + "</p>" +
+        '<div class="cta-row" style="justify-content:center;margin-top:24px">' +
+          '<a class="btn lg" href="' + C.mindbodyScheduleUrl + '" target="_blank" rel="noopener">See this week&rsquo;s schedule ↗</a>' +
+        "</div>";
+      if (window.console && console.warn) {
+        console.warn("[PM_CONFIG] Set `healcodeWidgetId` in config.js to render the live timetable inline. " +
+                     "Mindbody's own schedule page cannot be iframed (X-Frame-Options: SAMEORIGIN).");
       }
     });
 

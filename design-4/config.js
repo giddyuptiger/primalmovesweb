@@ -37,10 +37,12 @@ window.PM_CONFIG = {
   // Verified site ID for "Primal Moves Venice Beach" (Marina del Rey).
   mindbodySiteId: "5745965",
 
-  // Leave as "" to use the standard Mindbody schedule embed built from the
-  // site ID above. If you generate a branded Healcode widget in your Mindbody
-  // account, paste its full iframe/script src here to override.
-  mindbodyEmbedOverride: "",
+  // NOTE: Mindbody's own schedule page sends X-Frame-Options: SAMEORIGIN, so
+  // it CANNOT be iframed on our domain — it renders as a blank white box.
+  // The only supported inline option is a Healcode / Branded Web widget:
+  //   Mindbody → Home → Branded Web (Healcode) → Widgets → New Schedule
+  // Paste the data-widget-id value below. Blank = a clean card + button.
+  healcodeWidgetId: "",
 
 
   /* --- OFFER ------------------------------------------------------------- */
@@ -63,9 +65,9 @@ window.PM_CONFIG = {
 (function () {
   var C = window.PM_CONFIG;
 
-  C.mindbodyScheduleUrl = C.mindbodyEmbedOverride ||
-    ("https://clients.mindbodyonline.com/classic/ws?studioid=" + C.mindbodySiteId +
-     "&stype=-7&sView=week&sLoc=0&sTG=0");
+  C.mindbodyScheduleUrl =
+    "https://clients.mindbodyonline.com/classic/ws?studioid=" + C.mindbodySiteId +
+    "&stype=-7&sView=week&sLoc=0&sTG=0";
   C.mindbodyPricingUrl =
     "https://clients.mindbodyonline.com/classic/ws?studioid=" + C.mindbodySiteId + "&stype=-98";
   if (!C.offerUrl) C.offerUrl = C.mindbodyPricingUrl;
@@ -129,6 +131,36 @@ window.PM_CONFIG = {
           console.warn("[PM_CONFIG] Set `" + key + "` in design-4/config.js to enable this embed.");
         }
       }
+    });
+
+    // data-pm-schedule → Healcode widget if configured, otherwise a real CTA.
+    // Never an iframe: Mindbody blocks framing outright.
+    document.querySelectorAll("[data-pm-schedule]").forEach(function (el) {
+      if (C.healcodeWidgetId) {
+        var w = document.createElement("healcode-widget");
+        w.setAttribute("data-type", "schedules");
+        w.setAttribute("data-widget-partner", "object");
+        w.setAttribute("data-widget-id", C.healcodeWidgetId);
+        w.setAttribute("data-widget-version", "1");
+        el.classList.add("embed");
+        el.innerHTML = "";
+        el.appendChild(w);
+        if (!document.getElementById("healcode-js")) {
+          var sc = document.createElement("script");
+          sc.id = "healcode-js";
+          sc.src = "https://widgets.mindbodyonline.com/javascripts/healcode.js";
+          sc.async = true;
+          document.body.appendChild(sc);
+        }
+        return;
+      }
+      el.classList.add("embed-placeholder");
+      el.innerHTML =
+        '<div class="ph-title">Book through Mindbody</div>' +
+        "<p>Our live timetable and booking run on Mindbody. Opening it in a new tab keeps your account, class credits and bookings in one place.</p>" +
+        '<div class="cta-row" style="justify-content:center;margin-top:22px">' +
+          '<a class="btn solid" href="' + C.mindbodyScheduleUrl + '" target="_blank" rel="noopener">See this week&rsquo;s schedule ↗</a>' +
+        "</div>";
     });
 
     // mobile nav

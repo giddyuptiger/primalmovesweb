@@ -83,7 +83,29 @@ p{max-width:38em}
 .ticker-track{display:flex;gap:0;white-space:nowrap;animation:slide 34s linear infinite;will-change:transform}
 .ticker a,.ticker span{display:inline-flex;align-items:center;gap:16px;padding:9px 0;
   font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
-.ticker .sep{color:var(--acid);padding:0 22px}
+.ticker .sep{color:var(--acid);padding:0 20px}
+
+/* ---- palm mark ----------------------------------------------------------
+   A little Venice, used sparingly: the ticker separator, the hero dateline,
+   and one big watermark in the footer. Masked so it inherits currentColor. */
+.palm{
+  display:inline-block;width:.72em;height:1.08em;flex:none;
+  background:currentColor;vertical-align:-.16em;
+  -webkit-mask:url(../assets/images/palm.svg) center/contain no-repeat;
+          mask:url(../assets/images/palm.svg) center/contain no-repeat;
+}
+.palm.lg{width:1.5em;height:2.25em}
+footer{position:relative;overflow:hidden}
+.foot-palm{
+  position:absolute;right:clamp(-24px,-1vw,0px);bottom:-6%;
+  width:clamp(150px,20vw,300px);aspect-ratio:64/96;
+  background:currentColor;opacity:.07;pointer-events:none;z-index:0;
+  -webkit-mask:url(../assets/images/palm.svg) center/contain no-repeat;
+          mask:url(../assets/images/palm.svg) center/contain no-repeat;
+}
+footer .wrap-wide{position:relative;z-index:1}
+.hero-meta .palm{width:30px;height:45px;opacity:.95;margin-bottom:10px;
+  filter:drop-shadow(0 1px 6px rgba(0,0,0,.55))}
 @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.ticker-track{animation:none}}
 

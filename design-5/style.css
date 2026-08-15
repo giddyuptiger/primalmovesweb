@@ -194,8 +194,14 @@ section.flush{padding:0}
 
 /* --------------------------------------------------------- EXPERIENCE ---- */
 .exp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;background:var(--line)}
-.exp{background:var(--paper);padding:26px 22px 30px;display:flex;flex-direction:column;gap:10px;min-height:230px}
-.exp .n{font-family:var(--serif);font-size:34px;line-height:1;color:var(--clay)}
+.exp{background:var(--paper);padding:0 0 30px;display:flex;flex-direction:column;gap:10px;min-height:230px}
+.exp>*:not(.exp-shot){margin-left:22px;margin-right:22px}
+.exp-shot{width:100%;height:170px;object-fit:cover;margin-bottom:16px}
+.exp .n{font-family:var(--serif);font-size:34px;line-height:1;color:var(--clay);margin-top:4px}
+.exp:first-child .n,.exp .n{margin-top:0}
+/* tiles without a photo keep their original padding */
+.exp:not(:has(.exp-shot)){padding:26px 22px 30px}
+.exp:not(:has(.exp-shot))>*{margin-left:0;margin-right:0}
 .exp h3{font-size:17px;letter-spacing:.01em}
 .exp p{font-size:14px;color:var(--mid);line-height:1.5}
 @media (max-width:1000px){ .exp-grid{grid-template-columns:repeat(2,1fr)} }

@@ -31,7 +31,14 @@ window.PM_CONFIG = {
      Leave it blank and visitors get a clean "Book through Mindbody"
      card with a working button instead of an empty frame.            */
   mindbodySiteId: "5745965",             // verified: Primal Moves Venice Beach
-  healcodeWidgetId: "",                  // <-- paste the Healcode widget ID here
+  healcodeWidgetId: "",                  // <-- paste the Healcode SCHEDULE widget ID here
+
+  // OPTIONAL escape hatch. Renders Mindbody's own pricing widget inline —
+  // which works, but arrives in Mindbody's markup and fights this design
+  // system. Preferred approach is the hand-built tiers on the memberships
+  // page, each linking out to its Mindbody purchase URL. Blank = slot is
+  // removed entirely and only our own cards show.
+  healcodePricingWidgetId: "",
 
   /* --- EVENTS ------------------------------------------------------------ */
   // Events are native to this site (per the brief). These are only for
@@ -166,6 +173,32 @@ window.PM_CONFIG = {
         console.warn("[PM_CONFIG] Set `healcodeWidgetId` in config.js to render the live timetable inline. " +
                      "Mindbody's own schedule page cannot be iframed (X-Frame-Options: SAMEORIGIN).");
       }
+    });
+
+    // data-pm-pricing → Healcode pricing-options widget, or a real CTA.
+    document.querySelectorAll("[data-pm-pricing]").forEach(function (el) {
+      if (C.healcodePricingWidgetId) {
+        var w = document.createElement("healcode-widget");
+        w.setAttribute("data-type", "pricing_options");
+        w.setAttribute("data-widget-partner", "object");
+        w.setAttribute("data-widget-id", C.healcodePricingWidgetId);
+        w.setAttribute("data-widget-version", "0");
+        el.classList.add("schedule-widget");
+        el.innerHTML = "";
+        el.appendChild(w);
+        if (!document.getElementById("healcode-js")) {
+          var sc = document.createElement("script");
+          sc.id = "healcode-js";
+          sc.src = "https://widgets.mindbodyonline.com/javascripts/healcode.js";
+          sc.async = true;
+          document.body.appendChild(sc);
+        }
+        return;
+      }
+      // Not configured: leave the slot empty. The hand-built tiers below are
+      // the intended presentation — Mindbody's own widget markup does not
+      // match this design system.
+      el.remove();
     });
 
     // mobile nav

@@ -37,6 +37,12 @@ window.PM_CONFIG = {
   // Events are native to this site (per the brief). These are only for
   // registration links and the legacy Linktree redirect.
   lumaPageUrl: "https://luma.com/user/PrimalMoves",
+
+  // Live Luma Calendar embed (cal-CRQbJyS4jRRrfsN). Verified iframe-able:
+  // 200, no X-Frame-Options. Only *Calendars* have embed URLs — host
+  // profiles do not. Replace via Luma → Manage Calendar → Embed.
+  lumaEmbedUrl: "https://luma.com/embed/calendar/cal-CRQbJyS4jRRrfsN/events",
+
   linktreeUrl: "",
 
   /* --- CHERISH (cafe + tea lounge) --------------------------------------- */

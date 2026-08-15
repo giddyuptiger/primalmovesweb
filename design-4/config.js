@@ -13,13 +13,11 @@ window.PM_CONFIG = {
   // Currently our HOST PROFILE (33 events hosted). This works as a link.
   lumaPageUrl: "https://luma.com/user/PrimalMoves",
 
-  // Luma embed URL — ONLY works for a Luma *Calendar*, not a host profile.
-  // Luma has no embed for user profiles, so this stays blank until we create
-  // a Calendar: luma.com → Calendars → Create Calendar → move//host events
-  // there → Manage Calendar → Embed → copy the src="..." out of the snippet.
-  // It looks like: "https://lu.ma/embed/calendar/cal-XXXXXXXXXXXXXXX/events"
-  // Until then the Events page links out to lumaPageUrl instead.
-  lumaEmbedUrl: "",
+  // Live Luma Calendar embed (cal-CRQbJyS4jRRrfsN). Verified iframe-able:
+  // returns 200 with no X-Frame-Options. Only *Calendars* have embeds —
+  // host profiles do not — so if this ever needs replacing, get the new URL
+  // from Manage Calendar → Embed, not from a profile page.
+  lumaEmbedUrl: "https://luma.com/embed/calendar/cal-CRQbJyS4jRRrfsN/events",
 
 
   /* --- TOAST (CAFE) ------------------------------------------------------ */

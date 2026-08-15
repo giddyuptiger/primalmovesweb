@@ -168,6 +168,8 @@ header.site{background:var(--paper);position:sticky;top:0;z-index:60;border-bott
 
 /* ------------------------------------------------------------ SECTIONS --- */
 section{padding:clamp(56px,9vh,110px) 0}
+/* anchors clear the sticky header */
+[id]{scroll-margin-top:84px}
 section.pad-sm{padding:clamp(40px,6vh,72px) 0}
 section.ink{background:var(--ink);color:var(--paper)}
 section.ink .kicker,section.ink .lede{color:#A9A395}

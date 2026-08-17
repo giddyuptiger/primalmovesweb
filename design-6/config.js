@@ -226,11 +226,5 @@ window.PM_CONFIG = {
       });
     }
 
-    // duplicate the ticker track so the marquee loops seamlessly
-    var track = document.querySelector(".ticker-track");
-    if (track && !track.dataset.cloned) {
-      track.innerHTML += track.innerHTML;
-      track.dataset.cloned = "1";
-    }
   });
 })();

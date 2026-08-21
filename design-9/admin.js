@@ -21,7 +21,7 @@
   "use strict";
 
   var KEY_ON = "pm_studio_on", KEY_COLORS = "pm_studio_colors", KEY_PHOTOS = "pm_studio_photos",
-      KEY_FOCUS = "pm_studio_focus";
+      KEY_FOCUS = "pm_studio_focus", KEY_LOCAL = "pm_studio_local", KEY_WKEY = "pm_studio_wkey", KEY_COPY = "pm_studio_copy";
 
   function q(p) { return new URLSearchParams(location.search).get(p); }
   function ls(k, v) {
@@ -193,7 +193,7 @@
     "@media (max-width:900px){body.pm-studio-open header.site{right:0}}",
 
     /* swap / focus badges */
-    ".pm-swap-badge{position:fixed;z-index:99990;display:flex;gap:1px;border-radius:4px;overflow:hidden;",
+    ".pm-swap-badge{position:fixed;z-index:99992;display:flex;gap:1px;border-radius:4px;overflow:hidden;",
     "  box-shadow:0 3px 14px rgba(0,0,0,.45)}",
     ".pm-swap-badge button{background:#15171A;color:#fff;border:0;padding:8px 13px;cursor:pointer;",
     "  font:600 11px/1 'Helvetica Neue',Arial,sans-serif;letter-spacing:.08em}",
@@ -229,6 +229,39 @@
     "  padding:10px 16px;font:inherit;font-size:12.5px;cursor:pointer}",
     "#pm-picker .act:hover{border-color:#4A4F55;color:#E8E6E0}",
 
+    /* presets */
+    ".pm-swap-badge button.on{background:#8BA85F;color:#11140E}",
+    ".pm-editing{outline:1px dashed rgba(139,168,95,.75);outline-offset:4px;border-radius:2px;",
+    "  transition:outline-color .15s ease}",
+    ".pm-editing:hover{outline-color:#8BA85F;outline-style:solid}",
+    ".pm-editing:focus{outline:2px solid #8BA85F;outline-offset:4px;background:rgba(139,168,95,.10)}",
+    "body.pm-copy-mode .pm-swap-badge{opacity:.28}",
+    "#pm-studio label.tog{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:12.5px;color:#E8E6E0}",
+    "#pm-studio label.tog input{accent-color:#8BA85F;width:15px;height:15px}",
+    "#pm-studio .p-lab{display:block;font-size:12px;font-weight:500;color:#E8E6E0;margin-bottom:10px}",
+    "#pm-studio input[type=text]{width:100%;background:#1D2024;border:1px solid #2F3338;border-radius:4px;",
+    "  color:#E8E6E0;font:inherit;font-size:12.5px;padding:10px 12px;margin-bottom:8px}",
+    "#pm-studio input[type=text]:focus{outline:0;border-color:#8BA85F}",
+    "#pm-studio input::placeholder{color:#5F646A}",
+    "#pm-studio .p-actions{display:grid;gap:7px;margin-top:4px}",
+    "#pm-studio .p-group{margin-bottom:24px}",
+    "#pm-studio .p-group h4{font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;",
+    "  color:#7E838A;margin-bottom:11px}",
+    "#pm-studio .preset{background:#1D2024;border:1px solid #26292E;border-radius:5px;",
+    "  padding:13px 14px;margin-bottom:9px}",
+    "#pm-studio .preset .p-top{display:flex;justify-content:space-between;align-items:center;gap:10px}",
+    "#pm-studio .preset b{font-size:12.5px;font-weight:600;color:#E8E6E0}",
+    "#pm-studio .p-apply{font-size:11px;font-weight:600;letter-spacing:.08em;color:#8BA85F;cursor:pointer;flex:none}",
+    "#pm-studio .p-apply:hover{color:#B4D18A;text-decoration:underline}",
+    "#pm-studio .p-note{font-size:11px;color:#7E838A;margin-top:5px;line-height:1.45}",
+    "#pm-studio .p-chips{display:flex;gap:3px;margin-top:10px}",
+    "#pm-studio .p-chips i{width:17px;height:17px;border-radius:3px;display:block;",
+    "  border:1px solid rgba(255,255,255,.12)}",
+    "#pm-studio .preset .p-del{margin-top:11px;background:none;border:0;color:#6E737A;cursor:pointer;",
+    "  font:inherit;font-size:11px;padding:0}",
+    "#pm-studio .preset .p-del:hover{color:#D08A72}",
+    "#pm-studio code{font:400 11px ui-monospace,Menlo,monospace !important;color:#B9C79E !important;",
+    "  background:#23262A;padding:1px 5px;border-radius:3px}",
     "@media (max-width:900px){#pm-studio{width:100%}#pm-studio.closed{transform:translateX(100%)}",
     "  body.pm-studio-open{padding-right:0}#pm-handle{right:0}}"
   ].join("\n");
@@ -239,7 +272,9 @@
   panel.innerHTML =
     '<header><div><h2>Design studio</h2><div class="sub">Preview only · nothing is saved</div></div></header>' +
     '<div id="pm-tabs"><button data-tab="color" class="on">Colour</button>' +
-    '<button data-tab="photo">Photos</button></div>' +
+    '<button data-tab="photo">Photos</button>' +
+    '<button data-tab="copy">Copy</button>' +
+    '<button data-tab="preset">Presets</button></div>' +
     '<div id="pm-body"></div>' +
     '<footer>' +
       '<button class="act" id="pm-copy">Copy config</button>' +
@@ -255,19 +290,39 @@
   document.body.appendChild(handle);
   document.body.classList.add("pm-studio-open");
   // set the offsets from JS too, so this can never depend on a cached stylesheet
-  var W = window.matchMedia("(max-width:900px)").matches ? 0 : 344;
-  document.documentElement.style.setProperty("--pm-studio-w", W + "px");
-  document.body.style.paddingRight = W + "px";
   var siteHdr = document.querySelector("header.site");
-  if (siteHdr) siteHdr.style.right = W + "px";
+  function setInset(w) {
+    document.documentElement.style.setProperty("--pm-studio-w", w + "px");
+    document.body.style.setProperty("padding-right", w + "px", "important");
+    if (!siteHdr) return;
+    // belt and braces: `right` alone depends on the header still being
+    // position:fixed with left:0. Setting width as well survives a cached
+    // stylesheet, a sticky header, or anything else the cascade throws.
+    if (w) {
+      siteHdr.style.setProperty("right", w + "px", "important");
+      siteHdr.style.setProperty("width", "calc(100% - " + w + "px)", "important");
+      siteHdr.style.setProperty("max-width", "calc(100% - " + w + "px)", "important");
+    } else {
+      ["right", "width", "max-width"].forEach(function (k) { siteHdr.style.removeProperty(k); });
+    }
+  }
+  var W = window.matchMedia("(max-width:900px)").matches ? 0 : 344;
+  setInset(W);
+  window.addEventListener("resize", function () {
+    if (!panel.classList.contains("closed")) {
+      setInset(window.matchMedia("(max-width:900px)").matches ? 0 : 344);
+    }
+  });
 
   handle.addEventListener("click", function () {
     var closed = panel.classList.toggle("closed");
     document.body.classList.toggle("pm-studio-open", !closed);
-    var w = closed ? 0 : (window.matchMedia("(max-width:900px)").matches ? 0 : 344);
-    document.body.style.paddingRight = w + "px";
-    if (siteHdr) siteHdr.style.right = w + "px";
-    [].slice.call(document.querySelectorAll(".pm-swap-badge")).forEach(function (x) { if (x._place) x._place(); });
+    setInset(closed ? 0 : (window.matchMedia("(max-width:900px)").matches ? 0 : 344));
+    if (closed) { hideBadges(); closeFocus(); if (copyOn) stopCopy(); }
+    else {
+      showBadges();
+      [].slice.call(document.querySelectorAll(".pm-swap-badge")).forEach(function (x) { if (x._place) x._place(); });
+    }
   });
 
   /* ------------------------------------------------------------ colour ---- */
@@ -365,8 +420,12 @@
       b.addEventListener("click", function (ev) {
         var t = ev.target.closest("button"); if (!t) return;
         ev.preventDefault(); ev.stopPropagation();
-        if (t.dataset.a === "swap") openPicker(el); else focusMode(el);
+        if (t.dataset.a === "swap") { openPicker(el); return; }
+        // Focus is a toggle — pressing it again leaves focus mode
+        if (activeFocus === el) { closeFocus(); return; }
+        focusMode(el);
       });
+      b._el = el;
       document.body.appendChild(b);
       var place = function () {
         var r = el.getBoundingClientRect();
@@ -387,16 +446,30 @@
     });
   }
 
+  var activeFocus = null, activeFocusLayer = null;
+  function closeFocus() {
+    if (activeFocusLayer) activeFocusLayer.remove();
+    activeFocusLayer = null; activeFocus = null;
+    [].slice.call(document.querySelectorAll('.pm-swap-badge button[data-a="focus"]'))
+      .forEach(function (x) { x.classList.remove("on"); x.textContent = "Focus"; });
+  }
+
   function focusMode(img) {
+    closeFocus();
     var slot = img.getAttribute("data-pm-photo");
     var r = img.getBoundingClientRect();
     var lay = document.createElement("div");
     lay.className = "pm-focus";
     lay.style.cssText = "position:fixed;top:" + r.top + "px;left:" + r.left + "px;width:" +
-      r.width + "px;height:" + r.height + "px;z-index:99997;cursor:crosshair;";
+      r.width + "px;height:" + r.height + "px;z-index:99988;cursor:crosshair;";
     lay.innerHTML = '<div class="pm-focus-dot"></div>' +
       '<div class="pm-focus-hint">Click the part that should stay in frame &middot; <b>Esc</b> to finish</div>';
     document.body.appendChild(lay);
+    activeFocus = img; activeFocusLayer = lay;
+    [].slice.call(document.querySelectorAll(".pm-swap-badge")).forEach(function (bd) {
+      var fb = bd.querySelector('button[data-a="focus"]');
+      if (fb && bd._el === img) { fb.classList.add("on"); fb.textContent = "Done"; }
+    });
     var dot = lay.querySelector(".pm-focus-dot");
     var cur = (focus[slot] || "50% 50%").split(" ");
     dot.style.left = cur[0]; dot.style.top = cur[1];
@@ -412,15 +485,12 @@
       renderPhoto();
     }
     lay.addEventListener("click", set);
-    function done(e) {
-      if (e && e.key && e.key !== "Escape") return;
-      lay.remove();
-      document.removeEventListener("keydown", done);
+    function esc(e) {
+      if (e.key !== "Escape") return;
+      document.removeEventListener("keydown", esc);
+      closeFocus();
     }
-    document.addEventListener("keydown", done);
-    setTimeout(function () { document.addEventListener("click", function once(e) {
-      if (!lay.contains(e.target)) { done(); document.removeEventListener("click", once); }
-    }); }, 10);
+    document.addEventListener("keydown", esc);
   }
 
   function openPicker(img) {
@@ -466,6 +536,280 @@
     });
   }
 
+  /* --------------------------------------------------------------- copy --- */
+  /* Text is edited in place with contenteditable, keyed by data-pm-copy.
+     Same deal as everything else here: it previews live and exports a file.
+     It does not write to the site.                                        */
+
+  var copyEdits = {};
+  try { copyEdits = JSON.parse(ls(KEY_COPY) || "{}"); } catch (e) { copyEdits = {}; }
+  var copyOn = false, originals = {};
+
+  function applyCopy() {
+    Object.keys(copyEdits).forEach(function (k) {
+      var el = document.querySelector('[data-pm-copy="' + k + '"]');
+      if (el && el.innerHTML !== copyEdits[k]) el.innerHTML = copyEdits[k];
+    });
+  }
+
+  function copyTargets() {
+    return [].slice.call(document.querySelectorAll("[data-pm-copy]")).filter(function (el) {
+      return !el.closest("#pm-studio") && !el.closest("#pm-picker") && (el.textContent || "").trim();
+    });
+  }
+
+  function startCopy() {
+    copyOn = true;
+    copyTargets().forEach(function (el) {
+      var k = el.getAttribute("data-pm-copy");
+      if (!(k in originals)) originals[k] = el.innerHTML;
+      el.setAttribute("contenteditable", "true");
+      el.setAttribute("spellcheck", "true");
+      el.classList.add("pm-editing");
+      el.addEventListener("input", onEdit);
+      el.addEventListener("keydown", onKey);
+      el.addEventListener("blur", onBlur);
+    });
+    document.body.classList.add("pm-copy-mode");
+  }
+
+  function stopCopy() {
+    copyOn = false;
+    copyTargets().forEach(function (el) {
+      el.removeAttribute("contenteditable");
+      el.classList.remove("pm-editing");
+      el.removeEventListener("input", onEdit);
+      el.removeEventListener("keydown", onKey);
+      el.removeEventListener("blur", onBlur);
+    });
+    document.body.classList.remove("pm-copy-mode");
+  }
+
+  function onKey(e) {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); e.target.blur(); }
+    if (e.key === "Escape") {
+      var k = e.target.getAttribute("data-pm-copy");
+      if (k in originals) e.target.innerHTML = originals[k];
+      delete copyEdits[k];
+      ls(KEY_COPY, JSON.stringify(copyEdits));
+      e.target.blur(); renderCopy();
+    }
+  }
+
+  // the list of changes refreshes when you leave a field, not on every
+  // keystroke — re-rendering mid-type would steal the caret
+  function onBlur() { if (copyOn) renderCopy(); }
+
+  function onEdit(e) {
+    var el = e.target, k = el.getAttribute("data-pm-copy");
+    if (el.innerHTML === originals[k]) delete copyEdits[k];
+    else copyEdits[k] = el.innerHTML;
+    ls(KEY_COPY, JSON.stringify(copyEdits));
+    var n = document.getElementById("pm-copy-count");
+    if (n) n.textContent = Object.keys(copyEdits).length;
+  }
+
+  function renderCopy() {
+    var body = document.getElementById("pm-body");
+    var keys = Object.keys(copyEdits);
+    body.innerHTML =
+      '<div class="field">' +
+        '<label class="tog"><input type="checkbox" id="pm-copy-on"' + (copyOn ? " checked" : "") +
+        "> Edit text on the page</label>" +
+        '<p class="pm-note" style="margin-top:9px">Every heading and paragraph becomes editable. ' +
+        "Click into one and type. <b>Enter</b> finishes, <b>Esc</b> puts the original back.</p>" +
+      "</div>" +
+      '<div class="p-group"><h4>Changed &middot; <span id="pm-copy-count">' + keys.length + "</span></h4>" +
+      (keys.length ? keys.map(function (k) {
+        var el = document.querySelector('[data-pm-copy="' + k + '"]');
+        var now = el ? (el.textContent || "").trim() : copyEdits[k];
+        return '<div class="preset" data-k="' + k + '">' +
+          '<div class="p-top"><b>' + k + "</b><span class=\"p-apply p-revert\">Revert</span></div>" +
+          '<div class="p-note">' + now.slice(0, 120) + (now.length > 120 ? "\u2026" : "") + "</div></div>";
+      }).join("") : '<p class="pm-note">Nothing changed yet.</p>') + "</div>" +
+      '<div class="p-actions"><button class="act" id="pm-copy-export">Copy copy.json</button>' +
+      '<button class="act ghost" id="pm-copy-clear">Revert everything</button></div>' +
+      '<p class="pm-note" style="margin-top:10px">Paste the result into <code>design-9/copy.json</code>, ' +
+      "commit and push, and everyone sees the new wording.</p>";
+
+    document.getElementById("pm-copy-on").checked = copyOn;
+    document.getElementById("pm-copy-on").addEventListener("change", function (e) {
+      e.target.checked ? startCopy() : stopCopy();
+    });
+    body.querySelectorAll(".p-revert").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var k = btn.closest(".preset").getAttribute("data-k");
+        var el = document.querySelector('[data-pm-copy="' + k + '"]');
+        if (el && k in originals) el.innerHTML = originals[k];
+        delete copyEdits[k]; ls(KEY_COPY, JSON.stringify(copyEdits)); renderCopy();
+      });
+    });
+    document.getElementById("pm-copy-clear").addEventListener("click", function () {
+      Object.keys(copyEdits).forEach(function (k) {
+        var el = document.querySelector('[data-pm-copy="' + k + '"]');
+        if (el && k in originals) el.innerHTML = originals[k];
+      });
+      copyEdits = {}; lsDel(KEY_COPY); renderCopy();
+    });
+    document.getElementById("pm-copy-export").addEventListener("click", function () {
+      var out = JSON.stringify({ copy: copyEdits }, null, 2);
+      var btn = document.getElementById("pm-copy-export");
+      navigator.clipboard ? navigator.clipboard.writeText(out).then(function () {
+        btn.textContent = "Copied \u2713";
+        setTimeout(function () { btn.textContent = "Copy copy.json"; }, 1500);
+      }) : prompt("Copy:", out);
+    });
+  }
+
+  /* ------------------------------------------------------------ presets --- */
+  /* Three places a preset can live:
+       shared   — the Worker, if PM_CONFIG.presetsApi is set. Everyone sees it.
+       repo     — presets.json, committed. Everyone sees it, saving needs a push.
+       mine     — this browser only, for something half-finished.             */
+
+  var API = (window.PM_CONFIG || {}).presetsApi || "";
+  var remote = null, repo = null;
+
+  function localPresets() {
+    try { return JSON.parse(ls(KEY_LOCAL) || "[]"); } catch (e) { return []; }
+  }
+  function saveLocal(list) { ls(KEY_LOCAL, JSON.stringify(list)); }
+
+  function presetsUrl() {
+    var css = document.querySelector('link[rel="stylesheet"][href*="style.css"]');
+    return css ? css.href.replace(/style\.css.*$/, "presets.json") : "presets.json";
+  }
+
+  function loadPresets() {
+    var jobs = [
+      fetch(presetsUrl(), { cache: "no-cache" }).then(function (r) { return r.json(); })
+        .then(function (d) { repo = d.presets || []; }).catch(function () { repo = []; })
+    ];
+    if (API) {
+      jobs.push(fetch(API, { cache: "no-store" }).then(function (r) { return r.json(); })
+        .then(function (d) { remote = d.presets || []; }).catch(function () { remote = null; }));
+    }
+    return Promise.all(jobs);
+  }
+
+  function current() {
+    return { colors: colors, photos: photos, focus: focus };
+  }
+
+  function applyPreset(pr) {
+    colors = Object.assign({}, pr.colors || {});
+    photos = Object.assign({}, pr.photos || {});
+    focus  = Object.assign({}, pr.focus  || {});
+    ls(KEY_COLORS, JSON.stringify(colors));
+    ls(KEY_PHOTOS, JSON.stringify(photos));
+    ls(KEY_FOCUS,  JSON.stringify(focus));
+    // clear any previously-set vars that this preset doesn't define
+    ROLES.forEach(function (r) {
+      if (!colors[r.v]) document.documentElement.style.removeProperty(r.v);
+    });
+    applyColors(); applyPhotos(); applyFocus();
+    renderPresets();
+  }
+
+  function writeKey() {
+    var k = ls(KEY_WKEY);
+    if (k) return k;
+    k = prompt("Write key for shared presets\n(ask Jeremy — it guards saving, not viewing)");
+    if (k) ls(KEY_WKEY, k);
+    return k;
+  }
+
+  function renderPresets() {
+    var body = document.getElementById("pm-body");
+    var mine = localPresets();
+    var shared = remote !== null ? remote : repo || [];
+    var sharedLabel = remote !== null ? "Shared &middot; live" : "Shared &middot; from the repo";
+
+    function card(pr, where) {
+      return '<div class="preset" data-name="' + pr.name.replace(/"/g, "&quot;") + '" data-where="' + where + '">' +
+        '<div class="p-top"><b>' + pr.name + "</b>" +
+        '<span class="p-apply">Apply</span></div>' +
+        (pr.note ? '<div class="p-note">' + pr.note + "</div>" : "") +
+        '<div class="p-chips">' + ROLES.slice(0, 9).map(function (r) {
+          var c = (pr.colors || {})[r.v];
+          return c ? '<i style="background:' + c + '"></i>' : "";
+        }).join("") + "</div>" +
+        (where !== "repo" ? '<button class="p-del">Delete</button>' : "") +
+        "</div>";
+    }
+
+    body.innerHTML =
+      '<div class="field">' +
+        '<label class="p-lab">Save what\u2019s on screen</label>' +
+        '<input id="pm-pname" type="text" placeholder="Name it \u2014 e.g. Warmer, clay accent" maxlength="60">' +
+        '<input id="pm-pnote" type="text" placeholder="One line about it (optional)" maxlength="200">' +
+        '<div class="p-actions">' +
+          '<button class="act" id="pm-psave">' + (API ? "Save for everyone" : "Save to this browser") + "</button>" +
+          (API ? "" : '<button class="act ghost" id="pm-pcopy">Copy presets.json</button>') +
+        "</div>" +
+        (API ? "" : '<p class="pm-note" style="margin-top:10px">No shared store connected yet, so a save stays in your browser. ' +
+          "Use <b>Copy presets.json</b> and paste it into <code>design-9/presets.json</code> to share it with everyone. " +
+          "Wire up the Worker in <code>tools/presets-worker.js</code> and saves become instant for the whole team.</p>") +
+      "</div>" +
+      '<div class="p-group"><h4>' + sharedLabel + "</h4>" +
+        (shared.length ? shared.map(function (p2) { return card(p2, remote !== null ? "remote" : "repo"); }).join("")
+                       : '<p class="pm-note">Nothing saved yet.</p>') +
+      "</div>" +
+      (mine.length ? '<div class="p-group"><h4>Only in this browser</h4>' +
+        mine.map(function (p2) { return card(p2, "local"); }).join("") + "</div>" : "");
+
+    body.querySelectorAll(".preset").forEach(function (el) {
+      var name = el.getAttribute("data-name"), where = el.getAttribute("data-where");
+      var list = where === "local" ? mine : shared;
+      var pr = list.filter(function (x) { return x.name === name; })[0];
+      el.querySelector(".p-apply").addEventListener("click", function () { if (pr) applyPreset(pr); });
+      var del = el.querySelector(".p-del");
+      if (del) del.addEventListener("click", function () {
+        if (where === "local") { saveLocal(mine.filter(function (x) { return x.name !== name; })); renderPresets(); return; }
+        var k = writeKey(); if (!k) return;
+        fetch(API + "?name=" + encodeURIComponent(name), { method: "DELETE", headers: { "X-Write-Key": k } })
+          .then(function (r) { return r.json(); })
+          .then(function (d) { if (d.error) { lsDel(KEY_WKEY); alert(d.error); return; } remote = d.presets; renderPresets(); })
+          .catch(function () { alert("Could not reach the preset store."); });
+      });
+    });
+
+    var saveBtn = document.getElementById("pm-psave");
+    if (saveBtn) saveBtn.addEventListener("click", function () {
+      var name = (document.getElementById("pm-pname").value || "").trim();
+      if (!name) { document.getElementById("pm-pname").focus(); return; }
+      var note = (document.getElementById("pm-pnote").value || "").trim();
+      var cur = current();
+      var pr = { name: name, note: note, colors: cur.colors, focus: cur.focus,
+                 photos: {} };
+      Object.keys(cur.photos).forEach(function (k) {
+        if (String(cur.photos[k]).indexOf("data:") !== 0) pr.photos[k] = cur.photos[k];
+      });
+      if (!API) {
+        var mineNow = localPresets().filter(function (x) { return x.name !== name; });
+        mineNow.push(pr); saveLocal(mineNow); renderPresets(); return;
+      }
+      var k = writeKey(); if (!k) return;
+      fetch(API, { method: "POST", headers: { "Content-Type": "application/json", "X-Write-Key": k },
+                   body: JSON.stringify(pr) })
+        .then(function (r) { return r.json(); })
+        .then(function (d) { if (d.error) { lsDel(KEY_WKEY); alert(d.error); return; } remote = d.presets; renderPresets(); })
+        .catch(function () { alert("Could not reach the preset store."); });
+    });
+
+    var copyBtn = document.getElementById("pm-pcopy");
+    if (copyBtn) copyBtn.addEventListener("click", function () {
+      var all = (repo || []).concat(localPresets());
+      var seen = {}, dedup = [];
+      all.reverse().forEach(function (x) { if (!seen[x.name]) { seen[x.name] = 1; dedup.unshift(x); } });
+      var out = JSON.stringify({ presets: dedup }, null, 2);
+      navigator.clipboard ? navigator.clipboard.writeText(out).then(function () {
+        copyBtn.textContent = "Copied \u2713";
+        setTimeout(function () { copyBtn.textContent = "Copy presets.json"; }, 1500);
+      }) : prompt("Copy:", out);
+    });
+  }
+
   /* ---------------------------------------------------------------- wire -- */
 
   document.getElementById("pm-tabs").addEventListener("click", function (e) {
@@ -473,7 +817,10 @@
     if (!b) return;
     [].slice.call(this.querySelectorAll("button")).forEach(function (x) { x.classList.remove("on"); });
     b.classList.add("on");
-    b.dataset.tab === "color" ? renderColor() : renderPhoto();
+    if (b.dataset.tab === "color") renderColor();
+    else if (b.dataset.tab === "photo") renderPhoto();
+    else if (b.dataset.tab === "copy") renderCopy();
+    else renderPresets();
   });
 
   document.getElementById("pm-body").addEventListener("click", function (e) {
@@ -514,20 +861,21 @@
   });
 
   document.getElementById("pm-reset").addEventListener("click", function () {
-    colors = {}; photos = {}; focus = {};
-    lsDel(KEY_COLORS); lsDel(KEY_PHOTOS); lsDel(KEY_FOCUS);
+    colors = {}; photos = {}; focus = {}; copyEdits = {};
+    lsDel(KEY_COLORS); lsDel(KEY_PHOTOS); lsDel(KEY_FOCUS); lsDel(KEY_COPY);
     location.reload();
   });
 
   document.getElementById("pm-exit").addEventListener("click", function () {
-    lsDel(KEY_ON); lsDel(KEY_COLORS); lsDel(KEY_PHOTOS); lsDel(KEY_FOCUS);
+    lsDel(KEY_ON); lsDel(KEY_COLORS); lsDel(KEY_PHOTOS); lsDel(KEY_FOCUS); lsDel(KEY_COPY);
     location.href = location.pathname;
   });
 
-  var applyAll = function () { applyPhotos(); applyFocus(); };
+  var applyAll = function () { applyPhotos(); applyFocus(); setTimeout(applyCopy, 260); };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", applyAll);
   else setTimeout(applyAll, 60);
   renderColor();
+  loadPresets();
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", showBadges);
   else setTimeout(showBadges, 120);
 })();

@@ -36,7 +36,30 @@ the one that fixes badly-cropped heroes: click the part of the picture that
 should stay in frame and it sets `object-position` for that slot, so the crop
 holds its subject as the frame changes shape.
 
+**Presets** saves the whole look — colours, photos and focal points — under a
+name, so several directions can sit side by side and anyone can flip between
+them. Where they live depends on one config key:
+
+| `presetsApi` | Where a preset goes | Who sees it |
+|---|---|---|
+| blank (today) | `design-9/presets.json`, via **Copy presets.json** → paste → push | everyone, after a push |
+| a Worker URL | the Cloudflare Worker in `tools/presets-worker.js` | everyone, immediately |
+
+Two are committed to start: *Locked — green accent* and *Warmer — clay
+accent*. A save with no Worker connected stays in that browser until it's
+copied into `presets.json`.
+
+**Copy** makes every heading and paragraph on the page editable in place —
+click in, type, Enter to finish, Esc to put the original back. Changes are
+keyed by `data-pm-copy`, which the build stamps onto each text element, and
+export to `design-9/copy.json`. Anything not in that file uses whatever the
+page already says, so the markup stays the source of truth.
+
 **Copy config** hands you the exact CSS, `photos` and `photoFocus` blocks.
+
+None of it writes to the site. It's Squarespace's editing feel with git as the
+save button — which is the right trade here: nobody can break the live site by
+experimenting, and every change still arrives as a reviewable commit.
 
 It saves nothing to the site — a static page has no server to write to. Every
 change lives in that person's browser until the copied config is pasted into

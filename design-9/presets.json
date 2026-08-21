@@ -1,0 +1,39 @@
+{
+  "_comment": "Shared design presets. Everyone who loads the site sees these. Save one in /admin (Presets tab), hit 'Copy presets.json', paste the result here, commit and push. If PM_CONFIG.presetsApi is set, the studio reads and writes live presets from that Worker instead and this file becomes the fallback.",
+  "presets": [
+    {
+      "name": "Locked — green accent",
+      "note": "The current build. Cream ground, navy copy, forest accent.",
+      "colors": {
+        "--paper": "#EDE8D2",
+        "--paper-2": "#DCCFB9",
+        "--deep": "#303F16",
+        "--ink": "#132238",
+        "--mid": "#57534A",
+        "--sage": "#303F16",
+        "--sage-btn": "#303F16",
+        "--sage-txt": "#4C5B2A",
+        "--clay": "#AE411C"
+      },
+      "photos": {},
+      "focus": {}
+    },
+    {
+      "name": "Warmer — clay accent",
+      "note": "Same grounds, burnt red carrying the accent instead of green.",
+      "colors": {
+        "--paper": "#EDE8D2",
+        "--paper-2": "#DCCFB9",
+        "--deep": "#453A1D",
+        "--ink": "#132238",
+        "--mid": "#57534A",
+        "--sage": "#AE411C",
+        "--sage-btn": "#AE411C",
+        "--sage-txt": "#8F5C3F",
+        "--clay": "#303F16"
+      },
+      "photos": {},
+      "focus": {}
+    }
+  ]
+}

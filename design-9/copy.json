@@ -1,0 +1,4 @@
+{
+  "_comment": "Copy overrides. Keys come from data-pm-copy in the markup. Edit text in /admin (Copy tab), hit 'Copy copy.json', paste the result here, commit, push. Anything not listed here uses whatever the page already says.",
+  "copy": {}
+}

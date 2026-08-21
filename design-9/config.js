@@ -70,6 +70,20 @@ window.PM_CONFIG = {
      Slot names follow Miki's `page - section - slot` convention. The full
      list, with what each shot is doing, is in assets/photos/PHOTOS.md.
      Anything not listed here keeps whatever the page already has.        */
+  /* --- COPY OVERRIDES -----------------------------------------------------
+     Text edited in the /admin studio lands in design-9/copy.json. Anything
+     not listed there uses whatever the page already says, so the file stays
+     small and the markup remains the source of truth.                     */
+  copyUrl: "copy.json",
+
+  /* --- SHARED DESIGN PRESETS ---------------------------------------------
+     Blank  = presets come from design-9/presets.json (committed to the repo,
+              so everyone sees the same list; saving means a push).
+     A URL  = the studio reads and writes live presets from that Cloudflare
+              Worker, so a save is visible to everyone immediately.
+              See tools/presets-worker.js for the Worker and how to deploy it. */
+  presetsApi: "",
+
   // Focal point per slot — where the crop should hold as the frame changes
   // shape. "50% 50%" is the centre; "50% 30%" pulls the crop upward, which is
   // usually what a photo of a face wants. Set these in the /admin studio.
@@ -218,8 +232,17 @@ window.PM_CONFIG = {
       }
     });
 
-    // data-pm-schedule → Healcode widget if configured, otherwise a real
-    // call-to-action. Never an iframe: Mindbody blocks framing outright.
+    // data-pm-schedule → the live timetable.
+    //
+    // Two Mindbody URLs, easy to confuse:
+    //   clients.mindbodyonline.com   — their public schedule page. Sends
+    //     X-Frame-Options: SAMEORIGIN, so it can NEVER be framed. Link only.
+    //   widgets.mindbodyonline.com   — the Branded Web (Healcode) widget.
+    //     Built to be framed, auto-resizes, booking works inside it.
+    //
+    // So: paste the widget ID below and the real schedule appears here.
+    // It arrives as a cross-origin iframe, which means we cannot restyle it
+    // from this side — theme it inside Mindbody (Branded Web → Settings).
     document.querySelectorAll("[data-pm-schedule]").forEach(function (el) {
       if (C.healcodeWidgetId) {
         var w = document.createElement("healcode-widget");
@@ -246,7 +269,8 @@ window.PM_CONFIG = {
         "</div>" +
         "<p>" + (el.getAttribute("data-pm-schedule-hint") || "") + "</p>" +
         '<div class="cta-row" style="justify-content:center;margin-top:24px">' +
-          '<a class="btn lg" href="' + C.mindbodyScheduleUrl + '" target="_blank" rel="noopener">See this week&rsquo;s schedule ↗</a>' +
+          '<a class="btn sage lg" href="' + C.mindbodyScheduleUrl + '" target="_blank" rel="noopener">See this week&rsquo;s schedule &#8599;</a>' +
+          '<a class="btn" data-pm-link="appStoreUrl" target="_blank" rel="noopener">Get the app</a>' +
         "</div>";
       if (window.console && console.warn) {
         console.warn("[PM_CONFIG] Set `healcodeWidgetId` in config.js to render the live timetable inline. " +
@@ -355,6 +379,22 @@ window.PM_CONFIG = {
       };
       probe.src = next;
     });
+
+    // data-pm-copy → text overrides from copy.json
+    if (C.copyUrl) {
+      var cssHref = (document.querySelector('link[rel="stylesheet"][href*="style.css"]') || {}).href || "";
+      var copyHref = cssHref ? cssHref.replace(/style\.css.*$/, C.copyUrl) : C.copyUrl;
+      fetch(copyHref, { cache: "no-cache" })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) {
+          var map = (d && d.copy) || {};
+          Object.keys(map).forEach(function (k) {
+            var el = document.querySelector('[data-pm-copy="' + k + '"]');
+            if (el) el.innerHTML = map[k];
+          });
+        })
+        .catch(function () { /* no overrides file — the page stands as written */ });
+    }
 
     // data-pm-photo-focus / config.photoFocus → object-position per slot
     document.querySelectorAll("[data-pm-photo]").forEach(function (el) {

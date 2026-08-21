@@ -519,3 +519,61 @@ section.dark .pull{color:var(--paper)}
 .trial-cta h3{color:var(--paper)}
 .trial-cta p{color:#C8C3B7;font-size:15.5px;max-width:44em}
 @media (max-width:820px){ .trial-cta{grid-template-columns:1fr} .trial-cta .btn{justify-self:start} }
+
+/* ==========================================================================
+   CONTRAST FIXES
+   Light-on-tan: cards that carry their own pale background sit inside
+   section.ink, which sets a light inherited colour. Anything on a pale
+   panel must restate a dark colour rather than inherit.
+   ========================================================================== */
+.ev-item,
+section.ink .ev-item{color:var(--ink)}
+.ev-item .ev-what,
+section.ink .ev-item .ev-what{color:var(--ink)}
+.ev-item .ev-where,
+section.ink .ev-item .ev-where{color:var(--mid)}
+.ev-item .ev-when,
+section.ink .ev-item .ev-when{color:var(--clay)}
+section.ink .embed-placeholder,
+section.ink .plan,
+section.ink .faq{color:var(--ink)}
+
+/* ==========================================================================
+   CONTRAST ROUND 5 — the last stragglers, all four designs
+   ========================================================================== */
+.embed-note{color:var(--mid)}
+.pending{color:var(--mid)}
+.photo-slot span,
+.person .portrait.empty span,
+.shot.empty span,
+.collage .empty span{color:var(--mid)}
+section.ink .photo-slot span,
+section.ink .person .portrait.empty span,
+section.ink .shot.empty span,
+section.ink .collage .empty span{color:#BAB6AA}
+.voice .theme{color:var(--mid)}
+.ev-item .ev-when{color:var(--mid)}
+/* .ghost-dark on any pale ground */
+.light .btn.ghost-dark,
+.alt .btn.ghost-dark,
+section:not(.ink):not(.statement) .btn.ghost-dark{color:var(--ink);border-color:var(--ink)}
+section:not(.ink):not(.statement) .btn.ghost-dark:hover{background:var(--ink);color:#fff}
+
+/* ==========================================================================
+   CONTRAST ROUND 6 — dark CTA bands and the Cherish scope
+   ========================================================================== */
+.trial-cta{color:#D2CEC2}
+.trial-cta .kicker{color:#AEB4A0}
+.trial-cta p,.trial-cta .lede{color:#C7C3B7}
+.pending{color:#5E5648;background:rgba(0,0,0,.06)}
+.cherish-scope .pending{color:#5C4326}
+.cherish-scope .note,.cherish-scope .lede,.cherish-scope .de,
+.cherish-scope p{color:var(--mid)}
+.cherish-scope .phero-inner .kicker,
+.cherish-scope .phero-inner p{color:#F0E2CC}
+
+/* ROUND 7 — Cherish scope: labels and kickers need the darker mid tone */
+.cherish-scope .kicker{color:var(--mid)}
+.cherish-scope .collage .empty span,
+.cherish-scope .shot.empty span{color:#5C4326}
+.cherish-scope .phero-inner .kicker{color:#F0E2CC}

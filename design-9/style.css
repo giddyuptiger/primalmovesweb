@@ -1,0 +1,759 @@
+/* ==========================================================================
+   PRIMAL MOVES VENICE — DESIGN 7
+   Visual territory: QUIET WELLNESS  (after mossvenice.com)
+   calm · wabi-sabi · unhurried · warm · plainly spoken
+
+   The deliberate inverse of design-6. Where that shouted in bold uppercase
+   with chartreuse, this speaks in lowercase light type on warm cream, with
+   sage and clay, and separates things with air rather than rules.
+
+   Type      Helvetica Neue. HYBRID CASE, per the working session: the hero
+             headline, nav, buttons and kickers are UPPERCASE to match the
+             parent brand; section headings stay lowercase so the page keeps
+             design-8's warmth. To go fully uppercase, see the CASE block at
+             the foot of this file — it is four rules.
+             Inter is the webfont fallback for non-Apple devices.
+             Caveat for handwritten pointers only.
+   Colour    warm cream, soft charcoal, sage, clay — no pure black, no neon
+   Devices   generous margins, full-bleed photography, soft corners,
+             text-link CTAs, one idea per screen
+   ========================================================================== */
+
+:root{
+  --ink:#26251F;          /* soft charcoal, never #000 */
+  --deep:#2E332B;         /* deep forest, for dark sections */
+  --paper:#F5F1EA;        /* warm cream — the default ground */
+  --paper-2:#EDE7DC;      /* alternate section */
+  --paper-3:#E4DCCD;      /* image placeholder / third tone */
+  --mid:#5A5449;          /* body copy */
+  --soft:#6A6355;         /* captions, meta */
+  --line:#DDD5C6;         /* hairlines, used sparingly */
+  --sage:#7C8471;
+  --sage-btn:#5F6854;   /* darker fill so white button text clears 4.5:1 */         /* primary accent */
+  --sage-dk:#616950;
+  --clay:#8F5C3F;         /* secondary accent */
+  --cream:#FBF8F3;
+
+  /* Cherish, warmer still */
+  --mustard:#C08A2E;
+  --oxblood:#7A3A34;
+  --cherish-paper:#F3E9D9;
+
+  --sans:"Helvetica Neue",Helvetica,"Inter",Arial,sans-serif;
+  --serif:"Helvetica Neue",Helvetica,"Inter",Arial,sans-serif;
+  --hand:"Caveat","Bradley Hand",cursive;
+
+  --maxw:1140px;          /* narrower than design-6 — more margin */
+  --gut:clamp(22px,6vw,84px);
+  --radius:3px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{overflow-x:hidden;max-width:100%;scroll-behavior:smooth}
+body{
+  overflow-x:hidden;max-width:100%;
+  font-family:var(--sans);font-weight:400;font-size:17px;line-height:1.75;
+  color:var(--mid);background:var(--paper);
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gut);width:100%}
+.wrap-wide{max-width:1440px;margin:0 auto;padding:0 var(--gut);width:100%}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+[id]{scroll-margin-top:90px}
+
+/* --------------------------------------------------------------- TYPE ---- */
+.display{
+  font-family:var(--sans);font-weight:300;color:var(--ink);
+  font-size:clamp(40px,7.4vw,96px);line-height:1.02;
+  letter-spacing:-.012em;text-transform:lowercase;
+}
+.display-sm{
+  font-family:var(--sans);font-weight:300;color:var(--ink);
+  font-size:clamp(30px,4.6vw,58px);line-height:1.08;
+  letter-spacing:-.008em;text-transform:lowercase;
+}
+.ed,.ed-it{font-family:var(--sans);font-weight:300;text-transform:none;letter-spacing:-.01em}
+.ed-it{font-style:italic}
+h1,h2,h3,h4{font-weight:300;color:var(--ink);letter-spacing:-.006em;line-height:1.12}
+h2{font-size:clamp(26px,3.4vw,44px);text-transform:lowercase}
+h3{font-size:clamp(19px,1.9vw,24px);text-transform:lowercase;letter-spacing:0}
+p{max-width:36em}
+.lede{font-size:clamp(17px,1.4vw,20px);line-height:1.7;color:var(--mid);max-width:33em}
+.kicker{
+  font-size:11px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--soft);margin-bottom:22px;
+}
+/* no leading rule — air does the separating here */
+.aside{font-family:var(--sans);font-style:italic;font-size:clamp(16px,1.5vw,19px);
+  line-height:1.6;color:var(--clay);max-width:30em}
+.hand{font-family:var(--hand);font-size:clamp(19px,2.1vw,27px);line-height:1.2;color:var(--clay);transform:rotate(-2.2deg);display:inline-block}
+
+/* --------------------------------------------------------------- NAV ----- */
+header.site{background:var(--paper);position:sticky;top:0;z-index:60}
+.nav-inner{display:flex;align-items:center;gap:28px;padding:26px var(--gut);
+  max-width:1440px;margin:0 auto}
+.brand{font-weight:400;font-size:14px;letter-spacing:.14em;text-transform:lowercase;
+  color:var(--ink);flex:none;line-height:1.4}
+.brand span{display:block;font-size:9.5px;letter-spacing:.3em;color:var(--soft)}
+.nav-links{display:flex;gap:30px;margin-left:auto;align-items:center}
+.nav-links a{font-size:13.5px;font-weight:400;letter-spacing:.04em;text-transform:lowercase;
+  color:var(--mid);padding-bottom:2px;border-bottom:1px solid transparent}
+.nav-links a:hover{color:var(--ink);border-bottom-color:var(--line)}
+.nav-links a.current{color:var(--ink);border-bottom-color:var(--sage)}
+.nav-cta{display:flex;gap:20px;flex:none;align-items:center}
+.nav-toggle{display:none;background:none;border:0;color:var(--ink);cursor:pointer;
+  font:inherit;font-size:13px;letter-spacing:.16em;text-transform:lowercase;
+  padding:10px 0;border-bottom:1px solid var(--line)}
+.mobile-menu{display:none;background:var(--paper)}
+.mobile-menu.open{display:block}
+.mobile-menu ul{list-style:none;padding:8px var(--gut) 34px}
+.mobile-menu li{border-bottom:1px solid var(--line)}
+.mobile-menu li:last-child{border-bottom:0}
+.mobile-menu a{display:block;padding:18px 0;font-size:22px;font-weight:300;
+  text-transform:lowercase;color:var(--ink);letter-spacing:-.01em}
+@media (max-width:1080px){
+  .nav-links{display:none}
+  .nav-toggle{display:inline-block;margin-left:auto}
+  .nav-cta{gap:14px}
+}
+@media (max-width:620px){
+  .nav-cta .btn.secondary{display:none}
+  .nav-inner{gap:14px;padding:18px var(--gut)}
+  .nav-cta .btn{padding:12px 18px;font-size:11.5px;letter-spacing:.05em}
+}
+@media (max-width:400px){
+  .nav-cta .btn{padding:11px 14px;font-size:10.5px}
+  .brand{font-size:13px;letter-spacing:.1em}
+}
+
+/* --------------------------------------------------------------- BTN -----
+   Moss uses quiet text links far more than filled buttons. One soft pill
+   for the primary conversion; everything else is an underline. */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  background:transparent;color:var(--ink);border:1px solid var(--line);
+  border-radius:100px;padding:15px 30px;
+  font-size:13px;font-weight:400;letter-spacing:.1em;text-transform:lowercase;
+  transition:background .25s ease,border-color .25s ease,color .25s ease;
+}
+.btn:hover{border-color:var(--ink)}
+.btn.sage{background:var(--sage);border-color:var(--sage);color:var(--cream)}
+.btn.sage:hover{background:var(--sage-dk);border-color:var(--sage-dk)}
+.btn.secondary{background:transparent}
+.btn.on-dark{background:var(--cream);border-color:var(--cream);color:var(--ink)}
+.btn.on-dark:hover{background:transparent;color:var(--cream);border-color:var(--cream)}
+.btn.ghost-dark{background:transparent;color:var(--cream);border-color:rgba(255,255,255,.4)}
+.btn.ghost-dark:hover{border-color:var(--cream)}
+.btn.lg{padding:18px 38px;font-size:13.5px}
+.btn[aria-disabled="true"]{opacity:.35;pointer-events:none}
+.cta-row{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+@media (max-width:520px){ .cta-row{flex-direction:column;align-items:stretch} }
+
+.link-arrow{display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:400;letter-spacing:.08em;text-transform:lowercase;
+  color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:4px}
+.link-arrow:hover{border-bottom-color:var(--ink)}
+
+/* ------------------------------------------------------------ SECTIONS --- */
+section{padding:clamp(72px,13vh,150px) 0}   /* much more air than design-6 */
+section.pad-sm{padding:clamp(52px,8vh,96px) 0}
+section.ink{background:var(--deep);color:#D8D4C8}
+section.ink .display,section.ink .display-sm,section.ink h2,section.ink h3{color:var(--cream)}
+section.ink .kicker{color:#9AA08C}
+section.ink .lede,section.ink p{color:#C3BFB2}
+section.ink .aside{color:#C9B79E}
+section.alt{background:var(--paper-2)}
+section.flush{padding:0}
+.section-head{margin-bottom:clamp(40px,6vw,72px)}
+.section-head.row{display:flex;align-items:flex-end;justify-content:space-between;
+  gap:32px;flex-wrap:wrap}
+
+/* ---------------------------------------------------------------- HERO --- */
+.hero{position:relative;min-height:min(86vh,820px);display:flex;align-items:flex-end;
+  overflow:hidden;background:var(--paper-3)}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(30,28,22,.30) 0%,rgba(30,28,22,.08) 38%,rgba(30,28,22,.72) 100%)}
+.hero-inner{position:relative;z-index:2;width:100%;max-width:1440px;margin:0 auto;
+  padding:0 var(--gut) clamp(48px,9vh,96px);color:var(--cream)}
+.hero .display{color:var(--cream);max-width:16ch;text-shadow:0 1px 24px rgba(20,18,14,.45)}
+.hero .display em{font-family:var(--serif);font-style:italic;font-weight:300;text-transform:none}
+.hero-sub{color:rgba(251,248,243,.9);font-size:clamp(16px,1.5vw,19px);
+  max-width:30em;margin-top:26px;line-height:1.7}
+.hero .cta-row{margin-top:38px}
+.hero-meta{position:absolute;top:clamp(24px,5vh,52px);right:var(--gut);z-index:2;
+  text-align:right;color:rgba(251,248,243,.85);font-size:11px;letter-spacing:.24em;
+  text-transform:uppercase;line-height:2.4}
+@media (max-width:760px){ .hero-meta{display:none} }
+
+/* interior page hero — quieter, shorter */
+.phero{position:relative;min-height:clamp(340px,44vh,460px);display:flex;align-items:flex-end;
+  overflow:hidden;background:var(--paper-3)}
+.phero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.phero::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(30,28,22,.20) 0%,rgba(30,28,22,.30) 45%,rgba(30,28,22,.78) 100%)}
+.phero-inner{position:relative;z-index:2;width:100%;max-width:1440px;margin:0 auto;
+  padding:0 var(--gut) clamp(34px,5vh,58px);color:var(--cream)}
+.phero .display-sm,.phero .display{color:var(--cream);text-shadow:0 1px 20px rgba(20,18,14,.5)}
+.phero p{color:rgba(251,248,243,.9);margin-top:16px;max-width:32em}
+.phero .kicker{color:rgba(251,248,243,.7)!important}
+
+/* ------------------------------------------------------- TWO WAYS IN ----- */
+.ways{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line)}
+.way{padding:clamp(38px,5vw,64px);background:var(--paper);
+  display:flex;flex-direction:column;gap:14px}
+.way.feature{background:var(--paper-2)}
+.way .num{display:none}                      /* the numbering was a d6 device */
+.way h3{font-size:clamp(23px,2.6vw,32px);line-height:1.12;text-transform:lowercase}
+.way .price{font-family:var(--serif);font-weight:300;
+  font-size:clamp(34px,4.2vw,54px);line-height:1.1;color:var(--ink)}
+.way p{font-size:16px;color:var(--mid);flex:1;line-height:1.7}
+.way .btn{align-self:flex-start;margin-top:12px}
+@media (max-width:820px){ .ways{grid-template-columns:1fr} }
+
+/* --------------------------------------------------------- EXPERIENCE ----
+   Moss shows its rooms as a quiet named list with photography, not a
+   dense tile grid. Two up, lots of air. */
+.exp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(28px,4vw,56px)}
+@media (max-width:700px){ .exp-grid{grid-template-columns:1fr;gap:38px} }
+.exp{background:transparent;padding:0;display:flex;flex-direction:column;gap:12px;min-height:0}
+.exp-shot{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--radius);
+  margin-bottom:14px;height:auto}
+.exp .n{display:none}
+.exp h3{font-size:20px}
+.exp p{font-size:15.5px;line-height:1.7;color:var(--mid)}
+
+/* ------------------------------------------------------------- DAY ------- */
+.day{margin-top:8px}
+.day-row{
+  display:grid;grid-template-columns:130px 190px 1fr 220px;gap:28px;align-items:center;
+  padding:26px 0;border-bottom:1px solid var(--line);
+}
+section.ink .day-row{border-bottom-color:rgba(255,255,255,.14)}
+.day-row .time{font-family:var(--serif);font-weight:300;
+  font-size:clamp(22px,2.3vw,30px);line-height:1;color:var(--ink)}
+section.ink .day-row .time{color:var(--cream)}
+.day-row .act{font-size:13px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--sage)}
+section.ink .day-row .act{color:#A8B096}
+.day-row .desc{font-size:15.5px;color:var(--mid);line-height:1.65}
+section.ink .day-row .desc{color:#C3BFB2}
+.day-row .shot{height:74px;overflow:hidden;border-radius:var(--radius)}
+.day-row .shot img{width:100%;height:100%;object-fit:cover}
+@media (max-width:980px){
+  .day-row{grid-template-columns:96px 1fr;gap:4px 22px;padding:22px 0}
+  .day-row .desc{grid-column:2}
+  .day-row .shot{display:none}
+}
+
+/* ---------------------------------------------------------- CLASSES ------ */
+.cls-list{margin-top:8px}
+.cls{display:grid;grid-template-columns:1fr 180px 130px;gap:26px;align-items:baseline;
+  padding:26px 0;border-bottom:1px solid var(--line)}
+section.ink .cls{border-bottom-color:rgba(255,255,255,.14)}
+.cls .n{display:none}
+.cls h3{font-size:clamp(20px,2.1vw,26px)}
+.cls .desc{font-size:15.5px;color:var(--mid);margin-top:8px;line-height:1.7;max-width:42em}
+.cls .lvl{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--soft)}
+.cls .lvl.beginner{color:var(--sage);background:transparent;padding:0}
+@media (max-width:820px){ .cls{grid-template-columns:1fr;gap:6px} }
+
+/* ------------------------------------------------------------ EVENTS ----- */
+.ev-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:38px}
+.chip{border:1px solid var(--line);border-radius:100px;background:transparent;
+  padding:10px 20px;font:inherit;font-size:12.5px;letter-spacing:.1em;
+  text-transform:lowercase;color:var(--mid);cursor:pointer}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip.on{background:var(--sage);border-color:var(--sage);color:var(--cream)}
+
+/* -------------------------------------------------------- MEMBERSHIP ----- */
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line)}
+.plans.four{grid-template-columns:repeat(4,1fr)}
+@media (max-width:1180px){ .plans.four{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:760px){ .plans,.plans.four{grid-template-columns:1fr} }
+.plan{background:var(--paper);padding:40px 32px 34px;display:flex;flex-direction:column;gap:12px}
+.plan.hero-plan{background:var(--deep);color:#D2CEC2}
+.plan.hero-plan .tier{color:#BFC7AC}
+.plan.hero-plan .amt,.plan.hero-plan .plan-line{color:var(--cream)}
+.plan.hero-plan ul li,.plan.hero-plan .fine{color:#CBC7BB}
+.plan.hero-plan small,.plan.hero-plan summary{color:#CBC7BB}
+.plan .tier{font-size:11px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--soft)}
+.plan .amt{font-family:var(--serif);font-weight:300;
+  font-size:clamp(38px,4.2vw,54px);line-height:1.05;color:var(--ink)}
+.plan .amt small{font-family:var(--sans);font-size:13px;letter-spacing:.06em;color:var(--soft)}
+.plan-line{font-size:16px;font-weight:400;color:var(--ink);margin:2px 0 6px}
+.plan ul{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:4px;flex:1}
+.plan ul li{font-size:15px;color:var(--mid);line-height:1.65;padding-left:16px;position:relative}
+.plan ul li::before{content:"";position:absolute;left:0;top:.72em;
+  width:6px;height:1px;background:var(--sage)}
+.plan .fine{font-family:var(--sans);font-style:italic;font-size:14.5px;color:var(--soft);line-height:1.6}
+.plan .btn{margin-top:14px;align-self:flex-start}
+
+.plan-more{margin-top:6px}
+.plan-more summary{list-style:none;cursor:pointer;padding:12px 0;
+  font-size:11.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--soft);display:flex;justify-content:space-between;gap:12px;align-items:center}
+.plan-more summary::-webkit-details-marker{display:none}
+.plan-more summary::after{content:"+";font-family:var(--serif);font-size:18px}
+.plan-more[open] summary::after{content:"–"}
+.plan-more ul{margin-top:6px}
+.plan-more li{font-size:14.5px}
+
+/* --------------------------------------------------------- IMAGERY -------
+   Softer, fewer pieces, more air. The d6 12-column collage becomes a
+   simple two- or three-up with rounded corners. */
+.collage{display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(10px,1.4vw,20px);
+  grid-auto-rows:clamp(150px,19vw,250px)}
+.collage img,.collage .slot{width:100%;height:100%;object-fit:cover;
+  border-radius:var(--radius);min-width:0}
+.c-a{grid-column:span 4;grid-row:span 2}
+.c-b{grid-column:span 2;grid-row:span 2}
+.c-c{grid-column:span 3}
+.c-d{grid-column:span 3}
+.c-e{grid-column:span 3}
+.c-f{grid-column:span 3}
+@media (max-width:820px){
+  .collage{grid-template-columns:repeat(2,1fr);grid-auto-rows:clamp(130px,30vw,190px)}
+  .c-a{grid-column:span 2;grid-row:span 1}
+  .c-b,.c-c,.c-d,.c-e,.c-f{grid-column:span 1;grid-row:span 1}
+}
+.slot{display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;
+  background:var(--paper-3);border-radius:var(--radius)}
+.slot span{font-size:10.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--soft)}
+
+/* a quiet full-width statement, set in the serif rather than shouted */
+.statement{background:var(--paper-2);padding:clamp(70px,11vw,140px) 0}
+.statement .big{font-family:var(--serif);font-weight:300;font-style:normal;
+  font-size:clamp(30px,4.6vw,60px);line-height:1.18;letter-spacing:-.01em;
+  color:var(--ink);text-transform:lowercase;max-width:22ch}
+.statement .big em{font-style:italic;color:var(--clay)}
+.statement p{color:var(--mid)}
+.statement a{color:var(--ink)}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(34px,6vw,88px);align-items:center}
+.split img{width:100%;height:clamp(320px,44vw,560px);object-fit:cover;border-radius:var(--radius)}
+@media (max-width:880px){ .split{grid-template-columns:1fr;gap:34px} }
+
+/* --------------------------------------------------------- EMBEDS -------- */
+.embed{border:1px solid var(--line);border-radius:var(--radius);background:var(--cream);overflow:hidden}
+.embed iframe{display:block;width:100%;border:0;min-height:760px}
+.embed-note{font-family:var(--sans);font-style:italic;font-size:15px;color:var(--soft);
+  margin-top:18px;max-width:42em;line-height:1.6}
+.embed-placeholder{border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--paper-2);padding:clamp(44px,7vw,84px) 30px;text-align:center}
+section.ink .embed-placeholder{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.04)}
+.embed-placeholder .ph-title{font-size:11px;font-weight:500;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--soft);margin-bottom:16px}
+.embed-placeholder p{font-size:16px;color:var(--mid);max-width:38em;margin:0 auto;line-height:1.7}
+.schedule-widget{border:1px solid var(--line);border-radius:var(--radius);background:var(--cream);padding:10px}
+
+/* ---------------------------------------------------------- PEOPLE ------- */
+.people{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(18px,2.4vw,34px);background:transparent}
+@media (max-width:1000px){ .people{grid-template-columns:repeat(3,1fr)} }
+@media (max-width:700px){ .people{grid-template-columns:repeat(2,1fr)} }
+.person{background:transparent;display:flex;flex-direction:column}
+section.ink .person{background:transparent}
+.person .portrait{aspect-ratio:4/5;overflow:hidden;background:var(--paper-3);border-radius:var(--radius)}
+.person .portrait img{width:100%;height:100%;object-fit:cover}
+.person .portrait.empty{display:flex;align-items:center;justify-content:center;background:var(--paper-3)}
+section.ink .person .portrait.empty{background:rgba(255,255,255,.07)}
+.person .portrait.empty span{font-size:10px;font-weight:500;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--soft)}
+.person-body{padding:16px 0 0;display:flex;flex-direction:column;gap:4px}
+.person h3{font-size:18px}
+.person .role{font-size:10.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--sage)}
+section.ink .person .role{color:#A8B096}
+.person p{font-size:14.5px;color:var(--mid);line-height:1.65;margin-top:6px}
+section.ink .person p{color:#B5B1A4}
+
+/* ---------------------------------------------------------- VOICES ------- */
+.voices{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line)}
+@media (max-width:900px){ .voices{grid-template-columns:1fr} }
+.voice{background:var(--paper);padding:40px 32px;display:flex;flex-direction:column;gap:20px}
+.voice .q{font-family:var(--serif);font-weight:300;font-size:clamp(19px,1.9vw,24px);
+  line-height:1.45;color:var(--ink)}
+.voice .who{margin-top:auto;font-size:11px;font-weight:500;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--soft)}
+.voice .theme{font-size:10.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--sage)}
+.voice.placeholder{background:var(--paper-2)}
+
+/* ------------------------------------------------------- INFO ROWS ------- */
+.info-list{margin-top:6px}
+.info-row{border-bottom:1px solid var(--line);padding:24px 0;
+  display:grid;grid-template-columns:250px 1fr;gap:28px;align-items:baseline}
+section.ink .info-row{border-bottom-color:rgba(255,255,255,.14)}
+.info-row .i-label{font-size:11.5px;font-weight:500;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ink)}
+section.ink .info-row .i-label{color:var(--cream)}
+.info-row .i-val{font-size:16px;color:var(--mid);line-height:1.7;max-width:44em}
+section.ink .info-row .i-val{color:#C3BFB2}
+.info-row .i-note{font-family:var(--serif);font-style:italic;font-size:14.5px;color:var(--soft);margin-top:8px}
+@media (max-width:760px){ .info-row{grid-template-columns:1fr;gap:8px} }
+
+/* ------------------------------------------------------------- FAQ ------- */
+.faq,.faq-block{margin-top:8px}
+.faq details,.faq-block{border-bottom:1px solid var(--line)}
+.faq-block{border-top:1px solid var(--line)}
+.faq summary,.faq-block summary{padding:26px 0;font-size:clamp(17px,1.8vw,21px);
+  font-weight:300;color:var(--ink);cursor:pointer;list-style:none;
+  display:flex;justify-content:space-between;gap:24px;align-items:center}
+.faq summary::-webkit-details-marker,.faq-block summary::-webkit-details-marker{display:none}
+.faq summary::after,.faq-block summary::after{content:"+";font-family:var(--serif);
+  font-size:24px;line-height:1;color:var(--soft);flex:none}
+.faq details[open] summary::after,.faq-block[open] summary::after{content:"–"}
+.faq .a{padding:0 0 28px;color:var(--mid);font-size:16px;line-height:1.75;max-width:50em}
+
+.note{border-left:1px solid var(--clay);padding:6px 0 6px 20px;
+  font-family:var(--sans);font-style:italic;font-size:15px;color:var(--soft);max-width:44em}
+.pending{display:inline-block;font-family:var(--sans);font-style:normal;
+  font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--clay);border:1px solid var(--line);border-radius:100px;padding:3px 10px;margin-right:6px}
+.mark{background:transparent;color:var(--sage);font-weight:500}
+
+/* --------------------------------------------------------- CHERISH ------- */
+.cherish-scope{
+  --ink:#33201A; --paper:var(--cherish-paper); --paper-2:#EADCC5; --paper-3:#E0CEB2;
+  --mid:#63492F; --soft:#7A6046; --line:#DCC9AC;
+  --sage:var(--oxblood); --sage-dk:#5E2A26; --clay:var(--oxblood);
+  --deep:#4A2420;
+  background:var(--cherish-paper);color:#63492F;
+}
+.cherish-scope .btn.sage{background:var(--oxblood);border-color:var(--oxblood);color:#F7EEDF}
+.cherish-scope .day-row .act,.cherish-scope .person .role,.cherish-scope .voice .theme{color:var(--oxblood)}
+.cherish-scope .plan ul li::before{background:var(--mustard)}
+.menu-list{margin-top:6px}
+.menu-item{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:baseline;
+  padding:22px 0;border-bottom:1px solid var(--line)}
+.menu-item .nm{font-family:var(--serif);font-weight:300;font-size:23px;color:var(--ink)}
+.menu-item .de{font-size:15px;color:var(--mid);margin-top:5px;max-width:38em;line-height:1.65}
+.menu-item .pr{font-family:var(--serif);font-size:20px;white-space:nowrap;color:var(--soft)}
+
+/* ----------------------------------------------------------- FOOTER ------ */
+footer{background:var(--deep);color:#B5B1A4;padding:clamp(70px,11vh,120px) 0 40px}
+.foot-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:44px;
+  padding-bottom:56px}
+.foot-top h4{font-size:11px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;
+  color:#8A8878;margin-bottom:20px}
+.foot-top ul{list-style:none}
+.foot-top li{margin:0}
+.foot-top li a{display:block;padding:9px 0;font-size:15px;color:#C3BFB2;text-transform:lowercase}
+.foot-top li a:hover{color:var(--cream)}
+.foot-brand .display-sm{font-size:clamp(26px,3.4vw,42px);line-height:1.1;color:var(--cream)}
+.foot-brand p{color:#A6A296;font-size:15px;line-height:1.8}
+.foot-bottom{margin-top:20px;padding-top:26px;border-top:1px solid rgba(255,255,255,.12);
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-size:12.5px;color:#8A8878}
+@media (max-width:860px){ .foot-top{grid-template-columns:1fr 1fr;gap:34px} }
+@media (max-width:520px){ .foot-top{grid-template-columns:1fr} }
+
+/* the palm stays, but quieter and greener */
+.palm{display:inline-block;width:.72em;height:1.08em;flex:none;background:currentColor;
+  vertical-align:-.16em;
+  -webkit-mask:url(../assets/images/palm.svg) center/contain no-repeat;
+          mask:url(../assets/images/palm.svg) center/contain no-repeat}
+.palm.lg{width:1.4em;height:2.1em}
+footer{position:relative;overflow:hidden}
+.foot-palm{position:absolute;right:-10px;bottom:-8%;width:clamp(140px,18vw,260px);
+  aspect-ratio:64/96;background:currentColor;opacity:.05;pointer-events:none;z-index:0;
+  -webkit-mask:url(../assets/images/palm.svg) center/contain no-repeat;
+          mask:url(../assets/images/palm.svg) center/contain no-repeat}
+footer .wrap-wide{position:relative;z-index:1}
+.hero-meta .palm{width:26px;height:39px;opacity:.85;margin-bottom:12px}
+
+/* --------------------------------------------------- MOBILE TAP TARGETS -- */
+@media (max-width:820px){
+  .nav-toggle{min-height:44px}
+  .nav-cta .btn{min-height:44px}
+  .foot-top li a{padding:13px 0;min-height:44px;display:flex;align-items:center}
+  .foot-brand p a,.foot-bottom a{display:inline-block;padding:8px 0}
+  .link-arrow{padding-top:14px;padding-bottom:12px}
+  .brand{display:flex;flex-direction:column;justify-content:center;min-height:44px}
+  .plan-more summary{min-height:44px}
+  .faq summary,.faq-block summary{min-height:56px}
+  .chip{min-height:44px;display:inline-flex;align-items:center}
+  section{padding:clamp(56px,9vh,92px) 0}
+}
+@media (max-width:420px){
+  .display{font-size:clamp(34px,10vw,52px)}
+  .exp-grid{grid-template-columns:1fr}
+}
+
+/* ---- pull quote — for lines that should stop the reader --------------- */
+.pull{font-size:clamp(20px,2.4vw,30px);line-height:1.28;font-weight:300;
+  color:var(--ink);letter-spacing:-.015em;max-width:20em;
+  border-left:2px solid var(--sage);padding-left:22px}
+section.ink .pull{color:var(--paper)}
+
+/* ---- events strip — concise, horizontal, scrolls on small screens ----- */
+.ev-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,22px)}
+.ev-item{background:var(--paper-2);border-radius:var(--radius);padding:24px 22px 26px;display:flex;flex-direction:column;gap:8px}
+.ev-item:hover{background:var(--paper-2)}
+
+.ev-when{font-size:11.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--clay)}
+.ev-what{font-size:clamp(17px,1.7vw,21px);font-weight:300;letter-spacing:-.005em;line-height:1.25;text-transform:lowercase}
+.ev-where{font-size:13px;color:var(--mid);margin-top:auto}
+@media (max-width:900px){ .ev-strip{grid-template-columns:1fr 1fr} }
+@media (max-width:560px){ .ev-strip{grid-template-columns:1fr} }
+
+/* ---- the trial banner on the memberships page ------------------------- */
+.trial-cta{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;
+  background:var(--deep);color:#C3BFB2;padding:clamp(28px,4vw,46px);border-radius:var(--radius);margin-bottom:48px}
+.trial-cta .kicker{color:var(--sage)}
+.trial-cta h3{color:var(--cream)}
+.trial-cta p{color:#B5B1A4;font-size:15.5px;max-width:44em}
+@media (max-width:820px){ .trial-cta{grid-template-columns:1fr} .trial-cta .btn{justify-self:start} }
+
+
+/* ==========================================================================
+   DESIGN 9 ADDITIONS
+   ========================================================================== */
+
+/* --- CASE ---------------------------------------------------------------
+   Hybrid: brand-voice elements in caps, reading headings lowercase.
+   To match the parent brand fully, change `lowercase` to `uppercase` on
+   .display-sm, h2 and h3 in the base sheet above and delete nothing here. */
+.hero .display{text-transform:uppercase;letter-spacing:-.02em}
+.nav-links a{text-transform:uppercase;letter-spacing:.1em;font-size:11.5px;font-weight:500}
+.btn,.nav-cta .btn{text-transform:uppercase;letter-spacing:.13em;font-weight:500}
+.brand{text-transform:uppercase;letter-spacing:.18em}
+
+/* --- HERO EYEBROW + BUTTON SUB-LINE ------------------------------------- */
+.hero-eyebrow{color:rgba(255,255,255,.82);margin-bottom:18px;letter-spacing:.2em}
+.btn.has-sub{display:inline-flex;flex-direction:column;align-items:center;
+  gap:5px;line-height:1.15;padding-top:15px;padding-bottom:15px}
+.btn-sub{display:block;font-size:10.5px;font-weight:400;letter-spacing:.1em;
+  text-transform:none;opacity:.82}
+@media (max-width:520px){
+  .btn.has-sub{width:100%}
+  .btn-sub{font-size:10px}
+}
+
+/* --- CAFE STRIP (the homepage door, replacing the full block) ----------- */
+.cafe-strip{display:flex;align-items:center;justify-content:space-between;
+  gap:28px;flex-wrap:wrap}
+
+/* --- SPLIT WITH A MISSING IMAGE ---------------------------------------- */
+.split.no-img{grid-template-columns:1fr;--split-ratio:1fr}
+
+/* --- MONTH CALENDAR ----------------------------------------------------- */
+.pm-cal-loading,.pm-cal-empty{color:var(--soft);font-size:15px;padding:26px 0}
+.pm-cal-empty a{text-decoration:underline}
+.pm-cal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));
+  gap:clamp(24px,3.4vw,48px);margin-bottom:clamp(30px,4vw,48px)}
+.pm-month-name{font-size:12px;font-weight:500;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--soft);margin-bottom:14px}
+.pm-dows,.pm-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.pm-dows span{font-size:10.5px;letter-spacing:.1em;text-align:center;
+  color:var(--soft);opacity:.6;padding-bottom:6px}
+.pm-day{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:40px;font-size:13.5px;color:var(--soft);border-radius:3px;
+  position:relative;text-decoration:none}
+.pm-day.pad{visibility:hidden}
+.pm-day.today{font-weight:600;color:var(--ink)}
+.pm-day.has{color:var(--ink);font-weight:500;background:rgba(124,132,113,.13)}
+.pm-day.has:hover{background:var(--sage);color:#fff}
+.pm-day.has i{display:block;width:4px;height:4px;border-radius:50%;
+  background:var(--clay);margin-top:3px}
+.pm-day.has:hover i{background:#fff}
+section.ink .pm-day{color:#B5B1A4}
+section.ink .pm-day.today{color:#fff}
+section.ink .pm-day.has{color:#fff;background:rgba(255,255,255,.13)}
+section.ink .pm-day.has:hover{background:var(--sage)}
+section.ink .pm-month-name,section.ink .pm-dows span{color:#9A968B}
+
+.pm-cal-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.pm-cal-list li{border-bottom:1px solid var(--line)}
+.pm-cal-list a{display:grid;grid-template-columns:130px 1fr auto;gap:20px;
+  align-items:baseline;padding:17px 0;text-decoration:none;color:inherit}
+.pm-cal-list a:hover .pm-what{color:var(--clay)}
+.pm-when{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.pm-what{font-size:clamp(16px,1.6vw,19px);line-height:1.35}
+.pm-time{font-size:13px;color:var(--soft);white-space:nowrap}
+section.ink .pm-cal-list{border-color:rgba(255,255,255,.14)}
+section.ink .pm-cal-list li{border-color:rgba(255,255,255,.14)}
+section.ink .pm-when,section.ink .pm-time{color:#9A968B}
+section.ink .pm-cal-list a:hover .pm-what{color:var(--sage-light,#B9C2AA)}
+@media (max-width:620px){
+  .pm-cal-list a{grid-template-columns:1fr auto;gap:4px 14px}
+  .pm-when{grid-column:1/-1}
+}
+
+/* --- LABELLED PHOTO SLOT (Mickey's `page - section - slot` convention) --- */
+.photo-slot{display:flex;align-items:center;justify-content:center;text-align:center;
+  min-height:clamp(240px,32vw,420px);background:var(--paper-3);border-radius:3px;
+  padding:24px}
+.photo-slot span{font-size:10.5px;font-weight:500;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--soft);max-width:22ch;line-height:2}
+section.ink .photo-slot{background:rgba(255,255,255,.07)}
+
+/* ==========================================================================
+   CONTRAST FIXES
+   Light-on-tan: cards that carry their own pale background sit inside
+   section.ink, which sets a light inherited colour. Anything on a pale
+   panel must restate a dark colour rather than inherit.
+   ========================================================================== */
+.ev-item,
+section.ink .ev-item{color:var(--ink)}
+.ev-item .ev-what,
+section.ink .ev-item .ev-what{color:var(--ink)}
+.ev-item .ev-where,
+section.ink .ev-item .ev-where{color:var(--mid)}
+.ev-item .ev-when,
+section.ink .ev-item .ev-when{color:var(--clay)}
+section.ink .embed-placeholder,
+section.ink .plan,
+section.ink .faq{color:var(--ink)}
+
+/* ==========================================================================
+   THE METHOD PAGE
+   ========================================================================== */
+.obj-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:clamp(30px,4vw,54px);margin-top:clamp(44px,6vw,72px)}
+.obj h3{font-size:clamp(18px,1.8vw,22px);line-height:1.3;margin-bottom:12px;
+  padding-top:18px;border-top:1px solid var(--line)}
+.obj p{color:var(--mid);font-size:15.5px;line-height:1.7}
+
+/* Four series — one per row, alternating, with real air between them */
+.series{display:flex;flex-direction:column;gap:clamp(56px,9vw,120px);
+  margin-top:clamp(50px,7vw,90px)}
+.serie{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(30px,5vw,72px);
+  align-items:center}
+.serie:nth-child(even){grid-template-columns:1fr 1.05fr}
+.serie:nth-child(even) img{order:2}
+.serie img{width:100%;height:clamp(280px,34vw,460px);object-fit:cover;border-radius:3px}
+.serie-body .s-n{font-size:11px;font-weight:500;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--soft);margin-bottom:14px}
+.serie-body h3{font-size:clamp(28px,3.8vw,50px);line-height:1.05;margin-bottom:18px}
+.serie-body p{font-size:clamp(16px,1.6vw,19px);line-height:1.7;color:var(--mid)}
+.serie-body .s-note{margin-top:20px;padding-left:18px;border-left:2px solid var(--clay);
+  font-size:14.5px;line-height:1.65;color:var(--soft);font-style:italic}
+@media (max-width:820px){
+  .serie,.serie:nth-child(even){grid-template-columns:1fr;gap:24px}
+  .serie:nth-child(even) img{order:0}
+  .serie img{height:clamp(220px,52vw,320px)}
+}
+
+.faq-block .a ul{margin:10px 0 0;padding-left:20px}
+.faq-block .a li{margin-bottom:10px;line-height:1.65}
+.faq-block .a p{line-height:1.7}
+
+/* ==========================================================================
+   CONTRAST TOKENS
+   --mid, --soft and --clay were darkened so body copy, captions, kickers and
+   meta all clear WCAG AA (4.5:1) on every ground in this palette. --sage is
+   unchanged as an accent; button fills use --sage-btn so white label text
+   clears AA too.
+   ========================================================================== */
+.btn.sage{background:var(--sage-btn);border-color:var(--sage-btn)}
+.btn.sage:hover{background:var(--ink);border-color:var(--ink)}
+.photo-slot span,.person .portrait.empty span{color:var(--mid)}
+.pm-day.has{background:#E2DCCE}
+section.ink .pm-day.has{background:#4A5145;color:#fff}
+section.ink .pm-day.has:hover{background:var(--sage)}
+
+/* ==========================================================================
+   CONTRAST ROUND 2
+   .ghost-dark is a light-on-dark button; on a pale ground it disappears.
+   Empty portrait/photo slots need a light label inside dark sections.
+   ========================================================================== */
+section:not(.ink):not(.statement) .btn.ghost-dark,
+.light .btn.ghost-dark{color:var(--ink);border-color:var(--ink)}
+section:not(.ink):not(.statement) .btn.ghost-dark:hover,
+.light .btn.ghost-dark:hover{background:var(--ink);color:var(--cream)}
+section.ink .photo-slot span,
+section.ink .person .portrait.empty span{color:#B9B4A6}
+.embed-placeholder .ph-title{color:var(--ink)}
+section.ink .embed-placeholder .ph-title{color:var(--ink)}
+.menu-item .pr{color:var(--mid)}
+.cls .lvl{color:var(--mid)}
+
+/* ==========================================================================
+   CONTRAST ROUND 3
+   --sage is a beautiful accent and a poor text colour on cream (3.16:1).
+   Wherever it was used AS TEXT it becomes --sage-txt; as a fill or a rule
+   it stays exactly as it was.
+   ========================================================================== */
+:root{--sage-txt:#5A6350}
+.day-row .act,
+.cls .lvl.beginner,
+.voice .theme,
+.mark,
+.person .role{color:var(--sage-txt)}
+section.ink .day-row .act,
+section.ink .voice .theme,
+section.ink .person .role{color:#B4BDA4}
+
+/* footer: labels and fine print on deep forest */
+.foot-top h4{color:#A9A697}
+.foot-bottom{color:#A9A697}
+.foot-brand p{color:#BAB6AA}
+footer{color:#C3BFB2}
+
+/* hero plan card: white-ish everything, it sits on deep forest */
+.plan.hero-plan small,
+.plan.hero-plan summary,
+.plan.hero-plan .plan-more summary{color:#CFCBBF}
+.plan.hero-plan .plan-more summary::after{color:#CFCBBF}
+
+/* design-7 has no chartreuse in its palette — .acid was a leftover class name
+   with no background, so it rendered dark-on-dark. Give it a real fill. */
+.btn.acid{background:var(--sage-btn);border-color:var(--sage-btn);color:var(--cream)}
+.btn.acid:hover{background:var(--cream);border-color:var(--cream);color:var(--ink)}
+
+/* ==========================================================================
+   CONTRAST ROUND 4 — light-on-dark meta text
+   ========================================================================== */
+section.ink .embed-note,
+section.ink .note,
+section.ink .fine,
+section.ink .aside{color:#BAB6AA}
+section.ink .embed-note a,
+section.ink .note a{color:#D7D3C7}
+section.ink .kicker{color:#AEB4A0}
+section.ink .pm-month-name,
+section.ink .pm-dows span,
+section.ink .pm-when,
+section.ink .pm-time{color:#ADA99D}
+section.ink .pm-day{color:#C3BFB2}
+
+/* ==========================================================================
+   CONTRAST ROUND 5 — the last stragglers, all four designs
+   ========================================================================== */
+.embed-note{color:var(--mid)}
+.pending{color:var(--mid)}
+.photo-slot span,
+.person .portrait.empty span,
+.shot.empty span,
+.collage .empty span{color:var(--mid)}
+section.ink .photo-slot span,
+section.ink .person .portrait.empty span,
+section.ink .shot.empty span,
+section.ink .collage .empty span{color:#BAB6AA}
+.voice .theme{color:var(--mid)}
+.ev-item .ev-when{color:var(--mid)}
+/* .ghost-dark on any pale ground */
+.light .btn.ghost-dark,
+.alt .btn.ghost-dark,
+section:not(.ink):not(.statement) .btn.ghost-dark{color:var(--ink);border-color:var(--ink)}
+section:not(.ink):not(.statement) .btn.ghost-dark:hover{background:var(--ink);color:#fff}
+
+/* ==========================================================================
+   CONTRAST ROUND 6 — dark CTA bands and the Cherish scope
+   ========================================================================== */
+.trial-cta{color:#D2CEC2}
+.trial-cta .kicker{color:#AEB4A0}
+.trial-cta p,.trial-cta .lede{color:#C7C3B7}
+.pending{color:#5E5648;background:rgba(0,0,0,.06)}
+.cherish-scope .pending{color:#5C4326}
+.cherish-scope .note,.cherish-scope .lede,.cherish-scope .de,
+.cherish-scope p{color:var(--mid)}
+.cherish-scope .phero-inner .kicker,
+.cherish-scope .phero-inner p{color:#F0E2CC}
+
+/* ROUND 7 — the feature way-card is pale in this palette; kickers stay dark */
+.way.feature .kicker{color:var(--clay)}
+.cherish-scope .photo-slot span,
+.cherish-scope .collage .empty span,
+.cherish-scope .shot.empty span{color:#5C4326}
+.cherish-scope .kicker{color:var(--mid)}

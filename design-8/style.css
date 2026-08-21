@@ -21,12 +21,13 @@
   --paper:#F5F1EA;        /* warm cream — the default ground */
   --paper-2:#EDE7DC;      /* alternate section */
   --paper-3:#E4DCCD;      /* image placeholder / third tone */
-  --mid:#6B6558;          /* body copy */
-  --soft:#8C8577;         /* captions, meta */
+  --mid:#5A5449;          /* body copy */
+  --soft:#6A6355;         /* captions, meta */
   --line:#DDD5C6;         /* hairlines, used sparingly */
-  --sage:#7C8471;         /* primary accent */
+  --sage:#7C8471;
+  --sage-btn:#5F6854;   /* darker fill so white button text clears 4.5:1 */         /* primary accent */
   --sage-dk:#616950;
-  --clay:#A87355;         /* secondary accent */
+  --clay:#8F5C3F;         /* secondary accent */
   --cream:#FBF8F3;
 
   /* Cherish, warmer still */
@@ -268,10 +269,11 @@ section.ink .cls{border-bottom-color:rgba(255,255,255,.14)}
 @media (max-width:1180px){ .plans.four{grid-template-columns:repeat(2,1fr)} }
 @media (max-width:760px){ .plans,.plans.four{grid-template-columns:1fr} }
 .plan{background:var(--paper);padding:40px 32px 34px;display:flex;flex-direction:column;gap:12px}
-.plan.hero-plan{background:var(--deep);color:#C3BFB2}
-.plan.hero-plan .tier{color:#A8B096}
+.plan.hero-plan{background:var(--deep);color:#D2CEC2}
+.plan.hero-plan .tier{color:#BFC7AC}
 .plan.hero-plan .amt,.plan.hero-plan .plan-line{color:var(--cream)}
-.plan.hero-plan ul li,.plan.hero-plan .fine{color:#B5B1A4}
+.plan.hero-plan ul li,.plan.hero-plan .fine{color:#CBC7BB}
+.plan.hero-plan small,.plan.hero-plan summary{color:#CBC7BB}
 .plan .tier{font-size:11px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--soft)}
 .plan .amt{font-family:var(--serif);font-weight:300;
   font-size:clamp(38px,4.2vw,54px);line-height:1.05;color:var(--ink)}
@@ -407,11 +409,11 @@ section.ink .info-row .i-val{color:#C3BFB2}
 
 /* --------------------------------------------------------- CHERISH ------- */
 .cherish-scope{
-  --ink:#3A241E; --paper:var(--cherish-paper); --paper-2:#EADCC5; --paper-3:#E0CEB2;
-  --mid:#7A6046; --soft:#9C8365; --line:#DCC9AC;
+  --ink:#33201A; --paper:var(--cherish-paper); --paper-2:#EADCC5; --paper-3:#E0CEB2;
+  --mid:#63492F; --soft:#7A6046; --line:#DCC9AC;
   --sage:var(--oxblood); --sage-dk:#5E2A26; --clay:var(--oxblood);
   --deep:#4A2420;
-  background:var(--cherish-paper);color:#7A6046;
+  background:var(--cherish-paper);color:#63492F;
 }
 .cherish-scope .btn.sage{background:var(--oxblood);border-color:var(--oxblood);color:#F7EEDF}
 .cherish-scope .day-row .act,.cherish-scope .person .role,.cherish-scope .voice .theme{color:var(--oxblood)}
@@ -497,3 +499,141 @@ section.ink .pull{color:var(--paper)}
 .trial-cta h3{color:var(--cream)}
 .trial-cta p{color:#B5B1A4;font-size:15.5px;max-width:44em}
 @media (max-width:820px){ .trial-cta{grid-template-columns:1fr} .trial-cta .btn{justify-self:start} }
+
+/* ==========================================================================
+   CONTRAST FIXES
+   Light-on-tan: cards that carry their own pale background sit inside
+   section.ink, which sets a light inherited colour. Anything on a pale
+   panel must restate a dark colour rather than inherit.
+   ========================================================================== */
+.ev-item,
+section.ink .ev-item{color:var(--ink)}
+.ev-item .ev-what,
+section.ink .ev-item .ev-what{color:var(--ink)}
+.ev-item .ev-where,
+section.ink .ev-item .ev-where{color:var(--mid)}
+.ev-item .ev-when,
+section.ink .ev-item .ev-when{color:var(--clay)}
+section.ink .embed-placeholder,
+section.ink .plan,
+section.ink .faq{color:var(--ink)}
+
+/* ==========================================================================
+   CONTRAST TOKENS
+   --mid, --soft and --clay were darkened so body copy, captions, kickers and
+   meta all clear WCAG AA (4.5:1) on every ground in this palette. --sage is
+   unchanged as an accent; button fills use --sage-btn so white label text
+   clears AA too.
+   ========================================================================== */
+.btn.sage{background:var(--sage-btn);border-color:var(--sage-btn)}
+.btn.sage:hover{background:var(--ink);border-color:var(--ink)}
+.photo-slot span,.person .portrait.empty span{color:var(--mid)}
+.pm-day.has{background:#E2DCCE}
+section.ink .pm-day.has{background:#4A5145;color:#fff}
+section.ink .pm-day.has:hover{background:var(--sage)}
+
+/* ==========================================================================
+   CONTRAST ROUND 2
+   .ghost-dark is a light-on-dark button; on a pale ground it disappears.
+   Empty portrait/photo slots need a light label inside dark sections.
+   ========================================================================== */
+section:not(.ink):not(.statement) .btn.ghost-dark,
+.light .btn.ghost-dark{color:var(--ink);border-color:var(--ink)}
+section:not(.ink):not(.statement) .btn.ghost-dark:hover,
+.light .btn.ghost-dark:hover{background:var(--ink);color:var(--cream)}
+section.ink .photo-slot span,
+section.ink .person .portrait.empty span{color:#B9B4A6}
+.embed-placeholder .ph-title{color:var(--ink)}
+section.ink .embed-placeholder .ph-title{color:var(--ink)}
+.menu-item .pr{color:var(--mid)}
+.cls .lvl{color:var(--mid)}
+
+/* ==========================================================================
+   CONTRAST ROUND 3
+   --sage is a beautiful accent and a poor text colour on cream (3.16:1).
+   Wherever it was used AS TEXT it becomes --sage-txt; as a fill or a rule
+   it stays exactly as it was.
+   ========================================================================== */
+:root{--sage-txt:#5A6350}
+.day-row .act,
+.cls .lvl.beginner,
+.voice .theme,
+.mark,
+.person .role{color:var(--sage-txt)}
+section.ink .day-row .act,
+section.ink .voice .theme,
+section.ink .person .role{color:#B4BDA4}
+
+/* footer: labels and fine print on deep forest */
+.foot-top h4{color:#A9A697}
+.foot-bottom{color:#A9A697}
+.foot-brand p{color:#BAB6AA}
+footer{color:#C3BFB2}
+
+/* hero plan card: white-ish everything, it sits on deep forest */
+.plan.hero-plan small,
+.plan.hero-plan summary,
+.plan.hero-plan .plan-more summary{color:#CFCBBF}
+.plan.hero-plan .plan-more summary::after{color:#CFCBBF}
+
+/* design-7 has no chartreuse in its palette — .acid was a leftover class name
+   with no background, so it rendered dark-on-dark. Give it a real fill. */
+.btn.acid{background:var(--sage-btn);border-color:var(--sage-btn);color:var(--cream)}
+.btn.acid:hover{background:var(--cream);border-color:var(--cream);color:var(--ink)}
+
+/* ==========================================================================
+   CONTRAST ROUND 4 — light-on-dark meta text
+   ========================================================================== */
+section.ink .embed-note,
+section.ink .note,
+section.ink .fine,
+section.ink .aside{color:#BAB6AA}
+section.ink .embed-note a,
+section.ink .note a{color:#D7D3C7}
+section.ink .kicker{color:#AEB4A0}
+section.ink .pm-month-name,
+section.ink .pm-dows span,
+section.ink .pm-when,
+section.ink .pm-time{color:#ADA99D}
+section.ink .pm-day{color:#C3BFB2}
+
+/* ==========================================================================
+   CONTRAST ROUND 5 — the last stragglers, all four designs
+   ========================================================================== */
+.embed-note{color:var(--mid)}
+.pending{color:var(--mid)}
+.photo-slot span,
+.person .portrait.empty span,
+.shot.empty span,
+.collage .empty span{color:var(--mid)}
+section.ink .photo-slot span,
+section.ink .person .portrait.empty span,
+section.ink .shot.empty span,
+section.ink .collage .empty span{color:#BAB6AA}
+.voice .theme{color:var(--mid)}
+.ev-item .ev-when{color:var(--mid)}
+/* .ghost-dark on any pale ground */
+.light .btn.ghost-dark,
+.alt .btn.ghost-dark,
+section:not(.ink):not(.statement) .btn.ghost-dark{color:var(--ink);border-color:var(--ink)}
+section:not(.ink):not(.statement) .btn.ghost-dark:hover{background:var(--ink);color:#fff}
+
+/* ==========================================================================
+   CONTRAST ROUND 6 — dark CTA bands and the Cherish scope
+   ========================================================================== */
+.trial-cta{color:#D2CEC2}
+.trial-cta .kicker{color:#AEB4A0}
+.trial-cta p,.trial-cta .lede{color:#C7C3B7}
+.pending{color:#5E5648;background:rgba(0,0,0,.06)}
+.cherish-scope .pending{color:#5C4326}
+.cherish-scope .note,.cherish-scope .lede,.cherish-scope .de,
+.cherish-scope p{color:var(--mid)}
+.cherish-scope .phero-inner .kicker,
+.cherish-scope .phero-inner p{color:#F0E2CC}
+
+/* ROUND 7 — the feature way-card is pale in this palette; kickers stay dark */
+.way.feature .kicker{color:var(--clay)}
+.cherish-scope .photo-slot span,
+.cherish-scope .collage .empty span,
+.cherish-scope .shot.empty span{color:#5C4326}
+.cherish-scope .kicker{color:var(--mid)}

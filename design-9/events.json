@@ -1,0 +1,36 @@
+{
+ "source": "luma",
+ "calendarId": "cal-CRQbJyS4jRRrfsN",
+ "fetchedAt": "2026-08-21T20:35:39.978534Z",
+ "calendarUrl": "https://luma.com/user/PrimalMoves",
+ "events": [
+  {
+   "title": "PRE BURN PARTY + BAZAAR",
+   "start": "2026-08-22T22:00:00Z",
+   "allDay": false,
+   "url": "https://luma.com/zu22fb66",
+   "location": "Primal Moves, 1038 Princeton Dr Ste B, Marina Del Rey, CA 90292, USA"
+  },
+  {
+   "title": "Unfold - A Somatic Guided Journey / Contact Improv / Dance Evening",
+   "start": "2026-09-02T02:00:00Z",
+   "allDay": false,
+   "url": "https://luma.com/tdvj0tgh",
+   "location": "Primal Moves, 1038 Princeton Dr Ste B, Marina Del Rey, CA 90292, USA"
+  },
+  {
+   "title": "Primal Instinct - Full-day Embodiment Experience",
+   "start": "2026-09-12T21:00:00Z",
+   "allDay": false,
+   "url": "https://luma.com/primalinstinct",
+   "location": "Primal Moves, 1038 Princeton Dr Ste B, Marina Del Rey, CA 90292, USA"
+  },
+  {
+   "title": "This Time With Feeling \u2013 An EMDR Women's Dance Party",
+   "start": "2026-09-23T02:00:00Z",
+   "allDay": false,
+   "url": "https://luma.com/x6bqx9qg",
+   "location": "Primal Moves, 1038 Princeton Dr Ste B, Marina Del Rey, CA 90292, USA"
+  }
+ ]
+}

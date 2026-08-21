@@ -1,0 +1,188 @@
+<meta charset="utf-8">
+<title>Primal Venice Palette</title>
+<style>
+:root{--cream:#EDE8D2;--taupe:#DCCFB9;--navy:#132238;--forest:#303F16;--soft:#6B685A;--line:#D3CCB7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--navy);
+  font:400 16px/1.6 "Helvetica Neue",Helvetica,Inter,Arial,sans-serif;padding:clamp(28px,6vw,72px)}
+header{max-width:56em;margin:0 auto clamp(36px,6vw,70px)}
+h1{font-size:clamp(30px,5vw,52px);line-height:1.05;letter-spacing:-.02em;margin:0 0 14px}
+header p{color:var(--soft);max-width:44em;margin:0}
+section{max-width:1180px;margin:0 auto clamp(40px,6vw,72px)}
+h2{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--soft);
+  border-top:1px solid var(--line);padding-top:16px;margin:0 0 26px;font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:clamp(18px,2.4vw,30px)}
+figure{margin:0}
+.sw{height:132px;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(19,34,56,.13);display:flex;align-items:flex-end;justify-content:space-between;
+  padding:12px 14px;font-size:15px}
+figcaption h3{font-size:17px;margin:14px 0 4px;font-weight:500}
+code{font:500 14px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.06em;
+  cursor:pointer;color:var(--soft)}
+code:hover{color:var(--navy)}
+.meta{margin-top:10px}
+.v{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding:4px 9px;border-radius:2px;font-weight:500}
+.v.ok{background:#303F16;color:#fff}
+.v.warn{background:#DCCFB9;color:#5A4B2E;border:1px solid #B9A987}
+.v.no{background:transparent;color:var(--soft);border:1px solid var(--line)}
+.nums{display:flex;gap:16px;margin-top:11px;font-size:12px;color:var(--soft);flex-wrap:wrap}
+.nums b{color:var(--navy);font-weight:500}
+.alt{display:flex;gap:10px;align-items:center;margin-top:13px;padding-top:13px;border-top:1px solid var(--line)}
+.chip{width:26px;height:26px;border-radius:3px;flex:none}
+.alt b{font:500 13px/1.3 ui-monospace,Menlo,monospace;display:block}
+.alt span span,.alt div span{font-size:11px;color:var(--soft);display:block}
+footer{max-width:56em;margin:0 auto;padding-top:26px;border-top:1px solid var(--line);
+  font-size:14px;color:var(--soft)}
+@media (prefers-color-scheme:dark){}
+</style>
+<header>
+<h1>Colour palette<br>for Primal Venice</h1>
+<p>Every hex measured from Mickey's board, not eyeballed. The number that matters is
+<b>contrast on cream</b> &mdash; anything under 4.5:1 can't carry body text, so where a colour
+is too light I've darkened it along its own hue until it clears. Click a hex to copy it.
+The two blues are on the board but excluded from the website.</p>
+</header>
+<section><h2>Neutrals — the grounds</h2><div class="grid"><figure>
+      <div class="sw" style="background:#EDE8D2"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Cream</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#EDE8D2')">#EDE8D2</code>
+        <div class="meta"><span class="v no">Decorative only</span></div>
+        <div class="nums"><span>on cream <b>1.00</b></span><span>white on it <b>1.23</b></span></div>
+        
+      </figcaption>
+    </figure><figure>
+      <div class="sw" style="background:#DCCFB9"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Taupe</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#DCCFB9')">#DCCFB9</code>
+        <div class="meta"><span class="v no">Decorative only</span></div>
+        <div class="nums"><span>on cream <b>1.25</b></span><span>white on it <b>1.54</b></span></div>
+        
+      </figcaption>
+    </figure><figure>
+      <div class="sw" style="background:#B0AB94"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Sage grey</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#B0AB94')">#B0AB94</code>
+        <div class="meta"><span class="v no">Decorative only</span></div>
+        <div class="nums"><span>on cream <b>1.88</b></span><span>white on it <b>2.31</b></span></div>
+        <div class="alt"><span class="chip" style="background:#6B685A"></span>
+        <div><b>#6B685A</b><span>text variant &middot; 4.55:1</span></div></div>
+      </figcaption>
+    </figure></div></section><section><h2>Dark neutral</h2><div class="grid"><figure>
+      <div class="sw" style="background:#132238"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Navy</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#132238')">#132238</code>
+        <div class="meta"><span class="v ok">Text safe on cream</span></div>
+        <div class="nums"><span>on cream <b>13.00</b></span><span>white on it <b>15.99</b></span></div>
+        
+      </figcaption>
+    </figure></div></section><section><h2>Mains</h2><div class="grid"><figure>
+      <div class="sw" style="background:#CD826A"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Blush</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#CD826A')">#CD826A</code>
+        <div class="meta"><span class="v no">Decorative only</span></div>
+        <div class="nums"><span>on cream <b>2.44</b></span><span>white on it <b>3.00</b></span></div>
+        <div class="alt"><span class="chip" style="background:#8F5A4A"></span>
+        <div><b>#8F5A4A</b><span>text variant &middot; 4.58:1</span></div></div>
+      </figcaption>
+    </figure><figure>
+      <div class="sw" style="background:#C16838"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Orange</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#C16838')">#C16838</code>
+        <div class="meta"><span class="v warn">Headings 24px+ only</span></div>
+        <div class="nums"><span>on cream <b>3.22</b></span><span>white on it <b>3.96</b></span></div>
+        <div class="alt"><span class="chip" style="background:#9E552D"></span>
+        <div><b>#9E552D</b><span>text variant &middot; 4.50:1</span></div></div>
+      </figcaption>
+    </figure><figure>
+      <div class="sw" style="background:#A68460"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Mushroom</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#A68460')">#A68460</code>
+        <div class="meta"><span class="v no">Decorative only</span></div>
+        <div class="nums"><span>on cream <b>2.80</b></span><span>white on it <b>3.45</b></span></div>
+        <div class="alt"><span class="chip" style="background:#7C6348"></span>
+        <div><b>#7C6348</b><span>text variant &middot; 4.57:1</span></div></div>
+      </figcaption>
+    </figure><figure>
+      <div class="sw" style="background:#888151"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Olive</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#888151')">#888151</code>
+        <div class="meta"><span class="v warn">Headings 24px+ only</span></div>
+        <div class="nums"><span>on cream <b>3.22</b></span><span>white on it <b>3.96</b></span></div>
+        <div class="alt"><span class="chip" style="background:#6F6942"></span>
+        <div><b>#6F6942</b><span>text variant &middot; 4.52:1</span></div></div>
+      </figcaption>
+    </figure><figure>
+      <div class="sw" style="background:#453A1D"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Dark olive</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#453A1D')">#453A1D</code>
+        <div class="meta"><span class="v ok">Text safe on cream</span></div>
+        <div class="nums"><span>on cream <b>9.10</b></span><span>white on it <b>11.19</b></span></div>
+        
+      </figcaption>
+    </figure><figure>
+      <div class="sw" style="background:#303F16"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Forest</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#303F16')">#303F16</code>
+        <div class="meta"><span class="v ok">Text safe on cream</span></div>
+        <div class="nums"><span>on cream <b>9.24</b></span><span>white on it <b>11.36</b></span></div>
+        
+      </figcaption>
+    </figure><figure>
+      <div class="sw" style="background:#B9B784"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Light sage</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#B9B784')">#B9B784</code>
+        <div class="meta"><span class="v no">Decorative only</span></div>
+        <div class="nums"><span>on cream <b>1.68</b></span><span>white on it <b>2.07</b></span></div>
+        <div class="alt"><span class="chip" style="background:#6B6A4C"></span>
+        <div><b>#6B6A4C</b><span>text variant &middot; 4.50:1</span></div></div>
+      </figcaption>
+    </figure><figure>
+      <div class="sw" style="background:#9F663A"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Rust</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#9F663A')">#9F663A</code>
+        <div class="meta"><span class="v warn">Headings 24px+ only</span></div>
+        <div class="nums"><span>on cream <b>3.85</b></span><span>white on it <b>4.73</b></span></div>
+        <div class="alt"><span class="chip" style="background:#905C34"></span>
+        <div><b>#905C34</b><span>text variant &middot; 4.53:1</span></div></div>
+      </figcaption>
+    </figure><figure>
+      <div class="sw" style="background:#945A38"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Brown</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#945A38')">#945A38</code>
+        <div class="meta"><span class="v ok">Text safe on cream</span></div>
+        <div class="nums"><span>on cream <b>4.52</b></span><span>white on it <b>5.56</b></span></div>
+        
+      </figcaption>
+    </figure></div></section><section><h2>Accents</h2><div class="grid"><figure>
+      <div class="sw" style="background:#CE9C3B"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Gold</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#CE9C3B')">#CE9C3B</code>
+        <div class="meta"><span class="v no">Decorative only</span></div>
+        <div class="nums"><span>on cream <b>2.02</b></span><span>white on it <b>2.49</b></span></div>
+        <div class="alt"><span class="chip" style="background:#836325"></span>
+        <div><b>#836325</b><span>text variant &middot; 4.52:1</span></div></div>
+      </figcaption>
+    </figure><figure>
+      <div class="sw" style="background:#AE411C"><span style="color:#fff">Aa</span><span style="color:#EDE8D2">&#9679;</span></div>
+      <figcaption>
+        <h3>Burnt red</h3>
+        <code onclick="navigator.clipboard&&navigator.clipboard.writeText('#AE411C')">#AE411C</code>
+        <div class="meta"><span class="v ok">Text safe on cream</span></div>
+        <div class="nums"><span>on cream <b>4.78</b></span><span>white on it <b>5.88</b></span></div>
+        
+      </figcaption>
+    </figure></div></section>
+<footer>Sampled 15 swatches &middot; contrast measured against the cream ground #EDE8D2 &middot; WCAG AA threshold 4.5:1 for body text, 3:1 for 24px+</footer>

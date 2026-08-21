@@ -1,0 +1,48 @@
+/* ==========================================================================
+   PRIMAL MOVES VENICE — BRAND PALETTE
+   Sampled from Mickey's "COLOUR PALETTE for Primal Venice" board.
+   Every hex below is the measured average of that circle's pixels.
+
+   The blues are recorded for completeness but are NOT used on the website.
+   ========================================================================== */
+
+:root{
+
+  /* --- NEUTRALS — the grounds ------------------------------------------ */
+  --pm-cream:        #EDE8D2;   /* default page ground */
+  --pm-taupe:        #DCCFB9;   /* alternate section ground */
+  --pm-sage-grey:    #B0AB94;   /* third tone — placeholders, panels */
+
+  /* --- DARK NEUTRAL ---------------------------------------------------- */
+  --pm-navy:         #132238;   /* 13.0:1 on cream — the body-copy colour */
+
+  /* --- MAINS ----------------------------------------------------------- */
+  --pm-blush:        #CD826A;
+  --pm-orange:       #C16838;
+  --pm-mushroom:     #A68460;
+  --pm-olive:        #888151;
+  --pm-dark-olive:   #453A1D;   /*  9.1:1 on cream */
+  --pm-forest:       #303F16;   /*  9.2:1 on cream */
+  --pm-light-sage:   #B9B784;
+  --pm-rust:         #9F663A;
+  --pm-brown:        #945A38;   /*  4.5:1 on cream */
+
+  /* --- ACCENTS --------------------------------------------------------- */
+  --pm-gold:         #CE9C3B;
+  --pm-burnt-red:    #AE411C;   /*  4.8:1 on cream */
+  /* Not used on the website — kept so the record is complete: */
+  /* --pm-steel-blue: #577C9F;  --pm-electric-blue: #030E9D;               */
+
+  /* --- TEXT-SAFE VARIANTS ----------------------------------------------
+     Same hue, darkened until they clear WCAG AA (4.5:1) on cream. Use
+     these whenever the colour carries WORDS at body size. The originals
+     above stay exactly as drawn for fills, rules, dots and photography. */
+  --pm-olive-txt:      #6F6942;
+  --pm-rust-txt:       #905C34;
+  --pm-orange-txt:     #9E552D;
+  --pm-gold-txt:       #836325;
+  --pm-blush-txt:      #8F5A4A;
+  --pm-mushroom-txt:   #7C6348;
+  --pm-light-sage-txt: #6B6A4C;
+  --pm-sage-grey-txt:  #6B685A;
+}

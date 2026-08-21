@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 <script src="../config.js"></script>
-<script src="../admin.js" defer></script>
+<script src="../admin.js?v=3" defer></script>
 </head>
 <body>
 
@@ -68,131 +68,27 @@
       <button role="tab" id="tab-compare" aria-controls="view-compare" aria-selected="false">Compare all</button>
     </div>
 
-<!-- ===== COMPARE VIEW — the software-pricing-table read ===== -->
+<!-- ===== COMPARE VIEW =====
+     Columns run most-inclusive to least, and rows run most-universal to most
+     exclusive, so the ticks fade down and across instead of blinking on and
+     off. Grouped so the eye reads within a band, not across eight rows.
+     ========================================================================= -->
 <div class="mem-view" id="view-compare" hidden>
-  <p class="lede" style="margin-bottom:clamp(24px,3.5vw,38px)">Everything side by side. Scroll sideways on a phone &mdash; the plan names stay put.</p>
+  <p class="lede" style="margin-bottom:clamp(24px,3.5vw,38px)">Everything side by side. Scroll sideways on a phone &mdash; the feature names stay put.</p>
   <div class="cmp-scroll">
     <table class="cmp">
       <caption class="sr-only">Membership comparison</caption>
       <thead>
-        <tr>
-          <th scope="col" class="cmp-rowhead"><span class="sr-only">Feature</span></th>
-          <th scope="col"><span class="cmp-name">Day Pass</span><span class="cmp-price">$40</span><span class="cmp-per">one day</span></th>
-          <th scope="col"><span class="cmp-name">2 Weeks</span><span class="cmp-price">$69</span><span class="cmp-per">intro trial</span></th>
-          <th scope="col"><span class="cmp-name">Weekend Warrior</span><span class="cmp-price">$120</span><span class="cmp-per">per month</span></th>
-          <th scope="col"><span class="cmp-name">The Explorer</span><span class="cmp-price">$200</span><span class="cmp-per">per month</span></th>
-          <th scope="col" class="is-hero"><span class="cmp-flag">Most popular</span><span class="cmp-name">The Primal</span><span class="cmp-price">$315</span><span class="cmp-per">per month</span></th>
-          <th scope="col"><span class="cmp-name">The Nomad</span><span class="cmp-price">$375</span><span class="cmp-per">one month</span></th>
-          <th scope="col"><span class="cmp-name">Kids&rsquo; Primal</span><span class="cmp-price">$125</span><span class="cmp-per">per month</span></th>
-          <th scope="col"><span class="cmp-name">Digital</span><span class="cmp-price">$14</span><span class="cmp-per">per month</span></th>
-        </tr>
+        <tr><th scope="col" class="cmp-rowhead"><span class="sr-only">Feature</span></th><th scope="col" class="is-hero"><span class="cmp-flag">Most popular</span><span class="cmp-name">The Primal</span><span class="cmp-price">$315</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">The Nomad</span><span class="cmp-price">$375</span><span class="cmp-per">one month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">2 Weeks</span><span class="cmp-price">$69</span><span class="cmp-per">intro trial</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Day Pass</span><span class="cmp-price">$40</span><span class="cmp-per">one day</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">The Explorer</span><span class="cmp-price">$200</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Weekend Warrior</span><span class="cmp-price">$120</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Kids&rsquo; Primal</span><span class="cmp-price">$125</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Digital</span><span class="cmp-price">$14</span><span class="cmp-per">per month</span></th></tr>
       </thead>
-      <tbody>
-        <tr>
-          <th scope="row">Classes</th>
-          <td data-l="Day Pass">One</td>
-          <td data-l="2 Weeks"><b>Unlimited</b></td>
-          <td data-l="Weekend Warrior">4 a month</td>
-          <td data-l="The Explorer">8 a month</td>
-          <td data-l="The Primal" class="is-hero"><b>Unlimited</b></td>
-          <td data-l="The Nomad"><b>Unlimited</b></td>
-          <td data-l="Kids&rsquo; Primal">Kids&rsquo; classes</td>
-          <td data-l="Digital">Online only</td>
-        </tr>
-        <tr>
-          <th scope="row">Sauna &amp; cold plunge</th>
-          <td data-l="Day Pass" class="y">Yes</td>
-          <td data-l="2 Weeks" class="y">Yes</td>
-          <td data-l="Weekend Warrior" class="y">On pass days</td>
-          <td data-l="The Explorer" class="y">On class days</td>
-          <td data-l="The Primal" class="y is-hero">Unlimited</td>
-          <td data-l="The Nomad" class="y">Unlimited</td>
-          <td data-l="Kids&rsquo; Primal" class="n">&mdash;</td>
-          <td data-l="Digital" class="n">&mdash;</td>
-        </tr>
-        <tr>
-          <th scope="row">Gym floor</th>
-          <td data-l="Day Pass" class="y">Yes</td>
-          <td data-l="2 Weeks" class="y">Yes</td>
-          <td data-l="Weekend Warrior" class="y">On pass days</td>
-          <td data-l="The Explorer" class="y">On class days</td>
-          <td data-l="The Primal" class="y is-hero">Yes</td>
-          <td data-l="The Nomad" class="y">Yes</td>
-          <td data-l="Kids&rsquo; Primal" class="n">&mdash;</td>
-          <td data-l="Digital" class="n">&mdash;</td>
-        </tr>
-        <tr>
-          <th scope="row">Tea ceremony</th>
-          <td data-l="Day Pass" class="y">Yes</td>
-          <td data-l="2 Weeks" class="y">Yes</td>
-          <td data-l="Weekend Warrior" class="n">&mdash;</td>
-          <td data-l="The Explorer" class="n">&mdash;</td>
-          <td data-l="The Primal" class="y is-hero">Morning, included</td>
-          <td data-l="The Nomad" class="y">Morning, included</td>
-          <td data-l="Kids&rsquo; Primal" class="n">&mdash;</td>
-          <td data-l="Digital" class="n">&mdash;</td>
-        </tr>
-        <tr>
-          <th scope="row">Cowork &amp; wifi</th>
-          <td data-l="Day Pass" class="y">Yes</td>
-          <td data-l="2 Weeks" class="y">Yes</td>
-          <td data-l="Weekend Warrior" class="y">On pass days</td>
-          <td data-l="The Explorer" class="y">On class days</td>
-          <td data-l="The Primal" class="y is-hero">Yes</td>
-          <td data-l="The Nomad" class="y">Yes</td>
-          <td data-l="Kids&rsquo; Primal" class="n">&mdash;</td>
-          <td data-l="Digital" class="n">&mdash;</td>
-        </tr>
-        <tr>
-          <th scope="row">Online library</th>
-          <td data-l="Day Pass" class="n">&mdash;</td>
-          <td data-l="2 Weeks" class="n">&mdash;</td>
-          <td data-l="Weekend Warrior" class="n">&mdash;</td>
-          <td data-l="The Explorer" class="n">&mdash;</td>
-          <td data-l="The Primal" class="n is-hero">&mdash;</td>
-          <td data-l="The Nomad" class="n">&mdash;</td>
-          <td data-l="Kids&rsquo; Primal" class="n">&mdash;</td>
-          <td data-l="Digital" class="y">Everything</td>
-        </tr>
-        <tr>
-          <th scope="row">Commitment</th>
-          <td data-l="Day Pass">None</td>
-          <td data-l="2 Weeks">None</td>
-          <td data-l="Weekend Warrior">3 months</td>
-          <td data-l="The Explorer">3 months</td>
-          <td data-l="The Primal" class="is-hero">3 months</td>
-          <td data-l="The Nomad"><b>None</b></td>
-          <td data-l="Kids&rsquo; Primal">3 months</td>
-          <td data-l="Digital">None</td>
-        </tr>
-        <tr>
-          <th scope="row">Best for</th>
-          <td data-l="Day Pass">Trying it once</td>
-          <td data-l="2 Weeks">Finding out properly</td>
-          <td data-l="Weekend Warrior">Once a week</td>
-          <td data-l="The Explorer">Twice a week</td>
-          <td data-l="The Primal" class="is-hero">Making it a habit</td>
-          <td data-l="The Nomad">Visitors &amp; short stays</td>
-          <td data-l="Kids&rsquo; Primal">Ages 5&ndash;12</td>
-          <td data-l="Digital">Training from anywhere</td>
-        </tr>
-        <tr class="cmp-cta">
-          <th scope="row"><span class="sr-only">Sign up</span></th>
-          <td data-l="Day Pass"><a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">Book</a></td>
-          <td data-l="2 Weeks"><a class="btn" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">Start</a></td>
-          <td data-l="Weekend Warrior"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td>
-          <td data-l="The Explorer"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td>
-          <td data-l="The Primal" class="is-hero"><a class="btn sage" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td>
-          <td data-l="The Nomad"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td>
-          <td data-l="Kids&rsquo; Primal"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td>
-          <td data-l="Digital"><a class="btn" data-pm-link="digitalStudioUrl" target="_blank" rel="noopener">Start</a></td>
-        </tr>
+      <tbody><tr class="cmp-group"><th scope="colgroup" colspan="9">What you get</th></tr><tr><th scope="row">Classes</th><td data-l="The Primal" class="is-hero"><b>Unlimited</b></td><td data-l="The Nomad"><b>Unlimited</b></td><td data-l="2 Weeks"><b>Unlimited</b></td><td data-l="Day Pass">One</td><td data-l="The Explorer">8 a month</td><td data-l="Weekend Warrior">4 a month</td><td data-l="Kids&rsquo; Primal">Kids&rsquo; classes</td><td data-l="Digital">Online only</td></tr><tr><th scope="row">Sauna &amp; cold plunge</th><td data-l="The Primal" class="y is-hero">Unlimited</td><td data-l="The Nomad" class="y">Unlimited</td><td data-l="2 Weeks" class="y">Yes</td><td data-l="Day Pass" class="y">Yes</td><td data-l="The Explorer" class="y">On class days</td><td data-l="Weekend Warrior" class="y">On pass days</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital" class="n">&mdash;</td></tr><tr><th scope="row">Gym floor</th><td data-l="The Primal" class="y is-hero">Yes</td><td data-l="The Nomad" class="y">Yes</td><td data-l="2 Weeks" class="y">Yes</td><td data-l="Day Pass" class="y">Yes</td><td data-l="The Explorer" class="y">On class days</td><td data-l="Weekend Warrior" class="y">On pass days</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital" class="n">&mdash;</td></tr><tr><th scope="row">Cowork &amp; wifi</th><td data-l="The Primal" class="y is-hero">Yes</td><td data-l="The Nomad" class="y">Yes</td><td data-l="2 Weeks" class="y">Yes</td><td data-l="Day Pass" class="y">Yes</td><td data-l="The Explorer" class="y">On class days</td><td data-l="Weekend Warrior" class="y">On pass days</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital" class="n">&mdash;</td></tr><tr><th scope="row">Tea ceremony</th><td data-l="The Primal" class="y is-hero">Morning, included</td><td data-l="The Nomad" class="y">Morning, included</td><td data-l="2 Weeks" class="y">Yes</td><td data-l="Day Pass" class="y">Yes</td><td data-l="The Explorer" class="n">&mdash;</td><td data-l="Weekend Warrior" class="n">&mdash;</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital" class="n">&mdash;</td></tr><tr><th scope="row">Online library</th><td data-l="The Primal" class="n is-hero">&mdash;</td><td data-l="The Nomad" class="n">&mdash;</td><td data-l="2 Weeks" class="n">&mdash;</td><td data-l="Day Pass" class="n">&mdash;</td><td data-l="The Explorer" class="n">&mdash;</td><td data-l="Weekend Warrior" class="n">&mdash;</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital" class="y">Everything</td></tr><tr class="cmp-group"><th scope="colgroup" colspan="9">The details</th></tr><tr><th scope="row">Commitment</th><td data-l="The Primal" class="is-hero">3 months</td><td data-l="The Nomad"><b>None</b></td><td data-l="2 Weeks">None</td><td data-l="Day Pass">None</td><td data-l="The Explorer">3 months</td><td data-l="Weekend Warrior">3 months</td><td data-l="Kids&rsquo; Primal">3 months</td><td data-l="Digital">None</td></tr><tr><th scope="row">Best for</th><td data-l="The Primal" class="is-hero">Making it a habit</td><td data-l="The Nomad">Visitors &amp; short stays</td><td data-l="2 Weeks">Finding out properly</td><td data-l="Day Pass">Trying it once</td><td data-l="The Explorer">Twice a week</td><td data-l="Weekend Warrior">Once a week</td><td data-l="Kids&rsquo; Primal">Ages 5&ndash;12</td><td data-l="Digital">Training anywhere</td></tr>
+        <tr class="cmp-cta"><th scope="row"><span class="sr-only">Sign up</span></th><td data-l="The Primal" class="is-hero"><a class="btn sage" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="The Nomad"><a class="btn " data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="2 Weeks"><a class="btn " data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">Start</a></td><td data-l="Day Pass"><a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">Book</a></td><td data-l="The Explorer"><a class="btn " data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="Weekend Warrior"><a class="btn " data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="Kids&rsquo; Primal"><a class="btn " data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="Digital"><a class="btn " data-pm-link="digitalStudioUrl" target="_blank" rel="noopener">Start</a></td></tr>
       </tbody>
     </table>
   </div>
   <p class="note" style="margin-top:22px">
     <span class="pending">To confirm</span>
-    Tea ceremony and cowork on the day pass need the Mindbody product to match. Guest passes, freeze policy and the $100 early-cancel fee aren&rsquo;t shown yet &mdash; say the word and they become rows.
+    Tea ceremony and cowork on the day pass need the Mindbody product to match. Guest passes, the freeze policy and the $100 early-cancel fee aren&rsquo;t rows yet &mdash; say the word.
   </p>
 </div>
 

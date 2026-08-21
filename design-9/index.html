@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="config.js"></script>
-<script src="admin.js" defer></script>
+<script src="admin.js?v=3" defer></script>
 </head>
 <body>
 
@@ -90,7 +90,7 @@
 <section class="alt pad-sm">
   <div class="wrap-wide">
     <div class="split" style="align-items:center">
-      <div class="photo-slot"><span>Homepage &middot; family &middot; kids on the floor</span></div>
+      <div class="photo-slot" data-pm-photo="home.family"><span>Homepage &middot; family &middot; kids on the floor</span></div>
       <div>
         <div class="kicker">bring your family</div>
         <h2 class="display-sm" style="max-width:18ch;margin-bottom:22px">the kids train<br><span class="ed-it">here too</span></h2>
@@ -143,28 +143,39 @@
       <div>
         <p style="font-size:clamp(17px,1.6vw,20px);line-height:1.7">It isn&rsquo;t that the workout is different. It&rsquo;s that you know six people in the room, and one of them saved you a spot.</p>
         <p style="margin-top:18px">Most weeks the floor turns into something else in the evening — a workshop, a tea ceremony, a supper, live music. Those are open to day-pass holders too.</p>
-        <div class="cta-row" style="margin-top:28px">
-          <a class="btn on-dark" href="events/">the full calendar</a>
-        </div>
       </div>
       <img data-pm-photo="home.third-place" src="../assets/photos/sauna-laughing.jpg" alt="Members laughing in the sauna">
     </div>
 
-    <!-- Homepage teaser: the next few events only. The full month calendar
-         lives on /events/ — this is a taste, not the tool. -->
-    <div data-pm-calendar data-pm-calendar-mode="list" data-pm-calendar-limit="4"
-         data-pm-calendar-src="events.json" style="margin-top:clamp(38px,5vw,64px)"></div>
+    <!-- One month beside the next four events. The full three-month grid
+         lives on /events/ — this is the taste, not the tool. -->
+    <div class="home-cal" style="margin-top:clamp(38px,5vw,64px)">
+      <div data-pm-calendar data-pm-calendar-src="events.json" data-pm-calendar-months="1"></div>
+      <div>
+        <div data-pm-calendar-list></div>
+        <div class="cta-row" style="margin-top:24px">
+          <a class="btn on-dark" href="events/">the full calendar</a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- 7 · COMING BACK — membership as consequence, never as the ask -->
-<section class="alt">
-  <div class="wrap">
-    <div class="kicker">if you like it here</div>
-    <h2 class="display-sm" style="max-width:20ch;margin-bottom:26px">come often enough<br>and it gets <span class="ed-it">cheaper</span></h2>
-    <p style="font-size:clamp(17px,1.6vw,20px);line-height:1.7">That&rsquo;s the only real reason to take a membership. If a day here turns into a habit, there are better ways to pay for it.</p>
-    <div class="cta-row" style="margin-top:30px">
-      <a class="btn" href="memberships/">see the options</a>
+<section class="alt pad-sm">
+  <div class="wrap-wide">
+    <div class="band">
+      <div>
+        <div class="kicker">if you like it here</div>
+        <h2 class="display-sm" style="max-width:18ch;margin:0">come often enough<br>and it gets <span class="ed-it">cheaper</span></h2>
+      </div>
+      <div>
+        <p class="lede" style="margin:0 0 22px">That&rsquo;s the only real reason to take a membership. If a day here turns into a habit, there are better ways to pay for it &mdash; starting at $120 a month.</p>
+        <div class="cta-row">
+          <a class="btn" href="memberships/">see the options</a>
+          <a class="btn secondary" href="memberships/#compare">compare them all</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>

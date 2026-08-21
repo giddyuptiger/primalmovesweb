@@ -23,11 +23,20 @@ ground it sits on.
 
 A panel for trying colours and photographs on the live pages without touching
 code. Passphrase `primal` (it's in the page — a courtesy gate, not a lock).
+The **EDIT** tab on the right edge opens and closes it; the page and the nav
+both narrow so nothing sits underneath it.
 
 **Colour** assigns any brand colour to any role and warns when a choice drops
-below 4.5:1. **Photos** puts a *Swap* button on every image; pick from the
-36-shot library or upload one to preview. **Copy config** hands you the exact
-CSS and `config.js` blocks to paste.
+below 4.5:1.
+
+**Photos** — while the panel is open every image carries **Swap** and
+**Focus**. Swap picks from the 36-shot library or previews a local upload;
+empty slots show **+ Add photo** and become real images when filled. Focus is
+the one that fixes badly-cropped heroes: click the part of the picture that
+should stay in frame and it sets `object-position` for that slot, so the crop
+holds its subject as the frame changes shape.
+
+**Copy config** hands you the exact CSS, `photos` and `photoFocus` blocks.
 
 It saves nothing to the site — a static page has no server to write to. Every
 change lives in that person's browser until the copied config is pasted into

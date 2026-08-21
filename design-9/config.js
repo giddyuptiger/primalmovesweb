@@ -70,6 +70,11 @@ window.PM_CONFIG = {
      Slot names follow Miki's `page - section - slot` convention. The full
      list, with what each shot is doing, is in assets/photos/PHOTOS.md.
      Anything not listed here keeps whatever the page already has.        */
+  // Focal point per slot — where the crop should hold as the frame changes
+  // shape. "50% 50%" is the centre; "50% 30%" pulls the crop upward, which is
+  // usually what a photo of a face wants. Set these in the /admin studio.
+  photoFocus: {},
+
   photos: {
     "home.hero":              "joy-laughing.jpg",
     "home.what-is-primal":    "collective-crawl.jpg",
@@ -305,13 +310,24 @@ window.PM_CONFIG = {
         var ap = h < 12 ? "am" : "pm"; h = h % 12 || 12;
         return h + (m === "00" ? "" : ":" + m) + ap;
       }
-      var rows = H.map(function (r) {
-        var is = r.day === dow;
-        var span = r.open === r.close ? "closed" : pretty(r.open) + "\u2013" + pretty(r.close);
-        return '<div class="hr-row' + (is ? " is-today" : "") + '">' +
-               '<span class="hr-day">' + r.day + "</span>" +
-               '<span class="hr-time">' + span + "</span></div>";
+      // Collapse runs of identical days: Mon-Fri / Sat-Sun rather than seven
+      // near-identical lines. Simple beats complete here.
+      function span(r) { return r.open === r.close ? "Closed" : pretty(r.open) + "\u2013" + pretty(r.close); }
+      var groups = [];
+      H.forEach(function (r) {
+        var last = groups[groups.length - 1];
+        if (last && span(last.rows[0]) === span(r)) last.rows.push(r);
+        else groups.push({ rows: [r] });
+      });
+      var rows = groups.map(function (g) {
+        var first = g.rows[0], lastR = g.rows[g.rows.length - 1];
+        var label = g.rows.length === 1 ? first.day : first.day + "\u2013" + lastR.day;
+        var isNow = g.rows.some(function (r) { return r.day === dow; });
+        return '<div class="hr-row' + (isNow ? " is-today" : "") + '">' +
+               '<span class="hr-day">' + label + "</span>" +
+               '<span class="hr-time">' + span(first) + "</span></div>";
       }).join("");
+
       el.innerHTML = '<div class="hr-status ' + (open ? "open" : "shut") + '">' +
         (open ? "Open now" : "Closed now") +
         (todayRow && todayRow.open !== todayRow.close
@@ -338,6 +354,12 @@ window.PM_CONFIG = {
           " not found in assets/photos/. Keeping the existing image.");
       };
       probe.src = next;
+    });
+
+    // data-pm-photo-focus / config.photoFocus → object-position per slot
+    document.querySelectorAll("[data-pm-photo]").forEach(function (el) {
+      var f = (C.photoFocus || {})[el.getAttribute("data-pm-photo")];
+      if (f) el.style.objectPosition = f;
     });
 
     // data-pm-calendar → our own month grid, built from events.json.

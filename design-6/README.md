@@ -15,8 +15,8 @@ structure and visual territory.
 
 | | |
 |---|---|
-| **Display / UI** | Archivo (contemporary grotesque, 700 for oversized type) |
-| **Editorial** | Instrument Serif, roman + italic — used for emphasis inside display lines, numbers, times, prices, and pull quotes |
+| **Display / UI** | Helvetica Neue (700 for oversized type; Inter is the webfont fallback on non-Apple devices) |
+| **Editorial** | Helvetica Neue italic — used for emphasis inside display lines, numbers, times, prices, and pull quotes |
 | **Annotation** | Caveat — the handwritten asides |
 | **Palette** | Warm off-white `#F4F1EA` · black `#100F0C` · earthy neutrals (clay `#B4643C`, moss, sand) |
 | **Accent** | Chartreuse `#D8FF37`, used selectively — the primary trial CTA, "Start here" tags, one full-bleed statement per page at most |

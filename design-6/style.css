@@ -3,8 +3,8 @@
    Visual territory: EDITORIAL ATHLETICISM
    physical · fashionable · culturally aware · playful · slightly raw
 
-   Type      Instrument Serif (expressive editorial) + Archivo (contemporary
-             grotesque) + Caveat (handwritten annotation)
+   Type      Helvetica Neue across the board (Inter is the webfont fallback
+             for non-Apple devices) + Caveat for handwritten pointers only
    Colour    warm off-white, black, earthy neutrals, chartreuse used selectively
    Devices   oversized type over photography, cropped bodies, numbers, arrows,
              handwritten annotation, collage
@@ -30,8 +30,8 @@
   --oxblood:#6B2028;
   --cream:#EFE6D5;
 
-  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
-  --sans:"Archivo",-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Helvetica Neue",Helvetica,"Inter",Arial,sans-serif;
+  --sans:"Helvetica Neue",Helvetica,"Inter",Arial,sans-serif;
   --hand:"Caveat","Bradley Hand",cursive;
 
   --maxw:1320px;
@@ -63,8 +63,8 @@ a{color:inherit;text-decoration:none}
   font-size:clamp(34px,6.4vw,86px);line-height:.9;
   letter-spacing:-.03em;text-transform:uppercase;
 }
-.ed{font-family:var(--serif);font-weight:400;text-transform:none;letter-spacing:-.01em}
-.ed-it{font-family:var(--serif);font-style:italic;font-weight:400;text-transform:none}
+.ed{font-family:var(--sans);font-weight:400;text-transform:none;letter-spacing:-.01em}
+.ed-it{font-family:var(--sans);font-style:italic;font-weight:300;text-transform:none}
 h1,h2,h3,h4{font-weight:700;letter-spacing:-.02em;line-height:1.02}
 h2{font-size:clamp(30px,4.4vw,60px);text-transform:uppercase}
 h3{font-size:clamp(20px,2.2vw,28px);text-transform:uppercase;letter-spacing:-.015em}
@@ -399,7 +399,7 @@ section.ink .embed-placeholder{border-color:rgba(255,255,255,.3);background:rgba
   --mid:#7A6552; --line:#D4C4A8; --acid:var(--mustard);
   background:var(--cream);color:#2A1416;
 }
-.cherish-scope .hand{color:var(--oxblood)}
+.cherish-scope .hand{font-family:var(--hand);font-size:clamp(19px,2.1vw,27px);line-height:1.2;color:var(--clay);transform:rotate(-2.2deg);display:inline-block}
 .cherish-scope .btn{background:var(--oxblood);border-color:var(--oxblood);color:var(--cream)}
 .cherish-scope .btn:hover{box-shadow:4px 4px 0 #2A1416}
 .cherish-scope .btn.secondary{background:transparent;color:#2A1416;border-color:#2A1416}

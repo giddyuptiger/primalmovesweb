@@ -7,8 +7,9 @@
    with chartreuse, this speaks in lowercase light type on warm cream, with
    sage and clay, and separates things with air rather than rules.
 
-   Type      Hanken Grotesk 300/400 (lowercase headings, open tracking)
-             Newsreader light + italic (numbers, prices, pull quotes)
+   Type      Helvetica Neue 300/400 (lowercase headings, open tracking);
+             Inter is the webfont fallback for non-Apple devices.
+             Caveat for handwritten pointers only.
    Colour    warm cream, soft charcoal, sage, clay — no pure black, no neon
    Devices   generous margins, full-bleed photography, soft corners,
              text-link CTAs, one idea per screen
@@ -33,8 +34,9 @@
   --oxblood:#7A3A34;
   --cherish-paper:#F3E9D9;
 
-  --sans:"Hanken Grotesk",-apple-system,"Helvetica Neue",Arial,sans-serif;
-  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"Helvetica Neue",Helvetica,"Inter",Arial,sans-serif;
+  --serif:"Helvetica Neue",Helvetica,"Inter",Arial,sans-serif;
+  --hand:"Caveat","Bradley Hand",cursive;
 
   --maxw:1140px;          /* narrower than design-6 — more margin */
   --gut:clamp(22px,6vw,84px);
@@ -67,7 +69,7 @@ a{color:inherit;text-decoration:none}
   font-size:clamp(30px,4.6vw,58px);line-height:1.08;
   letter-spacing:-.008em;text-transform:lowercase;
 }
-.ed,.ed-it{font-family:var(--serif);font-weight:300;text-transform:none}
+.ed,.ed-it{font-family:var(--sans);font-weight:300;text-transform:none;letter-spacing:-.01em}
 .ed-it{font-style:italic}
 h1,h2,h3,h4{font-weight:300;color:var(--ink);letter-spacing:-.006em;line-height:1.12}
 h2{font-size:clamp(26px,3.4vw,44px);text-transform:lowercase}
@@ -79,9 +81,9 @@ p{max-width:36em}
   color:var(--soft);margin-bottom:22px;
 }
 /* no leading rule — air does the separating here */
-.aside{font-family:var(--serif);font-style:italic;font-size:clamp(16px,1.5vw,19px);
+.aside{font-family:var(--sans);font-style:italic;font-size:clamp(16px,1.5vw,19px);
   line-height:1.6;color:var(--clay);max-width:30em}
-.hand{font-family:var(--serif);font-style:italic;color:var(--clay);font-size:18px}
+.hand{font-family:var(--hand);font-size:clamp(19px,2.1vw,27px);line-height:1.2;color:var(--clay);transform:rotate(-2.2deg);display:inline-block}
 
 /* --------------------------------------------------------------- NAV ----- */
 header.site{background:var(--paper);position:sticky;top:0;z-index:60}
@@ -279,7 +281,7 @@ section.ink .cls{border-bottom-color:rgba(255,255,255,.14)}
 .plan ul li{font-size:15px;color:var(--mid);line-height:1.65;padding-left:16px;position:relative}
 .plan ul li::before{content:"";position:absolute;left:0;top:.72em;
   width:6px;height:1px;background:var(--sage)}
-.plan .fine{font-family:var(--serif);font-style:italic;font-size:14.5px;color:var(--soft);line-height:1.6}
+.plan .fine{font-family:var(--sans);font-style:italic;font-size:14.5px;color:var(--soft);line-height:1.6}
 .plan .btn{margin-top:14px;align-self:flex-start}
 
 .plan-more{margin-top:6px}
@@ -330,7 +332,7 @@ section.ink .cls{border-bottom-color:rgba(255,255,255,.14)}
 /* --------------------------------------------------------- EMBEDS -------- */
 .embed{border:1px solid var(--line);border-radius:var(--radius);background:var(--cream);overflow:hidden}
 .embed iframe{display:block;width:100%;border:0;min-height:760px}
-.embed-note{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--soft);
+.embed-note{font-family:var(--sans);font-style:italic;font-size:15px;color:var(--soft);
   margin-top:18px;max-width:42em;line-height:1.6}
 .embed-placeholder{border:1px solid var(--line);border-radius:var(--radius);
   background:var(--paper-2);padding:clamp(44px,7vw,84px) 30px;text-align:center}
@@ -397,7 +399,7 @@ section.ink .info-row .i-val{color:#C3BFB2}
 .faq .a{padding:0 0 28px;color:var(--mid);font-size:16px;line-height:1.75;max-width:50em}
 
 .note{border-left:1px solid var(--clay);padding:6px 0 6px 20px;
-  font-family:var(--serif);font-style:italic;font-size:15px;color:var(--soft);max-width:44em}
+  font-family:var(--sans);font-style:italic;font-size:15px;color:var(--soft);max-width:44em}
 .pending{display:inline-block;font-family:var(--sans);font-style:normal;
   font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
   color:var(--clay);border:1px solid var(--line);border-radius:100px;padding:3px 10px;margin-right:6px}

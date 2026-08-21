@@ -9,7 +9,7 @@ temperature.
 
 ## The idea — *quiet wellness*
 
-design-6 is **editorial athleticism**: bold uppercase Archivo, chartreuse, tight
+design-6 is **editorial athleticism**: bold uppercase Helvetica, chartreuse, tight
 hairline rules, editorial numbering, handwritten asides. It shouts, on purpose.
 
 design-7 is its deliberate inverse, taken from Moss Venice's wabi-sabi register:
@@ -18,9 +18,9 @@ speaks quietly and assumes you're not in a hurry.
 
 | | design-6 | design-7 |
 |---|---|---|
-| Display type | Archivo **700**, UPPERCASE, tight | Hanken Grotesk **300**, lowercase, open |
-| Editorial face | Instrument Serif | Newsreader (lighter, cooler) |
-| Annotation | Caveat handwriting | Newsreader italic — no handwriting |
+| Display type | Helvetica Neue **700**, UPPERCASE, tight | Helvetica Neue **300**, lowercase, open |
+| Editorial face | Helvetica Neue italic | Helvetica Neue light italic |
+| Annotation | Caveat handwriting | Caveat handwriting (one pointer, on Cherish) |
 | Ground | `#F4F1EA` off-white | `#F5F1EA` warm cream |
 | Dark sections | `#100F0C` near-black | `#2E332B` deep forest |
 | Accent | `#D8FF37` chartreuse | `#7C8471` sage + `#A87355` clay |
@@ -38,8 +38,8 @@ speaks quietly and assumes you're not in a hurry.
 - **The hero headline changed.** "MOVE LIKE YOU *mean* IT" is an
   editorial-athleticism line — it doesn't survive being whispered. Replaced with
   "a daily *movement* practice".
-- **Handwritten asides are gone**, replaced with serif italic. Caveat belongs to
-  design-6's register, not this one.
+- **Editorial asides are set in Helvetica light italic**, not a serif. The one
+  handwritten pointer (Cherish) stays in Caveat.
 - **Numbering removed** from the two-ways cards and the experience grid — those
   editorial `01 / 02` markers are a busy-ness device.
 - **The experience grid went from five dense tiles to a two-up with photography

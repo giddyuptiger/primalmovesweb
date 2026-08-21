@@ -346,6 +346,8 @@ window.PM_CONFIG = {
     document.querySelectorAll("[data-pm-calendar]").forEach(function (el) {
       var src = el.getAttribute("data-pm-calendar-src") || "events.json";
       var months = parseInt(el.getAttribute("data-pm-calendar-months") || "2", 10);
+      var mode = el.getAttribute("data-pm-calendar-mode") || "full";
+      var limit = parseInt(el.getAttribute("data-pm-calendar-limit") || "0", 10);
       el.classList.add("pm-cal");
       el.innerHTML = '<div class="pm-cal-loading">Loading events…</div>';
 
@@ -403,6 +405,7 @@ window.PM_CONFIG = {
         });
 
         var nowLa = la(new Date().toISOString());
+        if (limit) events = events.slice(0, limit);
         // Start at the current month, never earlier — and inside that month,
         // skip whole weeks that have already been and gone.
         var first = events[0]._la;
@@ -411,7 +414,9 @@ window.PM_CONFIG = {
           startY = first.y; startM = first.m;
         }
         var cursor = new Date(startY, startM, 1);
-        var html = '<div class="pm-cal-grid">';
+        var html = "";
+        if (mode === "list") months = 0;      // list-only: the homepage teaser
+        else html += '<div class="pm-cal-grid">';
 
         for (var m = 0; m < months; m++) {
           var y = cursor.getFullYear(), mo = cursor.getMonth();
@@ -453,7 +458,9 @@ window.PM_CONFIG = {
           html += "</div></div>";
           cursor.setMonth(cursor.getMonth() + 1);
         }
-        html += "</div>";
+        if (mode !== "list") html += "</div>";
+        if (mode === "list") el.classList.add("pm-cal-listonly");
+        var listTarget = document.querySelector("[data-pm-calendar-list]");
 
         html += '<ul class="pm-cal-list">';
         var MON_S = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -467,9 +474,58 @@ window.PM_CONFIG = {
                   '<span class="pm-time">' + time + "</span></a></li>";
         });
         html += "</ul>";
-        el.innerHTML = html;
+        if (listTarget) {
+          var split = html.indexOf('<ul class="pm-cal-list">');
+          el.innerHTML = html.slice(0, split);
+          listTarget.innerHTML = html.slice(split);
+          listTarget.classList.add("pm-cal-listwrap");
+        } else {
+          el.innerHTML = html;
+        }
       }
     });
+
+    // sticky nav: publish its real height so the body offset is exact, and
+    // flag the scrolled state for the shadow.
+    var hdr = document.querySelector("header.site");
+    if (hdr) {
+      var setH = function () {
+        document.documentElement.style.setProperty("--nav-h", hdr.offsetHeight + "px");
+      };
+      setH();
+      window.addEventListener("resize", setH);
+      var onScroll = function () {
+        hdr.classList.toggle("scrolled", window.scrollY > 12);
+      };
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+    }
+
+    // memberships: cards / compare toggle. The choice sticks in the URL so a
+    // link to #compare opens on the table.
+    var memTabs = document.querySelector(".mem-tabs");
+    if (memTabs) {
+      var views = { "tab-cards": "view-cards", "tab-compare": "view-compare" };
+      var show = function (tabId, push) {
+        Object.keys(views).forEach(function (t) {
+          var on = t === tabId;
+          var btn = document.getElementById(t), view = document.getElementById(views[t]);
+          if (!btn || !view) return;
+          btn.classList.toggle("on", on);
+          btn.setAttribute("aria-selected", on ? "true" : "false");
+          view.hidden = !on;
+        });
+        if (push) {
+          var h = tabId === "tab-compare" ? "#compare" : " ";
+          history.replaceState(null, "", h === " " ? location.pathname : h);
+        }
+      };
+      memTabs.addEventListener("click", function (e) {
+        var b = e.target.closest("button[role=tab]");
+        if (b) show(b.id, true);
+      });
+      show(location.hash === "#compare" ? "tab-compare" : "tab-cards", false);
+    }
 
     // mobile nav
     var toggle = document.querySelector(".nav-toggle");

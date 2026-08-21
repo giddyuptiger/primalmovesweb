@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 <script src="../config.js"></script>
+<script src="../admin.js" defer></script>
 </head>
 <body>
 
@@ -55,21 +56,31 @@
 
 <section class="pad-sm">
   <div class="wrap-wide">
-    <div class="section-head">
-      <div><div class="kicker">Upcoming</div><h2 class="display-sm">A room that<br><span class="ed-it">changes shape</span>.</h2></div>
-      <p class="lede" style="max-width:24em">Events are the front door for a lot of people. Come for a dinner, discover the practice later.</p>
-    </div>
-    <!-- Our own month grid, built from events.json — see tools/fetch_events.py.
-         Data comes from Luma's public ICS feed, so nothing here is hand-typed
-         and nothing appears on the site that isn't already in Luma. -->
-    <div data-pm-calendar data-pm-calendar-src="../events.json" data-pm-calendar-months="3"></div>
-    <p class="embed-note">Events are published through Luma and refresh automatically. <a data-pm-link="lumaPageUrl" target="_blank" rel="noopener" style="text-decoration:underline">See them on Luma &#8599;</a></p>
+    <!-- Two columns: the calendar holds the left edge and starts at the top;
+         the heading, the answer sentence and the list run down the right.
+         The heading says what the page IS — the poetic line is subordinate. -->
+    <div class="ev-layout">
+      <div class="ev-cal-col">
+        <!-- Month grid built from events.json — see tools/fetch_events.py.
+             Data is Luma's public ICS feed, so nothing here is hand-typed. -->
+        <div data-pm-calendar data-pm-calendar-src="../events.json" data-pm-calendar-months="3"></div>
+      </div>
 
-    <div class="cta-row" style="margin-top:26px">
-      <a class="btn" data-pm-link="lumaPageUrl" target="_blank" rel="noopener">Follow us on Luma ↗</a>
-      <a class="btn secondary" href="mailto:hello@venice.primalmoves.com?subject=Hosting%20an%20event%20at%20Primal%20Moves%20Venice">Host an event here</a>
+      <div class="ev-main">
+        <div class="kicker">What&rsquo;s on</div>
+        <h2 class="display-sm" style="margin-bottom:16px">Upcoming events</h2>
+        <p class="lede" style="margin-bottom:clamp(28px,4vw,42px)">A room that changes shape. Events are the front door for a lot of people &mdash; come for a dinner and discover the practice later. Most weeks there&rsquo;s something on, and some of it is free.</p>
+
+        <div data-pm-calendar-list></div>
+
+        <p class="embed-note" style="margin-top:22px">Published through Luma and refreshed automatically. <a data-pm-link="lumaPageUrl" target="_blank" rel="noopener" style="text-decoration:underline">See them on Luma &#8599;</a> Classes are booked separately &mdash; <a href="../classes/#schedule" style="text-decoration:underline">see the schedule</a>.</p>
+
+        <div class="cta-row" style="margin-top:26px">
+          <a class="btn" data-pm-link="lumaPageUrl" target="_blank" rel="noopener">Follow us on Luma &#8599;</a>
+          <a class="btn secondary" href="mailto:hello@venice.primalmoves.com?subject=Hosting%20an%20event%20at%20Primal%20Moves%20Venice">Host an event here</a>
+        </div>
+      </div>
     </div>
-    <p class="embed-note">Events are ticketed through Luma. Classes are booked separately — see the schedule.</p>
   </div>
 </section>
 
@@ -116,53 +127,34 @@
 <footer>
   <span class="foot-palm" aria-hidden="true"></span>
   <div class="wrap-wide">
-    <div class="foot-top">
-      <div class="foot-brand">
-        <div class="display-sm">Move<br><span class="ed-it">together.</span></div>
-        <p style="margin-top:20px;font-size:14.5px;color:#BAB6AA;max-width:24em">
-          A community wellness club built around a daily movement practice.<br>
-          <span data-pm-text="address1">1038 Princeton Dr, Ste B</span><br>
-          <span data-pm-text="address2">Marina del Rey, CA 90292</span><br>
-          <a data-pm-link="phoneHref" style="text-decoration:underline"><span data-pm-text="phone">(310) 800-7061</span></a>
+    <div class="foot-grid">
+
+      <div class="foot-id">
+        <a class="foot-brand-mark" href="../index.html">Primal Moves<span>Venice</span></a>
+      </div>
+
+      <div class="foot-block">
+        <h4>Find us</h4>
+        <p>
+          <a href="https://maps.google.com/?q=1038+Princeton+Dr+Ste+B,+Marina+del+Rey,+CA+90292" target="_blank" rel="noopener">
+            <span data-pm-text="address1">1038 Princeton Dr, Ste B</span><br>
+            <span data-pm-text="address2">Marina del Rey, CA 90292</span>
+          </a>
         </p>
+        <p style="margin-top:14px">
+          <a data-pm-link="phoneHref"><span data-pm-text="phone">(310) 800-7061</span></a>
+        </p>
+      </div>
+
+      <div class="foot-block">
+        <h4>Hours</h4>
         <div class="foot-hours" data-pm-hours></div>
       </div>
-      <div>
-        <h4>Practice</h4>
-        <ul>
-          <li><a href="../classes/#schedule">Schedule &amp; booking</a></li>
-          <li><a href="../classes/">Classes</a></li>
-          <li><a href="../memberships/">Memberships</a></li>
-          <li><a data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 Day Pass</a></li>
-          <li><a data-pm-link="digitalStudioUrl" target="_blank" rel="noopener">Digital Studio ↗</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Studio</h4>
-        <ul>
-          <li><a href="../practice/">Our Method</a></li>
-          <li><a href="../studio/#space">The space</a></li>
-          <li><a href="../studio/#teachers">Teachers</a></li>
-          <li><a href="../cherish/">Tea &amp; Cafe</a></li>
-          <li><a href="../events/">Events</a></li>
-          <li><a href="../partners/">Partners</a></li>
-          <li><a href="../shop/">Shop</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Connect</h4>
-        <ul>
-          <li><a href="../studio/#visit">Visit &amp; FAQs</a></li>
-          <li><a data-pm-link="instagramUrl" target="_blank" rel="noopener">@primalmovesvenice</a></li>
-          <li><a data-pm-link="appStoreUrl" target="_blank" rel="noopener">Get the app</a></li>
-          <li><a href="mailto:hello@venice.primalmoves.com">hello@venice.primalmoves.com</a></li>
-          <li><a data-pm-link="teacherTrainingUrl" target="_blank" rel="noopener">Teacher Training ↗</a></li>
-        </ul>
-      </div>
+
     </div>
     <div class="foot-bottom">
-      <div>© 2026 Primal Moves Venice · Part of Primal Moves — Ibiza · Barcelona · Lisbon · Venice</div>
-      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy</a> · <a href="https://primalmoves.com/terms/" target="_blank" rel="noopener">Terms</a></div>
+      <div>&copy; 2026 Primal Moves Venice &middot; Part of Primal Moves &mdash; Ibiza &middot; Barcelona &middot; Lisbon &middot; Venice</div>
+      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy</a> &middot; <a href="https://primalmoves.com/terms/" target="_blank" rel="noopener">Terms</a> &middot; <a data-pm-link="instagramUrl" target="_blank" rel="noopener">@primalmovesvenice</a></div>
     </div>
   </div>
 </footer>

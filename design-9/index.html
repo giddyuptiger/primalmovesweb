@@ -11,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="config.js"></script>
+<script src="admin.js" defer></script>
 </head>
 <body>
 
@@ -149,8 +150,10 @@
       <img data-pm-photo="home.third-place" src="../assets/photos/sauna-laughing.jpg" alt="Members laughing in the sauna">
     </div>
 
-    <!-- Month grid, built from events.json (Luma ICS feed). Nothing hand-typed. -->
-    <div data-pm-calendar data-pm-calendar-src="events.json" style="margin-top:clamp(38px,5vw,64px)"></div>
+    <!-- Homepage teaser: the next few events only. The full month calendar
+         lives on /events/ — this is a taste, not the tool. -->
+    <div data-pm-calendar data-pm-calendar-mode="list" data-pm-calendar-limit="4"
+         data-pm-calendar-src="events.json" style="margin-top:clamp(38px,5vw,64px)"></div>
   </div>
 </section>
 
@@ -200,53 +203,34 @@
 <footer>
   <span class="foot-palm" aria-hidden="true"></span>
   <div class="wrap-wide">
-    <div class="foot-top">
-      <div class="foot-brand">
-        <div class="display-sm">Move<br><span class="ed-it">together.</span></div>
-        <p style="margin-top:20px;font-size:14.5px;color:#BAB6AA;max-width:24em">
-          A community wellness club built around a daily movement practice.<br>
-          <span data-pm-text="address1">1038 Princeton Dr, Ste B</span><br>
-          <span data-pm-text="address2">Marina del Rey, CA 90292</span><br>
-          <a data-pm-link="phoneHref" style="text-decoration:underline"><span data-pm-text="phone">(310) 800-7061</span></a>
+    <div class="foot-grid">
+
+      <div class="foot-id">
+        <a class="foot-brand-mark" href="index.html">Primal Moves<span>Venice</span></a>
+      </div>
+
+      <div class="foot-block">
+        <h4>Find us</h4>
+        <p>
+          <a href="https://maps.google.com/?q=1038+Princeton+Dr+Ste+B,+Marina+del+Rey,+CA+90292" target="_blank" rel="noopener">
+            <span data-pm-text="address1">1038 Princeton Dr, Ste B</span><br>
+            <span data-pm-text="address2">Marina del Rey, CA 90292</span>
+          </a>
         </p>
+        <p style="margin-top:14px">
+          <a data-pm-link="phoneHref"><span data-pm-text="phone">(310) 800-7061</span></a>
+        </p>
+      </div>
+
+      <div class="foot-block">
+        <h4>Hours</h4>
         <div class="foot-hours" data-pm-hours></div>
       </div>
-      <div>
-        <h4>Practice</h4>
-        <ul>
-          <li><a href="classes/#schedule">Schedule &amp; booking</a></li>
-          <li><a href="classes/">Classes</a></li>
-          <li><a href="memberships/">Memberships</a></li>
-          <li><a data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 Day Pass</a></li>
-          <li><a data-pm-link="digitalStudioUrl" target="_blank" rel="noopener">Digital Studio ↗</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Studio</h4>
-        <ul>
-          <li><a href="practice/">Our Method</a></li>
-          <li><a href="studio/#space">The space</a></li>
-          <li><a href="studio/#teachers">Teachers</a></li>
-          <li><a href="cherish/">Tea &amp; Cafe</a></li>
-          <li><a href="events/">Events</a></li>
-          <li><a href="partners/">Partners</a></li>
-          <li><a href="shop/">Shop</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Connect</h4>
-        <ul>
-          <li><a href="studio/#visit">Visit &amp; FAQs</a></li>
-          <li><a data-pm-link="instagramUrl" target="_blank" rel="noopener">@primalmovesvenice</a></li>
-          <li><a data-pm-link="appStoreUrl" target="_blank" rel="noopener">Get the app</a></li>
-          <li><a href="mailto:hello@venice.primalmoves.com">hello@venice.primalmoves.com</a></li>
-          <li><a data-pm-link="teacherTrainingUrl" target="_blank" rel="noopener">Teacher Training ↗</a></li>
-        </ul>
-      </div>
+
     </div>
     <div class="foot-bottom">
-      <div>© 2026 Primal Moves Venice · Part of Primal Moves — Ibiza · Barcelona · Lisbon · Venice</div>
-      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy</a> · <a href="https://primalmoves.com/terms/" target="_blank" rel="noopener">Terms</a></div>
+      <div>&copy; 2026 Primal Moves Venice &middot; Part of Primal Moves &mdash; Ibiza &middot; Barcelona &middot; Lisbon &middot; Venice</div>
+      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy</a> &middot; <a href="https://primalmoves.com/terms/" target="_blank" rel="noopener">Terms</a> &middot; <a data-pm-link="instagramUrl" target="_blank" rel="noopener">@primalmovesvenice</a></div>
     </div>
   </div>
 </footer>

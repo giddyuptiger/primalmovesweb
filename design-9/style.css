@@ -839,3 +839,185 @@ section:not(.ink) .photo-slot span{color:#4E4A42}
 .hr-day{letter-spacing:.06em}
 .cherish-scope .foot-hours{border-top-color:rgba(255,255,255,.16)}
 @media (max-width:520px){ .foot-hours{max-width:none} }
+
+
+/* ==========================================================================
+   TYPE HIERARCHY — REFORM
+   The old scale inverted the information hierarchy: an 11px label nobody
+   could read, a 58px/300-weight tagline carrying no information, and the
+   actual content at 17px underneath. The eye landed on the least useful
+   text and the biggest thing on screen was also the thinnest.
+
+   Three changes:
+     1. Section headings come DOWN in size and UP in weight — 400 not 300.
+        Light weights read as decoration at display size; 400 reads as a
+        heading you're meant to use.
+     2. Kickers come UP — 12.5px, tighter tracking, accent colour. They're
+        the section's NAME, so they have to be legible as a label.
+     3. Ledes come up and darken. This is the sentence that answers the
+        visitor's question; it should be the second thing read, not the
+        fourth.
+   ========================================================================== */
+
+.display-sm{
+  font-size:clamp(26px,3vw,40px);
+  font-weight:400;
+  line-height:1.12;
+  letter-spacing:-.014em;
+}
+h2{font-size:clamp(24px,2.6vw,34px);font-weight:400;line-height:1.15;letter-spacing:-.012em}
+h3{font-size:clamp(18px,1.8vw,22px);font-weight:500;letter-spacing:-.004em}
+
+.kicker{
+  font-size:12.5px;
+  font-weight:600;
+  letter-spacing:.15em;
+  color:var(--sage-txt);
+  margin-bottom:14px;
+}
+section.ink .kicker{color:#B9C79E}
+.cherish-scope .kicker{color:var(--oxblood)}
+
+.lede{
+  font-size:clamp(17px,1.5vw,19.5px);
+  line-height:1.65;
+  color:var(--mid);
+  max-width:36em;
+}
+
+/* the hero can still shout — it's the front door, not a reference page */
+.hero .display{font-weight:300;font-size:clamp(38px,6.6vw,86px)}
+
+/* body copy that was set at display-ish sizes inline comes back to earth */
+section p[style*="clamp(17px,1.6vw"]{font-size:clamp(16.5px,1.5vw,18.5px) !important;
+  line-height:1.7}
+
+.section-head{margin-bottom:clamp(32px,4.5vw,56px)}
+
+
+/* ==========================================================================
+   STICKY NAV — made to actually stick
+   position:sticky was already declared but the header sits inside a body
+   that some browsers treat as a scroll container with the flush sections;
+   pinning it as fixed with a body offset is the reliable version, and it
+   gains a shadow + tighter padding once you scroll past the hero.
+   ========================================================================== */
+header.site{
+  position:fixed;top:0;left:0;right:0;
+  /* solid, not translucent: a see-through nav over photography puts dark
+     labels on an unpredictable background — fine on one hero, unreadable
+     on the next. */
+  background:var(--paper);
+  transition:padding .18s ease, box-shadow .18s ease, background .18s ease;
+}
+body{padding-top:var(--nav-h,84px)}
+.hero.flush,.phero.flush{margin-top:calc(var(--nav-h,84px) * -1)}
+header.site.scrolled{box-shadow:0 1px 0 rgba(19,34,56,.10),0 8px 28px rgba(19,34,56,.06)}
+header.site.scrolled .nav-inner{padding-top:15px;padding-bottom:15px}
+@media (max-width:820px){ body{padding-top:var(--nav-h,70px)} }
+
+/* ==========================================================================
+   FOOTER — reduced to identity, address, hours, phone
+   ========================================================================== */
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:clamp(30px,5vw,70px);
+  padding-bottom:clamp(40px,6vw,64px);align-items:start}
+.foot-brand-mark{display:inline-block;font-size:clamp(20px,2.2vw,27px);font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--cream);line-height:1.2}
+.foot-brand-mark span{display:block;font-size:.46em;letter-spacing:.42em;
+  color:#ADA894;margin-top:8px;font-weight:400}
+.foot-block h4{font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:#ADA894;margin-bottom:16px}
+.foot-block p{font-size:15px;line-height:1.7;color:#C9C4B0;margin:0}
+.foot-block a{color:#C9C4B0}
+.foot-block a:hover{color:var(--cream);text-decoration:underline}
+.foot-grid .foot-hours{margin-top:0;padding-top:0;border-top:0;max-width:none}
+.foot-grid .hr-status{margin-bottom:12px}
+@media (max-width:820px){
+  .foot-grid{grid-template-columns:1fr 1fr;gap:34px}
+  .foot-id{grid-column:1/-1}
+}
+@media (max-width:520px){ .foot-grid{grid-template-columns:1fr} }
+
+/* ==========================================================================
+   EVENTS PAGE LAYOUT
+   Calendar holds the left edge and starts at the top; the heading, the
+   answer sentence and the list run down the right. Fills the space and
+   puts the informational heading where the eye lands first.
+   ========================================================================== */
+.ev-layout{display:grid;grid-template-columns:minmax(240px,300px) 1fr;
+  gap:clamp(34px,5vw,80px);align-items:start}
+.ev-cal-col{position:sticky;top:calc(var(--nav-h,84px) + 24px)}
+.ev-cal-col .pm-cal{display:block}
+.ev-cal-col .pm-cal-grid{max-width:none;margin:0}
+.pm-cal-listwrap .pm-cal-list{margin-top:0}
+@media (max-width:900px){
+  .ev-layout{grid-template-columns:1fr;gap:34px}
+  .ev-cal-col{position:static;order:2}
+  .ev-main{order:1}
+  .ev-cal-col .pm-cal-grid{max-width:340px}
+}
+
+/* homepage teaser: list only, full width, no month grid */
+.pm-cal.pm-cal-listonly{display:block}
+.pm-cal-listonly .pm-cal-list{margin-top:0}
+
+/* kickers on taupe bands need the darker step */
+.alt .kicker,section.alt .kicker{color:#3F4A26}
+section:not(.ink) .photo-slot span{color:#4E4A42}
+.shop .photo-slot span,.photo-slot span{color:#4E4A42}
+
+/* ==========================================================================
+   MEMBERSHIPS — TWO READS OF THE SAME DATA
+   Cards tell a story; the table answers "what do I actually get". Design
+   mode keeps both so the choice can be made by looking.
+   ========================================================================== */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+.mem-tabs{display:inline-flex;gap:3px;padding:3px;background:var(--paper-2);
+  border-radius:999px;margin-bottom:clamp(26px,3.5vw,40px)}
+.mem-tabs button{border:0;background:transparent;border-radius:999px;cursor:pointer;
+  font:inherit;font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  padding:11px 22px;color:var(--mid);transition:background .16s ease,color .16s ease}
+.mem-tabs button.on{background:var(--deep);color:var(--cream)}
+.mem-tabs button:not(.on):hover{color:var(--ink)}
+
+.cmp-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;
+  margin-inline:calc(var(--gut) * -1);padding-inline:var(--gut)}
+.cmp{border-collapse:separate;border-spacing:0;width:100%;min-width:880px;font-size:14px}
+.cmp th,.cmp td{text-align:left;padding:15px 16px;vertical-align:top;
+  border-bottom:1px solid var(--line)}
+.cmp thead th{border-bottom:1px solid var(--ink);vertical-align:bottom;padding-bottom:18px}
+.cmp .cmp-rowhead{border-bottom-color:var(--line)}
+.cmp tbody th{font-weight:500;color:var(--ink);white-space:nowrap;
+  position:sticky;left:0;background:var(--paper);z-index:2}
+.cmp thead th:first-child{position:sticky;left:0;background:var(--paper);z-index:3}
+
+.cmp-flag{display:inline-block;font-size:9.5px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--cream);background:var(--deep);
+  padding:4px 9px;border-radius:999px;margin-bottom:9px}
+.cmp-name{display:block;font-size:14.5px;font-weight:600;line-height:1.25;margin-bottom:6px}
+.cmp-price{display:block;font-size:clamp(21px,2.2vw,27px);font-weight:400;line-height:1;
+  letter-spacing:-.014em}
+.cmp-per{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--mid);margin-top:6px}
+
+.cmp td{color:var(--mid)}
+.cmp td b{color:var(--ink);font-weight:600}
+.cmp td.y{color:var(--ink)}
+.cmp td.n{color:var(--soft)}
+.cmp td.y::before{content:"✓";color:var(--sage-txt);font-weight:700;margin-right:8px}
+
+/* the hero column, tinted top to bottom */
+.cmp .is-hero{background:rgba(48,63,22,.07)}
+.cmp thead th.is-hero{border-bottom-color:var(--deep)}
+.cmp-cta td{padding-top:22px;padding-bottom:26px;border-bottom:0}
+.cmp-cta .btn{padding:11px 20px;font-size:11.5px}
+
+@media (max-width:620px){
+  .cmp{min-width:760px;font-size:13.5px}
+  .cmp th,.cmp td{padding:13px 13px}
+  .mem-tabs{width:100%}
+  .mem-tabs button{flex:1;padding:11px 10px;font-size:11.5px;letter-spacing:.06em}
+}
+.cmp td.n.is-hero{color:var(--mid)}

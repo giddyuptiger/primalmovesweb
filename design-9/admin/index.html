@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Studio — Primal Moves Venice</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="../../assets/images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#132238;--paper:#EDE8D2;--mid:#57534A;--soft:#6B685A;--forest:#303F16;--line:#CFC5AE}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:400 16px/1.65 "Helvetica Neue",Helvetica,Inter,Arial,sans-serif;
+  display:flex;align-items:center;justify-content:center;min-height:100vh;padding:32px}
+.card{max-width:560px;width:100%}
+h1{font-size:clamp(28px,4vw,40px);line-height:1.1;font-weight:400;letter-spacing:-.014em;margin:0 0 6px}
+.kick{font-size:12.5px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--forest);margin-bottom:14px}
+p{color:var(--mid);margin:0 0 16px}
+ol{color:var(--mid);padding-left:20px;margin:0 0 22px}
+li{margin-bottom:9px}
+.gate{display:flex;gap:9px;margin:26px 0 12px;flex-wrap:wrap}
+input[type=password]{flex:1;min-width:190px;padding:13px 15px;border:1px solid var(--line);
+  border-radius:3px;background:#F7F3E7;font:inherit;font-size:15px;color:var(--ink)}
+input[type=password]:focus{outline:2px solid var(--forest);outline-offset:-1px;border-color:var(--forest)}
+button{background:var(--forest);color:#F7F3E7;border:0;border-radius:999px;padding:13px 26px;
+  font:inherit;font-size:13px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;cursor:pointer}
+button:hover{background:var(--ink)}
+.err{color:#AE411C;font-size:14px;min-height:22px;margin:0 0 10px}
+.note{font-size:13.5px;color:var(--soft);line-height:1.6;border-left:2px solid var(--forest);
+  padding:2px 0 2px 16px;margin-top:30px}
+a{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="kick">Primal Moves Venice</div>
+  <h1>Design studio</h1>
+  <p>Try colours and photographs on the live site, see them in place immediately, then copy the result out for whoever pushes the code.</p>
+
+  <ol>
+    <li>Enter the passphrase and the studio panel opens.</li>
+    <li>Browse the site normally — the panel follows you from page to page.</li>
+    <li><b>Colour</b> assigns any brand colour to any role, and warns you when a choice becomes hard to read.</li>
+    <li><b>Photos</b> puts a <b>Swap</b> button on every image. Pick from the library or upload one to preview.</li>
+    <li>Hit <b>Copy config</b> and paste it to Jeremy, or into the repo yourself.</li>
+  </ol>
+
+  <div class="gate">
+    <input type="password" id="pw" placeholder="Passphrase" autocomplete="off">
+    <button id="go">Open studio</button>
+  </div>
+  <p class="err" id="err"></p>
+
+  <p class="note"><b>Nothing here saves to the website.</b> Everything you change lives in your own browser until the copied config is pasted into the repo and pushed — so you can experiment as freely as you like without anyone else seeing it. This passphrase keeps the panel out of a visitor's way; it isn't a security measure, and it doesn't need to be, because the studio cannot change what anybody else sees.</p>
+</div>
+
+<script>
+/* The passphrase is a courtesy gate, not a lock — it lives in the page, as it
+   must on a static site. That's fine: the studio can't write anything. */
+var PASS = "primal";
+function open_() { try { localStorage.setItem("pm_studio_on", "1"); } catch (e) {} location.href = "../"; }
+document.getElementById("go").addEventListener("click", function () {
+  var v = document.getElementById("pw").value.trim().toLowerCase();
+  if (v === PASS) open_();
+  else document.getElementById("err").textContent = "Not quite — ask Jeremy for the passphrase.";
+});
+document.getElementById("pw").addEventListener("keydown", function (e) {
+  if (e.key === "Enter") document.getElementById("go").click();
+});
+</script>
+</body>
+</html>

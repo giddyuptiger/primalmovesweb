@@ -19,6 +19,22 @@ calendar's event dots. Navy `#132238` carries body copy; burnt red `#AE411C` is
 the secondary accent, used sparingly. Every text colour clears WCAG AA on every
 ground it sits on.
 
+## Design studio — `/admin/`
+
+A panel for trying colours and photographs on the live pages without touching
+code. Passphrase `primal` (it's in the page — a courtesy gate, not a lock).
+
+**Colour** assigns any brand colour to any role and warns when a choice drops
+below 4.5:1. **Photos** puts a *Swap* button on every image; pick from the
+36-shot library or upload one to preview. **Copy config** hands you the exact
+CSS and `config.js` blocks to paste.
+
+It saves nothing to the site — a static page has no server to write to. Every
+change lives in that person's browser until the copied config is pasted into
+the repo and pushed. Which means anyone can experiment freely without the risk
+of breaking the live site. The upgrade path, when it's worth it, is a git-based
+CMS that commits for them — see `strategy/launch-stack.md`.
+
 ## Photos — how to swap one
 
 Two ways, both easy: drop a file into `assets/photos/` with the **same filename**
@@ -26,6 +42,19 @@ and nothing else changes, or use a new filename and update one line in the
 `photos: { … }` block of `config.js`. A slot pointing at a missing file keeps
 the picture it already had rather than breaking. Full slot list in
 `assets/photos/PHOTOS.md`.
+
+## Type hierarchy
+
+The scale was rebuilt in August after a fair criticism: an 11px label nobody
+could read, a 58px/300-weight tagline carrying no information, and the actual
+content at 17px underneath — so the eye landed on the least useful text and
+the biggest thing on the page was also the thinnest.
+
+Now: section headings come **down** in size and **up** in weight (400, not
+300); kickers come **up** to 12.5px/600 in the accent colour, because they are
+the section's name; ledes come up and darken. On utility pages the heading
+says what the page *is* and the poetic line is demoted into the lede. The hero
+still shouts — that's the front door, not a reference page.
 
 ## Type — hybrid case
 

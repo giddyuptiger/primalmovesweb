@@ -128,7 +128,7 @@ install it when you start spending on Meta, not before.
 
 1. **Google Tag Manager container** on every page. One snippet, and every future
    tag goes in through the GTM interface instead of a code change and a deploy.
-   Worth doing even for one tag, because it means Mickey or a marketing
+   Worth doing even for one tag, because it means Miki or a marketing
    contractor can add things without touching the repo.
 2. **GA4** through GTM.
 3. **Klaviyo's onsite script** through GTM, plus a real email-capture form.
@@ -184,7 +184,7 @@ What will actually make the site fast is unglamorous:
 
 **The real bandwidth question is the hero video, not the photos.** A 30-second
 1080p loop is easily 15–20× your entire photo library, and it's the first thing
-every visitor loads. When Mickey's cut lands: compress it hard, strip the audio
+every visitor loads. When Miki's cut lands: compress it hard, strip the audio
 track, serve a poster frame so something appears instantly, and use a still
 image instead of the video on mobile. If it ends up long or you want several,
 that's when Cloudflare Stream ($5 per 1,000 minutes delivered) earns its keep —

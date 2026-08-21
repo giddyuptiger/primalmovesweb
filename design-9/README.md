@@ -11,6 +11,22 @@ The meeting produced three decisions that didn't live in the same design:
 condensed v6 structure, the $40 day pass as the hero CTA, and Helvetica Neue
 caps to match the parent brand. design-9 is the merge.
 
+## Colour — the brand palette, green accent
+
+Sampled from Miki's board (`brand/palette.md`). Cream `#EDE8D2` ground, taupe
+`#DCCFB9` alternates, **forest `#303F16` as the accent** — buttons, rules, the
+calendar's event dots. Navy `#132238` carries body copy; burnt red `#AE411C` is
+the secondary accent, used sparingly. Every text colour clears WCAG AA on every
+ground it sits on.
+
+## Photos — how to swap one
+
+Two ways, both easy: drop a file into `assets/photos/` with the **same filename**
+and nothing else changes, or use a new filename and update one line in the
+`photos: { … }` block of `config.js`. A slot pointing at a missing file keeps
+the picture it already had rather than breaking. Full slot list in
+`assets/photos/PHOTOS.md`.
+
 ## Type — hybrid case
 
 The notes said all caps. design-8 is lowercase, and that's most of where its
@@ -47,7 +63,7 @@ one placeholder label at 4.37:1.
 
 ## Pages
 
-`/` · `/practice/` (The Method) · `/classes/` · `/studio/` · `/memberships/` ·
+`/` · `/practice/` (Our Method) · `/classes/` · `/studio/` · `/memberships/` ·
 `/cherish/` · `/events/` · `/partners/` · `/shop/`
 
 ## Still open

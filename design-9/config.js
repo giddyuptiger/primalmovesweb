@@ -58,6 +58,46 @@ window.PM_CONFIG = {
 
   linktreeUrl: "",
 
+  /* --- PHOTOS ------------------------------------------------------------
+     SWAPPING A PHOTO — two ways, both easy:
+
+     1. Same name.  Drop your new file into assets/photos/ using the SAME
+        filename as the one you're replacing. Nothing else to change.
+
+     2. New name.   Put the file in assets/photos/ and change the filename
+        on the matching line below. That's it — the page picks it up.
+
+     Slot names follow Miki's `page - section - slot` convention. The full
+     list, with what each shot is doing, is in assets/photos/PHOTOS.md.
+     Anything not listed here keeps whatever the page already has.        */
+  photos: {
+    "home.hero":              "joy-laughing.jpg",
+    "home.what-is-primal":    "collective-crawl.jpg",
+    "home.third-place":       "sauna-laughing.jpg",
+    "home.family":            "",                      // <-- kids on the floor, still needed
+
+    "method.hero":            "handstand-wall-wide.jpg",
+    "method.series-1":        "collective-crawl-2.jpg",
+    "method.series-2":        "compound-dumbbells.jpg",
+    "method.series-3":        "handstand-parallettes.jpg",
+    "method.series-4":        "handstand-wall.jpg",
+
+    "studio.hero":            "space-rings-wide.jpg",
+    "studio.room-main-floor": "space-bus-rings.jpg",
+    "studio.room-lounge":     "space-lounge-rugs.jpg",
+    "studio.room-sauna":      "sauna-still.jpg",
+    "studio.room-plunge":     "plunge-two.jpg",
+    "studio.room-tea":        "tea-room.jpg",
+
+    "classes.hero":           "collective-downdog.jpg",
+    "memberships.hero":       "boat-collective.jpg",
+    "events.hero":            "space-floor-night.jpg",
+    "cherish.hero":           "tea-room.jpg",          // <-- needs a real CAFE shot
+    "partners.hero":          "compound-dumbbells-crop.jpg",
+    "partners.pitch":         "bands-effort.jpg",
+    "shop.hero":              "barbell-joy.jpg"
+  },
+
   /* --- COMMUNITY PARTNERS ------------------------------------------------
      Moss sells the joint membership in THEIR system, so this must deep-link
      straight to Moss's own signup — not to a page on our site. Blank = the
@@ -82,6 +122,21 @@ window.PM_CONFIG = {
   email:            "hello@venice.primalmoves.com",
   phone:            "(310) 800-7061",
   phoneHref:        "tel:+13108007061",
+  /* --- HOURS --------------------------------------------------------------
+     From the Google Business listing. The footer marks today and works out
+     open/closed live in the browser, in LA time — so it's always current
+     without calling anything. Edit here when the hours change.
+     Use 24h "HH:MM". A day with open === close reads as Closed.          */
+  hours: [
+    { day: "Mon", open: "06:30", close: "20:00" },
+    { day: "Tue", open: "06:30", close: "20:00" },
+    { day: "Wed", open: "06:30", close: "20:00" },
+    { day: "Thu", open: "06:30", close: "20:00" },
+    { day: "Fri", open: "06:30", close: "20:00" },
+    { day: "Sat", open: "08:30", close: "13:00" },
+    { day: "Sun", open: "08:30", close: "13:00" }
+  ],
+
   address1:         "1038 Princeton Dr, Ste B",
   address2:         "Marina del Rey, CA 90292"
 };
@@ -220,6 +275,71 @@ window.PM_CONFIG = {
       el.remove();
     });
 
+    // data-pm-hours → the week, with today marked and open/closed worked out
+    // live in America/Los_Angeles (not the visitor's zone).
+    document.querySelectorAll("[data-pm-hours]").forEach(function (el) {
+      var H = C.hours || [];
+      if (!H.length) { el.remove(); return; }
+      var TZ = "America/Los_Angeles";
+      var now = new Date(), dow, mins;
+      try {
+        var f = new Intl.DateTimeFormat("en-US", { timeZone: TZ, weekday: "short",
+                  hour: "2-digit", minute: "2-digit", hour12: false })
+                .formatToParts(now).reduce(function (a, p2) { a[p2.type] = p2.value; return a; }, {});
+        dow = f.weekday;
+        mins = parseInt(f.hour, 10) * 60 + parseInt(f.minute, 10);
+      } catch (err) {
+        dow = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][now.getDay()];
+        mins = now.getHours() * 60 + now.getMinutes();
+      }
+      function toM(t) { var b = t.split(":"); return +b[0] * 60 + +b[1]; }
+
+      var open = false, todayRow = null;
+      H.forEach(function (r) {
+        if (r.day !== dow) return;
+        todayRow = r;
+        if (r.open !== r.close && mins >= toM(r.open) && mins < toM(r.close)) open = true;
+      });
+      function pretty(t) {
+        var b = t.split(":"), h = +b[0], m = b[1];
+        var ap = h < 12 ? "am" : "pm"; h = h % 12 || 12;
+        return h + (m === "00" ? "" : ":" + m) + ap;
+      }
+      var rows = H.map(function (r) {
+        var is = r.day === dow;
+        var span = r.open === r.close ? "closed" : pretty(r.open) + "\u2013" + pretty(r.close);
+        return '<div class="hr-row' + (is ? " is-today" : "") + '">' +
+               '<span class="hr-day">' + r.day + "</span>" +
+               '<span class="hr-time">' + span + "</span></div>";
+      }).join("");
+      el.innerHTML = '<div class="hr-status ' + (open ? "open" : "shut") + '">' +
+        (open ? "Open now" : "Closed now") +
+        (todayRow && todayRow.open !== todayRow.close
+          ? ' <span>&middot; today ' + pretty(todayRow.open) + "\u2013" + pretty(todayRow.close) + "</span>"
+          : "") +
+        "</div>" + '<div class="hr-list">' + rows + "</div>";
+    });
+
+    // data-pm-photo="slot" → swap the image for whatever config.photos says.
+    // A blank or missing entry leaves the markup's own src alone; a named
+    // file that doesn't exist falls back to it too, so a typo can't leave
+    // a broken image on the page.
+    document.querySelectorAll("[data-pm-photo]").forEach(function (img) {
+      var slot = img.getAttribute("data-pm-photo");
+      var file = (C.photos || {})[slot];
+      if (!file) return;
+      var base = (img.getAttribute("src") || "").replace(/[^/]+$/, "");
+      var next = base + file;
+      if (next === img.getAttribute("src")) return;
+      var probe = new Image();
+      probe.onload = function () { img.src = next; };
+      probe.onerror = function () {
+        if (window.console) console.warn("[PM_CONFIG] photos['" + slot + "'] → " + file +
+          " not found in assets/photos/. Keeping the existing image.");
+      };
+      probe.src = next;
+    });
+
     // data-pm-calendar → our own month grid, built from events.json.
     // The data comes from Luma's public ICS feed via tools/fetch_events.py,
     // so nothing is hand-typed and nothing shows that isn't already in Luma.
@@ -282,30 +402,54 @@ window.PM_CONFIG = {
           (byDay[e._la.key] = byDay[e._la.key] || []).push(e);
         });
 
-        var first = events[0]._la;
-        var cursor = new Date(first.y, first.m, 1);
         var nowLa = la(new Date().toISOString());
+        // Start at the current month, never earlier — and inside that month,
+        // skip whole weeks that have already been and gone.
+        var first = events[0]._la;
+        var startY = nowLa.y, startM = nowLa.m;
+        if (first.y > nowLa.y || (first.y === nowLa.y && first.m > nowLa.m)) {
+          startY = first.y; startM = first.m;
+        }
+        var cursor = new Date(startY, startM, 1);
         var html = '<div class="pm-cal-grid">';
 
         for (var m = 0; m < months; m++) {
           var y = cursor.getFullYear(), mo = cursor.getMonth();
           var startDow = new Date(y, mo, 1).getDay();
           var days = new Date(y, mo + 1, 0).getDate();
+
+          // build the full set of cells, then drop leading rows that are
+          // entirely in the past (only ever in the current month)
+          var cells = [];
+          for (var bl = 0; bl < startDow; bl++) cells.push(null);
+          for (var dd = 1; dd <= days; dd++) cells.push(dd);
+          while (cells.length % 7 !== 0) cells.push(null);
+
+          var isThisMonth = (y === nowLa.y && mo === nowLa.m);
+          var skipped = 0;
+          if (isThisMonth) {
+            while (cells.length > 7) {
+              var week = cells.slice(0, 7);
+              var lastDay = null;
+              for (var wi = 6; wi >= 0; wi--) { if (week[wi]) { lastDay = week[wi]; break; } }
+              if (lastDay !== null && lastDay < nowLa.d) { cells = cells.slice(7); skipped++; }
+              else break;
+            }
+          }
+
           html += '<div class="pm-month"><div class="pm-month-name">' + MON[mo] + " " + y + "</div>";
           html += '<div class="pm-dows">' + DOW.map(function (d) { return "<span>" + d + "</span>"; }).join("") + "</div>";
           html += '<div class="pm-days">';
-          for (var b = 0; b < startDow; b++) html += '<span class="pm-day pad"></span>';
-          for (var d1 = 1; d1 <= days; d1++) {
+          cells.forEach(function (d1) {
+            if (d1 === null) { html += '<span class="pm-day pad"></span>'; return; }
             var key = y + "-" + mo + "-" + d1;
             var on = byDay[key];
             var isToday = (y === nowLa.y && mo === nowLa.m && d1 === nowLa.d);
-            var cls = "pm-day" + (on ? " has" : "") + (isToday ? " today" : "");
-            if (on) {
-              html += '<a class="' + cls + '" href="#pm-ev-' + key + '">' + d1 + "<i></i></a>";
-            } else {
-              html += '<span class="' + cls + '">' + d1 + "</span>";
-            }
-          }
+            var past = isThisMonth && d1 < nowLa.d;
+            var cls = "pm-day" + (on ? " has" : "") + (isToday ? " today" : "") + (past ? " past" : "");
+            if (on) html += '<a class="' + cls + '" href="#pm-ev-' + key + '">' + d1 + "<i></i></a>";
+            else html += '<span class="' + cls + '">' + d1 + "</span>";
+          });
           html += "</div></div>";
           cursor.setMonth(cursor.getMonth() + 1);
         }

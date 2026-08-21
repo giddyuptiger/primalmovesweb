@@ -1,6 +1,6 @@
 # Primal Moves Venice: Working Session Notes
 
-**Present:** Gus, Jeremy, Tyler, Kaylee, Mickey (remote), plus an outside marketing advisor (ex-gym marketing lead) who joined partway.
+**Present:** Gus, Jeremy, Tyler, Kaylee, Miki (remote), plus an outside marketing advisor (ex-gym marketing lead) who joined partway.
 **Covered:** dashboard/member data, website structure and copy, lifecycle marketing flows, intro-offer pricing, Moss partnership.
 
 > Note: names and a few figures are transcribed loosely in the recording. Verify member counts and conversion rates against the dashboard before quoting them anywhere.
@@ -23,7 +23,7 @@
 
 ### Global
 
-- Match the Primal Moves parent brand: Helvetica Neue, all caps, consistent logo. Mickey is sending hex codes.
+- Match the Primal Moves parent brand: Helvetica Neue, all caps, consistent logo. Miki is sending hex codes.
 - Primal Moves Venice logo, top left.
 - Sticky nav bar.
 - Nav (condensed): The Method, Classes, Studio, Memberships, Cafe & Tea Lounge, Events. Drop "Community Wellness Club" and "Team Practice" from the nav.
@@ -40,7 +40,7 @@
 - Headline: **PRACTICE MAKES PRIMAL**
 - Sub-line: *A daily movement practice, a sauna, a cold plunge, a cafe, and a room full of people.* (Cut "show up," cut the "a sauna, a cold plunge" duplication.)
 - CTA: **$40 Day Pass**. Secondary: Primal Online.
-- Hero video replaces the static hero image. Mickey believes she has enough existing footage.
+- Hero video replaces the static hero image. Miki believes she has enough existing footage.
 - Separate photo idea for elsewhere on the site: the team doing a chest-to-wall in front of Tanya's mural upstairs (couches would need to move).
 
 **"What is Primal" section**
@@ -111,7 +111,7 @@
 
 ### Photo handoff
 
-Mickey is organizing all Primal photography into folders: events, the practice, space, tea, compound/progressions, yoga, cherish, kids, community, acro and play, sauna and cold plunge, recovery, and eventually KEIE club / spa.
+Miki is organizing all Primal photography into folders: events, the practice, space, tea, compound/progressions, yoga, cherish, kids, community, acro and play, sauna and cold plunge, recovery, and eventually KEIE club / spa.
 
 **Naming convention for anything she wants placed:** `page - section - slot`, for example *studio page, private hire picture* or *homepage, hero*. Jeremy can drop them in directly from that.
 
@@ -182,12 +182,12 @@ Email ships first. SMS follows once the site is live and the toll-free number is
 
 ### Copy and sending rules
 
-- Mickey produces **two variants per email: one straight, one spicy.** Test them.
+- Miki produces **two variants per email: one straight, one spicy.** Test them.
 - Default subject line for first visit: "Welcome to Primal Moves." Save "welcome to the family" for actual members.
 - Never send campaigns on weekends.
 - Batch large sends, starting with recent attendees, rather than blasting the full ~2,000-person list at once.
 - Preview SMS at real length on a phone before approving.
-- Stefania's onboarding flow document is the master; Mickey layers copy onto it and sends the finished version to Jeremy.
+- Stefania's onboarding flow document is the master; Miki layers copy onto it and sends the finished version to Jeremy.
 
 ---
 
@@ -201,7 +201,7 @@ Email ships first. SMS follows once the site is live and the toll-free number is
 - Current Primal members get **10% off Moss**, and vice versa.
 - Summit partnership: 25% off.
 - Offer current members the option to move to a **6-month membership** now. No cancellation fee for switching between memberships.
-- Moss team memberships: Gus, Tyler, Patrick, Mickey, Kaylee, Chanel confirmed as the list sent over. Still to confirm: Olivia, Mandy Jane, Stefania. Ask Tyler directly rather than assigning.
+- Moss team memberships: Gus, Tyler, Patrick, Miki, Kaylee, Chanel confirmed as the list sent over. Still to confirm: Olivia, Mandy Jane, Stefania. Ask Tyler directly rather than assigning.
 
 ---
 
@@ -255,7 +255,7 @@ Also noted: 7shifts now separates cafe shifts from event shifts. The events team
 - Share dashboard access with the marketing advisor.
 - Add CSV export to dashboard drill-downs.
 
-**Mickey**
+**Miki**
 - Hero video cut: five pillars, ~5 seconds each, by tomorrow morning.
 - Send brand hex codes.
 - Photo handoff using the `page - section - slot` naming.

@@ -1,6 +1,6 @@
 # Primal Moves Venice — brand palette
 
-Sampled from Mickey's colour board. Each hex is the measured average of that
+Sampled from Miki's colour board. Each hex is the measured average of that
 circle's pixels, not an eyeballed match.
 
 Contrast figures are against the cream ground `#EDE8D2`. **AA** means it clears

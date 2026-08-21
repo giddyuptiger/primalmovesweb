@@ -20,22 +20,29 @@
    ========================================================================== */
 
 :root{
-  --ink:#26251F;          /* soft charcoal, never #000 */
-  --deep:#2E332B;         /* deep forest, for dark sections */
-  --paper:#F5F1EA;        /* warm cream — the default ground */
-  --paper-2:#EDE7DC;      /* alternate section */
-  --paper-3:#E4DCCD;      /* image placeholder / third tone */
-  --mid:#5A5449;          /* body copy */
-  --soft:#6A6355;         /* captions, meta */
-  --line:#DDD5C6;         /* hairlines, used sparingly */
-  --sage:#7C8471;
-  --sage-btn:#5F6854;   /* darker fill so white button text clears 4.5:1 */         /* primary accent */
-  --sage-dk:#616950;
-  --clay:#8F5C3F;         /* secondary accent */
-  --cream:#FBF8F3;
+  /* ---- BRAND PALETTE (brand/palette.md) — green as the accent ---------- */
+  --ink:#132238;          /* navy, the dark neutral — body copy, headings   */
+  --deep:#303F16;         /* forest — dark sections, footer, primary button */
+  --paper:#EDE8D2;        /* cream — the default ground                     */
+  --paper-2:#DCCFB9;      /* taupe — alternate sections                     */
+  --paper-3:#CFC6B0;      /* sage grey, lifted — placeholders, panels       */
+  --mid:#57534A;          /* body-secondary — 6.2:1 on cream                */
+  --soft:#6B685A;         /* captions, meta — 4.6:1 on cream                */
+  --line:#CFC5AE;         /* hairlines                                      */
+  --sage:#303F16;         /* THE ACCENT: forest green                       */
+  --sage-btn:#303F16;     /* button fill — cream label clears 9.2:1         */
+  --sage-txt:#4C5B2A;     /* the accent when it carries words — 6.0:1       */
+  --sage-dk:#22300F;
+  --clay:#AE411C;         /* burnt red — the secondary accent, used sparely */
+  --cream:#F7F3E7;
+
+  /* palette colours held for photography surrounds and panels */
+  --pm-blush:#CD826A; --pm-orange:#C16838; --pm-mushroom:#A68460;
+  --pm-olive:#888151; --pm-dark-olive:#453A1D; --pm-light-sage:#B9B784;
+  --pm-rust:#9F663A;  --pm-brown:#945A38;    --pm-gold:#CE9C3B;
 
   /* Cherish, warmer still */
-  --mustard:#C08A2E;
+  --mustard:#CE9C3B;
   --oxblood:#7A3A34;
   --cherish-paper:#F3E9D9;
 
@@ -43,7 +50,7 @@
   --serif:"Helvetica Neue",Helvetica,"Inter",Arial,sans-serif;
   --hand:"Caveat","Bradley Hand",cursive;
 
-  --maxw:1140px;          /* narrower than design-6 — more margin */
+  --maxw:1140px;
   --gut:clamp(22px,6vw,84px);
   --radius:3px;
 }
@@ -161,8 +168,8 @@ section{padding:clamp(72px,13vh,150px) 0}   /* much more air than design-6 */
 section.pad-sm{padding:clamp(52px,8vh,96px) 0}
 section.ink{background:var(--deep);color:#D8D4C8}
 section.ink .display,section.ink .display-sm,section.ink h2,section.ink h3{color:var(--cream)}
-section.ink .kicker{color:#9AA08C}
-section.ink .lede,section.ink p{color:#C3BFB2}
+section.ink .kicker{color:#B9C79E}
+section.ink .lede,section.ink p{color:#C9C4B0}
 section.ink .aside{color:#C9B79E}
 section.alt{background:var(--paper-2)}
 section.flush{padding:0}
@@ -236,9 +243,9 @@ section.ink .day-row{border-bottom-color:rgba(255,255,255,.14)}
   font-size:clamp(22px,2.3vw,30px);line-height:1;color:var(--ink)}
 section.ink .day-row .time{color:var(--cream)}
 .day-row .act{font-size:13px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--sage)}
-section.ink .day-row .act{color:#A8B096}
+section.ink .day-row .act{color:#B9C79E}
 .day-row .desc{font-size:15.5px;color:var(--mid);line-height:1.65}
-section.ink .day-row .desc{color:#C3BFB2}
+section.ink .day-row .desc{color:#C9C4B0}
 .day-row .shot{height:74px;overflow:hidden;border-radius:var(--radius)}
 .day-row .shot img{width:100%;height:100%;object-fit:cover}
 @media (max-width:980px){
@@ -273,11 +280,11 @@ section.ink .cls{border-bottom-color:rgba(255,255,255,.14)}
 @media (max-width:1180px){ .plans.four{grid-template-columns:repeat(2,1fr)} }
 @media (max-width:760px){ .plans,.plans.four{grid-template-columns:1fr} }
 .plan{background:var(--paper);padding:40px 32px 34px;display:flex;flex-direction:column;gap:12px}
-.plan.hero-plan{background:var(--deep);color:#D2CEC2}
-.plan.hero-plan .tier{color:#BFC7AC}
+.plan.hero-plan{background:var(--deep);color:#D6D1BE}
+.plan.hero-plan .tier{color:#B9C79E}
 .plan.hero-plan .amt,.plan.hero-plan .plan-line{color:var(--cream)}
-.plan.hero-plan ul li,.plan.hero-plan .fine{color:#CBC7BB}
-.plan.hero-plan small,.plan.hero-plan summary{color:#CBC7BB}
+.plan.hero-plan ul li,.plan.hero-plan .fine{color:#C9C4B0}
+.plan.hero-plan small,.plan.hero-plan summary{color:#C9C4B0}
 .plan .tier{font-size:11px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--soft)}
 .plan .amt{font-family:var(--serif);font-weight:300;
   font-size:clamp(38px,4.2vw,54px);line-height:1.05;color:var(--ink)}
@@ -363,9 +370,9 @@ section.ink .person .portrait.empty{background:rgba(255,255,255,.07)}
 .person-body{padding:16px 0 0;display:flex;flex-direction:column;gap:4px}
 .person h3{font-size:18px}
 .person .role{font-size:10.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--sage)}
-section.ink .person .role{color:#A8B096}
+section.ink .person .role{color:#B9C79E}
 .person p{font-size:14.5px;color:var(--mid);line-height:1.65;margin-top:6px}
-section.ink .person p{color:#B5B1A4}
+section.ink .person p{color:#C9C4B0}
 
 /* ---------------------------------------------------------- VOICES ------- */
 .voices{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line)}
@@ -387,7 +394,7 @@ section.ink .info-row{border-bottom-color:rgba(255,255,255,.14)}
   text-transform:uppercase;color:var(--ink)}
 section.ink .info-row .i-label{color:var(--cream)}
 .info-row .i-val{font-size:16px;color:var(--mid);line-height:1.7;max-width:44em}
-section.ink .info-row .i-val{color:#C3BFB2}
+section.ink .info-row .i-val{color:#C9C4B0}
 .info-row .i-note{font-family:var(--serif);font-style:italic;font-size:14.5px;color:var(--soft);margin-top:8px}
 @media (max-width:760px){ .info-row{grid-template-columns:1fr;gap:8px} }
 
@@ -430,20 +437,20 @@ section.ink .info-row .i-val{color:#C3BFB2}
 .menu-item .pr{font-family:var(--serif);font-size:20px;white-space:nowrap;color:var(--soft)}
 
 /* ----------------------------------------------------------- FOOTER ------ */
-footer{background:var(--deep);color:#B5B1A4;padding:clamp(70px,11vh,120px) 0 40px}
+footer{background:var(--deep);color:#C9C4B0;padding:clamp(70px,11vh,120px) 0 40px}
 .foot-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:44px;
   padding-bottom:56px}
 .foot-top h4{font-size:11px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;
-  color:#8A8878;margin-bottom:20px}
+  color:#ADA894;margin-bottom:20px}
 .foot-top ul{list-style:none}
 .foot-top li{margin:0}
-.foot-top li a{display:block;padding:9px 0;font-size:15px;color:#C3BFB2;text-transform:lowercase}
+.foot-top li a{display:block;padding:9px 0;font-size:15px;color:#C9C4B0;text-transform:lowercase}
 .foot-top li a:hover{color:var(--cream)}
 .foot-brand .display-sm{font-size:clamp(26px,3.4vw,42px);line-height:1.1;color:var(--cream)}
 .foot-brand p{color:#A6A296;font-size:15px;line-height:1.8}
 .foot-bottom{margin-top:20px;padding-top:26px;border-top:1px solid rgba(255,255,255,.12);
   display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
-  font-size:12.5px;color:#8A8878}
+  font-size:12.5px;color:#ADA894}
 @media (max-width:860px){ .foot-top{grid-template-columns:1fr 1fr;gap:34px} }
 @media (max-width:520px){ .foot-top{grid-template-columns:1fr} }
 
@@ -498,10 +505,10 @@ section.ink .pull{color:var(--paper)}
 
 /* ---- the trial banner on the memberships page ------------------------- */
 .trial-cta{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;
-  background:var(--deep);color:#C3BFB2;padding:clamp(28px,4vw,46px);border-radius:var(--radius);margin-bottom:48px}
+  background:var(--deep);color:#C9C4B0;padding:clamp(28px,4vw,46px);border-radius:var(--radius);margin-bottom:48px}
 .trial-cta .kicker{color:var(--sage)}
 .trial-cta h3{color:var(--cream)}
-.trial-cta p{color:#B5B1A4;font-size:15.5px;max-width:44em}
+.trial-cta p{color:#C9C4B0;font-size:15.5px;max-width:44em}
 @media (max-width:820px){ .trial-cta{grid-template-columns:1fr} .trial-cta .btn{justify-self:start} }
 
 
@@ -518,16 +525,19 @@ section.ink .pull{color:var(--paper)}
 .btn,.nav-cta .btn{text-transform:uppercase;letter-spacing:.13em;font-weight:500}
 .brand{text-transform:uppercase;letter-spacing:.18em}
 
-/* --- HERO EYEBROW + BUTTON SUB-LINE ------------------------------------- */
-.hero-eyebrow{color:rgba(255,255,255,.82);margin-bottom:18px;letter-spacing:.2em}
-.btn.has-sub{display:inline-flex;flex-direction:column;align-items:center;
-  gap:5px;line-height:1.15;padding-top:15px;padding-bottom:15px}
-.btn-sub{display:block;font-size:10.5px;font-weight:400;letter-spacing:.1em;
-  text-transform:none;opacity:.82}
-@media (max-width:520px){
-  .btn.has-sub{width:100%}
-  .btn-sub{font-size:10px}
-}
+/* --- HERO EYEBROW + INVITATION ------------------------------------------ */
+.hero-eyebrow{color:rgba(255,255,255,.85);margin-bottom:18px;letter-spacing:.2em}
+.hero-invite{margin-top:20px;font-size:clamp(15px,1.5vw,18px);line-height:1.5;
+  color:rgba(255,255,255,.9);font-style:italic;max-width:26em;
+  text-shadow:0 1px 14px rgba(0,0,0,.5)}
+@media (max-width:520px){ .hero-invite{font-size:15px} }
+
+/* --- MEMBERSHIP GROUP HEADINGS ------------------------------------------
+   The group name leads; the descriptive line sits under it, smaller. */
+.group-h{font-size:clamp(24px,3vw,38px);line-height:1.1;letter-spacing:-.012em;
+  text-transform:lowercase;margin:0 0 6px;font-weight:400}
+.group-sub{font-size:clamp(15px,1.5vw,17.5px);line-height:1.6;color:var(--mid);
+  margin:0 0 30px;max-width:44em}
 
 /* --- CAFE STRIP (the homepage door, replacing the full block) ----------- */
 .cafe-strip{display:flex;align-items:center;justify-content:space-between;
@@ -539,8 +549,8 @@ section.ink .pull{color:var(--paper)}
 /* --- MONTH CALENDAR ----------------------------------------------------- */
 .pm-cal-loading,.pm-cal-empty{color:var(--soft);font-size:15px;padding:26px 0}
 .pm-cal-empty a{text-decoration:underline}
-.pm-cal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));
-  gap:clamp(24px,3.4vw,48px);margin-bottom:clamp(30px,4vw,48px)}
+.pm-cal-grid{display:flex;flex-direction:column;gap:clamp(26px,3.4vw,40px);
+  max-width:420px;margin:0 0 clamp(30px,4vw,48px)}
 .pm-month-name{font-size:12px;font-weight:500;letter-spacing:.22em;
   text-transform:uppercase;color:var(--soft);margin-bottom:14px}
 .pm-dows,.pm-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
@@ -556,11 +566,11 @@ section.ink .pull{color:var(--paper)}
 .pm-day.has i{display:block;width:4px;height:4px;border-radius:50%;
   background:var(--clay);margin-top:3px}
 .pm-day.has:hover i{background:#fff}
-section.ink .pm-day{color:#B5B1A4}
+section.ink .pm-day{color:#C9C4B0}
 section.ink .pm-day.today{color:#fff}
 section.ink .pm-day.has{color:#fff;background:rgba(255,255,255,.13)}
 section.ink .pm-day.has:hover{background:var(--sage)}
-section.ink .pm-month-name,section.ink .pm-dows span{color:#9A968B}
+section.ink .pm-month-name,section.ink .pm-dows span{color:#ADA894}
 
 .pm-cal-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 .pm-cal-list li{border-bottom:1px solid var(--line)}
@@ -572,7 +582,7 @@ section.ink .pm-month-name,section.ink .pm-dows span{color:#9A968B}
 .pm-time{font-size:13px;color:var(--soft);white-space:nowrap}
 section.ink .pm-cal-list{border-color:rgba(255,255,255,.14)}
 section.ink .pm-cal-list li{border-color:rgba(255,255,255,.14)}
-section.ink .pm-when,section.ink .pm-time{color:#9A968B}
+section.ink .pm-when,section.ink .pm-time{color:#ADA894}
 section.ink .pm-cal-list a:hover .pm-what{color:var(--sage-light,#B9C2AA)}
 @media (max-width:620px){
   .pm-cal-list a{grid-template-columns:1fr auto;gap:4px 14px}
@@ -649,7 +659,7 @@ section.ink .faq{color:var(--ink)}
 .btn.sage:hover{background:var(--ink);border-color:var(--ink)}
 .photo-slot span,.person .portrait.empty span{color:var(--mid)}
 .pm-day.has{background:#E2DCCE}
-section.ink .pm-day.has{background:#4A5145;color:#fff}
+section.ink .pm-day.has{background:#43552A;color:#fff}
 section.ink .pm-day.has:hover{background:var(--sage)}
 
 /* ==========================================================================
@@ -657,12 +667,12 @@ section.ink .pm-day.has:hover{background:var(--sage)}
    .ghost-dark is a light-on-dark button; on a pale ground it disappears.
    Empty portrait/photo slots need a light label inside dark sections.
    ========================================================================== */
-section:not(.ink):not(.statement) .btn.ghost-dark,
+section:not(.ink):not(.statement):not(.hero):not(.phero) .btn.ghost-dark,
 .light .btn.ghost-dark{color:var(--ink);border-color:var(--ink)}
-section:not(.ink):not(.statement) .btn.ghost-dark:hover,
+section:not(.ink):not(.statement):not(.hero):not(.phero) .btn.ghost-dark:hover,
 .light .btn.ghost-dark:hover{background:var(--ink);color:var(--cream)}
 section.ink .photo-slot span,
-section.ink .person .portrait.empty span{color:#B9B4A6}
+section.ink .person .portrait.empty span{color:#C9C4B0}
 .embed-placeholder .ph-title{color:var(--ink)}
 section.ink .embed-placeholder .ph-title{color:var(--ink)}
 .menu-item .pr{color:var(--mid)}
@@ -682,19 +692,19 @@ section.ink .embed-placeholder .ph-title{color:var(--ink)}
 .person .role{color:var(--sage-txt)}
 section.ink .day-row .act,
 section.ink .voice .theme,
-section.ink .person .role{color:#B4BDA4}
+section.ink .person .role{color:#B9C79E}
 
 /* footer: labels and fine print on deep forest */
-.foot-top h4{color:#A9A697}
-.foot-bottom{color:#A9A697}
-.foot-brand p{color:#BAB6AA}
-footer{color:#C3BFB2}
+.foot-top h4{color:#ADA894}
+.foot-bottom{color:#ADA894}
+.foot-brand p{color:#C9C4B0}
+footer{color:#C9C4B0}
 
 /* hero plan card: white-ish everything, it sits on deep forest */
 .plan.hero-plan small,
 .plan.hero-plan summary,
-.plan.hero-plan .plan-more summary{color:#CFCBBF}
-.plan.hero-plan .plan-more summary::after{color:#CFCBBF}
+.plan.hero-plan .plan-more summary{color:#D6D1BE}
+.plan.hero-plan .plan-more summary::after{color:#D6D1BE}
 
 /* design-7 has no chartreuse in its palette — .acid was a leftover class name
    with no background, so it rendered dark-on-dark. Give it a real fill. */
@@ -707,15 +717,15 @@ footer{color:#C3BFB2}
 section.ink .embed-note,
 section.ink .note,
 section.ink .fine,
-section.ink .aside{color:#BAB6AA}
+section.ink .aside{color:#C9C4B0}
 section.ink .embed-note a,
-section.ink .note a{color:#D7D3C7}
-section.ink .kicker{color:#AEB4A0}
+section.ink .note a{color:#E2DECF}
+section.ink .kicker{color:#B9C79E}
 section.ink .pm-month-name,
 section.ink .pm-dows span,
 section.ink .pm-when,
 section.ink .pm-time{color:#ADA99D}
-section.ink .pm-day{color:#C3BFB2}
+section.ink .pm-day{color:#C9C4B0}
 
 /* ==========================================================================
    CONTRAST ROUND 5 — the last stragglers, all four designs
@@ -729,20 +739,20 @@ section.ink .pm-day{color:#C3BFB2}
 section.ink .photo-slot span,
 section.ink .person .portrait.empty span,
 section.ink .shot.empty span,
-section.ink .collage .empty span{color:#BAB6AA}
+section.ink .collage .empty span{color:#C9C4B0}
 .voice .theme{color:var(--mid)}
 .ev-item .ev-when{color:var(--mid)}
 /* .ghost-dark on any pale ground */
 .light .btn.ghost-dark,
 .alt .btn.ghost-dark,
-section:not(.ink):not(.statement) .btn.ghost-dark{color:var(--ink);border-color:var(--ink)}
-section:not(.ink):not(.statement) .btn.ghost-dark:hover{background:var(--ink);color:#fff}
+section:not(.ink):not(.statement):not(.hero):not(.phero) .btn.ghost-dark{color:var(--ink);border-color:var(--ink)}
+section:not(.ink):not(.statement):not(.hero):not(.phero) .btn.ghost-dark:hover{background:var(--ink);color:#fff}
 
 /* ==========================================================================
    CONTRAST ROUND 6 — dark CTA bands and the Cherish scope
    ========================================================================== */
-.trial-cta{color:#D2CEC2}
-.trial-cta .kicker{color:#AEB4A0}
+.trial-cta{color:#D6D1BE}
+.trial-cta .kicker{color:#B9C79E}
 .trial-cta p,.trial-cta .lede{color:#C7C3B7}
 .pending{color:#5E5648;background:rgba(0,0,0,.06)}
 .cherish-scope .pending{color:#5C4326}
@@ -757,3 +767,75 @@ section:not(.ink):not(.statement) .btn.ghost-dark:hover{background:var(--ink);co
 .cherish-scope .collage .empty span,
 .cherish-scope .shot.empty span{color:#5C4326}
 .cherish-scope .kicker{color:var(--mid)}
+
+/* ==========================================================================
+   PALETTE APPLICATION — green accent
+   ========================================================================== */
+.btn.sage{background:var(--sage-btn);border-color:var(--sage-btn);color:var(--cream)}
+.btn.sage:hover{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.pm-day.has i{background:var(--sage)}
+.pm-day.has{background:#DDD6C2}
+.pm-day.has:hover{background:var(--sage);color:var(--cream)}
+.note{border-left-color:var(--sage)}
+.serie-body .s-note{border-left-color:var(--sage)}
+.hand{color:var(--clay)}
+.pull{color:var(--sage-txt)}
+
+/* calendar: days already gone read back, not gone */
+.pm-day.past{opacity:.42}
+.pm-day.today{box-shadow:inset 0 0 0 1px currentColor}
+
+/* ghost-dark lives over photography in the hero — always light there */
+.hero .btn.ghost-dark,
+.phero .btn.ghost-dark{color:var(--cream);border-color:rgba(255,255,255,.55);background:transparent}
+.hero .btn.ghost-dark:hover,
+.phero .btn.ghost-dark:hover{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+
+/* nav labels must never wrap onto two lines */
+.nav-links a{white-space:nowrap}
+@media (max-width:1180px){ .nav-links a{font-size:11px;letter-spacing:.08em} }
+
+/* new palette: --soft sits at 4.55 on the OLD cream and lower on the new one.
+   Anything small and uppercase uses --mid instead. */
+.kicker{color:var(--mid)}
+.note,.i-note,.voice .who,.pending,.photo-slot span,
+.person .portrait.empty span,.cls .lvl,.day-row .act{color:var(--mid)}
+section.ink .kicker{color:#B9C79E}
+section.ink .note,section.ink .i-note,section.ink .voice .who{color:#C9C4B0}
+
+/* last stragglers — these sit on taupe/paper-3, which is a step darker */
+.way .kicker,.plan .fine,.i-note,.cls .lvl.beginner,.pending,
+.photo-slot span,.shot.empty span{color:#4E4A42}
+.i-note{color:#4E4A42}
+
+/* specificity: these three were losing to earlier, more specific rules */
+.info-list .info-row .i-note{color:#4E4A42}
+.ways .way .kicker,.ways .way.feature .kicker{color:#4E4A42}
+section:not(.ink) .photo-slot span{color:#4E4A42}
+
+/* Months stack in one column; the event list sits beside them on desktop
+   so the single column doesn't leave half the section empty. */
+.pm-cal{display:grid;grid-template-columns:minmax(260px,340px) 1fr;
+  gap:clamp(30px,5vw,72px);align-items:start}
+.pm-cal-grid{margin-bottom:0}
+.pm-cal-list{margin-top:0}
+@media (max-width:860px){
+  .pm-cal{grid-template-columns:1fr;gap:34px}
+  .pm-cal-grid{max-width:340px}
+}
+
+/* ----------------------------------------------------- FOOTER HOURS ------ */
+.foot-hours{margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.14);
+  max-width:20em}
+.hr-status{font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  margin-bottom:14px;color:#B9C79E}
+.hr-status.shut{color:#ADA894}
+.hr-status span{letter-spacing:.06em;text-transform:none;font-weight:400;font-size:12.5px;
+  color:#ADA894}
+.hr-list{display:grid;gap:5px}
+.hr-row{display:flex;justify-content:space-between;gap:20px;font-size:13.5px;
+  color:#ADA894;line-height:1.5}
+.hr-row.is-today{color:#E2DECF;font-weight:500}
+.hr-day{letter-spacing:.06em}
+.cherish-scope .foot-hours{border-top-color:rgba(255,255,255,.16)}
+@media (max-width:520px){ .foot-hours{max-width:none} }

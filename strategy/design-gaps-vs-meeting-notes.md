@@ -31,7 +31,7 @@ gets lost in the move.
 |---|---|---|
 | 1.1 | Helvetica Neue everywhere, serif and cursive removed | ✅ all three (Caveat kept for the two handwritten pointers) |
 | 1.2 | All caps to match parent brand | ⚠️ design-6 yes; **7 and 8 are lowercase by design** — the merge has to pick one |
-| 1.3 | Brand hex codes | ❌ waiting on Mickey. All three palettes are mine, not the parent brand's |
+| 1.3 | Brand hex codes | ❌ waiting on Miki. All three palettes are mine, not the parent brand's |
 | 1.4 | Primal Moves Venice logo, top left | ✅ (wordmark, not the real logo file — no logo asset yet) |
 | 1.5 | Sticky nav | ✅ all three |
 | 1.6 | Rename "The Practice" → **The Method** | ⚠️ currently reads **"Our Method"** everywhere (your earlier instruction). Notes say "The Method". Pick one and I'll sweep it |
@@ -50,7 +50,7 @@ gets lost in the move.
 | 2.2 | Headline: **PRACTICE MAKES PRIMAL** | ❌ none of the three (currently "Move like you mean it" / "a daily movement practice" / "come enjoy a class, a sauna, and a hang") |
 | 2.3 | Sub-line: *A daily movement practice, a sauna, a cold plunge, a cafe, and a room full of people.* — cut "show up", cut the duplication | ❌ all three still end "...who show up" |
 | 2.4 | CTA **$40 Day Pass**, secondary Primal Online | ⚠️ design-8 has the day pass but its secondary is "what's included"; 6 and 7 have the trial |
-| 2.5 | Hero **video** (5 pillars, ~5s each) replacing the static image | ❌ all three are static photos. Waiting on Mickey's cut |
+| 2.5 | Hero **video** (5 pillars, ~5s each) replacing the static image | ❌ all three are static photos. Waiting on Miki's cut |
 | 2.6 | Chest-to-wall in front of Tanya's mural, used elsewhere | ❌ no such photo in the library yet |
 
 ## 3. Homepage — body
@@ -138,10 +138,10 @@ embed for now as the notes allow, and link out. (a) is maybe half a day.
 Nothing below is a code problem; listing so it's chaseable.
 
 - **Domain + DNS from Patrick** — blocks go-live *and* Klaviyo SMS registration.
-- **Brand hex codes** — Mickey.
-- **Hero video** — Mickey.
-- **Teacher headshots + the correct Nick Brewer photo** — Mickey.
-- **Real cafe photography** — Mickey.
+- **Brand hex codes** — Miki.
+- **Hero video** — Miki.
+- **Teacher headshots + the correct Nick Brewer photo** — Miki.
+- **Real cafe photography** — Miki.
 - **Class descriptions** — Gus.
 - **Moss + Summit partner details and the Moss signup URL** — Gus.
 - **Two weeks free on Primal Online** — Gus → Nick.

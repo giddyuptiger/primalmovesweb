@@ -232,3 +232,159 @@ If Tuesday is still the target for the Moss announcement, this is the order:
 
 The site does not need to be finished on Tuesday. It needs to be *true*, and to
 have somewhere for the Moss email to land.
+
+
+---
+
+# Addendum — server tools, real costs, and who can change a photo
+
+Answering three questions from 21 Aug.
+
+## 1. What "server tools" actually means here
+
+The site is static HTML. Nothing about it needs a server to *serve*. Three
+specific jobs need code running somewhere other than the visitor's browser:
+
+### a. Refreshing the events feed
+
+`tools/fetch_events.py` pulls Luma's ICS feed and writes `events.json`. Today
+you run it by hand. Two ways to automate:
+
+**GitHub Actions on a cron (recommended).** A workflow file runs the script
+every morning, commits the JSON if it changed, and the push triggers a
+Cloudflare Pages build. Free — public repos get unlimited Actions minutes.
+
+```yaml
+# .github/workflows/refresh-events.yml
+on:
+  schedule: [{ cron: "0 13 * * *" }]   # 6am LA
+  workflow_dispatch:                    # and a manual button
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions: { contents: write }
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/fetch_events.py
+      - run: |
+          git config user.name  "events-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add design-9/events.json
+          git diff --staged --quiet || git commit -m "events: refresh from Luma"
+          git push
+```
+
+**Why this over a Worker:** the data stays in git, so you can see what changed
+and when. And if Luma is down at 6am, the last good `events.json` is still
+sitting there — the page never shows an error. A Worker fetching live would
+show visitors whatever Luma's having a bad morning about.
+
+### b. The A/B test
+
+A **Cloudflare Snippet** (or a Worker) on `/` that flips a coin, sets a sticky
+cookie, and serves variant A or B. Runs at the edge before the page renders —
+no flicker, no ad-blocker problem. About 20 lines.
+
+```js
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    if (url.pathname !== "/") return env.ASSETS.fetch(request);
+    const cookie = request.headers.get("Cookie") || "";
+    let arm = cookie.match(/pm_arm=(a|b)/)?.[1];
+    const fresh = !arm;
+    if (!arm) arm = Math.random() < 0.5 ? "a" : "b";
+    url.pathname = arm === "a" ? "/a/" : "/b/";
+    const res = new Response(await env.ASSETS.fetch(new Request(url, request)).then(r => r.body), ...);
+    if (fresh) res.headers.append("Set-Cookie", `pm_arm=${arm}; Path=/; Max-Age=7776000; SameSite=Lax`);
+    return res;
+  }
+}
+```
+
+Pair it with the two-promo-code trick so MindBody reports the revenue side.
+
+### c. Email capture
+
+**This is the one that genuinely needs a Worker.** Klaviyo's API needs a private
+key, and a private key in the page is a private key anyone can steal. So: the
+form posts to a Worker, the Worker holds the key as a secret and forwards to
+Klaviyo. Roughly 30 lines, and the same pattern covers the Places API if you
+ever want live hours.
+
+### Setting it up
+
+1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** →
+   **Connect to Git** → pick `giddyuptiger/primalmovesweb`.
+2. Build command: none. Output directory: the repo root (or `design-9` once
+   it's the site).
+3. **Custom domains** → add the domain (needs the nameservers pointed at
+   Cloudflare first — see §3 above).
+4. For the Worker: `npm create cloudflare@latest`, then `npx wrangler deploy`.
+   Secrets go in with `npx wrangler secret put KLAVIYO_KEY` — never in a file.
+5. Cron triggers are configured in `wrangler.toml` under `[triggers]`.
+
+## 2. What it actually costs per month
+
+| | Free tier | You'd use | Cost |
+|---|---|---|---|
+| Pages hosting | Unmetered static requests, 500 builds/mo | maybe 30 builds | **$0** |
+| Pages bandwidth | Not metered | — | **$0** |
+| DNS | Unlimited | 1 zone | **$0** |
+| Workers | 100k requests/**day**, 5 cron triggers | ~2k/day at your traffic | **$0** |
+| Domain (Cloudflare Registrar) | — | 1 | **~$10–12/yr ≈ $1/mo** |
+| Google Places (live hours) | — | 1 call/day if used | **~$0** |
+
+**Realistic run rate: about $1/month**, which is the domain. Plus Klaviyo,
+which is priced on list size and is a separate decision.
+
+Workers Paid is **$5/month** and buys 10M requests, 30M CPU-ms, higher cron
+limits and better observability. You do not need it at launch. The honest
+trigger for upgrading is wanting the observability, not hitting a limit — at
+~7 new customers a day with no ad spend, 100k requests/day is roughly 50×
+your traffic.
+
+**What could actually cost money later:** heavy video (use Cloudflare Stream,
+$5 per 1,000 minutes delivered, only if a compressed MP4 isn't enough), or an
+image CDN you don't currently need.
+
+## 3. Can your coworkers swap photos?
+
+**Honest verdict: not yet.** What I built — named slots in `config.js` — makes
+swapping trivial *for someone comfortable with git*. Miki is not going to open
+a terminal, and asking her to would be a bad answer.
+
+Three real options:
+
+### A. She sends, you drop in — works today, no setup
+
+She names files by slot (`home.hero.jpg`, `studio.room-sauna.jpg` — the list is
+in `assets/photos/PHOTOS.md`), you drop them into `assets/photos/` and push.
+Two minutes a batch. **This is genuinely fine until launch** and costs nothing.
+
+### B. A git-based CMS at `/admin` — half a day of setup, $0/month
+
+**This is the right answer.** [Sveltia CMS](https://sveltiacms.app/) (or
+[Decap](https://decapcms.org/), its older cousin) is a single JS file you drop
+in the repo. Miki visits `yourdomain.com/admin`, logs in with GitHub, and sees
+the photo slots as a form with image pickers and drag-and-drop upload. She picks
+a new shot, clicks save, and it commits to the repo — which triggers a Pages
+build, and the site is live in about a minute. No terminal, no code, no
+understanding of git required.
+
+What it needs: a config file describing the slots (a couple of hours' work
+against the structure we already have), a free GitHub account for each person
+with write access to the repo, and either a GitHub personal access token or a
+small OAuth Worker for login. Sveltia has a built-in image optimizer, which
+means she can't accidentally put a 12MB photo on the homepage.
+
+Worth doing **after** launch, not before — it's a nice-to-have that would delay
+a site you need up.
+
+### C. R2 bucket plus an upload Worker
+
+Overkill. You'd be rebuilding option B badly. Skip it.
+
+**Recommendation:** run option A through launch, then set up option B once the
+site is stable and Miki has actually sent a first batch — so the CMS gets built
+around how she really works rather than how we imagine she will.

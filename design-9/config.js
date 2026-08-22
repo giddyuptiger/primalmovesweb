@@ -70,6 +70,15 @@ window.PM_CONFIG = {
      Slot names follow Miki's `page - section - slot` convention. The full
      list, with what each shot is doing, is in assets/photos/PHOTOS.md.
      Anything not listed here keeps whatever the page already has.        */
+  /* --- LAYOUT -------------------------------------------------------------
+     "a"     = the current design.
+     "tight" = the design critique applied: fewer competing CTAs, a collapsed
+               type scale, a section rhythm with two big moments per page
+               instead of eight equal ones, and shorter pages.
+     Switch between them live in the EDIT panel under Layout. Whichever is
+     set here is what a visitor sees.                                      */
+  layout: "a",
+
   /* --- DESIGN STUDIO ------------------------------------------------------
      true  = the EDIT tab shows for ANYONE who loads the site. Right for
              design mode: no passphrase, everyone can look and try things.
@@ -244,18 +253,82 @@ window.PM_CONFIG = {
       }
     });
 
-    // data-pm-schedule → the live timetable.
+    // data-pm-schedule → the live timetable, in three fallbacks:
     //
-    // Two Mindbody URLs, easy to confuse:
-    //   clients.mindbodyonline.com   — their public schedule page. Sends
-    //     X-Frame-Options: SAMEORIGIN, so it can NEVER be framed. Link only.
-    //   widgets.mindbodyonline.com   — the Branded Web (Healcode) widget.
-    //     Built to be framed, auto-resizes, booking works inside it.
+    //   1. schedule.json — built by tools/fetch_schedule.py from Mindbody's
+    //      own PUBLIC class-times API (the one behind mindbodyonline.com/
+    //      explore). No key, no widget, no cost, and it renders in OUR type.
+    //   2. the Branded Web / Healcode widget, if healcodeWidgetId is ever set.
+    //      Works, but it's a paid add-on in a cross-origin iframe we cannot
+    //      style.
+    //   3. a plain link to Mindbody.
     //
-    // So: paste the widget ID below and the real schedule appears here.
-    // It arrives as a cross-origin iframe, which means we cannot restyle it
-    // from this side — theme it inside Mindbody (Branded Web → Settings).
+    // Note clients.mindbodyonline.com can never be framed — it sends
+    // X-Frame-Options: SAMEORIGIN. Link to it, never embed it.
     document.querySelectorAll("[data-pm-schedule]").forEach(function (el) {
+      var srcAttr = el.getAttribute("data-pm-schedule-src");
+      var cssHref2 = (document.querySelector('link[rel="stylesheet"][href*="style.css"]') || {}).href || "";
+      var schedUrl = srcAttr || (cssHref2 ? cssHref2.replace(/style\.css.*$/, "schedule.json") : "schedule.json");
+
+      fetch(schedUrl, { cache: "no-cache" })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function (d) {
+          if (!d.classes || !d.classes.length) throw new Error("empty");
+          renderSchedule(el, d);
+        })
+        .catch(function () { healcodeOrLink(el); });
+    });
+
+    function renderSchedule(el, d) {
+      var TZ = "America/Los_Angeles";
+      function la(iso) {
+        var dt = new Date(iso), o = {};
+        try {
+          var f = new Intl.DateTimeFormat("en-US", {
+            timeZone: TZ, weekday: "short", month: "short", day: "numeric",
+            hour: "numeric", minute: "2-digit", hour12: true
+          }).formatToParts(dt).reduce(function (a2, p2) { a2[p2.type] = p2.value; return a2; }, {});
+          o.day = f.weekday + " " + f.day + " " + f.month;
+          o.key = f.month + f.day;
+          o.time = (f.hour + (f.minute === "00" ? "" : ":" + f.minute) +
+                    (f.dayPeriod || "").toLowerCase()).replace(/\s+/g, "");
+        } catch (e) {
+          o.day = dt.toDateString(); o.key = o.day;
+          o.time = dt.getHours() + ":" + ("0" + dt.getMinutes()).slice(-2);
+        }
+        return o;
+      }
+
+      var groups = [], index = {};
+      d.classes.forEach(function (c) {
+        var L = la(c.start);
+        if (!index[L.key]) { index[L.key] = { day: L.day, items: [] }; groups.push(index[L.key]); }
+        index[L.key].items.push({ t: L.time, c: c });
+      });
+
+      var book = d.bookUrl || C.mindbodyScheduleUrl;
+      var html = '<div class="sched">';
+      groups.forEach(function (g) {
+        html += '<div class="sched-day"><div class="sched-date">' + g.day + "</div><ul>";
+        g.items.forEach(function (x) {
+          html += '<li><a href="' + book + '" target="_blank" rel="noopener">' +
+            '<span class="s-time">' + x.t + "</span>" +
+            '<span class="s-name">' + x.c.name + "</span>" +
+            '<span class="s-meta">' + (x.c.staff || "") +
+              (x.c.minutes ? '<span class="s-dur">' + x.c.minutes + " min</span>" : "") +
+            "</span></a></li>";
+        });
+        html += "</ul></div>";
+      });
+      html += "</div>";
+      html += '<p class="embed-note" style="margin-top:22px">Straight from Mindbody, refreshed daily. ' +
+        '<a href="' + book + '" target="_blank" rel="noopener" style="text-decoration:underline">' +
+        "Book a class &#8599;</a></p>";
+      el.classList.add("sched-wrap");
+      el.innerHTML = html;
+    }
+
+    function healcodeOrLink(el) {
       if (C.healcodeWidgetId) {
         var w = document.createElement("healcode-widget");
         w.setAttribute("data-type", "schedules");
@@ -266,29 +339,24 @@ window.PM_CONFIG = {
         el.innerHTML = "";
         el.appendChild(w);
         if (!document.getElementById("healcode-js")) {
-          var s = document.createElement("script");
-          s.id = "healcode-js";
-          s.src = "https://widgets.mindbodyonline.com/javascripts/healcode.js";
-          s.async = true;
-          document.body.appendChild(s);
+          var s2 = document.createElement("script");
+          s2.id = "healcode-js";
+          s2.src = "https://widgets.mindbodyonline.com/javascripts/healcode.js";
+          s2.async = true;
+          document.body.appendChild(s2);
         }
         return;
       }
       el.classList.add("embed-placeholder");
       el.innerHTML =
         '<div class="ph-title">' +
-          (el.getAttribute("data-pm-schedule-label") || "Book through Mindbody") +
-        "</div>" +
+          (el.getAttribute("data-pm-schedule-label") || "Book through Mindbody") + "</div>" +
         "<p>" + (el.getAttribute("data-pm-schedule-hint") || "") + "</p>" +
         '<div class="cta-row" style="justify-content:center;margin-top:24px">' +
           '<a class="btn sage lg" href="' + C.mindbodyScheduleUrl + '" target="_blank" rel="noopener">See this week&rsquo;s schedule &#8599;</a>' +
           '<a class="btn" data-pm-link="appStoreUrl" target="_blank" rel="noopener">Get the app</a>' +
         "</div>";
-      if (window.console && console.warn) {
-        console.warn("[PM_CONFIG] Set `healcodeWidgetId` in config.js to render the live timetable inline. " +
-                     "Mindbody's own schedule page cannot be iframed (X-Frame-Options: SAMEORIGIN).");
-      }
-    });
+    }
 
     // data-pm-pricing → Healcode pricing-options widget, or a real CTA.
     document.querySelectorAll("[data-pm-pricing]").forEach(function (el) {
@@ -391,6 +459,9 @@ window.PM_CONFIG = {
       };
       probe.src = next;
     });
+
+    // layout: apply the chosen one before anything paints
+    if (C.layout === "tight") document.documentElement.classList.add("pm-pre-tight");
 
     // data-pm-copy → text overrides from copy.json
     if (C.copyUrl) {

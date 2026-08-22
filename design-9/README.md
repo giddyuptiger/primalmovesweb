@@ -19,6 +19,35 @@ calendar's event dots. Navy `#132238` carries body copy; burnt red `#AE411C` is
 the secondary accent, used sparingly. Every text colour clears WCAG AA on every
 ground it sits on.
 
+## The timetable is live, and it costs nothing
+
+`tools/fetch_schedule.py` pulls the real class list from **Mindbody's own
+public class-times API** — the endpoint behind `mindbodyonline.com/explore`,
+their consumer directory. No API key, no Branded Web add-on, no approval
+queue. It writes `schedule.json` and the page renders it in our own type.
+
+```
+python3 tools/fetch_schedule.py     # run daily, same as the events feed
+```
+
+The slot degrades in order: our `schedule.json` → the Healcode widget if a
+`healcodeWidgetId` is ever set → a plain link to Mindbody. Nothing can leave a
+blank space. Booking always deep-links out — Mindbody is the merchant.
+
+The endpoint is undocumented, so it could change without notice. That's what
+the fallbacks are for.
+
+## Two layouts
+
+`config.layout` — `"a"` is the design as built, `"tight"` is the design
+critique applied: two big moments per page instead of eight equal ones,
+secondary CTAs demoted to text links, the type scale collapsed to six sizes,
+statement bands gone dark, shorter pages. Switch live in the EDIT panel under
+**Layout**; pages come down 6–23%.
+
+Neither fixes the real gap — two photographs in 5,700px of homepage. That
+needs pictures, not CSS. See `strategy/design-critique.md`.
+
 ## Design studio — `/admin/`
 
 A panel for trying colours, photographs and copy on the live pages without

@@ -21,7 +21,7 @@
   "use strict";
 
   var KEY_ON = "pm_studio_on", KEY_COLORS = "pm_studio_colors", KEY_PHOTOS = "pm_studio_photos",
-      KEY_FOCUS = "pm_studio_focus", KEY_LOCAL = "pm_studio_local", KEY_WKEY = "pm_studio_wkey", KEY_COPY = "pm_studio_copy";
+      KEY_FOCUS = "pm_studio_focus", KEY_LOCAL = "pm_studio_local", KEY_WKEY = "pm_studio_wkey", KEY_COPY = "pm_studio_copy", KEY_LAYOUT = "pm_studio_layout";
 
   function q(p) { return new URLSearchParams(location.search).get(p); }
   function ls(k, v) {
@@ -31,6 +31,17 @@
   function lsDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
 
   var CFG = window.PM_CONFIG || {};
+
+  // Layout A / B. Applied before the panel exists so there's no flash.
+  var layout = ls(KEY_LAYOUT) || CFG.layout || "a";
+  function applyLayout(v) {
+    layout = v;
+    document.body.classList.toggle("tight", v === "tight");
+    document.documentElement.classList.remove("tight-pending");
+    ls(KEY_LAYOUT, v);
+  }
+  if (document.body) applyLayout(layout);
+  else document.addEventListener("DOMContentLoaded", function () { applyLayout(layout); });
   if (q("admin") === "1") ls(KEY_ON, "1");
   if (q("admin") === "0") { lsDel(KEY_ON); }
 
@@ -265,6 +276,13 @@
     "#pm-studio .p-chips{display:flex;gap:3px;margin-top:10px}",
     "#pm-studio .p-chips i{width:17px;height:17px;border-radius:3px;display:block;",
     "  border:1px solid rgba(255,255,255,.12)}",
+    "#pm-studio .preset.lay{cursor:pointer}",
+    "#pm-studio .preset.lay:hover{border-color:#3D4348}",
+    "#pm-studio .preset.lay.on{border-color:#8BA85F;background:#1F241B}",
+    "#pm-studio .lay-list{list-style:none;margin:11px 0 0;padding:0}",
+    "#pm-studio .lay-list li{font-size:11.5px;color:#8D9198;line-height:1.5;padding-left:14px;",
+    "  position:relative;margin-bottom:5px}",
+    "#pm-studio .lay-list li::before{content:'\\2022';position:absolute;left:2px;color:#8BA85F}",
     "#pm-studio .preset .p-del{margin-top:11px;background:none;border:0;color:#6E737A;cursor:pointer;",
     "  font:inherit;font-size:11px;padding:0}",
     "#pm-studio .preset .p-del:hover{color:#D08A72}",
@@ -282,6 +300,7 @@
     '<div id="pm-tabs"><button data-tab="color" class="on">Colour</button>' +
     '<button data-tab="photo">Photos</button>' +
     '<button data-tab="copy">Copy</button>' +
+    '<button data-tab="layout">Layout</button>' +
     '<button data-tab="preset">Presets</button></div>' +
     '<div id="pm-body"></div>' +
     '<footer>' +
@@ -542,6 +561,50 @@
           wrap.remove();
         };
         rd.readAsDataURL(f);
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------- layout --- */
+
+  var LAYOUTS = [
+    { id: "a", name: "Current", note: "The design as built.",
+      bullets: ["Eight sections at roughly equal weight",
+                "Every section ends with buttons",
+                "Nine-plus type sizes in play"] },
+    { id: "tight", name: "Tightened", note: "The design critique applied.",
+      bullets: ["Two big moments per page, the rest become bands",
+                "Secondary CTAs demoted to text links — one primary per screen",
+                "Type collapsed to six sizes",
+                "Statement bands go dark; clay stops carrying display type",
+                "Shorter: smaller series images, tighter heroes",
+                "Empty teacher frames hidden until there are photographs"] }
+  ];
+
+  function renderLayout() {
+    var body = document.getElementById("pm-body");
+    body.innerHTML =
+      '<p class="pm-note" style="margin-bottom:18px">Two takes on the same content. Switch and scroll &mdash; ' +
+      "the choice follows you from page to page.</p>" +
+      LAYOUTS.map(function (L) {
+        var on = layout === L.id;
+        return '<div class="preset lay' + (on ? " on" : "") + '" data-lay="' + L.id + '">' +
+          '<div class="p-top"><b>' + L.name + "</b>" +
+          '<span class="p-apply">' + (on ? "Showing" : "Switch") + "</span></div>" +
+          '<div class="p-note">' + L.note + "</div>" +
+          "<ul class=\"lay-list\">" + L.bullets.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul>" +
+          "</div>";
+      }).join("") +
+      '<p class="pm-note" style="margin-top:16px">Neither can fix the real gap: <b>two photographs in 5,700px of homepage</b>. ' +
+      "That needs pictures, not CSS. See <code>strategy/design-critique.md</code>.</p>" +
+      '<p class="pm-note" style="margin-top:12px">To make one the default for everyone, set ' +
+      "<code>layout</code> in <code>config.js</code>.</p>";
+
+    body.querySelectorAll(".preset.lay").forEach(function (el) {
+      el.addEventListener("click", function () {
+        applyLayout(el.getAttribute("data-lay"));
+        renderLayout();
+        [].slice.call(document.querySelectorAll(".pm-swap-badge")).forEach(function (x) { if (x._place) x._place(); });
       });
     });
   }
@@ -830,6 +893,7 @@
     if (b.dataset.tab === "color") renderColor();
     else if (b.dataset.tab === "photo") renderPhoto();
     else if (b.dataset.tab === "copy") renderCopy();
+    else if (b.dataset.tab === "layout") renderLayout();
     else renderPresets();
   });
 
@@ -877,7 +941,7 @@
   });
 
   document.getElementById("pm-exit").addEventListener("click", function () {
-    lsDel(KEY_ON); lsDel(KEY_COLORS); lsDel(KEY_PHOTOS); lsDel(KEY_FOCUS); lsDel(KEY_COPY);
+    lsDel(KEY_ON); lsDel(KEY_COLORS); lsDel(KEY_PHOTOS); lsDel(KEY_FOCUS); lsDel(KEY_COPY); lsDel(KEY_LAYOUT);
     location.href = location.pathname;
   });
 

@@ -1078,3 +1078,119 @@ section:not(.ink) .photo-slot span{color:#4E4A42}
 .cmp-sub{display:block;font-size:11.5px;color:#4E4A42;margin-top:4px;line-height:1.45}
 .cmp-btns{display:grid;gap:7px;justify-items:start}
 .btn.tiny{padding:8px 13px;font-size:10.5px;letter-spacing:.09em}
+
+/* ==========================================================================
+   THE TIMETABLE
+   Rendered from schedule.json — Mindbody's own public class-times feed — so
+   it lives inside our type system instead of a cross-origin iframe.
+   ========================================================================== */
+.sched{display:grid;gap:clamp(26px,3.4vw,44px)}
+.sched-day{display:grid;grid-template-columns:minmax(120px,180px) 1fr;
+  gap:clamp(18px,3vw,44px);align-items:start;
+  padding-top:20px;border-top:1px solid var(--line)}
+.sched-date{font-size:12.5px;font-weight:600;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--sage-txt);position:sticky;top:calc(var(--nav-h,84px) + 20px)}
+.sched-day ul{list-style:none;margin:0;padding:0}
+.sched-day li + li{border-top:1px solid var(--line)}
+.sched-day a{display:grid;grid-template-columns:96px 1fr auto;gap:18px;
+  align-items:baseline;padding:13px 0;text-decoration:none;color:inherit}
+.sched-day a:hover .s-name{color:var(--sage-txt)}
+.s-time{font-size:14px;font-weight:500;color:var(--ink);letter-spacing:.02em}
+.s-name{font-size:clamp(16px,1.6vw,18.5px);line-height:1.35;color:var(--ink)}
+.s-meta{font-size:13px;color:var(--mid);text-align:right;white-space:nowrap}
+.s-dur{display:block;font-size:11.5px;color:var(--soft);margin-top:3px}
+section.ink .sched-day{border-top-color:rgba(255,255,255,.14)}
+section.ink .sched-day li + li{border-top-color:rgba(255,255,255,.14)}
+section.ink .s-time,section.ink .s-name{color:var(--cream)}
+section.ink .s-meta{color:#C9C4B0}
+section.ink .sched-date{color:#B9C79E}
+@media (max-width:720px){
+  .sched-day{grid-template-columns:1fr;gap:12px}
+  .sched-date{position:static}
+  .sched-day a{grid-template-columns:76px 1fr;gap:12px}
+  .s-meta{grid-column:2;text-align:left;white-space:normal;margin-top:2px}
+  .s-dur{display:inline;margin-left:8px}
+}
+
+/* ==========================================================================
+   LAYOUT B — "TIGHTENED"
+   The design critique applied as a switchable theme. Everything below is
+   scoped to body.tight, so the current design is untouched and the two can
+   be compared by flipping one class in the EDIT panel.
+
+   What it changes, in the order the critique ranked them:
+     1. Section rhythm — big moments stay big, everything else becomes a band
+     2. Fewer competing CTAs — secondary buttons become text links
+     3. Type scale collapsed from nine-plus sizes to six
+     4. More tonal breaks — the statement band goes dark
+     5. Shorter pages — series images, teacher grid, page heroes
+   What it CANNOT change: the shortage of photography. That's a supply
+   problem, and no stylesheet fixes it.
+   ========================================================================== */
+
+/* --- 1 · rhythm ---------------------------------------------------------- */
+body.tight section{padding-top:clamp(50px,6.5vh,80px) !important;
+  padding-bottom:clamp(50px,6.5vh,80px) !important}
+body.tight section.pad-sm{padding-top:clamp(34px,4.5vh,54px) !important;
+  padding-bottom:clamp(34px,4.5vh,54px) !important}
+/* the two moments per page that keep their scale */
+body.tight section.ink,
+body.tight section.statement{padding-top:clamp(74px,10vh,124px) !important;
+  padding-bottom:clamp(74px,10vh,124px) !important}
+body.tight section.hero,body.tight section.phero{padding:0 !important}
+/* inner wrappers carrying their own padding */
+body.tight section > .wrap[style*="padding"],
+body.tight section > .wrap-wide[style*="padding"]{padding-top:0 !important;padding-bottom:0 !important}
+/* the split/band gaps were doing as much as the padding */
+body.tight .split{gap:clamp(26px,3.6vw,56px)}
+body.tight .info-list{margin-top:0}
+body.tight .info-row{padding:15px 0}
+body.tight .obj h3{padding-top:14px}
+body.tight .section-head{margin-bottom:clamp(26px,3.4vw,42px)}
+body.tight .band,body.tight .third-head{gap:clamp(24px,3.6vw,56px)}
+
+/* --- 2 · one primary action per screen ---------------------------------- */
+body.tight .cta-row{align-items:center;gap:22px}
+body.tight .cta-row .btn:not(.sage):not(.on-dark):not(.tiny):not(.acid):not(.ghost-dark){
+  background:transparent;border:0;border-radius:0;padding:0;
+  color:var(--sage-txt);text-transform:none;letter-spacing:0;
+  font-size:15.5px;font-weight:500;
+  border-bottom:1px solid currentColor;padding-bottom:2px}
+body.tight .cta-row .btn:not(.sage):not(.on-dark):not(.tiny):not(.acid):not(.ghost-dark)::after{content:" →"}
+body.tight .cta-row .btn:not(.sage):not(.on-dark):not(.tiny):not(.acid):not(.ghost-dark):hover{
+  color:var(--ink);background:transparent}
+body.tight section.ink .cta-row .btn:not(.sage):not(.on-dark):not(.ghost-dark){color:#B9C79E}
+body.tight .cmp-cta .btn,body.tight .plan .btn,body.tight .mem-tabs button{}
+
+/* --- 3 · six type sizes, not nine --------------------------------------- */
+body.tight .display{font-size:clamp(38px,6.2vw,78px)}
+body.tight .display-sm{font-size:clamp(25px,2.7vw,36px)}
+body.tight h2{font-size:clamp(23px,2.5vw,32px)}
+body.tight h3{font-size:19px}
+body.tight .lede{font-size:18.5px;line-height:1.6}
+body.tight section p{font-size:17px !important;line-height:1.7}
+body.tight .kicker{font-size:12px}
+body.tight .s-name,body.tight .pm-what,body.tight .cmp td,body.tight .i-val{font-size:16.5px}
+
+/* --- 4 · more tonal breaks, and clay stops shouting --------------------- */
+body.tight section.statement{background:var(--deep)}
+body.tight section.statement .big{color:var(--cream)}
+body.tight section.statement .big em{color:#B9C79E;font-style:italic}
+body.tight section.alt{background:var(--paper-2)}
+
+/* --- 5 · shorter pages -------------------------------------------------- */
+body.tight .serie img{height:clamp(230px,26vw,340px)}
+body.tight .series{gap:clamp(42px,6vw,84px)}
+body.tight .phero{min-height:clamp(280px,34vh,360px)}
+body.tight .hero{min-height:min(78vh,720px)}
+/* empty portrait frames read as neglect — hide until there's a photograph */
+body.tight .person:has(.portrait.empty){display:none}
+body.tight .obj-list{gap:clamp(24px,3vw,40px)}
+body.tight .obj p{font-size:15.5px !important}
+
+/* --- 6 · the hero eyebrow was unreadable over photography --------------- */
+body.tight .hero-eyebrow{color:#fff;text-shadow:0 1px 18px rgba(0,0,0,.75)}
+body.tight .hero-invite{color:#fff}
+
+/* stop layout B flashing as A before the class lands */
+html.tight-pending body{visibility:hidden}

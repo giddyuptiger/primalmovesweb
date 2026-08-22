@@ -38,8 +38,10 @@
 
 const LIVE = "live";
 const PRESETS = "presets";
-const MAX_UPLOAD = 12 * 1024 * 1024;        // 12MB — a 2200px JPEG is ~1MB
-const OK_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif", "image/gif"];
+const MAX_PHOTO = 12 * 1024 * 1024;         // 12MB — a 2200px JPEG is ~1MB
+const MAX_FILM  = 64 * 1024 * 1024;         // a hero loop should be far under this
+const OK_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif", "image/gif",
+                  "video/mp4", "video/webm", "video/quicktime"];
 
 function cors(env) {
   return {
@@ -137,18 +139,21 @@ export default {
       if (!authed(request, env)) return json(env, { error: "Bad or missing write key." }, 401);
       const type = request.headers.get("Content-Type") || "";
       if (!OK_TYPES.includes(type.split(";")[0].trim()))
-        return json(env, { error: "Photographs only — JPEG, PNG, WebP, AVIF or GIF." }, 415);
+        return json(env, { error: "Photographs and films only — JPEG, PNG, WebP, AVIF, GIF, MP4, WebM or MOV." }, 415);
 
       const buf = await request.arrayBuffer();
       if (!buf.byteLength) return json(env, { error: "Empty upload." }, 400);
-      if (buf.byteLength > MAX_UPLOAD)
-        return json(env, { error: `Too big — ${(buf.byteLength / 1048576).toFixed(1)}MB, the limit is 12MB.` }, 413);
+      const film = type.startsWith("video/");
+      const cap = film ? MAX_FILM : MAX_PHOTO;
+      if (buf.byteLength > cap)
+        return json(env, { error: `Too big — ${(buf.byteLength / 1048576).toFixed(1)}MB, ` +
+          `the limit is ${cap / 1048576}MB for a ${film ? "film" : "photograph"}.` }, 413);
 
       // content hash, so the same photograph uploaded twice is stored once
       const digest = await crypto.subtle.digest("SHA-256", buf);
       const hash = [...new Uint8Array(digest)].slice(0, 8)
         .map((b) => b.toString(16).padStart(2, "0")).join("");
-      const raw = (url.searchParams.get("name") || "photo.jpg").split(/[\\/]/).pop();
+      const raw = (url.searchParams.get("name") || (film ? "film.mp4" : "photo.jpg")).split(/[\\/]/).pop();
       const safe = raw.replace(/[^\w.\-]+/g, "-").replace(/^-+|-+$/g, "").slice(-60) || "photo.jpg";
       const key = `${hash}-${safe}`;
 

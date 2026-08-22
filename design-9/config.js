@@ -471,18 +471,53 @@ window.PM_CONFIG = {
     // A blank or missing entry leaves the markup's own src alone; a named
     // file that doesn't exist falls back to it too, so a typo can't leave
     // a broken image on the page.
+    // a slot holds a photograph or a film — .mp4/.webm/.mov means film
+    function isFilm(u) { return /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(u) || /^data:video\//.test(u); }
+
+    // swap an <img> for a silent looping <video> (or the other way back),
+    // keeping the slot name and the shape the picture had
+    function toFilm(el, url, slot) {
+      if (el.tagName === "VIDEO") {
+        if (el.getAttribute("src") !== url) el.setAttribute("src", url);
+        return;
+      }
+      var v = document.createElement("video");
+      v.setAttribute("data-pm-photo", slot);
+      v.setAttribute("src", url);
+      v.setAttribute("poster", el.getAttribute("src") || "");   // the photo holds the frame
+      v.setAttribute("playsinline", "");                        // iOS won't full-screen it
+      v.muted = true; v.autoplay = true; v.loop = true;
+      v.setAttribute("muted", ""); v.setAttribute("autoplay", ""); v.setAttribute("loop", "");
+      if (el.className) v.className = el.className;
+      if (el.getAttribute("style")) v.setAttribute("style", el.getAttribute("style"));
+      if (el.getAttribute("alt")) v.setAttribute("aria-label", el.getAttribute("alt"));
+      el.replaceWith(v);
+      var play = v.play(); if (play && play.catch) play.catch(function () { /* autoplay blocked */ });
+    }
+
     function applyPhotoSlots() {
-      document.querySelectorAll("[data-pm-photo]").forEach(function (img) {
-        var slot = img.getAttribute("data-pm-photo");
+      document.querySelectorAll("[data-pm-photo]").forEach(function (el) {
+        var slot = el.getAttribute("data-pm-photo");
         var file = (C.photos || {})[slot];
         if (!file) return;
-        // a published photograph arrives as a full URL; a repo one as a filename
+        // a published file arrives as a full URL; a repo one as a filename
         var abs = /^(https?:)?\/\//.test(file) || file.charAt(0) === "/" || file.indexOf("data:") === 0;
-        var base = (img.getAttribute("src") || "").replace(/[^/]+$/, "");
+        var base = (el.getAttribute("src") || el.getAttribute("poster") || "").replace(/[^/]+$/, "");
         var next = abs ? file : base + file;
-        if (next === img.getAttribute("src")) return;
+        if (next === el.getAttribute("src")) return;
+
+        if (isFilm(next)) { toFilm(el, next, slot); return; }
+        if (el.tagName === "VIDEO") {                    // film → photograph
+          var img = document.createElement("img");
+          img.setAttribute("data-pm-photo", slot);
+          img.src = next; img.alt = "";
+          if (el.className) img.className = el.className;
+          if (el.getAttribute("style")) img.setAttribute("style", el.getAttribute("style"));
+          el.replaceWith(img);
+          return;
+        }
         var probe = new Image();
-        probe.onload = function () { img.src = next; };
+        probe.onload = function () { el.src = next; };
         probe.onerror = function () {
           if (window.console) console.warn("[PM_CONFIG] photos['" + slot + "'] → " + file +
             " could not be loaded. Keeping the existing image.");

@@ -86,8 +86,17 @@ started"** line *underneath* the Worker setup card. Two ways in, both free:
 1. **Workers & Pages → Create application → "Looking to deploy Pages? Get
    started" → Connect to Git**
 2. Authorise Cloudflare for **only** `giddyuptiger/primalmovesweb`
-3. Production branch **main**, framework preset **None**, build command **empty**,
-   output directory **`design-9`**
+3. Production branch **main**, framework preset **None**, output directory
+   **`design-9`**, and build command:
+
+   ```
+   cp -r assets design-9/
+   ```
+
+   **That build command is not optional.** The photographs live in `assets/`
+   at the repo root, and every page points at `../assets/photos/…` — above
+   the deploy root, so without this every image on the site 404s. The copy
+   happens inside the build, so nothing is duplicated in git.
 4. **Save and Deploy**
 
 You get `primalmovesweb.pages.dev` in about a minute, and every push redeploys.
@@ -134,7 +143,7 @@ word and one deploy, not a scramble.
 In `design-9/config.js`:
 
 ```js
-liveApi: "https://pm-studio.<your-account>.workers.dev",
+liveApi: "https://pm-studio.primal-0d7.workers.dev",   // deployed 22 Aug
 ```
 
 ```bash
@@ -204,7 +213,7 @@ The live store is the fast path, not the record. Once a week, or before any
 big change:
 
 ```bash
-python3 tools/pull_live.py https://pm-studio.<your-account>.workers.dev
+python3 tools/pull_live.py https://pm-studio.primal-0d7.workers.dev
 git add -A && git commit -m "pull the live photographs into the repo" && git push
 ```
 

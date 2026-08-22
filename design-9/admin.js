@@ -211,6 +211,8 @@
     var css = document.querySelector('link[rel="stylesheet"][href*="style.css"]');
     return css ? css.href.replace(/design-9\/style\.css.*$/, "assets/photos/") : "../../assets/photos/";
   }
+  function isFilm(u) { return /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(u) || /^data:video\//.test(u); }
+
   function applyPhotos() {
     Object.keys(photos).forEach(function (slot) {
       var el = document.querySelector('[data-pm-photo="' + slot + '"]');
@@ -219,6 +221,31 @@
       var val = String(photos[slot]);
       var abs = /^(https?:)?\/\//.test(val) || val.charAt(0) === "/" || val.indexOf("data:") === 0;
       var src = abs ? val : photoBase() + val;
+
+      if (isFilm(src)) {                       // a film in a picture slot
+        if (el.tagName === "VIDEO") { if (el.getAttribute("src") !== src) el.setAttribute("src", src); return; }
+        var v = document.createElement("video");
+        v.setAttribute("data-pm-photo", slot);
+        v.setAttribute("src", src);
+        v.setAttribute("poster", el.getAttribute("src") || "");
+        v.setAttribute("playsinline", ""); v.setAttribute("muted", "");
+        v.setAttribute("autoplay", ""); v.setAttribute("loop", "");
+        v.muted = true; v.autoplay = true; v.loop = true;
+        if (el.className) v.className = el.className;
+        if (el.getAttribute("style")) v.setAttribute("style", el.getAttribute("style"));
+        el.replaceWith(v);
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+        return;
+      }
+      if (el.tagName === "VIDEO") {            // film → photograph
+        var im = document.createElement("img");
+        im.setAttribute("data-pm-photo", slot);
+        im.src = src; im.alt = "";
+        if (el.className) im.className = el.className;
+        if (el.getAttribute("style")) im.setAttribute("style", el.getAttribute("style"));
+        el.replaceWith(im);
+        return;
+      }
       if (el.tagName === "IMG") { el.src = src; return; }
       // an empty slot becomes a real image, keeping the slot name
       var img = document.createElement("img");
@@ -336,7 +363,11 @@
     "#pm-picker .grid button{padding:0;border:1px solid #2A2D31;background:#1D2024;border-radius:4px;",
     "  cursor:pointer;overflow:hidden;display:block}",
     "#pm-picker .grid button:hover{border-color:#8BA85F}",
-    "#pm-picker .grid img{width:100%;height:94px;object-fit:cover;display:block}",
+    "#pm-picker .grid img,#pm-picker .grid video{width:100%;height:94px;object-fit:cover;display:block}",
+    "#pm-picker .grid button{position:relative}",
+    "#pm-picker .grid .film{position:absolute;top:6px;left:6px;background:rgba(10,11,13,.78);",
+    "  color:#B4D18A;font-size:9px;letter-spacing:.14em;text-transform:uppercase;",
+    "  padding:2px 6px;border-radius:3px}",
     "#pm-picker .grid .nm{font-size:10px;color:#8D9198;padding:6px 7px;word-break:break-all;text-align:left}",
     "#pm-picker .foot{padding:16px 22px;border-top:1px solid #2A2D31;display:flex;gap:10px;",
     "  align-items:center;flex-wrap:wrap}",
@@ -760,7 +791,7 @@
               : "<b>Drag them anywhere in this window</b> &mdash; as many as you like. " +
                 "No photo store is connected yet, so an upload previews in this browser only: the file " +
                 "still has to reach <code>assets/photos/</code> and be pushed.") + "</div>" +
-            '<input type="file" accept="image/*" multiple id="pm-file" hidden>' +
+            '<input type="file" accept="image/*,video/mp4,video/webm,video/quicktime" multiple id="pm-file" hidden>' +
           "</div>" +
           '<div id="pm-lib"></div>' +
         "</div>";
@@ -773,10 +804,13 @@
       // repo photographs are stored by filename (that's what config.js wants);
       // an upload is stored as the data URL itself
       function tile(src, label, fresh, file) {
+        var media = isFilm(src)
+          ? '<video src="' + src + '" muted loop playsinline preload="metadata"></video>' +
+            '<span class="film">film</span>'
+          : '<img src="' + src + '" alt="" loading="lazy">';
         return '<button data-src="' + src + '"' + (file ? ' data-file="' + file + '"' : "") +
-          (fresh ? ' class="fresh"' : "") + '>' +
-          '<img src="' + src + '" alt="" loading="lazy">' +
-          '<div class="nm' + (fresh ? " new" : "") + '">' + label + "</div></button>";
+          ' class="' + (fresh ? "fresh" : "") + (isFilm(src) ? " isfilm" : "") + '">' +
+          media + '<div class="nm' + (fresh ? " new" : "") + '">' + label + "</div></button>";
       }
 
       function renderLib() {
@@ -816,7 +850,7 @@
       }
 
       function take(files) {
-        var list = [].slice.call(files || []).filter(function (f) { return /^image\//.test(f.type); });
+        var list = [].slice.call(files || []).filter(function (f) { return /^(image|video)\//.test(f.type); });
         if (!list.length) return;
 
         /* With a photo store connected the file goes UP — to R2, through the
@@ -857,6 +891,10 @@
       }
 
       wrap.querySelector("#pm-up").addEventListener("click", function () { fileEl.click(); });
+      libBox.addEventListener("mouseover", function (e) {
+        var v = e.target.closest("button") && e.target.closest("button").querySelector("video");
+        if (v && v.paused) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+      });
       fileEl.addEventListener("change", function (e) { take(e.target.files); e.target.value = ""; });
       wrap.querySelector("#pm-search").addEventListener("input", renderLib);
 

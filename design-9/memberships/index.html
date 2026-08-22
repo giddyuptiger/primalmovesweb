@@ -71,6 +71,20 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
       <button role="tab" id="tab-compare" aria-controls="view-compare" aria-selected="false">Compare all</button>
     </div>
 
+    <!-- Most people aren't ready to pick a plan on arrival. The two short
+         lengths sit here, above both views, so the first thing on the page
+         is a way in that costs $40. -->
+    <div class="cmp-try">
+      <div>
+        <div data-pm-copy="memberships.kicker3" class="kicker">before you commit</div>
+        <p data-pm-copy="memberships.p3" style="margin:6px 0 0">The Primal, bought short. Same floor, same sauna, same everything &mdash; nothing recurring.</p>
+      </div>
+      <div class="cta-row">
+        <a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">Try Primal for a day &middot; $40</a>
+        <a class="btn" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">Two weeks &middot; $69</a>
+      </div>
+    </div>
+
 <!-- ===== COMPARE VIEW =====
      One column is one level of ACCESS, not one SKU. Unlimited for a month,
      for two weeks and for a day are the same product bought in different
@@ -79,7 +93,7 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
      and makes every row an apples-to-apples comparison of monthly plans.
      ========================================================================= -->
 <div class="mem-view" id="view-compare" hidden>
-  <p data-pm-copy="memberships.p3" class="lede" style="margin-bottom:clamp(24px,3.5vw,38px)">Everything side by side. Scroll sideways on a phone &mdash; the feature names stay put.</p>
+  <p data-pm-copy="memberships.p4" class="lede" style="margin-bottom:clamp(24px,3.5vw,38px)">Everything side by side. Scroll sideways on a phone &mdash; the feature names stay put.</p>
   <div class="cmp-scroll">
     <table class="cmp">
       <caption class="sr-only">Membership comparison</caption>
@@ -92,18 +106,6 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
     </table>
   </div>
 
-  <!-- The short lengths are the same product as The Primal, so they sit under
-       the table as their own invitations rather than as small print in a cell. -->
-  <div class="cmp-try">
-    <div>
-      <div data-pm-copy="memberships.kicker3" class="kicker">before you commit</div>
-      <p data-pm-copy="memberships.p4" style="margin:6px 0 0">The Primal, bought short. Same floor, same sauna, same everything &mdash; nothing recurring.</p>
-    </div>
-    <div class="cta-row">
-      <a class="btn" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">Try Primal for two weeks &middot; $69</a>
-      <a class="btn" data-pm-link="dayPassUrl" target="_blank" rel="noopener">Try Primal for a day &middot; $40</a>
-    </div>
-  </div>
 </div>
 
 <div class="mem-view" id="view-cards">

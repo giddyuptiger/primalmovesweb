@@ -15,6 +15,11 @@ account_id = "0d725810f652de83db7340b6e2bbdf3c"
 name = "primalmovesweb"
 compatibility_date = "2026-08-01"
 
+# The photographs live in assets/ at the repo root and the pages reference
+# ../assets/photos/… — above this directory. So before deploying, from the
+# repo root:  cp -r assets design-9/
+# (Workers Builds: put that in the build command. Locally it is one line.)
+
 [assets]
 # design-9 is the site. The other design-N folders stay in the repo and stop
 # being served the moment this deploys.

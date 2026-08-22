@@ -195,7 +195,10 @@ def two_ways(up, compact=False):
 
 
 def final_cta(up):
-    return f'''<section class="flush">
+    # The closing block sat on the same cream as whatever came before it, so
+    # on the studio page the FAQ just ran into it with no edge. Its own ground
+    # gives it a beginning.
+    return f'''<section class="alt flush">
   <div class="wrap-wide" style="padding-top:clamp(50px,8vh,90px)">
     <div class="kicker">two ways to start</div>
     <p class="lede" style="margin-bottom:36px;max-width:34em">One hour a day, five days a week. That is genuinely all it takes to find out what your body is capable of. Or come for a single $40 day first &mdash; nobody minds which.</p>

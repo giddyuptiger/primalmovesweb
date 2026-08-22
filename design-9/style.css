@@ -307,8 +307,14 @@ section.ink .day-row .desc{color:var(--on-dark)}
 /* ---------------------------------------------------------- CLASSES ------ */
 /* Ten classes, one screen. Title, level and duration are always readable;
    the description unfolds on hover — and on tap, for anything without one. */
+/* Three across, always. Nine classes make a 3x3 square, and letting the
+   grid auto-fill to six columns at desktop width stretched the cards back
+   into letterboxes — the shape was the point. */
 .cls-list{margin-top:8px;display:grid;gap:14px;align-items:start;
-  grid-template-columns:repeat(auto-fill,minmax(196px,1fr))}
+  grid-template-columns:repeat(3,minmax(0,1fr));max-width:760px}
+body.house .cls-list{margin-inline:auto}
+@media (max-width:720px){ .cls-list{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:460px){ .cls-list{grid-template-columns:1fr;max-width:340px} }
 .cls{display:flex;flex-direction:column;width:100%;min-height:196px;
   text-align:left;font:inherit;cursor:pointer;
   background:var(--paper);border:1px solid var(--line);border-radius:8px;
@@ -1489,3 +1495,9 @@ section.ink .daybar .dnav{border-color:rgba(255,255,255,.2);color:var(--on-dark-
 .sched-day{display:none}
 .sched-day.on{display:block}
 .sched-day .sched-date{margin-bottom:6px}
+
+
+/* the closing pair now sits on its own band — the feature card needs to lift
+   off taupe rather than blend into it */
+section.alt .way.feature{background:var(--paper);border-color:var(--line)}
+section.alt .way{background:transparent}

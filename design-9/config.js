@@ -536,8 +536,11 @@ window.PM_CONFIG = {
     // layout: apply the chosen one before anything paints
     if (C.layout === "tight") document.documentElement.classList.add("pm-pre-tight");
 
-    // limewash
-    if (C.texture) document.body.classList.add("texture");
+    // limewash: true, or "strong" for the heavier coat
+    if (C.texture) {
+      document.body.classList.add("texture");
+      if (C.texture === "strong") document.body.classList.add("lime-strong");
+    }
 
     // data-pm-copy → text overrides from copy.json
     if (C.copyUrl) {

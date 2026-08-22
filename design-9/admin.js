@@ -202,14 +202,16 @@
 
   /* Limewash — the studio's wall finish, generated in CSS so it tints with
      whatever palette is loaded. See the block at the end of style.css. */
+  // 0 off · 1 limewash · 2 a heavier coat
   var texture = (function () {
     var v = ls(KEY_TEX);
-    if (v === null) return !!CFG.texture;      // config.js decides until someone chooses
-    return v === "1";
+    if (v === null) return CFG.texture ? (CFG.texture === "strong" ? 2 : 1) : 0;
+    return parseInt(v, 10) || 0;
   })();
 
   function applyTexture() {
-    document.body.classList.toggle("texture", !!texture);
+    document.body.classList.toggle("texture", texture > 0);
+    document.body.classList.toggle("lime-strong", texture === 2);
     document.documentElement.classList.remove("texture-pending");
   }
 
@@ -429,6 +431,12 @@
     "#pm-studio .preset .p-del:hover{color:#D08A72}",
     /* live state, toasts */
     "#pm-studio .tex-field{padding-bottom:14px;border-bottom:1px solid #26292E;margin-bottom:16px}",
+    "#pm-studio .seg-row{display:flex;gap:0;border:1px solid #2F3338;border-radius:5px;overflow:hidden}",
+    "#pm-studio .seg{flex:1;background:#1D2024;border:0;border-right:1px solid #2F3338;color:#8D9198;",
+    "  font:inherit;font-size:11.5px;padding:9px 6px;cursor:pointer}",
+    "#pm-studio .seg:last-child{border-right:0}",
+    "#pm-studio .seg:hover{color:#E8E6E0}",
+    "#pm-studio .seg.on{background:#8BA85F;color:#11140E;font-weight:600}",
     "#pm-studio .live-state{background:#1D2024;border:1px solid #26292E;border-left:2px solid #6E737A;",
     "  border-radius:4px;padding:11px 13px;margin-top:11px;font-size:11.5px;line-height:1.55;color:#8D9198}",
     "#pm-studio .live-state.on{border-left-color:#8BA85F}",
@@ -553,21 +561,25 @@
   /* ------------------------------------------------------------ colour ---- */
 
   function textureField() {
-    return '<div class="field tex-field">' +
-      '<label class="tog"><input type="checkbox" id="pm-tex"' + (texture ? " checked" : "") +
-      "> Limewash texture</label>" +
-      '<p class="pm-note" style="margin-top:8px">The studio\u2019s wall finish &mdash; mineral plaster, ' +
-      "cloudy rather than flat. Drawn in CSS, so it takes the colour of whatever is underneath and " +
-      "leaves the photographs alone.</p></div>";
+    var opts = [[0, "Off"], [1, "Limewash"], [2, "Heavier coat"]].map(function (o) {
+      return '<button class="seg' + (texture === o[0] ? " on" : "") + '" data-tex="' + o[0] + '">' +
+        o[1] + "</button>";
+    }).join("");
+    return '<div class="field tex-field"><label class="p-lab">Wall finish</label>' +
+      '<div class="seg-row">' + opts + "</div>" +
+      '<p class="pm-note" style="margin-top:9px">The studio\u2019s own walls &mdash; mineral plaster, ' +
+      "cloudy rather than flat. Drawn in CSS, so it takes the colour of whatever is under it, never " +
+      "repeats, and leaves the photographs alone.</p></div>";
   }
 
   function wireTexture() {
-    var t = document.getElementById("pm-tex");
-    if (!t) return;
-    t.addEventListener("change", function (e) {
-      texture = e.target.checked;
-      ls(KEY_TEX, texture ? "1" : "0");
-      applyTexture();
+    [].slice.call(document.querySelectorAll("#pm-body .seg[data-tex]")).forEach(function (b) {
+      b.addEventListener("click", function () {
+        texture = parseInt(b.dataset.tex, 10);
+        ls(KEY_TEX, String(texture));
+        applyTexture();
+        renderColor();
+      });
     });
   }
 
@@ -1200,8 +1212,9 @@
       if (!colors[r.v]) document.documentElement.style.removeProperty(r.v);
     });
     applyColors();
-    if (typeof pr.texture === "boolean") {
-      texture = pr.texture; ls(KEY_TEX, texture ? "1" : "0"); applyTexture();
+    if (pr.texture !== undefined) {
+      texture = typeof pr.texture === "number" ? pr.texture : (pr.texture ? 1 : 0);
+      ls(KEY_TEX, String(texture)); applyTexture();
     }
     setCopy(pr.copy || {});
     applyLayout(pr.layout || "a");
@@ -1214,7 +1227,7 @@
     var c = Object.keys(pr.colors || {}).length; if (c) bits.push(c + " colour" + (c > 1 ? "s" : ""));
     var cp = Object.keys(pr.copy || {}).length; if (cp) bits.push(cp + " text edit" + (cp > 1 ? "s" : ""));
     bits.push((pr.layout === "tight" ? "Tightened" : "Current") + " layout");
-    if (pr.texture) bits.push("limewash");
+    if (pr.texture) bits.push(pr.texture === 2 ? "heavy limewash" : "limewash");
     return bits.join(" \u00b7 ");
   }
 
@@ -1402,7 +1415,8 @@
       out += fk.map(function (k) { return '  "' + k + '": "' + focus[k] + '"'; }).join(",\n");
       out += "\n},\n";
     }
-    out += "\n/* config.js */\ntexture: " + (texture ? "true" : "false") + ",\n";
+    out += "\n/* config.js */\ntexture: " +
+      (texture === 2 ? '"strong"' : texture === 1 ? "true" : "false") + ",\n";
     var skipped = Object.keys(photos).length - named.length;
     if (skipped) out += "\n/* " + skipped + " uploaded preview(s) not included — add those files to assets/photos/ first. */\n";
     if (out.indexOf("--") === -1 && !named.length && !fk.length) out = "/* Nothing changed yet. */";

@@ -9,6 +9,22 @@ Cost: **$0/month** at this size.
 
 ---
 
+## Deploying, day to day
+
+**Double-click `deploy.command`** in the repo folder. It unpacks whatever
+Claude last sent, commits it, pushes, and Cloudflare rebuilds — about a
+minute, no Terminal.
+
+Photographs don't need any of this: swap them in the EDIT panel and they are
+live immediately.
+
+**To take Claude out of the loop entirely**, add `giddyuptiger/primalmovesweb`
+to the Cowork session's sources. The sandbox's git proxy refuses to push to a
+repo that isn't in that set — its own words: *"not in this session's
+authorized repository set, so the proxy will not inject a credential for it.
+To fix, add the repository to the session's sources."* Once it is there,
+Claude commits and pushes directly and nobody double-clicks anything.
+
 ## 0 · Get today's work pushed (2 minutes)
 
 In `~/code/primalmovesweb`:

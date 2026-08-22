@@ -77,6 +77,12 @@ window.PM_CONFIG = {
                instead of eight equal ones, and shorter pages.
      Switch between them live in the EDIT panel under Layout. Whichever is
      set here is what a visitor sees.                                      */
+  /* --- LIMEWASH -----------------------------------------------------------
+     true = the mineral-plaster wash goes over every flat surface, the way the
+     studio walls are finished. Photographs are left alone. Try it live in the
+     EDIT panel under Colour; set it here to make it the default.          */
+  texture: false,
+
   layout: "a",
 
   /* --- DESIGN STUDIO ------------------------------------------------------
@@ -529,6 +535,9 @@ window.PM_CONFIG = {
 
     // layout: apply the chosen one before anything paints
     if (C.layout === "tight") document.documentElement.classList.add("pm-pre-tight");
+
+    // limewash
+    if (C.texture) document.body.classList.add("texture");
 
     // data-pm-copy → text overrides from copy.json
     if (C.copyUrl) {

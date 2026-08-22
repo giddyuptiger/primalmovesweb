@@ -13,7 +13,10 @@
 <script src="config.js"></script>
 <script>/* layout class before first paint, so B never flashes as A */
 (function(){try{var l=localStorage.getItem("pm_studio_layout")||(window.PM_CONFIG||{}).layout;
-if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e){}})();</script>
+if(l==="tight")document.documentElement.classList.add("tight-pending");
+var t=localStorage.getItem("pm_studio_texture");
+if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.classList.add("texture-pending");
+}catch(e){}})();</script>
 <script src="admin.js?v=3" defer></script>
 </head>
 <body>
@@ -176,7 +179,6 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
         <p data-pm-copy="home.p10" class="lede" style="margin:0 0 22px">That&rsquo;s the only real reason to take a membership. If a day here turns into a habit, there are better ways to pay for it &mdash; starting at $120 a month.</p>
         <div class="cta-row">
           <a class="btn" href="memberships/">see the options</a>
-          <a class="btn secondary" href="memberships/#compare">compare them all</a>
         </div>
       </div>
     </div>

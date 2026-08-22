@@ -22,7 +22,7 @@
 
   var KEY_ON = "pm_studio_on", KEY_COLORS = "pm_studio_colors", KEY_PHOTOS = "pm_studio_photos",
       KEY_FOCUS = "pm_studio_focus", KEY_LOCAL = "pm_studio_local", KEY_WKEY = "pm_studio_wkey", KEY_COPY = "pm_studio_copy", KEY_LAYOUT = "pm_studio_layout",
-      KEY_ACTIVE = "pm_studio_active";
+      KEY_ACTIVE = "pm_studio_active", KEY_TEX = "pm_studio_texture";
 
   function q(p) { return new URLSearchParams(location.search).get(p); }
   function ls(k, v) {
@@ -198,6 +198,19 @@
       var el = document.querySelector('[data-pm-photo="' + slot + '"]');
       if (el && el.tagName === "IMG") el.style.objectPosition = focus[slot];
     });
+  }
+
+  /* Limewash — the studio's wall finish, generated in CSS so it tints with
+     whatever palette is loaded. See the block at the end of style.css. */
+  var texture = (function () {
+    var v = ls(KEY_TEX);
+    if (v === null) return !!CFG.texture;      // config.js decides until someone chooses
+    return v === "1";
+  })();
+
+  function applyTexture() {
+    document.body.classList.toggle("texture", !!texture);
+    document.documentElement.classList.remove("texture-pending");
   }
 
   function applyColors() {
@@ -415,6 +428,7 @@
     "  font:inherit;font-size:11px;padding:0}",
     "#pm-studio .preset .p-del:hover{color:#D08A72}",
     /* live state, toasts */
+    "#pm-studio .tex-field{padding-bottom:14px;border-bottom:1px solid #26292E;margin-bottom:16px}",
     "#pm-studio .live-state{background:#1D2024;border:1px solid #26292E;border-left:2px solid #6E737A;",
     "  border-radius:4px;padding:11px 13px;margin-top:11px;font-size:11.5px;line-height:1.55;color:#8D9198}",
     "#pm-studio .live-state.on{border-left-color:#8BA85F}",
@@ -538,9 +552,28 @@
 
   /* ------------------------------------------------------------ colour ---- */
 
+  function textureField() {
+    return '<div class="field tex-field">' +
+      '<label class="tog"><input type="checkbox" id="pm-tex"' + (texture ? " checked" : "") +
+      "> Limewash texture</label>" +
+      '<p class="pm-note" style="margin-top:8px">The studio\u2019s wall finish &mdash; mineral plaster, ' +
+      "cloudy rather than flat. Drawn in CSS, so it takes the colour of whatever is underneath and " +
+      "leaves the photographs alone.</p></div>";
+  }
+
+  function wireTexture() {
+    var t = document.getElementById("pm-tex");
+    if (!t) return;
+    t.addEventListener("change", function (e) {
+      texture = e.target.checked;
+      ls(KEY_TEX, texture ? "1" : "0");
+      applyTexture();
+    });
+  }
+
   function renderColor() {
     var body = document.getElementById("pm-body");
-    body.innerHTML = ROLES.map(function (r) {
+    body.innerHTML = textureField() + ROLES.map(function (r) {
       var cur = (colors[r.v] || cssVar(r.v)).toUpperCase();
       var sws = PALETTE.map(function (p) {
         var on = p[1].toUpperCase() === cur ? " on" : "";
@@ -553,6 +586,7 @@
         '<div class="sw-row">' + sws + "</div>" +
         '<div class="warn"></div></div>';
     }).join("");
+    wireTexture();
     checkContrast();
   }
 
@@ -1152,7 +1186,7 @@
   // in here: they publish to everyone the moment they're swapped, so putting
   // them in a config would mean two sources of truth for the same picture.
   function current() {
-    return { colors: colors, copy: copyEdits, layout: layout };
+    return { colors: colors, copy: copyEdits, layout: layout, texture: texture };
   }
 
   var activeName = ls(KEY_ACTIVE) || "";
@@ -1166,6 +1200,9 @@
       if (!colors[r.v]) document.documentElement.style.removeProperty(r.v);
     });
     applyColors();
+    if (typeof pr.texture === "boolean") {
+      texture = pr.texture; ls(KEY_TEX, texture ? "1" : "0"); applyTexture();
+    }
     setCopy(pr.copy || {});
     applyLayout(pr.layout || "a");
     setActive(pr.name);
@@ -1177,6 +1214,7 @@
     var c = Object.keys(pr.colors || {}).length; if (c) bits.push(c + " colour" + (c > 1 ? "s" : ""));
     var cp = Object.keys(pr.copy || {}).length; if (cp) bits.push(cp + " text edit" + (cp > 1 ? "s" : ""));
     bits.push((pr.layout === "tight" ? "Tightened" : "Current") + " layout");
+    if (pr.texture) bits.push("limewash");
     return bits.join(" \u00b7 ");
   }
 
@@ -1253,7 +1291,8 @@
 
     function snapshot(name, note) {
       var cur = current();
-      return { name: name, note: note || "", colors: cur.colors, copy: cur.copy, layout: cur.layout };
+      return { name: name, note: note || "", colors: cur.colors, copy: cur.copy,
+               layout: cur.layout, texture: cur.texture };
     }
 
     var upBtn = document.getElementById("pm-pupdate");
@@ -1363,6 +1402,7 @@
       out += fk.map(function (k) { return '  "' + k + '": "' + focus[k] + '"'; }).join(",\n");
       out += "\n},\n";
     }
+    out += "\n/* config.js */\ntexture: " + (texture ? "true" : "false") + ",\n";
     var skipped = Object.keys(photos).length - named.length;
     if (skipped) out += "\n/* " + skipped + " uploaded preview(s) not included — add those files to assets/photos/ first. */\n";
     if (out.indexOf("--") === -1 && !named.length && !fk.length) out = "/* Nothing changed yet. */";
@@ -1385,7 +1425,7 @@
     location.href = location.pathname;
   });
 
-  var applyAll = function () { applyPhotos(); applyFocus();
+  var applyAll = function () { applyTexture(); applyPhotos(); applyFocus();
     setTimeout(function () { snapshotOriginals(); applyCopy(); }, 260); };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", applyAll);
   else setTimeout(applyAll, 60);

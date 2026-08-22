@@ -33,10 +33,16 @@ company's website".
 Now you administer it, but the studio owns it. Handing it over later is just
 removing your membership — nothing has to move.
 
-> If you'd rather move faster today: build it in your own account and migrate
-> later. Cloudflare can move a *domain* between accounts, but a Pages project
-> has to be recreated — which is 20 minutes, because the source of truth is the
-> git repo. Not painful, just avoidable.
+> **How handover actually works** (checked against Cloudflare's docs, Aug 2026):
+> you cannot transfer a Pages project, a Worker, KV or R2 to another account —
+> there is no such feature, and Cloudflare's own staff answer is to recreate
+> them. What you *can* do, in two minutes, is change who owns the account:
+> **Members → add them as Super Administrator → remove yourself.** Nothing
+> moves; the projects, URLs and photographs stay exactly as they are.
+>
+> So the account is the unit. One account, everything inside it, handed over
+> whole when the time comes. A domain can also be moved between accounts
+> separately if it ever needs to be.
 
 ---
 

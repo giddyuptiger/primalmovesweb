@@ -1,0 +1,23 @@
+# THE WEBSITE ITSELF, served as a Worker with static assets.
+# This is Cloudflare's current recommendation over a Pages project, and it is
+# what the dashboard's "Create a Worker → Connect to Git" flow expects to find
+# at the repo root. Deploy command in that flow: npx wrangler deploy
+#
+# Locally:  npx wrangler deploy
+#
+# The OTHER Worker — the photo store, with KV and R2 — is a separate config
+# at tools/wrangler.toml. They are two different Workers on purpose: one
+# serves pages to the public, one holds the photographs. Deploy that one with
+#   npx wrangler deploy -c tools/wrangler.toml
+
+account_id = "0d725810f652de83db7340b6e2bbdf3c"
+
+name = "primalmovesweb"
+compatibility_date = "2026-08-01"
+
+[assets]
+# design-9 is the site. The other design-N folders stay in the repo and stop
+# being served the moment this deploys.
+directory = "./design-9"
+# a missing path serves the 404 page rather than the homepage
+not_found_handling = "404-page"

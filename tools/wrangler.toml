@@ -1,6 +1,10 @@
 # Deploy from the repo root:  npx wrangler deploy -c tools/wrangler.toml
 # Full walkthrough in strategy/live-editing.md
 
+# Your login can see two accounts, so name the one this belongs to: PRIMAL.
+# Account IDs are not secret — they appear in dashboard URLs.
+account_id = "0d725810f652de83db7340b6e2bbdf3c"
+
 name = "pm-studio"
 main = "pm-worker.js"
 compatibility_date = "2026-08-01"

@@ -28,20 +28,63 @@ a Worker that doesn't exist. It's for later, once the studio is running.
 
 ## 1 · The account (5 minutes)
 
-Make a **second Cloudflare account owned by the studio**, not your personal one.
-Members and billing live at the account level, so this is the difference between
-handing over an asset later and handing over your login.
+**The transferable unit in Cloudflare is the account, not the project.** There
+is no way to move a Pages project, a Worker, a KV namespace or an R2 bucket to
+a different account — Cloudflare staff say so plainly: *"There is no Cloudflare
+specific way to perform this."* You'd recreate them.
 
-1. Private window → **dash.cloudflare.com/sign-up**
-2. Sign up with an address the studio controls — `hello@venice.primalmoves.com`,
-   not your Gmail. Whoever owns that inbox owns the account.
-3. **Manage Account → Members** → invite yourself and Gus as **Administrator**.
+But you never need to, because handing over an account is trivial: you add the
+new person as a **Super Administrator** and remove yourself. Nothing moves.
+Same projects, same Worker, same URLs, same photographs — a different person
+holds the keys. It takes two minutes and there is no migration at all.
 
-## 2 · Hosting: the Pages project (10 minutes)
+So: **make one new account for Primal Moves and put everything in it.**
 
-Full detail in `cloudflare-setup.md`; the short version:
+**You don't need a second email or a private window.** One Cloudflare login can
+belong to any number of accounts — Cloudflare's own words: *"Users can belong to
+multiple accounts, and each account maintains its own settings, including
+billing profiles, account members, lists, and other configurations."* Same
+Gmail, new account, switch between them in the dashboard.
 
-1. **Workers & Pages → Create → Pages → Connect to Git**
+1. Logged in, click the **account switcher** at the top left (next to the
+   Cloudflare logo) → **+ Create Account**. Accounts are siblings, not nested:
+   this makes a second, independent account your same login can reach, and
+   your personal one is untouched.
+2. Name it **Primal Moves Venice** so it's obvious in the switcher.
+3. **Switch into it** before you build anything — the dashboard remembers the
+   last account used, and `wrangler login` will ask which one to deploy to.
+   Everything (Pages, Worker, KV, R2) must land in the new account.
+4. **Manage Account → Members** → invite Gus as **Administrator** now.
+5. Billing is per-account: opening R2 there asks for a card even though the
+   free tier covers you. That's the point — the card sits on the studio's
+   account, not yours.
+6. Whenever you want out: add their address as **Super Administrator**, have
+   them verify the email, then remove yourself. Done.
+
+**Why not just use your existing account?** Technically you can, and everything
+works. The catch is at handover: you'd be giving away the account, and anything
+else of yours living in it goes too. If your account is empty, use it. If it
+holds your own domains or projects, spend the two minutes on a new one.
+
+Two things that are genuinely account-shaped, and the reason for a separate one:
+**billing** (the card on file for R2) and **members**. Keep both out of your
+personal account and the handover is clean.
+
+> The domain is the one thing that *can* move between accounts — you re-add it
+> in the new account and re-point the nameservers. Worth knowing, but if the
+> domain lives in the studio account from day one you never do it.
+
+## 2 · Hosting (10 minutes)
+
+Cloudflare now funnels everything into "Create a Worker", so the Pages entry
+point is easy to miss: it is the small **"Looking to deploy Pages? Get
+started"** line *underneath* the Worker setup card. Two ways in, both free:
+
+**Pages — nothing to change in the repo.** Full detail in
+`cloudflare-setup.md`; the short version:
+
+1. **Workers & Pages → Create application → "Looking to deploy Pages? Get
+   started" → Connect to Git**
 2. Authorise Cloudflare for **only** `giddyuptiger/primalmovesweb`
 3. Production branch **main**, framework preset **None**, build command **empty**,
    output directory **`design-9`**
@@ -49,6 +92,16 @@ Full detail in `cloudflare-setup.md`; the short version:
 
 You get `primalmovesweb.pages.dev` in about a minute, and every push redeploys.
 Every branch gets its own preview URL, which beats the GitHub Pages loop.
+
+**Or the Worker path — where Cloudflare is heading.** `wrangler.toml` at the
+repo root now describes the site as a Worker serving static assets from
+`design-9`. So the dashboard's default flow works too: **Create a Worker →
+Continue with GitHub → `primalmovesweb`**, build command empty, deploy command
+`npx wrangler deploy`. It needs today's commits pushed first, since the config
+has to exist in the repo the build clones.
+
+Either is fine and both cost nothing. Pages is fewer moving parts tonight; the
+Worker is the better long-term home, and switching later is one afternoon.
 
 ## 3 · The photo store: the Worker (10 minutes)
 

@@ -37,14 +37,14 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
   </div>
   <nav class="mobile-menu" id="mobile-menu">
     <ul>
-        <li><a href="practice/">Our Method</a></li>
-        <li><a href="classes/">Classes</a></li>
-        <li><a href="studio/">Studio</a></li>
-        <li><a href="memberships/">Memberships</a></li>
-        <li><a href="cherish/">Tea &amp; Cafe</a></li>
-        <li><a href="events/">Events</a></li>
-      <li><a data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 Day Pass →</a></li>
-      <li><a data-pm-link="onlineTrialUrl" target="_blank" rel="noopener">Try Primal online free →</a></li>
+        <li data-pm-copy="home.li1"><a href="practice/">Our Method</a></li>
+        <li data-pm-copy="home.li2"><a href="classes/">Classes</a></li>
+        <li data-pm-copy="home.li3"><a href="studio/">Studio</a></li>
+        <li data-pm-copy="home.li4"><a href="memberships/">Memberships</a></li>
+        <li data-pm-copy="home.li5"><a href="cherish/">Tea &amp; Cafe</a></li>
+        <li data-pm-copy="home.li6"><a href="events/">Events</a></li>
+      <li data-pm-copy="home.li7"><a data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 Day Pass →</a></li>
+      <li data-pm-copy="home.li8"><a data-pm-link="onlineTrialUrl" target="_blank" rel="noopener">Try Primal online free →</a></li>
     </ul>
   </nav>
 </header>
@@ -145,18 +145,20 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
       </div>
       <div>
         <p data-pm-copy="home.p8" class="lede" style="margin:0">Not home, not work &mdash; the other one. It isn&rsquo;t that the workout is different. It&rsquo;s that you know six people in the room, and one of them saved you a spot.</p>
-        <p data-pm-copy="home.p9" style="margin-top:16px;color:#C9C4B0">Most weeks the floor turns into something else in the evening: a workshop, a tea ceremony, a supper, live music. All open to day-pass holders.</p>
+        <p data-pm-copy="home.p9" style="margin-top:16px;color:var(--on-dark)">Most weeks the floor turns into something else in the evening: a workshop, a tea ceremony, a supper, live music. All open to day-pass holders.</p>
       </div>
     </div>
 
     <!-- Two months beside the next four events. The full grid is on /events/. -->
     <div class="home-cal">
-      <div data-pm-calendar data-pm-calendar-src="events.json" data-pm-calendar-months="2"></div>
-      <div class="home-cal-list">
-        <div data-pm-calendar-list></div>
-        <div class="cta-row" style="margin-top:26px">
+      <div class="home-cal-months">
+        <div data-pm-calendar data-pm-calendar-src="events.json" data-pm-calendar-months="2"></div>
+        <div class="cta-row home-cal-cta">
           <a class="btn on-dark" href="events/">the full calendar</a>
         </div>
+      </div>
+      <div class="home-cal-list">
+        <div data-pm-calendar-list></div>
       </div>
     </div>
   </div>

@@ -21,7 +21,8 @@
   "use strict";
 
   var KEY_ON = "pm_studio_on", KEY_COLORS = "pm_studio_colors", KEY_PHOTOS = "pm_studio_photos",
-      KEY_FOCUS = "pm_studio_focus", KEY_LOCAL = "pm_studio_local", KEY_WKEY = "pm_studio_wkey", KEY_COPY = "pm_studio_copy", KEY_LAYOUT = "pm_studio_layout";
+      KEY_FOCUS = "pm_studio_focus", KEY_LOCAL = "pm_studio_local", KEY_WKEY = "pm_studio_wkey", KEY_COPY = "pm_studio_copy", KEY_LAYOUT = "pm_studio_layout",
+      KEY_ACTIVE = "pm_studio_active";
 
   function q(p) { return new URLSearchParams(location.search).get(p); }
   function ls(k, v) {
@@ -53,6 +54,94 @@
   if (!invited && !openToAll) return;
   var startClosed = openToAll && !invited;
 
+  /* ---------------------------------------------------------------- live --
+     Photographs are the one thing that publishes. Swap or upload one and it
+     is live for every visitor within seconds — no push, no deploy. Colour
+     and wording deliberately do NOT work this way: they are saved into
+     configs so people can try things without moving the real site.
+     The store is the Worker in tools/pm-worker.js.                       */
+
+  var LIVE = String(CFG.liveApi || "").replace(/\/+$/, "");
+  var livePhotos = { photos: {}, photoFocus: {}, updatedAt: "" };
+  var liveErr = "";
+  var liveOpen = false;      // the store is letting anyone with the link write
+
+  function writeKey(force) {
+    if (liveOpen) return "";                    // nothing to ask for
+    var k = ls(KEY_WKEY);
+    if (k && !force) return k;
+    k = prompt("Write key\n\nThis is what lets you change the live site. Ask Jeremy for it — " +
+               "it is stored in this browser only.");
+    if (k) ls(KEY_WKEY, k);
+    return k;
+  }
+
+  // headers for a write. Returns null when a key is needed and not given.
+  function writeHeaders(extra) {
+    var h = extra || {};
+    if (liveOpen) return h;
+    var k = writeKey();
+    if (!k) return null;
+    h["X-Write-Key"] = k;
+    return h;
+  }
+
+  function loadLive() {
+    if (!LIVE) return Promise.resolve(null);
+    return fetch(LIVE + "/live", { cache: "no-cache" })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && !d.error) {
+          livePhotos = { photos: d.photos || {}, photoFocus: d.photoFocus || {},
+                         updatedAt: d.updatedAt || "", by: d.by || "" };
+          liveOpen = d.open === true;
+        }
+        return livePhotos;
+      })
+      .catch(function () { liveErr = "The photo store is not answering."; return null; });
+  }
+
+  // publish one slot. `file` is a filename from the repo or a URL from the
+  // upload endpoint; "" puts the slot back to whatever the repo ships.
+  function publishSlot(slot, file, focus) {
+    if (!LIVE) return Promise.resolve({ skipped: true });
+    var h = writeHeaders(file === "" ? {} : { "Content-Type": "application/json" });
+    if (!h) return Promise.resolve({ error: "No write key." });
+    var opts = file === ""
+      ? { method: "DELETE", headers: h }
+      : { method: "POST", headers: h,
+          body: JSON.stringify({ slot: slot, file: file, focus: focus || focusOf(slot) }) };
+    var url = LIVE + "/live/photo" + (file === "" ? "?slot=" + encodeURIComponent(slot) : "");
+    return fetch(url, opts).then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.error) { if (/write key/i.test(d.error)) lsDel(KEY_WKEY); return d; }
+        livePhotos = { photos: d.live.photos || {}, photoFocus: d.live.photoFocus || {},
+                       updatedAt: d.live.updatedAt || "", by: d.live.by || "" };
+        return d;
+      })
+      .catch(function () { return { error: "Could not reach the photo store." }; });
+  }
+
+  function focusOf(slot) { return focus[slot] || ""; }
+
+  function uploadPhoto(file) {
+    var h = writeHeaders({ "Content-Type": file.type });
+    if (!h) return Promise.resolve({ error: "No write key." });
+    return fetch(LIVE + "/upload?name=" + encodeURIComponent(file.name), {
+      method: "POST", headers: h, body: file
+    }).then(function (r) { return r.json(); })
+      .catch(function () { return { error: "Upload failed — the photo store is not answering." }; });
+  }
+
+  function toast(msg, bad) {
+    var t = document.getElementById("pm-toast") || document.createElement("div");
+    t.id = "pm-toast"; t.textContent = msg;
+    t.className = bad ? "bad" : "";
+    if (!t.parentNode) document.body.appendChild(t);
+    t.classList.add("on");
+    clearTimeout(t._h); t._h = setTimeout(function () { t.classList.remove("on"); }, 3200);
+  }
+
   /* ---------------------------------------------------------------- data -- */
 
   var PALETTE = [
@@ -73,7 +162,12 @@
     { v: "--sage",     label: "Accent",           hint: "rules, dots, marks" },
     { v: "--sage-btn", label: "Button fill",      hint: "the primary CTA" },
     { v: "--sage-txt", label: "Accent as text",   hint: "kickers, pull quotes" },
-    { v: "--clay",     label: "Second accent",    hint: "used sparingly" }
+    { v: "--clay",     label: "Second accent",    hint: "used sparingly" },
+    /* Tea & Cafe runs its own warmer ground — everything else on that page
+       (its rules, muted type and panels) is mixed from these two. */
+    { v: "--cherish-paper", label: "Tea & Cafe ground", hint: "that page only" },
+    { v: "--oxblood",       label: "Tea & Cafe accent", hint: "buttons and marks there" },
+    { v: "--cherish-ink",   label: "Tea & Cafe text",   hint: "and everything mixed from it" }
   ];
 
   /* ------------------------------------------------------------ contrast -- */
@@ -121,7 +215,10 @@
     Object.keys(photos).forEach(function (slot) {
       var el = document.querySelector('[data-pm-photo="' + slot + '"]');
       if (!el) return;
-      var src = photos[slot].indexOf("data:") === 0 ? photos[slot] : photoBase() + photos[slot];
+      // a published photograph is a full URL; a repo one is just a filename
+      var val = String(photos[slot]);
+      var abs = /^(https?:)?\/\//.test(val) || val.charAt(0) === "/" || val.indexOf("data:") === 0;
+      var src = abs ? val : photoBase() + val;
       if (el.tagName === "IMG") { el.src = src; return; }
       // an empty slot becomes a real image, keeping the slot name
       var img = document.createElement("img");
@@ -286,6 +383,59 @@
     "#pm-studio .preset .p-del{margin-top:11px;background:none;border:0;color:#6E737A;cursor:pointer;",
     "  font:inherit;font-size:11px;padding:0}",
     "#pm-studio .preset .p-del:hover{color:#D08A72}",
+    /* live state, toasts */
+    "#pm-studio .live-state{background:#1D2024;border:1px solid #26292E;border-left:2px solid #6E737A;",
+    "  border-radius:4px;padding:11px 13px;margin-top:11px;font-size:11.5px;line-height:1.55;color:#8D9198}",
+    "#pm-studio .live-state.on{border-left-color:#8BA85F}",
+    "#pm-studio .live-state b{color:#E8E6E0;font-weight:600}",
+    "#pm-studio .live-state span{display:block;margin-top:5px;font-size:10.5px;color:#6E737A}",
+    "#pm-studio .slot .tagline{display:block;margin-top:5px;font-size:10px;color:#8BA85F}",
+    "#pm-studio .p-reset{background:none;border:0;padding:0;font:inherit;font-size:10px;",
+    "  color:#6E737A;cursor:pointer;text-decoration:underline}",
+    "#pm-studio .p-reset:hover{color:#D08A72}",
+    "#pm-toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);z-index:100000;",
+    "  background:#1F241B;color:#DDEBC6;border:1px solid #8BA85F;border-radius:5px;padding:11px 18px;",
+    "  font:500 12.5px/1.4 'Helvetica Neue',Arial,sans-serif;opacity:0;pointer-events:none;",
+    "  transition:opacity .18s ease,transform .18s ease;max-width:min(520px,86vw);text-align:center}",
+    "#pm-toast.on{opacity:1;transform:translate(-50%,0)}",
+    "#pm-toast.bad{background:#2A1E1A;color:#F0C6AE;border-color:#B4694A}",
+    /* configs */
+    "#pm-studio .preset.cfg.on{border-color:#8BA85F;background:#1F241B}",
+    "#pm-studio .p-meta{font-size:10.5px;color:#6E737A;margin-top:7px;letter-spacing:.02em}",
+    "#pm-studio .p-active{background:#1D2024;border:1px solid #26292E;border-radius:4px;",
+    "  padding:10px 12px;margin-bottom:10px;font-size:12px;color:#E8E6E0;line-height:1.5}",
+    "#pm-studio .p-active span{display:block;font-size:10.5px;color:#6E737A;margin-top:3px}",
+    "#pm-studio .p-row{display:flex;align-items:center;gap:14px;margin-top:11px;flex-wrap:wrap}",
+    "#pm-studio .p-row .p-del{margin-top:0}",
+    "#pm-studio .p-up{background:none;border:0;padding:0;font:inherit;font-size:11px;",
+    "  color:#8D9198;cursor:pointer;text-align:left}",
+    "#pm-studio .p-up:hover{color:#B4D18A}",
+    "#pm-studio .p-up.armed{color:#E8B48A;font-weight:600}",
+    /* picker: the upload is the first thing you see, not a footnote */
+    "#pm-picker .box{display:flex;flex-direction:column;overflow:hidden}",
+    "#pm-lib{flex:1;min-height:0;overflow-y:auto;padding-bottom:18px}",
+    "#pm-picker .grid{overflow:visible}",
+    "#pm-picker .p-head{display:flex;align-items:flex-start;gap:14px;padding:16px 22px;",
+    "  border-bottom:1px solid #2A2D31}",
+    "#pm-picker .p-head h3{padding:0;border:0;flex:1}",
+    "#pm-picker .p-x{background:none;border:0;color:#8D9198;font:inherit;font-size:20px;",
+    "  line-height:1;cursor:pointer;padding:0 2px}",
+    "#pm-picker .p-x:hover{color:#E8E6E0}",
+    "#pm-picker .drop{margin:16px 22px 0;border:1px dashed #3A3F45;border-radius:6px;",
+    "  padding:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:#191B1F}",
+    "#pm-picker .drop.over{border-color:#8BA85F;background:#1F241B}",
+    "#pm-picker .up{background:#8BA85F;color:#11140E;border:0;border-radius:4px;font:inherit;",
+    "  font-size:13px;font-weight:600;padding:12px 20px;cursor:pointer;flex:none}",
+    "#pm-picker .up:hover{background:#9CBA6C}",
+    "#pm-picker .drop .d-txt{flex:1;min-width:200px;font-size:11.5px;color:#8D9198;line-height:1.5}",
+    "#pm-picker .drop .d-txt b{color:#E8E6E0;font-weight:600}",
+    "#pm-picker .g-head{padding:18px 22px 0;font-size:10.5px;font-weight:600;letter-spacing:.16em;",
+    "  text-transform:uppercase;color:#7E838A}",
+    "#pm-picker .grid button.fresh{border-color:#8BA85F}",
+    "#pm-picker .grid .nm.new{color:#B4D18A}",
+    "#pm-picker .p-search{background:#1D2024;border:1px solid #2F3338;border-radius:4px;color:#E8E6E0;",
+    "  font:inherit;font-size:12.5px;padding:9px 12px;width:190px}",
+    "#pm-picker .p-search:focus{outline:0;border-color:#8BA85F}",
     "#pm-studio code{font:400 11px ui-monospace,Menlo,monospace !important;color:#CBDCA8 !important;",
     "  background:#2A2E33;padding:1px 5px;border-radius:3px}",
     "@media (max-width:900px){#pm-studio{width:100%}#pm-studio.closed{transform:translateX(100%)}",
@@ -296,18 +446,19 @@
   var panel = document.createElement("aside");
   panel.id = "pm-studio";
   panel.innerHTML =
-    '<header><div><h2>Design studio</h2><div class="sub">Preview only · nothing is saved</div></div></header>' +
+    '<header><div><h2>Design studio</h2><div class="sub" id="pm-sub">Preview only · nothing is saved</div></div></header>' +
     '<div id="pm-tabs"><button data-tab="color" class="on">Colour</button>' +
     '<button data-tab="photo">Photos</button>' +
     '<button data-tab="copy">Copy</button>' +
     '<button data-tab="layout">Layout</button>' +
-    '<button data-tab="preset">Presets</button></div>' +
+    '<button data-tab="preset">Configs</button></div>' +
     '<div id="pm-body"></div>' +
     '<footer>' +
       '<button class="act" id="pm-copy">Copy config</button>' +
       '<button class="act ghost" id="pm-reset">Reset to saved</button>' +
       '<button class="act ghost" id="pm-exit">Exit studio</button>' +
-      '<p class="pm-note">Changes are yours alone until the copied config is pasted into the repo.</p>' +
+      '<p class="pm-note" id="pm-foot-note">Changes are yours alone until the copied config is pasted ' +
+      "into the repo.</p>" +
     '</footer>';
   document.body.appendChild(panel);
 
@@ -416,18 +567,68 @@
   function renderPhoto() {
     var body = document.getElementById("pm-body");
     var slots = [].slice.call(document.querySelectorAll("[data-pm-photo]"));
+    var when = livePhotos.updatedAt
+      ? new Date(livePhotos.updatedAt).toLocaleString(undefined,
+          { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })
+      : "";
+
     body.innerHTML =
-      '<div class="field"><p class="pm-note">A <b style="color:#B9C79E">Swap</b> button sits on every photo while this panel is open &mdash; empty slots included.</p>' +
-      '<p class="pm-note" style="margin-top:8px">' + slots.length +
-      " photo slot" + (slots.length === 1 ? "" : "s") + " on this page. Other pages have their own.</p></div>" +
+      '<div class="field"><p class="pm-note">A <b style="color:#B9C79E">Swap</b> button sits on every photo ' +
+      "while this panel is open &mdash; empty slots included.</p>" +
+      '<div class="live-state' + (LIVE ? " on" : "") + '">' +
+        (LIVE
+          ? "<b>Photographs are live.</b> A swap or an upload here changes the site for every visitor " +
+            "within seconds &mdash; no push, no deploy." +
+            (when ? "<span>Last change " + when + (livePhotos.by ? " by " + livePhotos.by : "") + "</span>" : "") +
+            (liveOpen ? "<span style=\"color:#E8B48A\">Open: anyone with this link can change photographs. " +
+                        "Lock it down before launch.</span>" : "") +
+            (liveErr ? '<span style="color:#E8B48A">' + liveErr + "</span>" : "")
+          : "<b>Preview only.</b> No photo store is connected, so a swap changes your browser and nobody " +
+            "else&rsquo;s. Set <code>liveApi</code> in <code>config.js</code> &mdash; see " +
+            "<code>strategy/live-editing.md</code>.") +
+      "</div>" +
+      '<p class="pm-note" style="margin-top:10px">Colour and wording are <b>not</b> published this way. ' +
+      "Those save into configs, so you can try versions without moving the real site.</p></div>" +
       '<div class="slots">' + (slots.length ? slots.map(function (img) {
         var slot = img.getAttribute("data-pm-photo");
         var file = photos[slot] || (img.getAttribute("src") || "").split("/").pop();
-        if (file.indexOf("data:") === 0) file = "(local preview)";
-        var f = focus[slot] ? ' &middot; focus ' + focus[slot] : "";
-        return '<div class="slot"><b>' + slot + "</b><span>" + file + f + "</span></div>";
-      }).join("") : '<p class="pm-note">No photo slots on this page.</p>') + "</div>";
+        if (String(file).indexOf("data:") === 0) file = "(local preview)";
+        else file = String(file).split("/").pop().replace(/^[0-9a-f]{8,32}-/, "");
+        var f = focus[slot] ? " &middot; focus " + focus[slot] : "";
+        var isLive = LIVE && livePhotos.photos[slot];
+        return '<div class="slot" data-slot="' + slot + '"><b>' + slot + "</b><span>" + file + f + "</span>" +
+          (isLive ? '<span class="tagline">Published &middot; <button class="p-reset">put the original back</button></span>' : "") +
+          "</div>";
+      }).join("") : '<p class="pm-note">No photo slots on this page.</p>') + "</div>" +
+      (LIVE ? '<div class="p-actions" style="margin-top:14px">' +
+        '<button class="act ghost" id="pm-live-undo">Undo the last photo change</button></div>' : "");
+
+    body.querySelectorAll(".p-reset").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var slot = btn.closest(".slot").getAttribute("data-slot");
+        publishSlot(slot, "").then(function (d) {
+          if (d.error) { toast(d.error, true); return; }
+          delete photos[slot];
+          ls(KEY_PHOTOS, JSON.stringify(photos));
+          toast("Back to the photograph in the repo.");
+          location.reload();
+        });
+      });
+    });
+
+    var undo = document.getElementById("pm-live-undo");
+    if (undo) undo.addEventListener("click", function () {
+      var h = writeHeaders(); if (!h) return;
+      fetch(LIVE + "/live/undo", { method: "POST", headers: h })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d.error) { toast(d.error, true); return; }
+          toast("Rolled back."); location.reload();
+        })
+        .catch(function () { toast("Could not reach the photo store.", true); });
+    });
   }
+
 
   function hideBadges() {
     [].slice.call(document.querySelectorAll(".pm-swap-badge")).forEach(function (b) { b.remove(); });
@@ -512,6 +713,15 @@
       img.style.objectPosition = focus[slot];
       dot.style.left = x + "%"; dot.style.top = y + "%";
       renderPhoto();
+      // publish where the crop holds, once the clicking stops
+      if (LIVE && livePhotos.photos[slot]) {
+        clearTimeout(set._h);
+        set._h = setTimeout(function () {
+          publishSlot(slot, livePhotos.photos[slot], focus[slot]).then(function (d) {
+            if (d && d.error) toast(d.error, true); else toast("Crop published.");
+          });
+        }, 700);
+      }
     }
     lay.addEventListener("click", set);
     function esc(e) {
@@ -522,46 +732,158 @@
     document.addEventListener("keydown", esc);
   }
 
+  /* Photographs added in the browser live here for the session. They are
+     previews: a static site has no server to write to, so the file itself
+     still has to reach assets/photos/ in the repo before anyone else sees
+     it. Uploading many at once is fine — they queue up in the picker and
+     you assign them slot by slot. */
+  var freshUploads = [];
+
   function openPicker(img) {
     var slot = img.getAttribute("data-pm-photo");
+
     loadLibrary().then(function (lib) {
       var wrap = document.createElement("div");
       wrap.id = "pm-picker";
       wrap.innerHTML =
-        '<div class="box"><h3>Swap <span>' + slot + "</span></h3>" +
-        '<div class="grid">' + lib.files.map(function (f) {
-          return '<button data-file="' + f + '"><img src="' + lib.dir + f + '" alt="" loading="lazy">' +
-                 '<div class="nm">' + f + "</div></button>";
-        }).join("") + "</div>" +
-        '<div class="foot"><label class="act ghost" style="cursor:pointer">Upload from this computer' +
-        '<input type="file" accept="image/*" id="pm-file" hidden></label>' +
-        '<button class="act ghost" id="pm-close">Cancel</button>' +
-        '<p class="pm-note">An upload previews here only — the file still has to be added to ' +
-        "assets/photos/ in the repo to go live.</p></div></div>";
+        '<div class="box">' +
+          '<div class="p-head">' +
+            "<h3>Swap <span>" + slot + "</span></h3>" +
+            '<input class="p-search" id="pm-search" type="search" placeholder="Filter by name">' +
+            '<button class="p-x" id="pm-close" aria-label="Close">&times;</button>' +
+          "</div>" +
+          '<div class="drop" id="pm-drop">' +
+            '<button class="up" id="pm-up">Upload photos</button>' +
+            '<div class="d-txt">' + (LIVE
+              ? "<b>Drag them anywhere in this window</b> &mdash; as many as you like. " +
+                "They upload to the photo store and go live for every visitor as soon as you pick one."
+              : "<b>Drag them anywhere in this window</b> &mdash; as many as you like. " +
+                "No photo store is connected yet, so an upload previews in this browser only: the file " +
+                "still has to reach <code>assets/photos/</code> and be pushed.") + "</div>" +
+            '<input type="file" accept="image/*" multiple id="pm-file" hidden>' +
+          "</div>" +
+          '<div id="pm-lib"></div>' +
+        "</div>";
       document.body.appendChild(wrap);
 
-      wrap.addEventListener("click", function (e) {
-        if (e.target === wrap || e.target.id === "pm-close") wrap.remove();
-        var btn = e.target.closest("button[data-file]");
-        if (btn) {
-          photos[slot] = btn.getAttribute("data-file");
-          ls(KEY_PHOTOS, JSON.stringify(photos));
-          applyPhotos(); renderPhoto(); showBadges();
-          wrap.remove();
+      var libBox = wrap.querySelector("#pm-lib");
+      var fileEl = wrap.querySelector("#pm-file");
+      var drop   = wrap.querySelector("#pm-drop");
+
+      // repo photographs are stored by filename (that's what config.js wants);
+      // an upload is stored as the data URL itself
+      function tile(src, label, fresh, file) {
+        return '<button data-src="' + src + '"' + (file ? ' data-file="' + file + '"' : "") +
+          (fresh ? ' class="fresh"' : "") + '>' +
+          '<img src="' + src + '" alt="" loading="lazy">' +
+          '<div class="nm' + (fresh ? " new" : "") + '">' + label + "</div></button>";
+      }
+
+      function renderLib() {
+        var term = (wrap.querySelector("#pm-search").value || "").toLowerCase();
+        var files = lib.files.filter(function (f) { return !term || f.toLowerCase().indexOf(term) > -1; });
+        var ups = freshUploads.filter(function (u) { return !term || u.name.toLowerCase().indexOf(term) > -1; });
+        libBox.innerHTML =
+          (ups.length ? '<div class="g-head">Just uploaded &middot; ' +
+             (LIVE ? "in the photo store" : "preview only, not in the repo") + "</div><div class=\"grid\">" +
+             ups.map(function (u) { return tile(u.url, u.name, true); }).join("") + "</div>" : "") +
+          '<div class="g-head">In the repo &middot; ' + lib.files.length + " photographs</div>" +
+          (files.length ? '<div class="grid">' + files.map(function (f) {
+              return tile(lib.dir + f, f, false, f);
+            }).join("") + "</div>"
+          : '<p class="pm-note" style="padding:16px 22px">Nothing matches &ldquo;' + term + "&rdquo;.</p>");
+      }
+      renderLib();
+
+      function choose(src) {
+        photos[slot] = src;
+        try { ls(KEY_PHOTOS, JSON.stringify(photos)); }
+        catch (e) { /* a data: URL can overflow the quota — the preview still works */ }
+        applyPhotos(); showBadges();
+        wrap.remove();
+        if (!LIVE) { renderPhoto(); return; }
+        if (String(src).indexOf("data:") === 0) { renderPhoto(); return; }  // never publishable
+        publishSlot(slot, src).then(function (d) {
+          if (d.error) toast(d.error, true);
+          else toast("Published — everyone sees this now.");
+          renderPhoto();
+        });
+      }
+
+      function say(msg, bad) {
+        var el = wrap.querySelector(".d-txt");
+        if (el) el.innerHTML = '<b style="color:' + (bad ? "#E8B48A" : "#B4D18A") + '">' + msg + "</b>";
+      }
+
+      function take(files) {
+        var list = [].slice.call(files || []).filter(function (f) { return /^image\//.test(f.type); });
+        if (!list.length) return;
+
+        /* With a photo store connected the file goes UP — to R2, through the
+           Worker — and comes back as a URL every visitor can load. Without
+           one all we can do is read it into this browser as a preview. */
+        if (LIVE) {
+          var done = 0, urls = [];
+          say("Uploading 0 of " + list.length + "&hellip;");
+          list.forEach(function (f, i) {
+            uploadPhoto(f).then(function (d) {
+              done++;
+              if (d.error) { say(d.error, true); return; }
+              urls[i] = { name: f.name, url: d.url };
+              freshUploads.unshift({ name: f.name, url: d.url, live: true });
+              say("Uploading " + done + " of " + list.length + "&hellip;");
+              if (done < list.length) return;
+              var ok = urls.filter(Boolean);
+              if (ok.length === 1) choose(ok[0].url);          // you meant this slot
+              else { say(ok.length + " uploaded &mdash; pick one for this slot."); renderLib(); }
+            });
+          });
+          return;
         }
+
+        var left = list.length, added = [];
+        list.forEach(function (f, i) {
+          var rd = new FileReader();
+          rd.onload = function () {
+            added[i] = { name: f.name, url: rd.result };
+            if (--left) return;
+            added.filter(Boolean).forEach(function (u) { freshUploads.unshift(u); });
+            // one file means you meant this slot; several means you're stocking up
+            if (added.length === 1) choose(added[0].url);
+            else renderLib();
+          };
+          rd.readAsDataURL(f);
+        });
+      }
+
+      wrap.querySelector("#pm-up").addEventListener("click", function () { fileEl.click(); });
+      fileEl.addEventListener("change", function (e) { take(e.target.files); e.target.value = ""; });
+      wrap.querySelector("#pm-search").addEventListener("input", renderLib);
+
+      ["dragenter", "dragover"].forEach(function (ev) {
+        wrap.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add("over"); });
       });
-      wrap.querySelector("#pm-file").addEventListener("change", function (e) {
-        var f = e.target.files && e.target.files[0];
-        if (!f) return;
-        var rd = new FileReader();
-        rd.onload = function () {
-          photos[slot] = rd.result;
-          ls(KEY_PHOTOS, JSON.stringify(photos));
-          applyPhotos(); renderPhoto(); showBadges();
-          wrap.remove();
-        };
-        rd.readAsDataURL(f);
+      ["dragleave", "drop"].forEach(function (ev) {
+        wrap.addEventListener(ev, function (e) {
+          e.preventDefault();
+          if (ev === "dragleave" && wrap.contains(e.relatedTarget)) return;
+          drop.classList.remove("over");
+          if (ev === "drop") take(e.dataTransfer && e.dataTransfer.files);
+        });
       });
+
+      wrap.addEventListener("click", function (e) {
+        if (e.target === wrap || e.target.id === "pm-close") { wrap.remove(); return; }
+        var btn = e.target.closest("button[data-src]");
+        if (btn) choose(btn.getAttribute("data-file") || btn.getAttribute("data-src"));
+      });
+
+      function esc(e) {
+        if (e.key !== "Escape") return;
+        document.removeEventListener("keydown", esc);
+        wrap.remove();
+      }
+      document.addEventListener("keydown", esc);
     });
   }
 
@@ -617,6 +939,29 @@
   var copyEdits = {};
   try { copyEdits = JSON.parse(ls(KEY_COPY) || "{}"); } catch (e) { copyEdits = {}; }
   var copyOn = false, originals = {};
+
+  // The words as the repo has them. Captured before any saved edit is put on
+  // the page, so switching configs can always get back to the written copy.
+  function snapshotOriginals() {
+    copyTargets().forEach(function (el) {
+      var k = el.getAttribute("data-pm-copy");
+      if (!(k in originals)) originals[k] = el.innerHTML;
+    });
+  }
+
+  // Replace the whole set of text edits at once — anything the incoming set
+  // doesn't mention goes back to the written copy rather than lingering.
+  function setCopy(map) {
+    snapshotOriginals();
+    Object.keys(copyEdits).forEach(function (k) {
+      if (k in map) return;
+      var el = document.querySelector('[data-pm-copy="' + k + '"]');
+      if (el && k in originals) el.innerHTML = originals[k];
+    });
+    copyEdits = Object.assign({}, map);
+    ls(KEY_COPY, JSON.stringify(copyEdits));
+    applyCopy();
+  }
 
   function applyCopy() {
     Object.keys(copyEdits).forEach(function (k) {
@@ -765,63 +1110,82 @@
     return Promise.all(jobs);
   }
 
+  // A config is colour, wording and layout. Photographs are deliberately NOT
+  // in here: they publish to everyone the moment they're swapped, so putting
+  // them in a config would mean two sources of truth for the same picture.
   function current() {
-    return { colors: colors, photos: photos, focus: focus };
+    return { colors: colors, copy: copyEdits, layout: layout };
   }
+
+  var activeName = ls(KEY_ACTIVE) || "";
+  function setActive(n) { activeName = n || ""; n ? ls(KEY_ACTIVE, n) : lsDel(KEY_ACTIVE); }
 
   function applyPreset(pr) {
     colors = Object.assign({}, pr.colors || {});
-    photos = Object.assign({}, pr.photos || {});
-    focus  = Object.assign({}, pr.focus  || {});
     ls(KEY_COLORS, JSON.stringify(colors));
-    ls(KEY_PHOTOS, JSON.stringify(photos));
-    ls(KEY_FOCUS,  JSON.stringify(focus));
-    // clear any previously-set vars that this preset doesn't define
+    // clear any previously-set vars that this config doesn't define
     ROLES.forEach(function (r) {
       if (!colors[r.v]) document.documentElement.style.removeProperty(r.v);
     });
-    applyColors(); applyPhotos(); applyFocus();
+    applyColors();
+    setCopy(pr.copy || {});
+    applyLayout(pr.layout || "a");
+    setActive(pr.name);
     renderPresets();
   }
 
-  function writeKey() {
-    var k = ls(KEY_WKEY);
-    if (k) return k;
-    k = prompt("Write key for shared presets\n(ask Jeremy — it guards saving, not viewing)");
-    if (k) ls(KEY_WKEY, k);
-    return k;
+  function countOf(pr) {
+    var bits = [];
+    var c = Object.keys(pr.colors || {}).length; if (c) bits.push(c + " colour" + (c > 1 ? "s" : ""));
+    var cp = Object.keys(pr.copy || {}).length; if (cp) bits.push(cp + " text edit" + (cp > 1 ? "s" : ""));
+    bits.push((pr.layout === "tight" ? "Tightened" : "Current") + " layout");
+    return bits.join(" \u00b7 ");
   }
 
   function renderPresets() {
     var body = document.getElementById("pm-body");
     var mine = localPresets();
     var shared = remote !== null ? remote : repo || [];
-    var sharedLabel = remote !== null ? "Shared &middot; live" : "Shared &middot; from the repo";
+    var sharedLabel = remote !== null ? "Shared &middot; everyone sees these" : "Shared &middot; from the repo";
+    var active = shared.concat(mine).filter(function (x) { return x.name === activeName; })[0];
 
     function card(pr, where) {
-      return '<div class="preset" data-name="' + pr.name.replace(/"/g, "&quot;") + '" data-where="' + where + '">' +
+      var on = pr.name === activeName;
+      return '<div class="preset cfg' + (on ? " on" : "") + '" data-name="' +
+        pr.name.replace(/"/g, "&quot;") + '" data-where="' + where + '">' +
         '<div class="p-top"><b>' + pr.name + "</b>" +
-        '<span class="p-apply">Apply</span></div>' +
+        '<span class="p-apply">' + (on ? "Showing" : "Apply") + "</span></div>" +
         (pr.note ? '<div class="p-note">' + pr.note + "</div>" : "") +
+        '<div class="p-meta">' + countOf(pr) + "</div>" +
         '<div class="p-chips">' + ROLES.slice(0, 9).map(function (r) {
           var c = (pr.colors || {})[r.v];
           return c ? '<i style="background:' + c + '"></i>' : "";
         }).join("") + "</div>" +
-        (where !== "repo" ? '<button class="p-del">Delete</button>' : "") +
-        "</div>";
+        '<div class="p-row">' +
+          '<button class="p-up">Save what&rsquo;s on screen into this</button>' +
+          (where !== "repo" ? '<button class="p-del">Delete</button>' : "") +
+        "</div></div>";
     }
 
     body.innerHTML =
+      '<p class="pm-note" style="margin-bottom:16px">A config is colour, wording and layout together. ' +
+      "Save one, keep working, then save back into it. Nothing here changes what visitors see &mdash; " +
+      "photographs are the part that publishes.</p>" +
       '<div class="field">' +
-        '<label class="p-lab">Save what\u2019s on screen</label>' +
-        '<input id="pm-pname" type="text" placeholder="Name it \u2014 e.g. Warmer, clay accent" maxlength="60">' +
+        '<label class="p-lab">' + (active ? "Working from" : "Nothing loaded") + "</label>" +
+        '<div class="p-active">' + (active ? "<b>" + active.name + "</b><span>" + countOf(current()) + "</span>"
+                                           : "<span>Changes on screen aren’t part of a config yet.</span>") + "</div>" +
+        (active ? '<button class="act" id="pm-pupdate">Update &ldquo;' + active.name + '&rdquo;</button>' : "") +
+        '<label class="p-lab" style="margin-top:16px">Save as a new config</label>' +
+        '<input id="pm-pname" type="text" placeholder="Name it — e.g. Warmer, tighter" maxlength="60">' +
         '<input id="pm-pnote" type="text" placeholder="One line about it (optional)" maxlength="200">' +
         '<div class="p-actions">' +
-          '<button class="act" id="pm-psave">' + (API ? "Save for everyone" : "Save to this browser") + "</button>" +
+          '<button class="act' + (active ? " ghost" : "") + '" id="pm-psave">' +
+            (API ? "Save for everyone" : "Save to this browser") + "</button>" +
           (API ? "" : '<button class="act ghost" id="pm-pcopy">Copy presets.json</button>') +
         "</div>" +
         (API ? "" : '<p class="pm-note" style="margin-top:10px">No shared store connected yet, so a save stays in your browser. ' +
-          "Use <b>Copy presets.json</b> and paste it into <code>design-9/presets.json</code> to share it with everyone. " +
+          "Use <b>Copy presets.json</b> and paste it into <code>design-9/presets.json</code> so everyone sees it. " +
           "Wire up the Worker in <code>tools/presets-worker.js</code> and saves become instant for the whole team.</p>") +
       "</div>" +
       '<div class="p-group"><h4>' + sharedLabel + "</h4>" +
@@ -831,43 +1195,81 @@
       (mine.length ? '<div class="p-group"><h4>Only in this browser</h4>' +
         mine.map(function (p2) { return card(p2, "local"); }).join("") + "</div>" : "");
 
-    body.querySelectorAll(".preset").forEach(function (el) {
+    /* ---- saving ---------------------------------------------------------
+       Same path for a new config and for an update: the store replaces by
+       name, so "update" is a save under a name that already exists.        */
+    function persist(pr, where, done) {
+      if (!API || where === "local") {
+        var list = localPresets().filter(function (x) { return x.name !== pr.name; });
+        list.push(pr); saveLocal(list); setActive(pr.name); if (done) done(); renderPresets(); return;
+      }
+      var h = writeHeaders({ "Content-Type": "application/json" }); if (!h) return;
+      fetch(API, { method: "POST", headers: h, body: JSON.stringify(pr) })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d.error) { lsDel(KEY_WKEY); alert(d.error); return; }
+          remote = d.presets; setActive(pr.name); if (done) done(); renderPresets();
+        })
+        .catch(function () { alert("Could not reach the config store."); });
+    }
+
+    function snapshot(name, note) {
+      var cur = current();
+      return { name: name, note: note || "", colors: cur.colors, copy: cur.copy, layout: cur.layout };
+    }
+
+    var upBtn = document.getElementById("pm-pupdate");
+    if (upBtn) upBtn.addEventListener("click", function () {
+      var where = mine.some(function (x) { return x.name === active.name; }) ? "local"
+                : remote !== null ? "remote" : "local";
+      persist(snapshot(active.name, active.note), where, function () {
+        // a repo config edited here can only live locally until it's pushed
+      });
+    });
+
+    body.querySelectorAll(".preset.cfg").forEach(function (el) {
       var name = el.getAttribute("data-name"), where = el.getAttribute("data-where");
       var list = where === "local" ? mine : shared;
       var pr = list.filter(function (x) { return x.name === name; })[0];
+
       el.querySelector(".p-apply").addEventListener("click", function () { if (pr) applyPreset(pr); });
+
+      // two-step, so a stray click can't overwrite somebody's config
+      var up = el.querySelector(".p-up");
+      if (up) up.addEventListener("click", function () {
+        if (up.dataset.armed !== "1") {
+          up.dataset.armed = "1";
+          up.classList.add("armed");
+          up.innerHTML = "Overwrite &ldquo;" + name + "&rdquo;?";
+          setTimeout(function () {
+            if (!up.parentNode) return;
+            up.dataset.armed = ""; up.classList.remove("armed");
+            up.innerHTML = "Save what&rsquo;s on screen into this";
+          }, 4000);
+          return;
+        }
+        persist(snapshot(name, pr ? pr.note : ""), where === "repo" ? "local" : where);
+      });
+
       var del = el.querySelector(".p-del");
       if (del) del.addEventListener("click", function () {
+        if (name === activeName) setActive("");
         if (where === "local") { saveLocal(mine.filter(function (x) { return x.name !== name; })); renderPresets(); return; }
-        var k = writeKey(); if (!k) return;
-        fetch(API + "?name=" + encodeURIComponent(name), { method: "DELETE", headers: { "X-Write-Key": k } })
+        var h = writeHeaders(); if (!h) return;
+        fetch(API + "?name=" + encodeURIComponent(name), { method: "DELETE", headers: h })
           .then(function (r) { return r.json(); })
           .then(function (d) { if (d.error) { lsDel(KEY_WKEY); alert(d.error); return; } remote = d.presets; renderPresets(); })
-          .catch(function () { alert("Could not reach the preset store."); });
+          .catch(function () { alert("Could not reach the config store."); });
       });
     });
 
     var saveBtn = document.getElementById("pm-psave");
     if (saveBtn) saveBtn.addEventListener("click", function () {
-      var name = (document.getElementById("pm-pname").value || "").trim();
-      if (!name) { document.getElementById("pm-pname").focus(); return; }
-      var note = (document.getElementById("pm-pnote").value || "").trim();
-      var cur = current();
-      var pr = { name: name, note: note, colors: cur.colors, focus: cur.focus,
-                 photos: {} };
-      Object.keys(cur.photos).forEach(function (k) {
-        if (String(cur.photos[k]).indexOf("data:") !== 0) pr.photos[k] = cur.photos[k];
-      });
-      if (!API) {
-        var mineNow = localPresets().filter(function (x) { return x.name !== name; });
-        mineNow.push(pr); saveLocal(mineNow); renderPresets(); return;
-      }
-      var k = writeKey(); if (!k) return;
-      fetch(API, { method: "POST", headers: { "Content-Type": "application/json", "X-Write-Key": k },
-                   body: JSON.stringify(pr) })
-        .then(function (r) { return r.json(); })
-        .then(function (d) { if (d.error) { lsDel(KEY_WKEY); alert(d.error); return; } remote = d.presets; renderPresets(); })
-        .catch(function () { alert("Could not reach the preset store."); });
+      var nameEl = document.getElementById("pm-pname");
+      var name = (nameEl.value || "").trim();
+      if (!name) { nameEl.focus(); return; }
+      persist(snapshot(name, (document.getElementById("pm-pnote").value || "").trim()),
+              API ? "remote" : "local");
     });
 
     var copyBtn = document.getElementById("pm-pcopy");
@@ -877,7 +1279,7 @@
       all.reverse().forEach(function (x) { if (!seen[x.name]) { seen[x.name] = 1; dedup.unshift(x); } });
       var out = JSON.stringify({ presets: dedup }, null, 2);
       navigator.clipboard ? navigator.clipboard.writeText(out).then(function () {
-        copyBtn.textContent = "Copied \u2713";
+        copyBtn.textContent = "Copied ✓";
         setTimeout(function () { copyBtn.textContent = "Copy presets.json"; }, 1500);
       }) : prompt("Copy:", out);
     });
@@ -945,11 +1347,25 @@
     location.href = location.pathname;
   });
 
-  var applyAll = function () { applyPhotos(); applyFocus(); setTimeout(applyCopy, 260); };
+  var applyAll = function () { applyPhotos(); applyFocus();
+    setTimeout(function () { snapshotOriginals(); applyCopy(); }, 260); };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", applyAll);
   else setTimeout(applyAll, 60);
   renderColor();
   loadPresets();
+
+  // what's live right now — and a header line that tells the truth about it
+  if (LIVE) {
+    loadLive().then(function () {
+      var sub = document.getElementById("pm-sub");
+      if (sub) sub.innerHTML = "Photos publish live &middot; colour and text are configs";
+      var fn = document.getElementById("pm-foot-note");
+      if (fn) fn.innerHTML = "Photographs publish as you swap them. Colour and wording stay yours " +
+        "until a config is pushed.";
+      var on = document.querySelector("#pm-tabs button.on");
+      if (on && on.dataset.tab === "photo") renderPhoto();
+    });
+  }
   if (!startClosed) {
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", showBadges);
     else setTimeout(showBadges, 120);

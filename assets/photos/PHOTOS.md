@@ -4,6 +4,24 @@ Every photograph on design-9 sits in a named **slot**. Slots follow Miki's
 `page - section - slot` convention, so a shot she labels *"studio page, private
 hire picture"* has an obvious home.
 
+## Uploading a lot of photographs at once
+
+The browser can't write to the repo — a static site has no server — so the
+fast path for a batch is the folder, not the panel:
+
+1. Drop the whole batch into `assets/photos/`.
+2. Commit and push.
+3. The **Index photos** Action rewrites `design-9/photos.json`, and every new
+   file shows up in the design studio's picker within a minute. (Locally:
+   `python3 tools/index_photos.py`.)
+4. Open any page with `?admin=1`, hit **Swap** on a slot and pick the new one.
+   Copy the config out of the panel and paste it into `design-9/config.js`.
+
+Uploading through the picker is for *trying* a picture — drag as many as you
+like onto it and they appear immediately, but they live in that one browser
+and vanish when it's cleared. Nothing anybody swaps in the panel is live for
+visitors until a config is pasted into the repo and pushed.
+
 ## Two ways to change a picture
 
 **1. Same filename — no code at all.**

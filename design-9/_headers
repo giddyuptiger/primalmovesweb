@@ -1,0 +1,24 @@
+# Cloudflare Pages reads this from the build output root.
+# Photographs and CSS carry hashes or change rarely; HTML must never be stale.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
+  X-Frame-Options: SAMEORIGIN
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/*
+  Cache-Control: public, max-age=604800
+
+/*.json
+  Cache-Control: public, max-age=60
+
+# config.js and admin.js decide what the site is — a stale copy is a bug
+/*.js
+  Cache-Control: public, max-age=300

@@ -1,0 +1,31 @@
+# Deploy from the repo root:  npx wrangler deploy -c tools/wrangler.toml
+# Full walkthrough in strategy/live-editing.md
+
+name = "pm-studio"
+main = "pm-worker.js"
+compatibility_date = "2026-08-01"
+
+# npx wrangler kv namespace create PM_STUDIO  → paste the id it prints
+[[kv_namespaces]]
+binding = "PM_STUDIO"
+id = "PASTE_KV_ID_HERE"
+
+# npx wrangler r2 bucket create pm-photos
+[[r2_buckets]]
+binding = "PM_PHOTOS"
+bucket_name = "pm-photos"
+
+[vars]
+# Lock this to the real domain once DNS lands — until then "*" lets the
+# GitHub Pages preview talk to it.
+ALLOW_ORIGIN = "*"
+
+# "true"  = anyone with the link can swap photographs. Correct for now.
+# "false" = the write key is required.
+#
+#   >>> FLIP THIS TO "false" BEFORE LAUNCH, THEN REDEPLOY. <<<
+OPEN_WRITES = "true"
+
+# The write key is a secret, never a var. Set it now even while writes are
+# open, so locking down later is one word and one deploy:
+#   npx wrangler secret put WRITE_KEY -c tools/wrangler.toml

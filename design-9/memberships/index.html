@@ -37,14 +37,14 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
   </div>
   <nav class="mobile-menu" id="mobile-menu">
     <ul>
-        <li><a href="../practice/">Our Method</a></li>
-        <li><a href="../classes/">Classes</a></li>
-        <li><a href="../studio/">Studio</a></li>
-        <li><a href="../memberships/">Memberships</a></li>
-        <li><a href="../cherish/">Tea &amp; Cafe</a></li>
-        <li><a href="../events/">Events</a></li>
-      <li><a data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 Day Pass →</a></li>
-      <li><a data-pm-link="onlineTrialUrl" target="_blank" rel="noopener">Try Primal online free →</a></li>
+        <li data-pm-copy="memberships.li1"><a href="../practice/">Our Method</a></li>
+        <li data-pm-copy="memberships.li2"><a href="../classes/">Classes</a></li>
+        <li data-pm-copy="memberships.li3"><a href="../studio/">Studio</a></li>
+        <li data-pm-copy="memberships.li4"><a href="../memberships/">Memberships</a></li>
+        <li data-pm-copy="memberships.li5"><a href="../cherish/">Tea &amp; Cafe</a></li>
+        <li data-pm-copy="memberships.li6"><a href="../events/">Events</a></li>
+      <li data-pm-copy="memberships.li7"><a data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 Day Pass →</a></li>
+      <li data-pm-copy="memberships.li8"><a data-pm-link="onlineTrialUrl" target="_blank" rel="noopener">Try Primal online free →</a></li>
     </ul>
   </nav>
 </header>
@@ -84,27 +84,40 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
     <table class="cmp">
       <caption class="sr-only">Membership comparison</caption>
       <thead>
-        <tr><th scope="col" class="cmp-rowhead"><span class="sr-only">Feature</span></th><th scope="col" class="is-hero"><span class="cmp-flag">Most popular</span><span class="cmp-name">The Primal</span><span class="cmp-price">$315</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">The Nomad</span><span class="cmp-price">$375</span><span class="cmp-per">one month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">The Explorer</span><span class="cmp-price">$200</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Weekend Warrior</span><span class="cmp-price">$120</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Kids&rsquo; Primal</span><span class="cmp-price">$125</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Digital Studio</span><span class="cmp-price">$14</span><span class="cmp-per">per month</span></th></tr>
+        <tr><th data-pm-copy="memberships.th1" scope="col" class="cmp-rowhead"><span class="sr-only">Feature</span></th><th data-pm-copy="memberships.th2" scope="col" class="is-hero"><span class="cmp-flag">Most popular</span><span class="cmp-name">The Primal</span><span class="cmp-price">$315</span><span class="cmp-per">per month</span></th><th data-pm-copy="memberships.th3" scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">The Nomad</span><span class="cmp-price">$375</span><span class="cmp-per">one month</span></th><th data-pm-copy="memberships.th4" scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">The Explorer</span><span class="cmp-price">$200</span><span class="cmp-per">per month</span></th><th data-pm-copy="memberships.th5" scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Weekend Warrior</span><span class="cmp-price">$120</span><span class="cmp-per">per month</span></th><th data-pm-copy="memberships.th6" scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Kids&rsquo; Primal</span><span class="cmp-price">$125</span><span class="cmp-per">per month</span></th><th data-pm-copy="memberships.th7" scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Digital Studio</span><span class="cmp-price">$14</span><span class="cmp-per">per month</span></th></tr>
       </thead>
-      <tbody><tr class="cmp-group"><th scope="colgroup" colspan="7">What you get</th></tr><tr><th scope="row">Classes</th><td data-l="The Primal" class="is-hero"><b>Unlimited</b></td><td data-l="The Nomad"><b>Unlimited</b></td><td data-l="The Explorer">8 a month</td><td data-l="Weekend Warrior">4 a month</td><td data-l="Kids&rsquo; Primal">Kids&rsquo; only</td><td data-l="Digital Studio">Online only</td></tr><tr><th scope="row">Sauna &amp; cold plunge</th><td data-l="The Primal" class="y is-hero">Unlimited</td><td data-l="The Nomad" class="y">Unlimited</td><td data-l="The Explorer" class="y">On class days</td><td data-l="Weekend Warrior" class="y">On class days</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th scope="row">Gym access</th><td data-l="The Primal" class="y is-hero">Yes</td><td data-l="The Nomad" class="y">Yes</td><td data-l="The Explorer" class="y">On class days</td><td data-l="Weekend Warrior" class="y">On class days</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th scope="row">Cowork &amp; wifi</th><td data-l="The Primal" class="y is-hero">Yes</td><td data-l="The Nomad" class="y">Yes</td><td data-l="The Explorer" class="y">On class days</td><td data-l="Weekend Warrior" class="y">On class days</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th scope="row">Tea ceremony</th><td data-l="The Primal" class="y is-hero">Included</td><td data-l="The Nomad" class="y">Included</td><td data-l="The Explorer" class="n">&mdash;</td><td data-l="Weekend Warrior" class="n">&mdash;</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th scope="row">Online library</th><td data-l="The Primal" class="n is-hero">&mdash;</td><td data-l="The Nomad" class="n">&mdash;</td><td data-l="The Explorer" class="n">&mdash;</td><td data-l="Weekend Warrior" class="n">&mdash;</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="y">Everything</td></tr><tr class="cmp-group"><th scope="colgroup" colspan="7">The details</th></tr><tr><th scope="row">Commitment</th><td data-l="The Primal" class="is-hero">3 months</td><td data-l="The Nomad"><b>None</b></td><td data-l="The Explorer">3 months</td><td data-l="Weekend Warrior">3 months</td><td data-l="Kids&rsquo; Primal">3 months</td><td data-l="Digital Studio">None</td></tr><tr><th scope="row">Best for</th><td data-l="The Primal" class="is-hero">Making it a habit</td><td data-l="The Nomad">Visitors &amp; short stays</td><td data-l="The Explorer">Twice a week</td><td data-l="Weekend Warrior">Once a week</td><td data-l="Kids&rsquo; Primal">Ages 5&ndash;12</td><td data-l="Digital Studio">Training anywhere</td></tr>
-        <tr class="cmp-cta"><th scope="row"><span class="sr-only">Sign up</span></th><td data-l="The Primal" class="is-hero"><div class="cmp-btns"><a class="btn sage" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join monthly</a><a class="btn tiny" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">$69 &middot; 2 weeks</a><a class="btn tiny" data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 &middot; a day</a></div></td><td data-l="The Nomad"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="The Explorer"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="Weekend Warrior"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="Kids&rsquo; Primal"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="Digital Studio"><a class="btn" data-pm-link="digitalStudioUrl" target="_blank" rel="noopener">Start free</a></td></tr>
+      <tbody><tr class="cmp-group"><th data-pm-copy="memberships.th8" scope="colgroup" colspan="7">What you get</th></tr><tr><th data-pm-copy="memberships.th9" scope="row">Classes</th><td data-pm-copy="memberships.td1" data-l="The Primal" class="is-hero"><b>Unlimited</b></td><td data-pm-copy="memberships.td2" data-l="The Nomad"><b>Unlimited</b></td><td data-pm-copy="memberships.td3" data-l="The Explorer">8 a month</td><td data-pm-copy="memberships.td4" data-l="Weekend Warrior">4 a month</td><td data-pm-copy="memberships.td5" data-l="Kids&rsquo; Primal">Kids&rsquo; only</td><td data-pm-copy="memberships.td6" data-l="Digital Studio">Online only</td></tr><tr><th data-pm-copy="memberships.th10" scope="row">Sauna &amp; cold plunge</th><td data-pm-copy="memberships.td7" data-l="The Primal" class="y is-hero">Unlimited</td><td data-pm-copy="memberships.td8" data-l="The Nomad" class="y">Unlimited</td><td data-pm-copy="memberships.td9" data-l="The Explorer" class="y">On class days</td><td data-pm-copy="memberships.td10" data-l="Weekend Warrior" class="y">On class days</td><td data-pm-copy="memberships.td11" data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-pm-copy="memberships.td12" data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th data-pm-copy="memberships.th11" scope="row">Gym access</th><td data-pm-copy="memberships.td13" data-l="The Primal" class="y is-hero">Yes</td><td data-pm-copy="memberships.td14" data-l="The Nomad" class="y">Yes</td><td data-pm-copy="memberships.td15" data-l="The Explorer" class="y">On class days</td><td data-pm-copy="memberships.td16" data-l="Weekend Warrior" class="y">On class days</td><td data-pm-copy="memberships.td17" data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-pm-copy="memberships.td18" data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th data-pm-copy="memberships.th12" scope="row">Cowork &amp; wifi</th><td data-pm-copy="memberships.td19" data-l="The Primal" class="y is-hero">Yes</td><td data-pm-copy="memberships.td20" data-l="The Nomad" class="y">Yes</td><td data-pm-copy="memberships.td21" data-l="The Explorer" class="y">On class days</td><td data-pm-copy="memberships.td22" data-l="Weekend Warrior" class="y">On class days</td><td data-pm-copy="memberships.td23" data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-pm-copy="memberships.td24" data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th data-pm-copy="memberships.th13" scope="row">Tea ceremony</th><td data-pm-copy="memberships.td25" data-l="The Primal" class="y is-hero">Included</td><td data-pm-copy="memberships.td26" data-l="The Nomad" class="y">Included</td><td data-pm-copy="memberships.td27" data-l="The Explorer" class="n">&mdash;</td><td data-pm-copy="memberships.td28" data-l="Weekend Warrior" class="n">&mdash;</td><td data-pm-copy="memberships.td29" data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-pm-copy="memberships.td30" data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th data-pm-copy="memberships.th14" scope="row">Online library</th><td data-pm-copy="memberships.td31" data-l="The Primal" class="n is-hero">&mdash;</td><td data-pm-copy="memberships.td32" data-l="The Nomad" class="n">&mdash;</td><td data-pm-copy="memberships.td33" data-l="The Explorer" class="n">&mdash;</td><td data-pm-copy="memberships.td34" data-l="Weekend Warrior" class="n">&mdash;</td><td data-pm-copy="memberships.td35" data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-pm-copy="memberships.td36" data-l="Digital Studio" class="y">Everything</td></tr><tr class="cmp-group"><th data-pm-copy="memberships.th15" scope="colgroup" colspan="7">The details</th></tr><tr><th data-pm-copy="memberships.th16" scope="row">Commitment</th><td data-pm-copy="memberships.td37" data-l="The Primal" class="is-hero">3 months</td><td data-pm-copy="memberships.td38" data-l="The Nomad"><b>None</b></td><td data-pm-copy="memberships.td39" data-l="The Explorer">3 months</td><td data-pm-copy="memberships.td40" data-l="Weekend Warrior">3 months</td><td data-pm-copy="memberships.td41" data-l="Kids&rsquo; Primal">3 months</td><td data-pm-copy="memberships.td42" data-l="Digital Studio">None</td></tr><tr><th data-pm-copy="memberships.th17" scope="row">Best for</th><td data-pm-copy="memberships.td43" data-l="The Primal" class="is-hero">Making it a habit</td><td data-pm-copy="memberships.td44" data-l="The Nomad">Visitors &amp; short stays</td><td data-pm-copy="memberships.td45" data-l="The Explorer">Twice a week</td><td data-pm-copy="memberships.td46" data-l="Weekend Warrior">Once a week</td><td data-pm-copy="memberships.td47" data-l="Kids&rsquo; Primal">Ages 5&ndash;12</td><td data-pm-copy="memberships.td48" data-l="Digital Studio">Training anywhere</td></tr>
+        <tr class="cmp-cta"><th data-pm-copy="memberships.th18" scope="row"><span class="sr-only">Sign up</span></th><td data-pm-copy="memberships.td49" data-l="The Primal" class="is-hero"><a class="btn sage" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-pm-copy="memberships.td50" data-l="The Nomad"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-pm-copy="memberships.td51" data-l="The Explorer"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-pm-copy="memberships.td52" data-l="Weekend Warrior"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-pm-copy="memberships.td53" data-l="Kids&rsquo; Primal"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-pm-copy="memberships.td54" data-l="Digital Studio"><a class="btn" data-pm-link="digitalStudioUrl" target="_blank" rel="noopener">Start free</a></td></tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- The short lengths are the same product as The Primal, so they sit under
+       the table as their own invitations rather than as small print in a cell. -->
+  <div class="cmp-try">
+    <div>
+      <div data-pm-copy="memberships.kicker3" class="kicker">before you commit</div>
+      <p data-pm-copy="memberships.p4" style="margin:6px 0 0">The Primal, bought short. Same floor, same sauna, same everything &mdash; nothing recurring.</p>
+    </div>
+    <div class="cta-row">
+      <a class="btn" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">Try Primal for two weeks &middot; $69</a>
+      <a class="btn" data-pm-link="dayPassUrl" target="_blank" rel="noopener">Try Primal for a day &middot; $40</a>
+    </div>
   </div>
 </div>
 
 <div class="mem-view" id="view-cards">
     <h3 data-pm-copy="memberships.h31" id="family" class="group-h">Start here</h3>
-    <p data-pm-copy="memberships.p4" class="group-sub">No long commitment &mdash; and something for the family.</p>
+    <p data-pm-copy="memberships.p5" class="group-sub">No long commitment &mdash; and something for the family.</p>
     <div class="plans four">
       <div class="plan hero-plan">
         <div class="tier">a day at Primal</div>
         <div class="amt">$40</div>
         <div class="plan-line">One day. All of it.</div>
         <ul>
-          <li>A class, sauna, cold plunge and gym</li>
-          <li>Coffee and a seat at Cherish</li>
-          <li>Nothing recurring, nothing to cancel</li>
+          <li data-pm-copy="memberships.li9">A class, sauna, cold plunge and gym</li>
+          <li data-pm-copy="memberships.li10">Coffee and a seat at Cherish</li>
+          <li data-pm-copy="memberships.li11">Nothing recurring, nothing to cancel</li>
         </ul>
         <a class="btn on-dark" data-pm-link="dayPassUrl" target="_blank" rel="noopener">book a day</a>
       </div>
@@ -113,9 +126,9 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
         <div class="amt">$69</div>
         <div class="plan-line">A proper run at it.</div>
         <ul>
-          <li>Unlimited classes for two weeks</li>
-          <li>Sauna and cold plunge included</li>
-          <li>For people who already know they like it</li>
+          <li data-pm-copy="memberships.li12">Unlimited classes for two weeks</li>
+          <li data-pm-copy="memberships.li13">Sauna and cold plunge included</li>
+          <li data-pm-copy="memberships.li14">For people who already know they like it</li>
         </ul>
         <div class="fine">One per person, for anyone who hasn't trained with us before.</div>
         <a class="btn" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">start the trial</a>
@@ -125,17 +138,17 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
         <div class="amt">$375<small>/mo</small></div>
         <div class="plan-line">Unlimited, no contract.</div>
         <ul>
-          <li>Everything in The Primal</li>
-          <li>One month — nothing to cancel</li>
+          <li data-pm-copy="memberships.li15">Everything in The Primal</li>
+          <li data-pm-copy="memberships.li16">One month — nothing to cancel</li>
         </ul>
         <details class="plan-more">
-          <summary>What's included</summary>
+          <summary data-pm-copy="memberships.summary1">What's included</summary>
           <ul>
-            <li>Unlimited classes, sauna, plunge and gym</li>
-            <li>Morning tea ceremony included</li>
-            <li>10% off spa &amp; wellness services</li>
-            <li>Complimentary wellness consult</li>
-            <li>Concert series and event discounts</li>
+            <li data-pm-copy="memberships.li17">Unlimited classes, sauna, plunge and gym</li>
+            <li data-pm-copy="memberships.li18">Morning tea ceremony included</li>
+            <li data-pm-copy="memberships.li19">10% off spa &amp; wellness services</li>
+            <li data-pm-copy="memberships.li20">Complimentary wellness consult</li>
+            <li data-pm-copy="memberships.li21">Concert series and event discounts</li>
           </ul>
         </details>
         <div class="fine">An all-access month for visitors and short stays.</div>
@@ -146,9 +159,9 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
         <div class="amt">$14<small>/mo</small></div>
         <div class="plan-line">Train from anywhere.</div>
         <ul>
-          <li>Live-streamed classes</li>
-          <li>Full recorded library</li>
-          <li>$107/year if paid annually</li>
+          <li data-pm-copy="memberships.li22">Live-streamed classes</li>
+          <li data-pm-copy="memberships.li23">Full recorded library</li>
+          <li data-pm-copy="memberships.li24">$107/year if paid annually</li>
         </ul>
         <div class="fine">Free trial before you pay.</div>
         <a class="btn" data-pm-link="digitalStudioUrl" target="_blank" rel="noopener">digital studio ↗</a>
@@ -156,24 +169,24 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
     </div>
 
     <h3 data-pm-copy="memberships.h32" class="group-h" style="margin-top:clamp(48px,7vw,80px)">Memberships</h3>
-    <p data-pm-copy="memberships.p5" class="group-sub">Monthly autopay. Three-month minimum.</p>
+    <p data-pm-copy="memberships.p6" class="group-sub">Monthly autopay. Three-month minimum.</p>
     <div class="plans four">
       <div class="plan">
         <div class="tier">Weekend Warrior</div>
         <div class="amt">$120<small>/mo</small></div>
         <div class="plan-line">Four day passes a month.</div>
         <ul>
-          <li>Each pass is one class plus sauna, plunge and gym</li>
-          <li>3-month minimum</li>
+          <li data-pm-copy="memberships.li25">Each pass is one class plus sauna, plunge and gym</li>
+          <li data-pm-copy="memberships.li26">3-month minimum</li>
         </ul>
         <details class="plan-more">
-          <summary>What's included</summary>
+          <summary data-pm-copy="memberships.summary2">What's included</summary>
           <ul>
-            <li>50% off tea ceremonies</li>
-            <li>Extra classes $30 each</li>
-            <li>Free health assessment with our wellness consultant</li>
-            <li>Concert series 50% off + members' lounge seating</li>
-            <li>1 guest a month at 50% off</li>
+            <li data-pm-copy="memberships.li27">50% off tea ceremonies</li>
+            <li data-pm-copy="memberships.li28">Extra classes $30 each</li>
+            <li data-pm-copy="memberships.li29">Free health assessment with our wellness consultant</li>
+            <li data-pm-copy="memberships.li30">Concert series 50% off + members' lounge seating</li>
+            <li data-pm-copy="memberships.li31">1 guest a month at 50% off</li>
           </ul>
         </details>
         <div class="fine">For training consistently without needing unlimited access.</div>
@@ -184,17 +197,17 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
         <div class="amt">$200<small>/mo</small></div>
         <div class="plan-line">Eight classes a month.</div>
         <ul>
-          <li>Sauna, plunge and gym on the days you train</li>
-          <li>3-month minimum</li>
+          <li data-pm-copy="memberships.li32">Sauna, plunge and gym on the days you train</li>
+          <li data-pm-copy="memberships.li33">3-month minimum</li>
         </ul>
         <details class="plan-more">
-          <summary>What's included</summary>
+          <summary data-pm-copy="memberships.summary3">What's included</summary>
           <ul>
-            <li>Extra classes $25 each</li>
-            <li>Tea ceremony 50% off, as available</li>
-            <li>Concert series 50% off + members' lounge seating</li>
-            <li>1 guest a month at 50% off</li>
-            <li>Unused classes don't roll over</li>
+            <li data-pm-copy="memberships.li34">Extra classes $25 each</li>
+            <li data-pm-copy="memberships.li35">Tea ceremony 50% off, as available</li>
+            <li data-pm-copy="memberships.li36">Concert series 50% off + members' lounge seating</li>
+            <li data-pm-copy="memberships.li37">1 guest a month at 50% off</li>
+            <li data-pm-copy="memberships.li38">Unused classes don't roll over</li>
           </ul>
         </details>
         <div class="fine">For people who come for the movement and nothing else.</div>
@@ -205,18 +218,18 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
         <div class="amt">$315<small>/mo</small></div>
         <div class="plan-line">Unlimited. Everything.</div>
         <ul>
-          <li>Unlimited classes, sauna, plunge and gym</li>
-          <li>Morning tea ceremony included</li>
-          <li>3-month minimum</li>
+          <li data-pm-copy="memberships.li39">Unlimited classes, sauna, plunge and gym</li>
+          <li data-pm-copy="memberships.li40">Morning tea ceremony included</li>
+          <li data-pm-copy="memberships.li41">3-month minimum</li>
         </ul>
         <details class="plan-more">
-          <summary>What's included</summary>
+          <summary data-pm-copy="memberships.summary4">What's included</summary>
           <ul>
-            <li>10% off spa &amp; wellness services</li>
-            <li>1 guest a month at 50% off</li>
-            <li>Concert series 50% off + members' lounge seating</li>
-            <li>Primal events: 3 guest tickets at 50% off</li>
-            <li>Complimentary wellness consult each term</li>
+            <li data-pm-copy="memberships.li42">10% off spa &amp; wellness services</li>
+            <li data-pm-copy="memberships.li43">1 guest a month at 50% off</li>
+            <li data-pm-copy="memberships.li44">Concert series 50% off + members' lounge seating</li>
+            <li data-pm-copy="memberships.li45">Primal events: 3 guest tickets at 50% off</li>
+            <li data-pm-copy="memberships.li46">Complimentary wellness consult each term</li>
           </ul>
         </details>
         <div class="fine">This is the work. Cheaper than The Explorer from nine classes a month.</div>
@@ -227,15 +240,15 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
         <div class="amt">$125<small>/mo</small></div>
         <div class="plan-line">Kids classes, one child.</div>
         <ul>
-          <li>For households where the parent isn't a member</li>
-          <li>3-month minimum</li>
+          <li data-pm-copy="memberships.li47">For households where the parent isn't a member</li>
+          <li data-pm-copy="memberships.li48">3-month minimum</li>
         </ul>
         <details class="plan-more">
-          <summary>What's included</summary>
+          <summary data-pm-copy="memberships.summary5">What's included</summary>
           <ul>
-            <li>Kids classes as scheduled, for one named child</li>
-            <li>Coordination, strength and confidence — without pressure</li>
-            <li>Adult sauna, plunge and gym access not included</li>
+            <li data-pm-copy="memberships.li49">Kids classes as scheduled, for one named child</li>
+            <li data-pm-copy="memberships.li50">Coordination, strength and confidence — without pressure</li>
+            <li data-pm-copy="memberships.li51">Adult sauna, plunge and gym access not included</li>
           </ul>
         </details>
         <a class="btn secondary" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a>
@@ -247,9 +260,9 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
 
 <section class="alt" id="partners">
   <div class="wrap-wide">
-    <div data-pm-copy="memberships.kicker3" class="kicker">Community partners</div>
+    <div data-pm-copy="memberships.kicker4" class="kicker">Community partners</div>
     <h2 data-pm-copy="memberships.h22" class="display-sm" style="max-width:20ch;margin-bottom:14px">your membership<br>works <span class="ed-it">elsewhere</span></h2>
-    <p data-pm-copy="memberships.p6" class="lede" style="margin-bottom:34px;max-width:38em">We keep a small roster of studios and practitioners we actually send people to. Primal members get a standing discount at each.</p>
+    <p data-pm-copy="memberships.p7" class="lede" style="margin-bottom:34px;max-width:38em">We keep a small roster of studios and practitioners we actually send people to. Primal members get a standing discount at each.</p>
     <div class="info-list">
       <div class="info-row">
         <div class="i-label">Moss</div>
@@ -274,7 +287,7 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
 <section>
   <div class="wrap-wide">
     <div class="section-head">
-      <div><div data-pm-copy="memberships.kicker4" class="kicker">Why people join</div><h2 data-pm-copy="memberships.h23">Belonging, mostly.</h2></div>
+      <div><div data-pm-copy="memberships.kicker5" class="kicker">Why people join</div><h2 data-pm-copy="memberships.h23">Belonging, mostly.</h2></div>
     </div>
     <div class="voices">
       <div class="voice placeholder"><div class="theme">Theme — Consistency</div><div class="q ed">“Membership made me actually show up.”</div><div class="who">Add a real quote</div></div>
@@ -286,37 +299,37 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
 
 <section>
   <div class="wrap">
-    <div data-pm-copy="memberships.kicker5" class="kicker">Questions</div>
+    <div data-pm-copy="memberships.kicker6" class="kicker">Questions</div>
     <h2 data-pm-copy="memberships.h24" style="margin-bottom:30px">Before you commit.</h2>
     <div class="faq">
-      <details open><summary>Can I try before joining?</summary><div class="a">Yes — that's what the two-week trial is for. Unlimited classes, sauna and cold plunge included. Most people join after it, but you're under no obligation.</div></details>
-      <details><summary>Do I need experience?</summary><div class="a">No. Classes marked “Start here” assume none at all, and every class has a scaled version of whatever's being taught.</div></details>
-      <details><summary>Can I freeze or cancel?</summary><div class="a">Memberships can be paused once, for up to 30 days, on a three-month contract. Ask at the front desk.</div></details>
-      <details><summary>Is the sauna and cold plunge included?</summary><div class="a">Yes — with membership and with the two-week trial. Recovery is treated as part of the practice, not an upsell.</div></details>
-      <details><summary>What if I travel a lot?</summary><div class="a">The Digital Studio covers you when you're away — live classes and the recorded library, from anywhere.</div></details>
+      <details open><summary data-pm-copy="memberships.summary6">Can I try before joining?</summary><div class="a">Yes — that's what the two-week trial is for. Unlimited classes, sauna and cold plunge included. Most people join after it, but you're under no obligation.</div></details>
+      <details><summary data-pm-copy="memberships.summary7">Do I need experience?</summary><div class="a">No. Classes marked “Start here” assume none at all, and every class has a scaled version of whatever's being taught.</div></details>
+      <details><summary data-pm-copy="memberships.summary8">Can I freeze or cancel?</summary><div class="a">Memberships can be paused once, for up to 30 days, on a three-month contract. Ask at the front desk.</div></details>
+      <details><summary data-pm-copy="memberships.summary9">Is the sauna and cold plunge included?</summary><div class="a">Yes — with membership and with the two-week trial. Recovery is treated as part of the practice, not an upsell.</div></details>
+      <details><summary data-pm-copy="memberships.summary10">What if I travel a lot?</summary><div class="a">The Digital Studio covers you when you're away — live classes and the recorded library, from anywhere.</div></details>
     </div>
   </div>
 </section>
 
 <section class="flush">
   <div class="wrap-wide" style="padding-top:clamp(50px,8vh,90px)">
-    <div data-pm-copy="memberships.kicker6" class="kicker">two ways to start</div>
-    <p data-pm-copy="memberships.p7" class="lede" style="margin-bottom:36px;max-width:34em">One hour a day, five days a week. That is genuinely all it takes to find out what your body is capable of. Or come for a single $40 day first &mdash; nobody minds which.</p>
+    <div data-pm-copy="memberships.kicker7" class="kicker">two ways to start</div>
+    <p data-pm-copy="memberships.p8" class="lede" style="margin-bottom:36px;max-width:34em">One hour a day, five days a week. That is genuinely all it takes to find out what your body is capable of. Or come for a single $40 day first &mdash; nobody minds which.</p>
   </div>
     <div class="ways">
   <div class="way feature">
-    <div data-pm-copy="memberships.kicker7" class="kicker">give us two weeks</div>
+    <div data-pm-copy="memberships.kicker8" class="kicker">give us two weeks</div>
     <h3 data-pm-copy="memberships.h33">two weeks unlimited</h3>
     <div class="price">$69</div>
-    <p data-pm-copy="memberships.p8">Every class, the sauna, the cold plunge, for fourteen days. Long enough to stop thinking of it as a trial and start thinking of it as your week.</p>
-    <p data-pm-copy="memberships.p9" class="aside" style="font-size:15.5px">Not a single drop-in. A proper run at it.</p>
+    <p data-pm-copy="memberships.p9">Every class, the sauna, the cold plunge, for fourteen days. Long enough to stop thinking of it as a trial and start thinking of it as your week.</p>
+    <p data-pm-copy="memberships.p10" class="aside" style="font-size:15.5px">Not a single drop-in. A proper run at it.</p>
     <a class="btn sage lg" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">start two weeks &rarr;</a>
   </div>
   <div class="way">
-    <div data-pm-copy="memberships.kicker8" class="kicker">not local, or not yet</div>
+    <div data-pm-copy="memberships.kicker9" class="kicker">not local, or not yet</div>
     <h3 data-pm-copy="memberships.h34">Primal Online</h3>
     <div class="price">free</div>
-    <p data-pm-copy="memberships.p10">Live-streamed classes and the full recorded library. Learn the practice from wherever you are, then come find us on the floor when you&rsquo;re in town.</p>
+    <p data-pm-copy="memberships.p11">Live-streamed classes and the full recorded library. Learn the practice from wherever you are, then come find us on the floor when you&rsquo;re in town.</p>
     <a class="btn lg" data-pm-link="onlineTrialUrl" target="_blank" rel="noopener">start free &rarr;</a>
   </div>
 </div>
@@ -333,13 +346,13 @@ if(l==="tight")document.documentElement.classList.add("tight-pending");}catch(e)
 
       <div class="foot-block">
         <h4 data-pm-copy="memberships.h41">Find us</h4>
-        <p data-pm-copy="memberships.p11">
+        <p data-pm-copy="memberships.p12">
           <a href="https://maps.google.com/?q=1038+Princeton+Dr+Ste+B,+Marina+del+Rey,+CA+90292" target="_blank" rel="noopener">
             <span data-pm-text="address1">1038 Princeton Dr, Ste B</span><br>
             <span data-pm-text="address2">Marina del Rey, CA 90292</span>
           </a>
         </p>
-        <p data-pm-copy="memberships.p12" style="margin-top:14px">
+        <p data-pm-copy="memberships.p13" style="margin-top:14px">
           <a data-pm-link="phoneHref"><span data-pm-text="phone">(310) 800-7061</span></a>
         </p>
       </div>

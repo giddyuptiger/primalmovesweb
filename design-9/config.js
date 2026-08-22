@@ -105,6 +105,18 @@ window.PM_CONFIG = {
               See tools/presets-worker.js for the Worker and how to deploy it. */
   presetsApi: "",
 
+  /* --- THE LIVE PHOTO STORE ----------------------------------------------
+     Blank  = photographs come from this file and assets/photos/ only. A swap
+              in the EDIT panel is a preview in that one browser.
+     A URL  = the Worker in tools/pm-worker.js. Now a photo swap is REAL:
+              upload or pick a shot in the panel and every visitor sees it
+              within seconds, with no push and no deploy.
+
+     Photographs are the only thing that publishes this way. Colour and
+     wording stay as saved configs — changing those for everyone is still a
+     commit, on purpose. Setup: strategy/live-editing.md              */
+  liveApi: "",
+
   // Focal point per slot — where the crop should hold as the frame changes
   // shape. "50% 50%" is the centre; "50% 30%" pulls the crop upward, which is
   // usually what a photo of a face wants. Set these in the /admin studio.
@@ -187,11 +199,26 @@ window.PM_CONFIG = {
 (function () {
   var C = window.PM_CONFIG;
 
+  /* ---- published photographs -------------------------------------------
+     The live set is cached in this browser, so a returning visitor gets the
+     current photographs on the first paint rather than a flash of the old
+     ones. The network copy refreshes it a moment later.                  */
+  var LIVE_CACHE = "pm_live_photos";
+  function mergeLive(d) {
+    if (!d || typeof d !== "object") return;
+    C.photos = Object.assign({}, C.photos || {}, d.photos || {});
+    C.photoFocus = Object.assign({}, C.photoFocus || {}, d.photoFocus || {});
+  }
+  try { mergeLive(JSON.parse(localStorage.getItem(LIVE_CACHE) || "null")); } catch (e) {}
+
   C.mindbodyScheduleUrl =
     "https://clients.mindbodyonline.com/classic/ws?studioid=" + C.mindbodySiteId +
     "&stype=-7&sView=week&sLoc=0&sTG=0";
   C.mindbodyPricingUrl =
     "https://clients.mindbodyonline.com/classic/ws?studioid=" + C.mindbodySiteId + "&stype=-98";
+  // one Worker serves both; presetsApi only needs setting if it lives elsewhere
+  if (!C.presetsApi && C.liveApi) C.presetsApi = C.liveApi.replace(/\/+$/, "") + "/presets";
+
   if (!C.veniceTrialUrl) C.veniceTrialUrl = C.mindbodyPricingUrl;
   if (!C.dayPassUrl) C.dayPassUrl = C.mindbodyPricingUrl;
 
@@ -444,21 +471,26 @@ window.PM_CONFIG = {
     // A blank or missing entry leaves the markup's own src alone; a named
     // file that doesn't exist falls back to it too, so a typo can't leave
     // a broken image on the page.
-    document.querySelectorAll("[data-pm-photo]").forEach(function (img) {
-      var slot = img.getAttribute("data-pm-photo");
-      var file = (C.photos || {})[slot];
-      if (!file) return;
-      var base = (img.getAttribute("src") || "").replace(/[^/]+$/, "");
-      var next = base + file;
-      if (next === img.getAttribute("src")) return;
-      var probe = new Image();
-      probe.onload = function () { img.src = next; };
-      probe.onerror = function () {
-        if (window.console) console.warn("[PM_CONFIG] photos['" + slot + "'] → " + file +
-          " not found in assets/photos/. Keeping the existing image.");
-      };
-      probe.src = next;
-    });
+    function applyPhotoSlots() {
+      document.querySelectorAll("[data-pm-photo]").forEach(function (img) {
+        var slot = img.getAttribute("data-pm-photo");
+        var file = (C.photos || {})[slot];
+        if (!file) return;
+        // a published photograph arrives as a full URL; a repo one as a filename
+        var abs = /^(https?:)?\/\//.test(file) || file.charAt(0) === "/" || file.indexOf("data:") === 0;
+        var base = (img.getAttribute("src") || "").replace(/[^/]+$/, "");
+        var next = abs ? file : base + file;
+        if (next === img.getAttribute("src")) return;
+        var probe = new Image();
+        probe.onload = function () { img.src = next; };
+        probe.onerror = function () {
+          if (window.console) console.warn("[PM_CONFIG] photos['" + slot + "'] → " + file +
+            " could not be loaded. Keeping the existing image.");
+        };
+        probe.src = next;
+      });
+    }
+    applyPhotoSlots();
 
     // layout: apply the chosen one before anything paints
     if (C.layout === "tight") document.documentElement.classList.add("pm-pre-tight");
@@ -480,10 +512,32 @@ window.PM_CONFIG = {
     }
 
     // data-pm-photo-focus / config.photoFocus → object-position per slot
-    document.querySelectorAll("[data-pm-photo]").forEach(function (el) {
-      var f = (C.photoFocus || {})[el.getAttribute("data-pm-photo")];
-      if (f) el.style.objectPosition = f;
-    });
+    function applyFocusSlots() {
+      document.querySelectorAll("[data-pm-photo]").forEach(function (el) {
+        var f = (C.photoFocus || {})[el.getAttribute("data-pm-photo")];
+        if (f) el.style.objectPosition = f;
+      });
+    }
+    applyFocusSlots();
+
+    /* The live set, fetched fresh. Anything published since this browser
+       last looked lands here — no deploy, no cache to bust. */
+    if (C.liveApi) {
+      fetch(C.liveApi.replace(/\/+$/, "") + "/live", { cache: "no-cache" })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) {
+          if (!d || d.error) return;
+          try {
+            localStorage.setItem(LIVE_CACHE, JSON.stringify({
+              photos: d.photos || {}, photoFocus: d.photoFocus || {}
+            }));
+          } catch (e) { /* private browsing — the fetch still works, just no cache */ }
+          mergeLive(d);
+          applyPhotoSlots(); applyFocusSlots();
+          document.dispatchEvent(new CustomEvent("pm:live", { detail: d }));
+        })
+        .catch(function () { /* Worker unreachable — the repo photographs stand */ });
+    }
 
     // data-pm-calendar → our own month grid, built from events.json.
     // The data comes from Luma's public ICS feed via tools/fetch_events.py,

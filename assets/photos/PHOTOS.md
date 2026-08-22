@@ -93,3 +93,15 @@ deliberately empty** — the photo that was there was of someone else.
 - Faces and hands near the centre — heroes crop hard on phones.
 - Candid and flash-lit beats posed. Bodies mid-movement, not holding still
   for the camera.
+
+
+## The wall texture
+
+`assets/images/limewash.webp` is Miki's own plaster swatch, photographed and
+then reduced to structure alone — high-passed to drop the photo's lighting,
+centred on mid grey so it neither darkens nor lightens, and offset-blended so
+it tiles without a seam. 129KB, greyscale; the colour comes from the palette.
+
+To use a different wall: photograph it flat and evenly lit, then run the same
+treatment (the recipe is in the commit that added it). Structure is what
+matters — its own colour is thrown away.

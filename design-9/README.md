@@ -21,10 +21,17 @@ ground it sits on.
 
 ## Design studio — `/admin/`
 
-A panel for trying colours and photographs on the live pages without touching
-code. Passphrase `primal` (it's in the page — a courtesy gate, not a lock).
-The **EDIT** tab on the right edge opens and closes it; the page and the nav
-both narrow so nothing sits underneath it.
+A panel for trying colours, photographs and copy on the live pages without
+touching code. The **EDIT** tab on the right edge opens and closes it; the page
+and the nav both narrow so nothing sits underneath.
+
+**While we're designing it's open to everyone** — no passphrase, the tab shows
+on every page, and the panel starts closed so a visitor sees an untouched page.
+
+> **Before launch, set `studioOpenToAll: false` in `config.js`.** Nothing the
+> studio does can change what other people see, but a public EDIT tab on a real
+> business site looks unfinished. With it off, the studio is reachable only via
+> `/admin/`.
 
 **Colour** assigns any brand colour to any role and warns when a choice drops
 below 4.5:1.

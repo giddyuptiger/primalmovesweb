@@ -30,9 +30,17 @@
   }
   function lsDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
 
+  var CFG = window.PM_CONFIG || {};
   if (q("admin") === "1") ls(KEY_ON, "1");
   if (q("admin") === "0") { lsDel(KEY_ON); }
-  if (ls(KEY_ON) !== "1") return;
+
+  // Open to everyone while we're in design mode (config.studioOpenToAll).
+  // In that case the panel starts CLOSED — a visitor sees a small EDIT tab
+  // and an untouched page until they choose to open it.
+  var invited = ls(KEY_ON) === "1";
+  var openToAll = CFG.studioOpenToAll === true;
+  if (!invited && !openToAll) return;
+  var startClosed = openToAll && !invited;
 
   /* ---------------------------------------------------------------- data -- */
 
@@ -150,7 +158,7 @@
     "#pm-studio .role-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:3px}",
     "#pm-studio .role-h code{flex:none}",
     "#pm-studio .role-h b{font-weight:500;font-size:13px;color:#E8E6E0}",
-    "#pm-studio .role-h code{font:400 10.5px ui-monospace,Menlo,monospace !important;color:#6E737A !important;letter-spacing:0 !important}",
+    "#pm-studio .role-h code{font:400 10.5px ui-monospace,Menlo,monospace !important;color:#9AA0A7 !important;letter-spacing:0 !important}",
     "#pm-studio .role-hint{font-size:11.5px;color:#7E838A;margin-bottom:11px}",
     "#pm-studio .sw-row{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}",
     "#pm-studio .sw{aspect-ratio:1;border-radius:3px;border:1px solid rgba(255,255,255,.14);",
@@ -260,8 +268,8 @@
     "#pm-studio .preset .p-del{margin-top:11px;background:none;border:0;color:#6E737A;cursor:pointer;",
     "  font:inherit;font-size:11px;padding:0}",
     "#pm-studio .preset .p-del:hover{color:#D08A72}",
-    "#pm-studio code{font:400 11px ui-monospace,Menlo,monospace !important;color:#B9C79E !important;",
-    "  background:#23262A;padding:1px 5px;border-radius:3px}",
+    "#pm-studio code{font:400 11px ui-monospace,Menlo,monospace !important;color:#CBDCA8 !important;",
+    "  background:#2A2E33;padding:1px 5px;border-radius:3px}",
     "@media (max-width:900px){#pm-studio{width:100%}#pm-studio.closed{transform:translateX(100%)}",
     "  body.pm-studio-open{padding-right:0}#pm-handle{right:0}}"
   ].join("\n");
@@ -288,7 +296,8 @@
   handle.id = "pm-handle";
   handle.textContent = "EDIT";
   document.body.appendChild(handle);
-  document.body.classList.add("pm-studio-open");
+  if (startClosed) panel.classList.add("closed");
+  if (!startClosed) document.body.classList.add("pm-studio-open");
   // set the offsets from JS too, so this can never depend on a cached stylesheet
   var siteHdr = document.querySelector("header.site");
   function setInset(w) {
@@ -306,7 +315,7 @@
       ["right", "width", "max-width"].forEach(function (k) { siteHdr.style.removeProperty(k); });
     }
   }
-  var W = window.matchMedia("(max-width:900px)").matches ? 0 : 344;
+  var W = startClosed ? 0 : (window.matchMedia("(max-width:900px)").matches ? 0 : 344);
   setInset(W);
   window.addEventListener("resize", function () {
     if (!panel.classList.contains("closed")) {
@@ -316,6 +325,7 @@
 
   handle.addEventListener("click", function () {
     var closed = panel.classList.toggle("closed");
+    if (!closed) ls(KEY_ON, "1");
     document.body.classList.toggle("pm-studio-open", !closed);
     setInset(closed ? 0 : (window.matchMedia("(max-width:900px)").matches ? 0 : 344));
     if (closed) { hideBadges(); closeFocus(); if (copyOn) stopCopy(); }
@@ -876,6 +886,8 @@
   else setTimeout(applyAll, 60);
   renderColor();
   loadPresets();
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", showBadges);
-  else setTimeout(showBadges, 120);
+  if (!startClosed) {
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", showBadges);
+    else setTimeout(showBadges, 120);
+  }
 })();

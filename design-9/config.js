@@ -70,6 +70,18 @@ window.PM_CONFIG = {
      Slot names follow Miki's `page - section - slot` convention. The full
      list, with what each shot is doing, is in assets/photos/PHOTOS.md.
      Anything not listed here keeps whatever the page already has.        */
+  /* --- DESIGN STUDIO ------------------------------------------------------
+     true  = the EDIT tab shows for ANYONE who loads the site. Right for
+             design mode: no passphrase, everyone can look and try things.
+             The panel starts CLOSED, so a visitor sees a small tab and
+             nothing else until they open it.
+     false = hidden unless someone goes to /admin/ and enters the passphrase.
+
+     >>> FLIP THIS TO false BEFORE THE SITE GOES LIVE. <<<
+     Nothing the studio does can change what other people see — it's all
+     preview — but a public EDIT tab on a real business site looks unfinished. */
+  studioOpenToAll: true,
+
   /* --- COPY OVERRIDES -----------------------------------------------------
      Text edited in the /admin studio lands in design-9/copy.json. Anything
      not listed there uses whatever the page already says, so the file stays

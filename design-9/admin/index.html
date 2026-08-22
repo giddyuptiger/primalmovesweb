@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+code{font:400 13px ui-monospace,Menlo,monospace;background:#E4DCCD;padding:2px 6px;border-radius:3px}
 :root{--ink:#132238;--paper:#EDE8D2;--mid:#57534A;--soft:#6B685A;--forest:#303F16;--line:#CFC5AE}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);
@@ -41,34 +42,31 @@ a{color:var(--ink)}
   <p>Try colours and photographs on the live site, see them in place immediately, then copy the result out for whoever pushes the code.</p>
 
   <ol>
-    <li>Enter the passphrase and the studio panel opens.</li>
+    <li>We&rsquo;re in design mode, so there&rsquo;s no passphrase &mdash; the <b>EDIT</b> tab
+        shows on every page for everyone. Click it to open the panel.</li>
     <li>Browse the site normally — the panel follows you from page to page.</li>
     <li><b>Colour</b> assigns any brand colour to any role, and warns you when a choice becomes hard to read.</li>
-    <li><b>Photos</b> puts a <b>Swap</b> button on every image. Pick from the library or upload one to preview.</li>
+    <li><b>Photos</b> puts <b>Swap</b> and <b>Focus</b> on every image. Swap picks a new one; Focus sets which part of a picture stays in frame when it&rsquo;s cropped.</li>
+    <li><b>Copy</b> lets you edit any heading or paragraph straight on the page.</li>
+    <li><b>Presets</b> saves a whole look under a name, so we can compare directions.</li>
     <li>Hit <b>Copy config</b> and paste it to Jeremy, or into the repo yourself.</li>
   </ol>
 
   <div class="gate">
-    <input type="password" id="pw" placeholder="Passphrase" autocomplete="off">
-    <button id="go">Open studio</button>
+    <button id="go">Open the studio</button>
   </div>
   <p class="err" id="err"></p>
 
-  <p class="note"><b>Nothing here saves to the website.</b> Everything you change lives in your own browser until the copied config is pasted into the repo and pushed — so you can experiment as freely as you like without anyone else seeing it. This passphrase keeps the panel out of a visitor's way; it isn't a security measure, and it doesn't need to be, because the studio cannot change what anybody else sees.</p>
+  <p class="note"><b>Nothing here saves to the website.</b> Everything you change lives in your own browser until the copied config is pasted into the repo and pushed — so experiment as freely as you like. Nobody can break the live site from in here.<br><br>The <b>EDIT</b> tab is visible to everyone while we're designing. It gets switched off before launch — one line in <code>config.js</code>.</p>
 </div>
 
 <script>
-/* The passphrase is a courtesy gate, not a lock — it lives in the page, as it
-   must on a static site. That's fine: the studio can't write anything. */
-var PASS = "primal";
-function open_() { try { localStorage.setItem("pm_studio_on", "1"); } catch (e) {} location.href = "../"; }
+/* Design mode: no gate. The studio can't write to the site, so there is
+   nothing here worth locking. If studioOpenToAll is switched off in
+   config.js, this button is how you get in. */
 document.getElementById("go").addEventListener("click", function () {
-  var v = document.getElementById("pw").value.trim().toLowerCase();
-  if (v === PASS) open_();
-  else document.getElementById("err").textContent = "Not quite — ask Jeremy for the passphrase.";
-});
-document.getElementById("pw").addEventListener("keydown", function (e) {
-  if (e.key === "Enter") document.getElementById("go").click();
+  try { localStorage.setItem("pm_studio_on", "1"); } catch (e) {}
+  location.href = "../";
 });
 </script>
 </body>

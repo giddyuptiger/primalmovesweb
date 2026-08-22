@@ -321,12 +321,13 @@ window.PM_CONFIG = {
             timeZone: TZ, weekday: "short", month: "short", day: "numeric",
             hour: "numeric", minute: "2-digit", hour12: true
           }).formatToParts(dt).reduce(function (a2, p2) { a2[p2.type] = p2.value; return a2; }, {});
+          o.wd = f.weekday; o.dd = f.day; o.mon = f.month;
           o.day = f.weekday + " " + f.day + " " + f.month;
           o.key = f.month + f.day;
           o.time = (f.hour + (f.minute === "00" ? "" : ":" + f.minute) +
                     (f.dayPeriod || "").toLowerCase()).replace(/\s+/g, "");
         } catch (e) {
-          o.day = dt.toDateString(); o.key = o.day;
+          o.day = dt.toDateString(); o.key = o.day; o.wd = ""; o.dd = ""; o.mon = "";
           o.time = dt.getHours() + ":" + ("0" + dt.getMinutes()).slice(-2);
         }
         return o;
@@ -335,14 +336,33 @@ window.PM_CONFIG = {
       var groups = [], index = {};
       d.classes.forEach(function (c) {
         var L = la(c.start);
-        if (!index[L.key]) { index[L.key] = { day: L.day, items: [] }; groups.push(index[L.key]); }
+        if (!index[L.key]) {
+          index[L.key] = { key: L.key, day: L.day, wd: L.wd, dd: L.dd, mon: L.mon, items: [] };
+          groups.push(index[L.key]);
+        }
         index[L.key].items.push({ t: L.time, c: c });
       });
 
+      var todayKey = la(new Date().toISOString()).key;
       var book = d.bookUrl || C.mindbodyScheduleUrl;
-      var html = '<div class="sched">';
-      groups.forEach(function (g) {
-        html += '<div class="sched-day"><div class="sched-date">' + g.day + "</div><ul>";
+
+      /* A day at a time, chosen from a rail you can scroll — the whole week
+         stacked was eight screens of timetable nobody reads to the end. */
+      var html = '<div class="daybar"><button class="dnav prev" type="button" aria-label="Earlier days">&#8249;</button>' +
+        '<div class="days" role="tablist">' +
+        groups.map(function (g, i) {
+          var isToday = g.key === todayKey;
+          return '<button class="dchip' + (i === 0 ? " on" : "") + '" role="tab" data-key="' + g.key +
+            '" aria-selected="' + (i === 0) + '">' +
+            '<span class="dw">' + (isToday ? "Today" : g.wd) + "</span>" +
+            '<span class="dd">' + g.dd + "</span></button>";
+        }).join("") +
+        '</div><button class="dnav next" type="button" aria-label="Later days">&#8250;</button></div>';
+
+      html += '<div class="sched">';
+      groups.forEach(function (g, i) {
+        html += '<div class="sched-day' + (i === 0 ? " on" : "") + '" data-key="' + g.key + '">' +
+          '<div class="sched-date">' + g.day + "</div><ul>";
         g.items.forEach(function (x) {
           html += '<li><a href="' + book + '" target="_blank" rel="noopener">' +
             '<span class="s-time">' + x.t + "</span>" +
@@ -354,11 +374,37 @@ window.PM_CONFIG = {
         html += "</ul></div>";
       });
       html += "</div>";
-      html += '<p class="embed-note" style="margin-top:22px">Straight from Mindbody, refreshed daily. ' +
+      html += '<p class="embed-note" style="margin-top:22px">' +
         '<a href="' + book + '" target="_blank" rel="noopener" style="text-decoration:underline">' +
         "Book a class &#8599;</a></p>";
       el.classList.add("sched-wrap");
       el.innerHTML = html;
+
+      var chips = [].slice.call(el.querySelectorAll(".dchip"));
+      var panes = [].slice.call(el.querySelectorAll(".sched-day"));
+      var rail = el.querySelector(".days");
+
+      function show(key) {
+        chips.forEach(function (b) {
+          var on = b.getAttribute("data-key") === key;
+          b.classList.toggle("on", on);
+          b.setAttribute("aria-selected", on ? "true" : "false");
+          if (on) b.scrollIntoView({ block: "nearest", inline: "nearest" });
+        });
+        panes.forEach(function (p2) { p2.classList.toggle("on", p2.getAttribute("data-key") === key); });
+      }
+      chips.forEach(function (b) {
+        b.addEventListener("click", function () { show(b.getAttribute("data-key")); });
+      });
+      // open on today when today has classes, otherwise on the first day listed
+      if (chips.length) {
+        var t = chips.filter(function (b) { return b.getAttribute("data-key") === todayKey; })[0];
+        show((t || chips[0]).getAttribute("data-key"));
+      }
+      function nudge(dir) { if (rail) rail.scrollBy({ left: dir * 220, behavior: "smooth" }); }
+      var prev = el.querySelector(".dnav.prev"), next = el.querySelector(".dnav.next");
+      if (prev) prev.addEventListener("click", function () { nudge(-1); });
+      if (next) next.addEventListener("click", function () { nudge(1); });
     }
 
     function healcodeOrLink(el) {

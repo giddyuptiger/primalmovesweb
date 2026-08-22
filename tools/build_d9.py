@@ -731,13 +731,18 @@ def classes(up, asset):
         ("09","Primal Kids","Youth movement classes. Crawling, climbing, falling over, getting up.","Kids",False,"45 min"),
         ("10","Team Practice","Open-floor group skill-building. Bring what you're working on.","Members",False,"90 min"),
     ]
+    # Ten classes as ten full-width rows ran to nearly three screens. As cards
+    # the same ten fit in one: title, level, duration always visible, and the
+    # description arriving on hover (or on tap, where there is no hover).
     body = "".join(f'''
-      <div class="cls">
+      <button class="cls" type="button" aria-expanded="false">
         <div class="n">{n}</div>
-        <div><h3>{name}</h3><div class="desc">{desc}</div></div>
-        <div><span class="lvl{' beginner' if beg else ''}">{lvl}</span></div>
-        <div class="lvl">{dur}</div>
-      </div>''' for n, name, desc, lvl, beg, dur in rows)
+        <div class="cls-head">
+          <h3>{name}</h3>
+          <div class="cls-meta"><span class="lvl{' beginner' if beg else ''}">{lvl}</span><span class="lvl dur">{dur}</span></div>
+        </div>
+        <div class="desc"><span>{desc}</span></div>
+      </button>''' for n, name, desc, lvl, beg, dur in rows)
 
     return f'''{phero(asset, "photos/collective-downdog.jpg", "Classes &amp; Schedule", "What's on, who it's for, and how to book it.", "Find your entry point", slot="classes.hero")}
 
@@ -839,7 +844,6 @@ def memberships(up, asset):
      and makes every row an apples-to-apples comparison of monthly plans.
      ========================================================================= -->
 <div class="mem-view" id="view-compare" hidden>
-  <p class="lede" style="margin-bottom:clamp(24px,3.5vw,38px)">Everything side by side. Scroll sideways on a phone &mdash; the feature names stay put.</p>
   <div class="cmp-scroll">
     <table class="cmp">
       <caption class="sr-only">Membership comparison</caption>
@@ -1101,7 +1105,7 @@ def events(up, asset):
 
         <div data-pm-calendar-list></div>
 
-        <p class="embed-note" style="margin-top:22px">Published through Luma and refreshed automatically. <a data-pm-link="lumaPageUrl" target="_blank" rel="noopener" style="text-decoration:underline">See them on Luma &#8599;</a> Classes are booked separately &mdash; <a href="{up}classes/#schedule" style="text-decoration:underline">see the schedule</a>.</p>
+        <p class="embed-note" style="margin-top:22px">Classes are booked separately &mdash; <a href="{up}classes/#schedule" style="text-decoration:underline">see the schedule</a>.</p>
 
         <div class="cta-row ev-cta">
           <a class="btn" data-pm-link="lumaPageUrl" target="_blank" rel="noopener">Follow us on Luma &#8599;</a>

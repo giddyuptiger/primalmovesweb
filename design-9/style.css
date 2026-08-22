@@ -305,16 +305,37 @@ section.ink .day-row .desc{color:var(--on-dark)}
 }
 
 /* ---------------------------------------------------------- CLASSES ------ */
-.cls-list{margin-top:8px}
-.cls{display:grid;grid-template-columns:1fr 180px 130px;gap:26px;align-items:baseline;
-  padding:26px 0;border-bottom:1px solid var(--line)}
-section.ink .cls{border-bottom-color:rgba(255,255,255,.14)}
+/* Ten classes, one screen. Title, level and duration are always readable;
+   the description unfolds on hover — and on tap, for anything without one. */
+.cls-list{margin-top:8px;display:grid;gap:14px;align-items:start;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.cls{display:block;width:100%;text-align:left;font:inherit;cursor:pointer;
+  background:var(--paper);border:1px solid var(--line);border-radius:8px;
+  padding:20px 22px;transition:border-color .16s ease,transform .16s ease}
+.cls:hover,.cls:focus-visible{border-color:var(--sage);transform:translateY(-2px)}
+.cls:focus-visible{outline:2px solid var(--sage);outline-offset:2px}
+section.ink .cls{background:transparent;border-color:rgba(255,255,255,.18)}
 .cls .n{display:none}
-.cls h3{font-size:clamp(20px,2.1vw,26px)}
-.cls .desc{font-size:15.5px;color:var(--mid);margin-top:8px;line-height:1.7;max-width:42em}
-.cls .lvl{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--soft)}
-.cls .lvl.beginner{color:var(--sage);background:transparent;padding:0}
-@media (max-width:820px){ .cls{grid-template-columns:1fr;gap:6px} }
+.cls h3{font-size:20px;margin:0}
+.cls-head{display:flex;flex-direction:column;gap:9px}
+.cls-meta{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.cls .lvl{font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--soft)}
+.cls .lvl.beginner{color:var(--sage-txt);background:transparent;padding:0}
+.cls .lvl.dur{color:var(--mid);font-weight:500}
+/* the description is the thing that was eating the page */
+.cls .desc{font-size:15px;color:var(--mid);line-height:1.6;max-width:40em;
+  display:grid;grid-template-rows:0fr;opacity:0;margin-top:0;
+  transition:grid-template-rows .22s ease,opacity .18s ease,margin-top .22s ease;
+  overflow:hidden}
+.cls .desc > span{min-height:0;display:block}
+.cls:hover .desc,.cls:focus-visible .desc,.cls[aria-expanded="true"] .desc{
+  grid-template-rows:1fr;opacity:1;margin-top:12px}
+/* no hover on a phone — the cards open on tap instead, so never hide it there */
+@media (hover:none){
+  .cls .desc{grid-template-rows:1fr;opacity:1;margin-top:12px}
+  .cls{cursor:default}
+}
 
 /* ------------------------------------------------------------ EVENTS ----- */
 .ev-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:38px}
@@ -1429,3 +1450,37 @@ body.house .statement .big{font-size:clamp(28px,4vw,52px);text-align:center;
 @media (max-width:820px){
   body.house h2,body.house .display-sm{font-size:clamp(26px,6vw,34px)}
 }
+
+
+/* ==========================================================================
+   THE DAY RAIL
+   A week of classes stacked was eight screens nobody reaches the end of.
+   One day at a time, picked from a rail that scrolls sideways — the pattern
+   Mindbody's own embed uses, in our type.
+   ========================================================================== */
+.daybar{display:flex;align-items:center;gap:8px;margin:0 0 clamp(22px,3vw,34px)}
+.daybar .dnav{flex:none;width:34px;height:34px;border-radius:50%;cursor:pointer;
+  background:transparent;border:1px solid var(--line);color:var(--mid);
+  font:inherit;font-size:17px;line-height:1;display:grid;place-items:center}
+.daybar .dnav:hover{border-color:var(--ink);color:var(--ink)}
+.days{display:flex;gap:8px;overflow-x:auto;scroll-behavior:smooth;
+  scrollbar-width:none;padding:2px}
+.days::-webkit-scrollbar{display:none}
+.dchip{flex:none;min-width:66px;padding:10px 6px 12px;border-radius:10px;cursor:pointer;
+  background:transparent;border:1px solid var(--line);font:inherit;color:var(--mid);
+  display:grid;gap:3px;justify-items:center;transition:background .15s ease,color .15s ease}
+.dchip .dw{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
+.dchip .dd{font-size:19px;font-weight:500;color:var(--ink)}
+.dchip:hover{border-color:var(--ink)}
+.dchip.on{background:var(--sage-btn);border-color:var(--sage-btn);color:var(--cream)}
+.dchip.on .dd{color:var(--cream)}
+section.ink .dchip{border-color:rgba(255,255,255,.2);color:var(--on-dark-soft)}
+section.ink .dchip .dd{color:var(--on-dark)}
+section.ink .dchip.on{background:var(--cream);border-color:var(--cream);color:var(--deep)}
+section.ink .dchip.on .dd{color:var(--deep)}
+section.ink .daybar .dnav{border-color:rgba(255,255,255,.2);color:var(--on-dark-soft)}
+
+/* one day showing at a time */
+.sched-day{display:none}
+.sched-day.on{display:block}
+.sched-day .sched-date{margin-bottom:6px}

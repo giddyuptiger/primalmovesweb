@@ -48,13 +48,15 @@
   if (q("admin") === "1") ls(KEY_ON, "1");
   if (q("admin") === "0") { lsDel(KEY_ON); }
 
-  // Open to everyone while we're in design mode (config.studioOpenToAll).
-  // In that case the panel starts CLOSED — a visitor sees a small EDIT tab
-  // and an untouched page until they choose to open it.
+  // Who gets the panel at all: anyone, while studioOpenToAll is true; only
+  // someone who has been to /?admin=1 once, after that flips to false.
   var invited = ls(KEY_ON) === "1";
   var openToAll = CFG.studioOpenToAll === true;
   if (!invited && !openToAll) return;
-  var startClosed = openToAll && !invited;
+
+  // It always STARTS closed. Every load is the untouched page plus a small
+  // EDIT tab; the drawer is a deliberate click, never the thing you land on.
+  var startClosed = true;
 
   /* ---------------------------------------------------------------- live --
      Photographs are the one thing that publishes. Swap or upload one and it
@@ -556,7 +558,7 @@
 
   handle.addEventListener("click", function () {
     var closed = panel.classList.toggle("closed");
-    if (!closed) ls(KEY_ON, "1");
+    if (!closed) ls(KEY_ON, "1");   // remembers you may edit, not that it was open
     document.body.classList.toggle("pm-studio-open", !closed);
     setInset(closed ? 0 : (window.matchMedia("(max-width:900px)").matches ? 0 : 344));
     if (closed) { hideBadges(); closeFocus(); if (copyOn) stopCopy(); }

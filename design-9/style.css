@@ -308,17 +308,18 @@ section.ink .day-row .desc{color:var(--on-dark)}
 /* Ten classes, one screen. Title, level and duration are always readable;
    the description unfolds on hover — and on tap, for anything without one. */
 .cls-list{margin-top:8px;display:grid;gap:14px;align-items:start;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
-.cls{display:block;width:100%;text-align:left;font:inherit;cursor:pointer;
+  grid-template-columns:repeat(auto-fill,minmax(196px,1fr))}
+.cls{display:flex;flex-direction:column;width:100%;min-height:196px;
+  text-align:left;font:inherit;cursor:pointer;
   background:var(--paper);border:1px solid var(--line);border-radius:8px;
-  padding:20px 22px;transition:border-color .16s ease,transform .16s ease}
+  padding:20px;transition:border-color .16s ease,transform .16s ease}
 .cls:hover,.cls:focus-visible{border-color:var(--sage);transform:translateY(-2px)}
 .cls:focus-visible{outline:2px solid var(--sage);outline-offset:2px}
 section.ink .cls{background:transparent;border-color:rgba(255,255,255,.18)}
 .cls .n{display:none}
-.cls h3{font-size:20px;margin:0}
-.cls-head{display:flex;flex-direction:column;gap:9px}
-.cls-meta{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.cls h3{font-size:19px;margin:0;line-height:1.15}
+.cls-head{flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:14px}
+.cls-meta{display:flex;flex-direction:column;gap:5px}
 .cls .lvl{font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
   color:var(--soft)}
 .cls .lvl.beginner{color:var(--sage-txt);background:transparent;padding:0}
@@ -1458,13 +1459,17 @@ body.house .statement .big{font-size:clamp(28px,4vw,52px);text-align:center;
    One day at a time, picked from a rail that scrolls sideways — the pattern
    Mindbody's own embed uses, in our type.
    ========================================================================== */
-.daybar{display:flex;align-items:center;gap:8px;margin:0 0 clamp(22px,3vw,34px)}
+.daybar{display:flex;align-items:center;justify-content:center;gap:8px;
+  margin:0 0 clamp(22px,3vw,34px)}
 .daybar .dnav{flex:none;width:34px;height:34px;border-radius:50%;cursor:pointer;
   background:transparent;border:1px solid var(--line);color:var(--mid);
   font:inherit;font-size:17px;line-height:1;display:grid;place-items:center}
 .daybar .dnav:hover{border-color:var(--ink);color:var(--ink)}
 .days{display:flex;gap:8px;overflow-x:auto;scroll-behavior:smooth;
-  scrollbar-width:none;padding:2px}
+  scrollbar-width:none;padding:2px;
+  /* centred while the week fits; `safe` keeps the first day reachable
+     once it overflows, instead of clipping it off the left edge */
+  justify-content:safe center}
 .days::-webkit-scrollbar{display:none}
 .dchip{flex:none;min-width:66px;padding:10px 6px 12px;border-radius:10px;cursor:pointer;
   background:transparent;border:1px solid var(--line);font:inherit;color:var(--mid);

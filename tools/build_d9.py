@@ -727,9 +727,8 @@ def classes(up, asset):
         ("05","Handstand","Complex sequences and dynamic inversions. Requires a foundation in the earlier series.","Advanced",False,"60 min"),
         ("06","Restore","Mobility, breath and active recovery. The other half of getting strong.","Start here",True,"45–60 min"),
         ("07","Primal Vinyasa","Breath-led flow with primal patterning underneath. Familiar shape, different engine.","All levels",False,"60 min"),
-        ("08","Group Meditation","Nervous-system down-regulation, run as a four-week series.","All levels",False,"45 min"),
-        ("09","Primal Kids","Youth movement classes. Crawling, climbing, falling over, getting up.","Kids",False,"45 min"),
-        ("10","Team Practice","Open-floor group skill-building. Bring what you're working on.","Members",False,"90 min"),
+        ("08","Primal Kids","Youth movement classes. Crawling, climbing, falling over, getting up.","Kids",False,"45 min"),
+        ("09","Team Practice","Open-floor group skill-building. Bring what you're working on.","Members",False,"90 min"),
     ]
     # Ten classes as ten full-width rows ran to nearly three screens. As cards
     # the same ten fit in one: title, level, duration always visible, and the

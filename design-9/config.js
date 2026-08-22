@@ -81,7 +81,7 @@ window.PM_CONFIG = {
      true = the mineral-plaster wash goes over every flat surface, the way the
      studio walls are finished. Photographs are left alone. Try it live in the
      EDIT panel under Colour; set it here to make it the default.          */
-  texture: false,
+  texture: true,          // true = limewash · "faint" = a lighter coat · false = off
 
   layout: "a",
 
@@ -535,11 +535,12 @@ window.PM_CONFIG = {
 
     // layout: apply the chosen one before anything paints
     if (C.layout === "tight") document.documentElement.classList.add("pm-pre-tight");
+    if (C.layout === "house") document.body.classList.add("house");
 
-    // limewash: true, or "strong" for the heavier coat
+    // limewash — on by default now; the panel can still turn it off
     if (C.texture) {
       document.body.classList.add("texture");
-      if (C.texture === "strong") document.body.classList.add("lime-strong");
+      if (C.texture === "faint") document.body.classList.add("lime-faint");
     }
 
     // data-pm-copy → text overrides from copy.json

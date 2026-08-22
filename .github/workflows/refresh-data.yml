@@ -1,0 +1,39 @@
+# The timetable and the events calendar are snapshots. Without this they go
+# stale the moment the studio changes something — the schedule covers eight
+# days, so it would simply run out.
+#
+# Every four hours: re-pull Mindbody's public class list and Luma's ICS feed,
+# and commit them if anything moved. Nobody has to remember.
+name: Refresh schedule and events
+
+on:
+  schedule:
+    - cron: "17 */4 * * *"        # not on the hour; the hour is congested
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pull the timetable from Mindbody
+        run: python3 tools/fetch_schedule.py || echo "::warning::schedule fetch failed, keeping the last good copy"
+
+      - name: Pull events from Luma
+        run: python3 tools/fetch_events.py || echo "::warning::events fetch failed, keeping the last good copy"
+
+      - name: Commit whatever changed
+        run: |
+          if [ -n "$(git status --porcelain design-9/schedule.json design-9/events.json)" ]; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add design-9/schedule.json design-9/events.json
+            git commit -m "refresh: timetable and events"
+            git push
+          else
+            echo "nothing moved"
+          fi

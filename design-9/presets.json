@@ -2,7 +2,7 @@
   "_comment": "Shared design presets. Everyone who loads the site sees these. Save one in /admin (Presets tab), hit 'Copy presets.json', paste the result here, commit and push. If PM_CONFIG.presetsApi is set, the studio reads and writes live presets from that Worker instead and this file becomes the fallback.",
   "presets": [
     {
-      "name": "Locked — green accent",
+      "name": "Locked \u2014 green accent",
       "note": "The current build. Cream ground, navy copy, forest accent.",
       "colors": {
         "--paper": "#EDE8D2",
@@ -19,7 +19,7 @@
       "focus": {}
     },
     {
-      "name": "Warmer — clay accent",
+      "name": "Warmer \u2014 clay accent",
       "note": "Same grounds, burnt red carrying the accent instead of green.",
       "colors": {
         "--paper": "#EDE8D2",
@@ -34,6 +34,24 @@
       },
       "photos": {},
       "focus": {}
+    },
+    {
+      "name": "Flame \u2014 Miki's second palette",
+      "note": "Warm cream ground, near-black oxblood for type and dark bands, flame as the accent, mustard as the spark. Contrast checked: nothing that carries words is under 4.5.",
+      "colors": {
+        "--paper": "#F0E6D3",
+        "--paper-2": "#E3D6BE",
+        "--deep": "#370707",
+        "--ink": "#370707",
+        "--mid": "#5C4632",
+        "--sage": "#F1540A",
+        "--sage-btn": "#370707",
+        "--sage-txt": "#B33A05",
+        "--clay": "#6F5E03"
+      },
+      "copy": {},
+      "layout": "a",
+      "texture": 1
     }
   ]
 }

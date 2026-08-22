@@ -90,3 +90,20 @@ label text instead, or they stay decorative.
 One thing worth flagging: this cream is **darker** than the one design-9 uses
 (`#F5F1EA`), so every text colour on top of it loses a little contrast. That's
 already accounted for in the figures above.
+
+
+## Second set (Aug 22)
+
+Four more from Miki, and the two darkened versions the accessible roles need.
+
+| | Hex | Where it can go |
+|---|---|---|
+| Mustard | `#D4B906` | marks, dots, rules — **1.6 on cream, never words** |
+| Deep mustard | `#6F5E03` | the same hue when it has to carry words (5.2) |
+| Flame | `#F1540A` | the accent: rules, underlines, the odd mark (2.8 on cream) |
+| Deep flame | `#B33A05` | flame as text (4.8) |
+| Oxblood black | `#370707` | body copy, dark bands, button fill (14.2 on cream) |
+| Warm cream | `#F0E6D3` | page ground |
+
+Saved as the **Flame** configuration in the EDIT panel. Every role that carries
+words clears 4.5:1; flame on the dark bands clears 3:1 for large type.

@@ -38,7 +38,9 @@
   function applyLayout(v) {
     layout = v;
     document.body.classList.toggle("tight", v === "tight");
+    document.body.classList.toggle("house", v === "house");
     document.documentElement.classList.remove("tight-pending");
+    document.documentElement.classList.remove("house-pending");
     ls(KEY_LAYOUT, v);
   }
   if (document.body) applyLayout(layout);
@@ -150,7 +152,13 @@
     ["Olive",       "#888151"], ["Light sage", "#B9B784"], ["Mushroom",   "#A68460"],
     ["Blush",       "#CD826A"], ["Orange",     "#C16838"], ["Rust",       "#9F663A"],
     ["Brown",       "#945A38"], ["Gold",       "#CE9C3B"], ["Burnt red",  "#AE411C"],
-    ["Oxblood",     "#7A3A34"], ["Off-white",  "#F7F3E7"]
+    ["Oxblood",     "#7A3A34"], ["Off-white",  "#F7F3E7"],
+    /* Miki's second set. Flame and mustard are mark colours — at 2.8 and 1.6
+       against cream they cannot carry words, so the two darkened versions sit
+       beside them for when they have to. */
+    ["Mustard",     "#D4B906"], ["Deep mustard", "#6F5E03"],
+    ["Flame",       "#F1540A"], ["Deep flame",   "#B33A05"],
+    ["Oxblood black", "#370707"], ["Warm cream", "#F0E6D3"]
   ];
 
   var ROLES = [
@@ -205,13 +213,13 @@
   // 0 off · 1 limewash · 2 a heavier coat
   var texture = (function () {
     var v = ls(KEY_TEX);
-    if (v === null) return CFG.texture ? (CFG.texture === "strong" ? 2 : 1) : 0;
+    if (v === null) return CFG.texture ? (CFG.texture === "faint" ? 1 : 2) : 0;
     return parseInt(v, 10) || 0;
   })();
 
   function applyTexture() {
     document.body.classList.toggle("texture", texture > 0);
-    document.body.classList.toggle("lime-strong", texture === 2);
+    document.body.classList.toggle("lime-faint", texture === 1);
     document.documentElement.classList.remove("texture-pending");
   }
 
@@ -561,7 +569,7 @@
   /* ------------------------------------------------------------ colour ---- */
 
   function textureField() {
-    var opts = [[0, "Off"], [1, "Limewash"], [2, "Heavier coat"]].map(function (o) {
+    var opts = [[0, "Off"], [1, "Faint"], [2, "Limewash"]].map(function (o) {
       return '<button class="seg' + (texture === o[0] ? " on" : "") + '" data-tex="' + o[0] + '">' +
         o[1] + "</button>";
     }).join("");
@@ -984,13 +992,20 @@
                 "Type collapsed to six sizes",
                 "Statement bands go dark; clay stops carrying display type",
                 "Shorter: smaller series images, tighter heroes",
-                "Empty teacher frames hidden until there are photographs"] }
+                "Empty teacher frames hidden until there are photographs"] },
+    { id: "house", name: "House style", note: "primalmoves.com's structure, our colours and words.",
+      bullets: ["The heading comes first and is a real heading",
+                "The tiny eyebrow drops below the title as a quiet label",
+                "One line under each heading instead of three paragraphs",
+                "Centred sections, one button each",
+                "Full-width pictures; the ways-in become cards",
+                "One title size across the site"] }
   ];
 
   function renderLayout() {
     var body = document.getElementById("pm-body");
     body.innerHTML =
-      '<p class="pm-note" style="margin-bottom:18px">Two takes on the same content. Switch and scroll &mdash; ' +
+      '<p class="pm-note" style="margin-bottom:18px">Three takes on the same content. Switch and scroll &mdash; ' +
       "the choice follows you from page to page.</p>" +
       LAYOUTS.map(function (L) {
         var on = layout === L.id;
@@ -1227,7 +1242,7 @@
     var c = Object.keys(pr.colors || {}).length; if (c) bits.push(c + " colour" + (c > 1 ? "s" : ""));
     var cp = Object.keys(pr.copy || {}).length; if (cp) bits.push(cp + " text edit" + (cp > 1 ? "s" : ""));
     bits.push((pr.layout === "tight" ? "Tightened" : "Current") + " layout");
-    if (pr.texture) bits.push(pr.texture === 2 ? "heavy limewash" : "limewash");
+    if (pr.texture) bits.push(pr.texture === 1 ? "faint limewash" : "limewash");
     return bits.join(" \u00b7 ");
   }
 
@@ -1416,7 +1431,7 @@
       out += "\n},\n";
     }
     out += "\n/* config.js */\ntexture: " +
-      (texture === 2 ? '"strong"' : texture === 1 ? "true" : "false") + ",\n";
+      (texture === 1 ? '"faint"' : texture === 2 ? "true" : "false") + ",\n";
     var skipped = Object.keys(photos).length - named.length;
     if (skipped) out += "\n/* " + skipped + " uploaded preview(s) not included — add those files to assets/photos/ first. */\n";
     if (out.indexOf("--") === -1 && !named.length && !fk.length) out = "/* Nothing changed yet. */";

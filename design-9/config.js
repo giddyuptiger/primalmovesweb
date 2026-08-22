@@ -115,7 +115,7 @@ window.PM_CONFIG = {
      Photographs are the only thing that publishes this way. Colour and
      wording stay as saved configs — changing those for everyone is still a
      commit, on purpose. Setup: strategy/live-editing.md              */
-  liveApi: "",
+  liveApi: "https://pm-studio.primal-0d7.workers.dev",
 
   // Focal point per slot — where the crop should hold as the frame changes
   // shape. "50% 50%" is the centre; "50% 30%" pulls the crop upward, which is

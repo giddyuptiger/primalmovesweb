@@ -1035,15 +1035,22 @@ section:not(.ink) .photo-slot span{color:#4E4A42}
 }
 
 
-/* homepage: one month beside the next four events */
-.home-cal{display:grid;grid-template-columns:minmax(230px,290px) 1fr;
-  gap:clamp(30px,4.5vw,64px);align-items:start}
+/* homepage: two months beside the next four events, no photograph — the
+   calendar is the visual interest in this band */
+.third-head{display:grid;grid-template-columns:minmax(240px,1fr) 1.3fr;
+  gap:clamp(26px,4.5vw,72px);align-items:start;
+  margin-bottom:clamp(40px,6vw,72px)}
+@media (max-width:820px){ .third-head{grid-template-columns:1fr;gap:20px} }
+.home-cal{display:grid;grid-template-columns:minmax(300px,420px) 1fr;
+  gap:clamp(34px,5vw,76px);align-items:start}
+.home-cal .pm-cal-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
 .home-cal .pm-cal{display:block}
 .home-cal .pm-cal-grid{max-width:none;margin:0}
 @media (max-width:820px){
-  .home-cal{grid-template-columns:1fr;gap:30px}
-  .home-cal .pm-cal-grid{max-width:320px}
+  .home-cal{grid-template-columns:1fr;gap:32px}
+  .home-cal .pm-cal-grid{grid-template-columns:1fr 1fr;max-width:none}
 }
+@media (max-width:520px){ .home-cal .pm-cal-grid{grid-template-columns:1fr;max-width:320px} }
 
 /* a two-up band: heading left, the argument and its CTAs right */
 .band{display:grid;grid-template-columns:minmax(240px,1fr) 1.25fr;

@@ -2,7 +2,7 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-08-23T16:45:48.994520Z",
+ "fetchedAt": "2026-08-23T20:42:03.910987Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
   {
@@ -312,6 +312,20 @@
    "staff": "Miki Ash",
    "minutes": 60,
    "category": "Yoga"
+  },
+  {
+   "start": "2026-08-31T17:00:00Z",
+   "name": "Primal - The Push/Pull Practice",
+   "staff": "Jacy Cunningham",
+   "minutes": 60,
+   "category": "Gym classes"
+  },
+  {
+   "start": "2026-08-31T19:00:00Z",
+   "name": "Progressions",
+   "staff": "Angela Kukhan",
+   "minutes": 60,
+   "category": "Strength training"
   }
  ]
 }

@@ -18,6 +18,15 @@ have emptied. `events.json` the same. A GitHub Action now re-pulls both every
 four hours and commits them if they moved. If a fetch fails it keeps the last
 good copy rather than publishing an empty page.
 
+## A rule that came out of a broken deploy
+
+`design-9/schedule.json` and `design-9/events.json` belong to the refresh
+Action, which rewrites them on GitHub every four hours. Never ship them in a
+package and never commit a local copy — two different JSON files on the same
+path is a rebase conflict every time. `deploy.command` now restores both from
+HEAD before committing, and if a conflict does appear on exactly those two it
+takes GitHub's copy and carries on.
+
 ## Still tape, in order
 
 **1 · The Mindbody endpoint is undocumented.**

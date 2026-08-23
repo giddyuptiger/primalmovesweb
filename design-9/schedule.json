@@ -2,36 +2,22 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-08-22T04:53:33.881951Z",
+ "fetchedAt": "2026-08-23T08:51:32.772638Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
-  {
-   "start": "2026-08-22T15:30:00Z",
-   "name": "Restore",
-   "staff": "Angela Kukhan",
-   "minutes": 60,
-   "category": "Yoga"
-  },
-  {
-   "start": "2026-08-22T15:30:00Z",
-   "name": "Tea Ceremony",
-   "staff": "Zoe & Tyler",
-   "minutes": 60,
-   "category": "Meditation"
-  },
-  {
-   "start": "2026-08-22T19:00:00Z",
-   "name": "Handstands",
-   "staff": "Gus",
-   "minutes": 60,
-   "category": "Gymnastics"
-  },
   {
    "start": "2026-08-23T14:30:00Z",
    "name": "Primal Compound (Guided Weightlifting)",
    "staff": "Jacy Cunningham",
    "minutes": 60,
    "category": "Strength training"
+  },
+  {
+   "start": "2026-08-23T15:30:00Z",
+   "name": "Tea Ceremony",
+   "staff": "Zoe Scaljon",
+   "minutes": 60,
+   "category": "Meditation"
   },
   {
    "start": "2026-08-23T16:00:00Z",
@@ -97,6 +83,13 @@
    "category": "Other"
   },
   {
+   "start": "2026-08-25T00:45:00Z",
+   "name": "Primal Compound (Guided Weightlifting)",
+   "staff": "Andreas Alfaro",
+   "minutes": 60,
+   "category": "Strength training"
+  },
+  {
    "start": "2026-08-25T02:00:00Z",
    "name": "Progressions",
    "staff": "Gus",
@@ -160,9 +153,9 @@
    "category": "Gym classes"
   },
   {
-   "start": "2026-08-26T13:15:00Z",
-   "name": "Primal Hybrid (60 Min)",
-   "staff": "Zagreus",
+   "start": "2026-08-26T00:45:00Z",
+   "name": "Primal - The Push/Pull Practice",
+   "staff": "Miki Ash",
    "minutes": 60,
    "category": "Gym classes"
   },
@@ -174,6 +167,13 @@
    "category": "Meditation"
   },
   {
+   "start": "2026-08-26T13:15:00Z",
+   "name": "Primal Hybrid (60 Min)",
+   "staff": "Zagreus",
+   "minutes": 60,
+   "category": "Gym classes"
+  },
+  {
    "start": "2026-08-26T14:30:00Z",
    "name": "Restore",
    "staff": "Miki Ash",
@@ -181,11 +181,32 @@
    "category": "Yoga"
   },
   {
+   "start": "2026-08-26T15:45:00Z",
+   "name": "Primal Compound (Guided Weightlifting)",
+   "staff": "Zagreus",
+   "minutes": 60,
+   "category": "Strength training"
+  },
+  {
    "start": "2026-08-26T17:00:00Z",
    "name": "Primal - The Push/Pull Practice",
    "staff": "Olivia Jaye Brown",
    "minutes": 60,
    "category": "Gym classes"
+  },
+  {
+   "start": "2026-08-26T19:00:00Z",
+   "name": "Progressions",
+   "staff": "Olivia Jaye Brown",
+   "minutes": 60,
+   "category": "Strength training"
+  },
+  {
+   "start": "2026-08-27T00:45:00Z",
+   "name": "Breathwork",
+   "staff": "Chris Plourde",
+   "minutes": 60,
+   "category": "Other"
   },
   {
    "start": "2026-08-27T00:45:00Z",
@@ -202,11 +223,25 @@
    "category": "Gym classes"
   },
   {
+   "start": "2026-08-27T13:15:00Z",
+   "name": "Rise",
+   "staff": "Sabrina Rose",
+   "minutes": 60,
+   "category": "Strength training"
+  },
+  {
    "start": "2026-08-27T14:30:00Z",
    "name": "Primal Foundations (beg)",
    "staff": "Whakapaingia Luke",
    "minutes": 45,
    "category": "Gym classes"
+  },
+  {
+   "start": "2026-08-27T15:45:00Z",
+   "name": "Primal Compound (Guided Weightlifting)",
+   "staff": "Zagreus",
+   "minutes": 60,
+   "category": "Strength training"
   },
   {
    "start": "2026-08-27T17:00:00Z",
@@ -301,10 +336,24 @@
   },
   {
    "start": "2026-08-29T15:30:00Z",
+   "name": "Restore",
+   "staff": "Angela Kukhan",
+   "minutes": 60,
+   "category": "Yoga"
+  },
+  {
+   "start": "2026-08-29T15:30:00Z",
    "name": "Tea Ceremony",
    "staff": "Zoe & Sanjay",
    "minutes": 60,
    "category": "Meditation"
+  },
+  {
+   "start": "2026-08-29T17:00:00Z",
+   "name": "Primal Moves - 90 min",
+   "staff": "Olivia Jaye Brown",
+   "minutes": 90,
+   "category": "Strength training"
   },
   {
    "start": "2026-08-29T19:00:00Z",
@@ -312,6 +361,41 @@
    "staff": "Olivia Jaye Brown",
    "minutes": 60,
    "category": "Gymnastics"
+  },
+  {
+   "start": "2026-08-30T14:30:00Z",
+   "name": "Primal Compound (Guided Weightlifting)",
+   "staff": "Jacy Cunningham",
+   "minutes": 60,
+   "category": "Strength training"
+  },
+  {
+   "start": "2026-08-30T15:30:00Z",
+   "name": "Tea Ceremony",
+   "staff": "Zoe Scaljon",
+   "minutes": 60,
+   "category": "Meditation"
+  },
+  {
+   "start": "2026-08-30T16:00:00Z",
+   "name": "Primal Foundations (beg)",
+   "staff": "Whakapaingia Luke",
+   "minutes": 45,
+   "category": "Gym classes"
+  },
+  {
+   "start": "2026-08-30T17:00:00Z",
+   "name": "Primal Moves - 90 min",
+   "staff": "Gus",
+   "minutes": 90,
+   "category": "Strength training"
+  },
+  {
+   "start": "2026-08-30T22:30:00Z",
+   "name": "Primal Hybrid (75 min)",
+   "staff": "Kelo Vallejo",
+   "minutes": 75,
+   "category": "Gym classes"
   }
  ]
 }

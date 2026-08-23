@@ -29,14 +29,23 @@ echo
 MSG="site update $(date '+%d %b %H:%M')"
 git add -A && git commit -q -m "$MSG" && echo "committed: $MSG"
 
+# The refresh Action commits the timetable straight to main, so the remote
+# is often ahead. Rebase on top of it rather than failing the push.
+echo "checking for anything pushed since you last pulled…"
+git pull --rebase --autostash -q || {
+  echo "✗ couldn't rebase automatically — open Terminal and run:"
+  echo "    cd \"$(pwd)\" && git pull --rebase"
+  read -r -p "press return to close"; exit 1
+}
+
 if git push -q; then
   echo
   echo "✓ pushed. Cloudflare is building now."
   echo "  https://primalmovesweb.pages.dev  (about a minute)"
 else
   echo
-  echo "✗ push failed — probably a GitHub sign-in. Open Terminal and run:"
-  echo "    cd ~/code/primalmovesweb && git push"
+  echo "✗ push failed. Open Terminal and run:"
+  echo "    cd \"$(pwd)\" && git push"
 fi
 
 echo

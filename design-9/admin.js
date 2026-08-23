@@ -272,12 +272,18 @@
         return;
       }
       if (el.tagName === "IMG") { el.src = src; return; }
-      // an empty slot becomes a real image, keeping the slot name
-      var img = document.createElement("img");
-      img.setAttribute("data-pm-photo", slot);
-      img.src = src; img.alt = "";
-      img.style.cssText = "width:100%;height:100%;object-fit:cover;border-radius:3px;display:block";
-      el.replaceWith(img);
+      // a frame — a teacher portrait, a photo slot — gets the picture put
+      // INSIDE it, so the frame's own aspect-ratio still governs the size
+      var inner = el.querySelector("img[data-pm-fill]");
+      if (!inner) {
+        inner = document.createElement("img");
+        inner.setAttribute("data-pm-fill", "");
+        inner.alt = "";
+        el.textContent = "";
+        el.appendChild(inner);
+      }
+      inner.src = src;
+      el.classList.remove("empty");
     });
   }
   applyColors();
@@ -1186,7 +1192,9 @@
        repo     — presets.json, committed. Everyone sees it, saving needs a push.
        mine     — this browser only, for something half-finished.             */
 
-  var API = (window.PM_CONFIG || {}).presetsApi || "";
+  // read lazily: config.js derives presetsApi from liveApi, and depending on
+  // load order this file can run first
+  function api() { return String((window.PM_CONFIG || {}).presetsApi || ""); }
   var remote = null, repo = null;
 
   function localPresets() {
@@ -1204,8 +1212,8 @@
       fetch(presetsUrl(), { cache: "no-cache" }).then(function (r) { return r.json(); })
         .then(function (d) { repo = d.presets || []; }).catch(function () { repo = []; })
     ];
-    if (API) {
-      jobs.push(fetch(API, { cache: "no-store" }).then(function (r) { return r.json(); })
+    if (api()) {
+      jobs.push(fetch(api(), { cache: "no-store" }).then(function (r) { return r.json(); })
         .then(function (d) { remote = d.presets || []; }).catch(function () { remote = null; }));
     }
     return Promise.all(jobs);
@@ -1277,6 +1285,14 @@
       '<p class="pm-note" style="margin-bottom:16px">A config is colour, wording and layout together. ' +
       "Save one, keep working, then save back into it. Nothing here changes what visitors see &mdash; " +
       "photographs are the part that publishes.</p>" +
+      '<div class="live-state' + (api() ? " on" : "") + '" style="margin-bottom:16px">' +
+        (api()
+          ? "<b>Saved for everyone.</b> Configs live in the shared store, so anyone who opens this " +
+            "site sees the same list &mdash; name one <i>Caley 1</i> and Caley can load it on her own laptop." +
+            (remote === null ? '<span style="color:#E8B48A">Not reachable right now — showing the repo copy.</span>' : "")
+          : "<b>This browser only.</b> No shared store is connected, so a config saves locally. " +
+            "Set <code>liveApi</code> in <code>config.js</code>.") +
+      "</div>" +
       '<div class="field">' +
         '<label class="p-lab">' + (active ? "Working from" : "Nothing loaded") + "</label>" +
         '<div class="p-active">' + (active ? "<b>" + active.name + "</b><span>" + countOf(current()) + "</span>"
@@ -1287,10 +1303,10 @@
         '<input id="pm-pnote" type="text" placeholder="One line about it (optional)" maxlength="200">' +
         '<div class="p-actions">' +
           '<button class="act' + (active ? " ghost" : "") + '" id="pm-psave">' +
-            (API ? "Save for everyone" : "Save to this browser") + "</button>" +
-          (API ? "" : '<button class="act ghost" id="pm-pcopy">Copy presets.json</button>') +
+            (api() ? "Save for everyone" : "Save to this browser") + "</button>" +
+          (api() ? "" : '<button class="act ghost" id="pm-pcopy">Copy presets.json</button>') +
         "</div>" +
-        (API ? "" : '<p class="pm-note" style="margin-top:10px">No shared store connected yet, so a save stays in your browser. ' +
+        (api() ? "" : '<p class="pm-note" style="margin-top:10px">No shared store connected yet, so a save stays in your browser. ' +
           "Use <b>Copy presets.json</b> and paste it into <code>design-9/presets.json</code> so everyone sees it. " +
           "Wire up the Worker in <code>tools/presets-worker.js</code> and saves become instant for the whole team.</p>") +
       "</div>" +
@@ -1305,12 +1321,12 @@
        Same path for a new config and for an update: the store replaces by
        name, so "update" is a save under a name that already exists.        */
     function persist(pr, where, done) {
-      if (!API || where === "local") {
+      if (!api() || where === "local") {
         var list = localPresets().filter(function (x) { return x.name !== pr.name; });
         list.push(pr); saveLocal(list); setActive(pr.name); if (done) done(); renderPresets(); return;
       }
       var h = writeHeaders({ "Content-Type": "application/json" }); if (!h) return;
-      fetch(API, { method: "POST", headers: h, body: JSON.stringify(pr) })
+      fetch(api(), { method: "POST", headers: h, body: JSON.stringify(pr) })
         .then(function (r) { return r.json(); })
         .then(function (d) {
           if (d.error) { lsDel(KEY_WKEY); alert(d.error); return; }
@@ -1363,7 +1379,7 @@
         if (name === activeName) setActive("");
         if (where === "local") { saveLocal(mine.filter(function (x) { return x.name !== name; })); renderPresets(); return; }
         var h = writeHeaders(); if (!h) return;
-        fetch(API + "?name=" + encodeURIComponent(name), { method: "DELETE", headers: h })
+        fetch(api() + "?name=" + encodeURIComponent(name), { method: "DELETE", headers: h })
           .then(function (r) { return r.json(); })
           .then(function (d) { if (d.error) { lsDel(KEY_WKEY); alert(d.error); return; } remote = d.presets; renderPresets(); })
           .catch(function () { alert("Could not reach the config store."); });
@@ -1374,9 +1390,13 @@
     if (saveBtn) saveBtn.addEventListener("click", function () {
       var nameEl = document.getElementById("pm-pname");
       var name = (nameEl.value || "").trim();
-      if (!name) { nameEl.focus(); return; }
-      persist(snapshot(name, (document.getElementById("pm-pnote").value || "").trim()),
-              API ? "remote" : "local");
+      if (!name) { nameEl.focus(); toast("Give the config a name first.", true); return; }
+      var snap = snapshot(name, (document.getElementById("pm-pnote").value || "").trim());
+      var n = Object.keys(snap.copy || {}).length;
+      persist(snap, api() ? "remote" : "local", function () {
+        toast("Saved \u201c" + name + "\u201d" + (api() ? " for everyone" : " in this browser") +
+              " \u00b7 " + n + " text edit" + (n === 1 ? "" : "s"));
+      });
     });
 
     var copyBtn = document.getElementById("pm-pcopy");

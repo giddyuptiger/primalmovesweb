@@ -566,6 +566,31 @@ window.PM_CONFIG = {
           el.replaceWith(img);
           return;
         }
+
+        /* Some slots are FRAMES, not pictures — a teacher portrait is an
+           empty <div class="portrait"> waiting for one. Fill it rather than
+           replacing it: the frame carries the 4:5 aspect-ratio that keeps
+           every portrait the same size, and replacing it would throw that
+           away. (Setting .src on a <div> silently does nothing, which is why
+           swapped portraits never appeared for anybody else.) */
+        if (el.tagName !== "IMG") {
+          var probe2 = new Image();
+          probe2.onload = function () {
+            var inner = el.querySelector("img[data-pm-fill]");
+            if (!inner) {
+              inner = document.createElement("img");
+              inner.setAttribute("data-pm-fill", "");
+              inner.alt = "";
+              el.textContent = "";                       // drop the "PORTRAIT" label
+              el.appendChild(inner);
+            }
+            inner.src = next;
+            el.classList.remove("empty");
+          };
+          probe2.src = next;
+          return;
+        }
+
         var probe = new Image();
         probe.onload = function () { el.src = next; };
         probe.onerror = function () {

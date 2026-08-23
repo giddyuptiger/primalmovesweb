@@ -140,7 +140,7 @@ if(l==="house")document.documentElement.classList.add("house-pending");
 var t=localStorage.getItem("pm_studio_texture");
 if(t==="1"||(t===null&&(window.PM_CONFIG||{{}}).texture))document.documentElement.classList.add("texture-pending");
 }}catch(e){{}}}})();</script>
-<script src="{up}admin.js?v=3" defer></script>
+<script src="{up}admin.js?v=5" defer></script>
 </head>
 <body{body_class}>
 
@@ -642,7 +642,7 @@ def studio(up, asset):
       </div>
     </div>
     <p class="note" style="margin-top:26px;border-color:var(--on-dark-soft);color:var(--on-dark)">
-      Teacher names, roles, short bios and portraits.
+      
     </p>
   </div>
 </section>

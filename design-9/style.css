@@ -1515,3 +1515,12 @@ a.cls h3{color:var(--ink)}
 @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
 /* the sticky nav must not sit on top of the section you just jumped to */
 #schedule{scroll-margin-top:calc(var(--nav-h,84px) + 18px)}
+
+
+/* a picture dropped into a frame fills it exactly — same size every time,
+   whatever shape the photograph itself is */
+[data-pm-photo] > img[data-pm-fill],
+[data-pm-photo] > video[data-pm-fill]{
+  width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit}
+.person .portrait{aspect-ratio:4/5;overflow:hidden}
+.person .portrait img{width:100%;height:100%;object-fit:cover;display:block}

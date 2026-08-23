@@ -1364,100 +1364,66 @@ body.texture .hero::before,body.texture .phero::before{content:none}
 
 /* ==========================================================================
    LAYOUT C · HOUSE
-   primalmoves.com's own structure, in our colours and our words.
+   primalmoves.com's structure, in our colours and our words.
 
-   What theirs does that ours didn't: the section HEADING comes first and is
-   genuinely a heading. No tiny uppercase eyebrow above it, no 60px poetic
-   line standing in for a title, no three-paragraph lede. One heading, one
-   line under it, one button, then the picture. Composition is centred and
-   the page reads as a stack of clear announcements rather than a magazine
-   spread.
+   Rewritten after the first attempt centred containers but not the things
+   inside them — headings kept their left margins inside centred blocks, so
+   every section had two different alignments fighting. The rule now is
+   narrow and absolute:
 
-   Everything here is CSS over the same markup — the kickers are still in the
-   HTML for the other two layouts, they just stop being the loud part.
+     ONE thing centres: the section's opening block — heading, its single
+     line, its button. Everything below that keeps the alignment it has in
+     every other layout.
+
+   What makes it house style is not the centring anyway. It is that the
+   heading comes first and is a real heading, the eyebrow drops beneath it,
+   and one line does the work of three paragraphs.
    ========================================================================== */
 
-/* --- 1 · the heading is the heading -------------------------------------- */
-/* the eyebrow drops to a quiet label under the title, where it belongs */
-html.house-pending body .kicker,
-body.house .kicker{
-  display:block;order:2;font-size:11.5px;letter-spacing:.2em;
-  color:var(--mid);margin:14px 0 0}
-/* any block that opens with an eyebrow becomes a column, so the eyebrow can
-   be reordered below the title it used to shout over */
-body.house .section-head,
-body.house .split > div:has(> .kicker),
-body.house .band > div:has(> .kicker),
-body.house .third-head > div:has(> .kicker),
-body.house .wrap > div:has(> .kicker),
-body.house .wrap-wide > div:has(> .kicker){display:flex;flex-direction:column}
-body.house h1,body.house h2,body.house h3{order:1}
-body.house p,body.house .lede,body.house ul,body.house .cta-row,
-body.house .pull,body.house .info-list,body.house .plans{order:3}
-body.house .pull{border-left:0;padding-left:0}
+/* --- 1 · the heading leads, the eyebrow follows -------------------------- */
+body.house .section-head{display:flex;flex-direction:column;align-items:center;
+  text-align:center;max-width:46rem;margin-left:auto;margin-right:auto}
+body.house .section-head h1,
+body.house .section-head h2{order:1;margin:0 auto;max-width:20ch}
+body.house .section-head .kicker{order:2;margin:12px 0 0;font-size:11.5px;
+  letter-spacing:.2em;color:var(--mid)}
+body.house .section-head .lede,
+body.house .section-head p{order:3;margin:14px auto 0;max-width:48ch}
+body.house .section-head .cta-row{order:4;margin-top:24px;justify-content:center}
+body.house .section-head.row{align-items:center;gap:12px}
 
-/* one size for section titles, and it is large enough to be one */
-html.house-pending body h2,html.house-pending body .display-sm,
+/* --- 2 · the actual point: the title outweighs everything under it -------
+   Moving the eyebrow below the heading was cosmetic. The complaint was that
+   titles were small and the text under them was enormous — so the ratio is
+   what has to change. Title goes to ~62px at desktop; the line under it
+   drops to 16.5px and is capped at 42 characters so it cannot become a
+   paragraph again. A heading is now roughly 3.7x its subtext, where before
+   it was about 1.7x. */
 body.house h2,body.house .display-sm{
-  font-size:clamp(30px,3.6vw,46px);line-height:1.12;letter-spacing:-.015em;
-  text-transform:none;max-width:20ch}
-body.house .display{font-size:clamp(40px,6.4vw,84px);line-height:1.04}
-
-/* the line under a heading is one line, not a paragraph */
-body.house .lede{font-size:18px;line-height:1.6;color:var(--mid);max-width:52ch}
-
-/* --- 2 · centred, like theirs -------------------------------------------- */
-body.house section:not(.hero):not(.phero) > .wrap-wide > .section-head,
-body.house section:not(.hero):not(.phero) > .wrap > .section-head{
-  text-align:center;align-items:center;margin-left:auto;margin-right:auto;max-width:44rem}
-body.house .section-head h2{max-width:22ch}
-body.house .section-head .lede{margin-left:auto;margin-right:auto;text-align:center}
-body.house .section-head.row{display:flex;flex-direction:column;gap:14px}
-body.house .section-head.row .link-arrow{align-self:center}
-
-/* the two-up bands stack into a centred announcement */
-body.house .band,body.house .third-head{
-  grid-template-columns:1fr;justify-items:center;text-align:center;
-  gap:clamp(16px,2vw,24px);max-width:46rem;margin-left:auto;margin-right:auto}
-body.house .band .cta-row,body.house .third-head .cta-row{justify-content:center}
-body.house .band p,body.house .third-head p{max-width:52ch}
-
-/* --- 3 · one button, centred --------------------------------------------- */
-body.house .cta-row{justify-content:center}
-body.house .hero .cta-row{justify-content:flex-start}
-body.house .btn{border-radius:999px;padding:15px 30px;font-size:12px;letter-spacing:.14em}
-
-/* --- 4 · pictures get the full width, the way theirs do ------------------ */
-body.house .split{grid-template-columns:1fr;gap:clamp(24px,3vw,40px);text-align:center;
-  max-width:52rem;margin:0 auto}
-body.house .split img,body.house .split video[data-pm-photo]{
-  height:clamp(300px,42vw,520px);border-radius:6px}
-body.house .serie{grid-template-columns:1fr;text-align:center;gap:18px;max-width:46rem;margin:0 auto}
-body.house .serie img,body.house .serie video[data-pm-photo]{
-  height:clamp(260px,34vw,420px);border-radius:6px}
-body.house .serie:nth-child(even) img{order:0}
-body.house .serie-body{align-items:center}
-
-/* --- 5 · cards, like their studio grid ----------------------------------- */
-body.house .ways,body.house .objs,body.house .obj-list{gap:clamp(20px,2.4vw,32px)}
-body.house .way,body.house .obj,body.house .plan{
-  background:var(--paper);border:1px solid var(--line);border-radius:8px;
-  padding:clamp(22px,2.6vw,32px);text-align:center}
-body.house .way h3,body.house .obj h3,body.house .plan .tier{font-size:19px}
-body.house .plan ul{text-align:left;display:inline-block}
-
-/* --- 6 · quieter chrome so the headings carry the page ------------------- */
-body.house .pull{font-size:19px;font-style:normal;color:var(--mid);text-align:center;
-  max-width:48ch;margin-left:auto;margin-right:auto}
-body.house .aside{display:none}          /* the wry side-notes are a house-style mismatch */
-body.house section{padding:clamp(64px,8vw,110px) 0}
-body.house .statement .big{font-size:clamp(28px,4vw,52px);text-align:center;
-  max-width:24ch;margin:0 auto}
-
+  font-size:clamp(34px,4.8vw,62px);line-height:1.06;letter-spacing:-.02em;font-weight:400}
+body.house .display{font-size:clamp(44px,7vw,92px);line-height:1.02}
+body.house .lede{font-size:16.5px;line-height:1.6;color:var(--mid);max-width:42ch}
+body.house .section-head .lede,body.house .section-head p{max-width:42ch}
+body.house section p{font-size:16.5px}
+body.house .kicker{font-size:10.5px;letter-spacing:.22em}
 @media (max-width:820px){
-  body.house h2,body.house .display-sm{font-size:clamp(26px,6vw,34px)}
+  body.house h2,body.house .display-sm{font-size:clamp(30px,7.4vw,42px)}
+  body.house .display{font-size:clamp(36px,10vw,52px)}
 }
 
+/* --- 3 · everything else keeps the alignment it has everywhere else ------
+   The first pass centred bands, splits and series too, which is where the
+   ragged look came from. They stay exactly as they are in layouts A and B. */
+
+/* --- 4 · pictures get room, cards get edges ------------------------------ */
+body.house .split img,body.house .split video[data-pm-photo]{
+  height:clamp(300px,40vw,500px);border-radius:6px}
+body.house .photo-slot{max-height:460px}
+body.house .way,body.house .obj{
+  background:var(--paper);border:1px solid var(--line);border-radius:8px;
+  padding:clamp(22px,2.6vw,32px)}
+body.house .btn{border-radius:999px;padding:15px 30px;font-size:12px;letter-spacing:.14em}
+body.house section{padding:clamp(64px,8vw,110px) 0}
 
 /* ==========================================================================
    THE DAY RAIL

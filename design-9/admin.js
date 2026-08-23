@@ -231,7 +231,7 @@
     });
   }
   function photoBase() {
-    var any = document.querySelector("img[data-pm-photo]");
+    var any = document.querySelector("img[data-pm-photo][src]");
     if (any) return (any.getAttribute("src") || "").replace(/[^/]+$/, "");
     var css = document.querySelector('link[rel="stylesheet"][href*="style.css"]');
     return css ? css.href.replace(/design-9\/style\.css.*$/, "assets/photos/") : "../../assets/photos/";

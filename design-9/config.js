@@ -524,6 +524,17 @@ window.PM_CONFIG = {
     // a slot holds a photograph or a film — .mp4/.webm/.mov means film
     function isFilm(u) { return /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(u) || /^data:video\//.test(u); }
 
+    /* Where a bare filename lives. An <img> slot can tell us from its own src,
+       but a FRAME — an empty portrait — has no src, and resolving against the
+       page instead gave /studio/joy-laughing.jpg. That 404s quietly, which is
+       why published portraits appeared for nobody. */
+    function assetBase() {
+      var any = document.querySelector("img[data-pm-photo][src]");
+      if (any) return (any.getAttribute("src") || "").replace(/[^/]+$/, "");
+      var css = (document.querySelector('link[rel="stylesheet"][href*="style.css"]') || {}).href || "";
+      return css ? css.replace(/design-9\/style\.css.*$/, "assets/photos/") : "../../assets/photos/";
+    }
+
     // swap an <img> for a silent looping <video> (or the other way back),
     // keeping the slot name and the shape the picture had
     function toFilm(el, url, slot) {
@@ -553,6 +564,7 @@ window.PM_CONFIG = {
         // a published file arrives as a full URL; a repo one as a filename
         var abs = /^(https?:)?\/\//.test(file) || file.charAt(0) === "/" || file.indexOf("data:") === 0;
         var base = (el.getAttribute("src") || el.getAttribute("poster") || "").replace(/[^/]+$/, "");
+        if (!base) base = assetBase();          // frames have no src of their own
         var next = abs ? file : base + file;
         if (next === el.getAttribute("src")) return;
 
@@ -586,6 +598,10 @@ window.PM_CONFIG = {
             }
             inner.src = next;
             el.classList.remove("empty");
+          };
+          probe2.onerror = function () {
+            if (window.console) console.warn("[PM_CONFIG] photos['" + slot + "'] → " + next +
+              " did not load. Is the file in assets/photos/?");
           };
           probe2.src = next;
           return;

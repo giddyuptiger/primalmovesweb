@@ -374,9 +374,7 @@ window.PM_CONFIG = {
         html += "</ul></div>";
       });
       html += "</div>";
-      html += '<p class="embed-note" style="margin-top:22px">' +
-        '<a href="' + book + '" target="_blank" rel="noopener" style="text-decoration:underline">' +
-        "Book a class &#8599;</a></p>";
+      // no "book a class" line here — the buttons under the timetable say it
       el.classList.add("sched-wrap");
       el.innerHTML = html;
 

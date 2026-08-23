@@ -1501,3 +1501,17 @@ section.ink .daybar .dnav{border-color:rgba(255,255,255,.2);color:var(--on-dark-
    off taupe rather than blend into it */
 section.alt .way.feature{background:var(--paper);border-color:var(--line)}
 section.alt .way{background:transparent}
+
+
+/* the timetable block reads as one centred module: rail, then the two
+   actions under it, then the one line of advice */
+.sched-cta{justify-content:center}
+.sched-note{text-align:center;max-width:52ch;margin-left:auto;margin-right:auto}
+
+/* a class card is a link to the timetable now */
+a.cls{text-decoration:none;color:inherit}
+a.cls h3{color:var(--ink)}
+
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+/* the sticky nav must not sit on top of the section you just jumped to */
+#schedule{scroll-margin-top:calc(var(--nav-h,84px) + 18px)}

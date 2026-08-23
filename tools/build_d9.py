@@ -731,20 +731,20 @@ def classes(up, asset):
         ("06","Restore","Mobility, breath and active recovery. The other half of getting strong.","Start here",True,"45–60 min"),
         ("07","Primal Vinyasa","Breath-led flow with primal patterning underneath. Familiar shape, different engine.","All levels",False,"60 min"),
         ("08","Primal Kids","Youth movement classes. Crawling, climbing, falling over, getting up.","Kids",False,"45 min"),
-        ("09","Team Practice","Open-floor group skill-building. Bring what you're working on.","Members",False,"90 min"),
+        ("09","Meditation","Nervous-system down-regulation, run as a four-week series.","All levels",False,"45 min"),
     ]
     # Ten classes as ten full-width rows ran to nearly three screens. As cards
     # the same ten fit in one: title, level, duration always visible, and the
     # description arriving on hover (or on tap, where there is no hover).
     body = "".join(f'''
-      <button class="cls" type="button" aria-expanded="false">
+      <a class="cls" href="#schedule">
         <div class="n">{n}</div>
         <div class="cls-head">
           <h3>{name}</h3>
           <div class="cls-meta"><span class="lvl{' beginner' if beg else ''}">{lvl}</span><span class="lvl dur">{dur}</span></div>
         </div>
         <div class="desc"><span>{desc}</span></div>
-      </button>''' for n, name, desc, lvl, beg, dur in rows)
+      </a>''' for n, name, desc, lvl, beg, dur in rows)
 
     return f'''{phero(asset, "photos/collective-downdog.jpg", "Classes &amp; Schedule", "What's on, who it's for, and how to book it.", "Find your entry point", slot="classes.hero")}
 
@@ -789,16 +789,15 @@ def classes(up, asset):
   <div class="wrap-wide">
     <div class="section-head">
       <div><div class="kicker">Live from Mindbody</div><h2>Book your spot.</h2></div>
-      <a class="link-arrow" data-pm-link="bookingUrl" target="_blank" rel="noopener">Primal Moves app →</a>
     </div>
     <div data-pm-schedule
          data-pm-schedule-label="Book through Mindbody"
          data-pm-schedule-hint="Our live timetable and booking run on Mindbody. Opening it in a new tab keeps your account, class credits and bookings in one place."></div>
-    <div class="cta-row" style="margin-top:20px">
-      <a class="btn secondary" data-pm-link="appStoreUrl" target="_blank" rel="noopener">Get the app</a>
+    <div class="cta-row sched-cta" style="margin-top:26px">
       <a class="btn sage" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">Start your 2-week trial</a>
+      <a class="btn secondary" data-pm-link="appStoreUrl" target="_blank" rel="noopener">Get the app</a>
     </div>
-    <p class="embed-note" style="margin-top:18px">First time? Book <strong>Primal</strong> or <strong>Restore</strong> — both assume no experience. Everything else will still be on the timetable next week.</p>
+    <p class="embed-note sched-note" style="margin-top:18px">First time? Book <strong>Primal</strong> or <strong>Restore</strong> — both assume no experience. Everything else will still be on the timetable next week.</p>
   </div>
 </section>
 

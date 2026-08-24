@@ -58,7 +58,7 @@ def chrome(depth, active, cherish=False):
         <h4>Find us</h4>
         <p>
           <a href="https://maps.google.com/?q=1038+Princeton+Dr+Ste+B,+Marina+del+Rey,+CA+90292" target="_blank" rel="noopener">
-            <span data-pm-text="address1">1038 Princeton Dr, Ste B</span><br>
+            <span data-pm-text="address1">1038 Princeton Dr, Ste B</span> <br>
             <span data-pm-text="address2">Marina del Rey, CA 90292</span>
           </a>
         </p>
@@ -116,10 +116,11 @@ def tag_copy(html, path):
     return html
 
 
-def page(path, depth, active, title, desc, body_fn, cherish=False):
+def page(path, depth, active, title, desc, body_fn, cherish=False, body_cls=""):
     header, footer, up, asset = chrome(depth, active, cherish)
     body = body_fn(up, asset)
-    body_class = ' class="cherish-scope"' if cherish else ""
+    classes = " ".join(x for x in [("cherish-scope" if cherish else ""), body_cls] if x)
+    body_class = f' class="{classes}"' if classes else ""
     html = f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -219,7 +220,7 @@ def home(up, asset):
   </div>
   <div class="hero-inner">
     <div class="kicker hero-eyebrow">Come for the workouts, stay for the people.</div>
-    <h1 class="display">practice makes<br><em>primal</em></h1>
+    <h1 class="display">practice makes <br><em>primal</em></h1>
     <p class="hero-sub">A daily movement practice, a sauna, a cold plunge, a cafe, and a room full of people.</p>
     <div class="cta-row">
       <a class="btn sage lg" data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 Day Pass</a>
@@ -235,7 +236,7 @@ def home(up, asset):
     <div class="split" style="align-items:start">
       <div>
         <div class="kicker">the Primal experience</div>
-        <h2 class="display-sm" style="max-width:16ch;margin-bottom:26px">not a gym.<br>a <span class="ed-it">practice</span>.</h2>
+        <h2 class="display-sm" style="max-width:16ch;margin-bottom:26px">not a gym. <br>a <span class="ed-it">practice</span>.</h2>
         <p style="font-size:clamp(17px,1.6vw,20px);line-height:1.7">Movement built on how the body actually works — crawling, hanging, pushing, pulling, balancing, getting upside down. Patterns you\'d recognise from being a kid, taught so a complete beginner and a professional acrobat can stand in the same room and both get something out of it. What people stay for is the community.</p>
         <p class="pull" style="margin-top:26px">When was the last time you went to a gym where nobody was wearing headphones?</p>
         <p class="aside" style="margin-top:22px">Ask ten members what Primal is and you\'ll get ten answers. That\'s rather the point.</p>
@@ -256,7 +257,7 @@ def home(up, asset):
       <div class="photo-slot" data-pm-photo="home.family"><span>Homepage &middot; family &middot; kids on the floor</span></div>
       <div>
         <div class="kicker">bring your family</div>
-        <h2 class="display-sm" style="max-width:18ch;margin-bottom:22px">the kids train<br><span class="ed-it">here too</span></h2>
+        <h2 class="display-sm" style="max-width:18ch;margin-bottom:22px">the kids train <br><span class="ed-it">here too</span></h2>
         <p style="font-size:clamp(17px,1.6vw,20px);line-height:1.7">Kids&rsquo; Primal runs on the same floor you train on, and Saturday mornings are the family session — parents and children in the room at the same time, doing the same practice at their own scale.</p>
         <div class="cta-row" style="margin-top:26px">
           <a class="btn" href="{up}classes/">kids&rsquo; classes</a>
@@ -271,7 +272,7 @@ def home(up, asset):
 <section id="the-day" class="pad-sm">
   <div class="wrap-wide">
     <div class="kicker">what&rsquo;s here</div>
-    <h2 class="display-sm" style="margin-bottom:34px">one studio,<br>all your <span class="ed-it">needs</span></h2>
+    <h2 class="display-sm" style="margin-bottom:34px">one studio, <br>all your <span class="ed-it">needs</span></h2>
     <div class="info-list">
       <div class="info-row">
         <div class="i-label">Fitness</div>
@@ -301,7 +302,7 @@ def home(up, asset):
     <div class="third-head">
       <div>
         <div class="kicker">the third place</div>
-        <h2 class="display-sm" style="max-width:14ch">where everybody<br>knows your <span class="ed-it">name</span></h2>
+        <h2 class="display-sm" style="max-width:14ch">where everybody <br>knows your <span class="ed-it">name</span></h2>
       </div>
       <div>
         <p class="lede" style="margin:0">Not home, not work &mdash; the other one. It isn&rsquo;t that the workout is different. It&rsquo;s that you know six people in the room, and one of them saved you a spot.</p>
@@ -330,7 +331,7 @@ def home(up, asset):
     <div class="band">
       <div>
         <div class="kicker">if you like it here</div>
-        <h2 class="display-sm" style="max-width:18ch;margin:0">come often enough<br>and it gets <span class="ed-it">cheaper</span></h2>
+        <h2 class="display-sm" style="max-width:18ch;margin:0">come often enough <br>and it gets <span class="ed-it">cheaper</span></h2>
       </div>
       <div>
         <p class="lede" style="margin:0 0 22px">That&rsquo;s the only real reason to take a membership. If a day here turns into a habit, there are better ways to pay for it &mdash; starting at $120 a month.</p>
@@ -345,7 +346,7 @@ def home(up, asset):
 <!-- 8 · CLOSING CTA — the trial, framed around how they'll feel -->
 <section class="statement flush">
   <div class="wrap-wide" style="padding-top:clamp(60px,9vw,120px);padding-bottom:clamp(34px,5vw,60px)">
-    <div class="big">ready or not, let us show you<br>how <em>good</em> you can feel<br>in your body.</div>
+    <div class="big">ready or not, let us show you <br>how <em>good</em> you can feel <br>in your body.</div>
   </div>
 </section>
 {final_cta(up)}'''
@@ -359,7 +360,7 @@ def practice(up, asset):
 <section class="light" style="padding-top:clamp(50px,8vh,90px)">
   <div class="wrap">
     <div class="kicker">Objectives</div>
-    <h2 class="display-sm" style="max-width:20ch;margin-bottom:26px">stability, strength,<br>mobility, <span class="ed-it">tone</span></h2>
+    <h2 class="display-sm" style="max-width:20ch;margin-bottom:26px">stability, strength, <br>mobility, <span class="ed-it">tone</span></h2>
     <p style="font-size:clamp(17px,1.7vw,21px);line-height:1.7">The primary focus of Primal Moves&trade; centers on developing stability, strength, mobility, and muscle tone using quadrupedal movements and dynamic maneuvers that mirror animal locomotion.</p>
 
     <div class="obj-list">
@@ -388,7 +389,7 @@ def practice(up, asset):
   <div class="wrap-wide">
     <div class="section-head">
       <div class="kicker">The four series</div>
-      <h2 class="display-sm">four series.<br>one <span class="ed-it">practice</span>.</h2>
+      <h2 class="display-sm">four series. <br>one <span class="ed-it">practice</span>.</h2>
       <p class="lede" style="margin-top:22px">A progressive system that loads the joints equally, so the practice keeps giving over decades rather than years.</p>
     </div>
 
@@ -441,7 +442,7 @@ def practice(up, asset):
 <section id="faq">
   <div class="wrap">
     <div class="kicker">Frequently asked questions</div>
-    <h2 class="display-sm" style="margin-bottom:34px">the method,<br><span class="ed-it">answered</span></h2>
+    <h2 class="display-sm" style="margin-bottom:34px">the method, <br><span class="ed-it">answered</span></h2>
     <div class="faq-block">
       <details>
         <summary>What is Primal Moves?</summary>
@@ -522,7 +523,7 @@ def studio(up, asset):
     <div class="section-head">
       <div>
         <div class="kicker">The space</div>
-        <h2 class="display-sm">Eleven thousand<br>square <span class="ed-it">feet</span>.</h2>
+        <h2 class="display-sm">Eleven thousand <br>square <span class="ed-it">feet</span>.</h2>
       </div>
       <p class="lede" style="max-width:24em">One open floor, a sauna, a plunge, a lounge and a cafe. It is not laid out like a gym because it is not one.</p>
     </div>
@@ -563,7 +564,7 @@ def studio(up, asset):
     <div class="section-head">
       <div>
         <div class="kicker">The team</div>
-        <h2 class="display-sm">Acrobats, stuntwomen,<br><span class="ed-it">somatic practitioners</span>.</h2>
+        <h2 class="display-sm">Acrobats, stuntwomen, <br><span class="ed-it">somatic practitioners</span>.</h2>
       </div>
       <p class="lede" style="max-width:24em">Our coaches don't come from one place. They come from circus, stunt work, dance, bodywork and the desert.</p>
     </div>
@@ -653,9 +654,9 @@ def studio(up, asset):
     <div class="split" style="--split-ratio:1fr 1fr;align-items:start">
       <div>
         <div class="kicker">Find us</div>
-        <h2 class="display-sm" style="margin-bottom:24px">1038<br>Princeton Dr.</h2>
+        <h2 class="display-sm" style="margin-bottom:24px">1038 <br>Princeton Dr.</h2>
         <div class="day">
-          <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Address</div><div class="desc"><span data-pm-text="address1">1038 Princeton Dr, Ste B</span><br><span data-pm-text="address2">Marina del Rey, CA 90292</span></div></div>
+          <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Address</div><div class="desc"><span data-pm-text="address1">1038 Princeton Dr, Ste B</span> <br><span data-pm-text="address2">Marina del Rey, CA 90292</span></div></div>
           <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Phone</div><div class="desc"><a data-pm-link="phoneHref" style="text-decoration:underline"><span data-pm-text="phone">(310) 800-7061</span></a></div></div>
           <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Email</div><div class="desc"><a href="mailto:hello@venice.primalmoves.com" style="text-decoration:underline">hello@venice.primalmoves.com</a></div></div>
           <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Hours</div><div class="desc">Doors open from 6:30am; full weekly hours to be published.</div></div>
@@ -753,7 +754,7 @@ def classes(up, asset):
     <div class="split" style="--split-ratio:1fr 1fr;align-items:start">
       <div>
         <div class="kicker">Never done this before?</div>
-        <h2 class="display-sm" style="margin-bottom:20px">Take <span class="ed-it">Primal</span>.<br>That's the answer.</h2>
+        <h2 class="display-sm" style="margin-bottom:20px">Take <span class="ed-it">Primal</span>. <br>That's the answer.</h2>
         <p class="lede">Every class marked <span class="mark" style="font-weight:600">Start here</span> assumes you've never crawled across a floor in your life. You'll be shown what to do, given a version that fits, and left alone about it.</p>
         <p style="margin-top:16px;color:var(--mid)">Come ten minutes early, wear something you can move in, bring water. Bare feet or flat shoes. That's genuinely the whole list.</p>
         <div class="cta-row" style="margin-top:28px">
@@ -1014,7 +1015,7 @@ def memberships(up, asset):
 <section class="alt" id="partners">
   <div class="wrap-wide">
     <div class="kicker">Community partners</div>
-    <h2 class="display-sm" style="max-width:20ch;margin-bottom:14px">your membership<br>works <span class="ed-it">elsewhere</span></h2>
+    <h2 class="display-sm" style="max-width:20ch;margin-bottom:14px">your membership <br>works <span class="ed-it">elsewhere</span></h2>
     <p class="lede" style="margin-bottom:34px;max-width:38em">We keep a small roster of studios and practitioners we actually send people to. Primal members get a standing discount at each.</p>
     <div class="info-list">
       <div class="info-row">
@@ -1065,6 +1066,119 @@ def memberships(up, asset):
 </section>
 
 {final_cta(up)}'''
+
+
+
+# ============================================================ HOUSE HOME =====
+# A real template, not a restyle. primalmoves.com's structure: a full-bleed
+# hero, then an alternation of centred statements and edge-to-edge
+# photographs, a card grid for the ways in, and one action per band. Our
+# words, our palette, our limewash.
+#
+# It lives at /house/ so it can have its own markup. Layouts A and B keep
+# design-9/index.html exactly as it was.
+def house_home(up, asset):
+    def card(slot, img, label, title, line, href):
+        return f'''
+      <a class="hs-card" href="{href}">
+        <div class="hs-card-img"><img data-pm-photo="{slot}" src="{asset}photos/{img}" alt=""></div>
+        <div class="hs-card-body">
+          <div class="hs-card-label">{label}</div>
+          <h3>{title}</h3>
+          <p>{line}</p>
+        </div>
+      </a>'''
+
+    return f'''
+<!-- 1 · HERO — one picture, one line, one action -->
+<section class="hs-hero flush">
+  <img data-pm-photo="house.hero" src="{asset}photos/joy-laughing.jpg" alt="A class mid-practice at Primal Moves Venice">
+  <div class="hs-hero-inner">
+    <p class="hs-eyebrow">Venice, California</p>
+    <h1 class="hs-display">Think less<br>Move more<br>Breathe</h1>
+    <div class="cta-row">
+      <a class="btn sage lg" data-pm-link="dayPassUrl" target="_blank" rel="noopener">Book a class</a>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · THE STATEMENT — the whole idea in one sentence -->
+<section class="hs-statement">
+  <div class="hs-narrow">
+    <h2>Primal Moves is a product of practice</h2>
+    <p>A daily movement practice built on how the body actually works &mdash; crawling, hanging,
+       pushing, pulling, getting upside down. Taught so a complete beginner and a professional
+       acrobat can stand in the same room and both get something out of it.</p>
+    <div class="cta-row"><a class="btn" href="{up}practice/">Our method</a></div>
+  </div>
+</section>
+
+<!-- 3 · a photograph, edge to edge, doing nothing but existing -->
+<section class="hs-band flush">
+  <img data-pm-photo="house.band-1" src="{asset}photos/collective-crawl.jpg" alt="">
+</section>
+
+<!-- 4 · COME TO CLASS -->
+<section class="hs-statement tight-top">
+  <div class="hs-narrow">
+    <h2>Come to class</h2>
+    <p>The Primal method drops you into your body and out of your head. Forty dollars gets you
+       the floor, the sauna, the cold plunge and a coffee at Cherish.</p>
+    <div class="cta-row">
+      <a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 day pass</a>
+      <a class="btn" href="{up}classes/#schedule">See the schedule</a>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · THE WAYS IN — their location-card grid, our four rooms -->
+<section class="hs-cards-wrap">
+  <div class="wrap-wide">
+    <div class="hs-head"><h2>One studio, all of it</h2></div>
+    <div class="hs-cards">
+      {card("house.card-classes", "compound-dumbbells.jpg", "Practice",
+            "Classes", "Ten classes a week, from complete beginner to handstand.", up + "classes/")}
+      {card("house.card-studio", "space-rings-wide.jpg", "The space",
+            "The Studio", "11,000 ft², rigging overhead, sauna and cold plunge.", up + "studio/")}
+      {card("house.card-cherish", "tea-room.jpg", "Cafe &amp; tea",
+            "Cherish", "Coffee in the morning, tea when you&rsquo;re done, a seat all day.", up + "cherish/")}
+      {card("house.card-events", "space-floor-night.jpg", "What&rsquo;s on",
+            "Events", "Workshops, tea ceremonies, suppers and live music.", up + "events/")}
+    </div>
+  </div>
+</section>
+
+<!-- 6 · a second photograph -->
+<section class="hs-band flush">
+  <img data-pm-photo="house.band-2" src="{asset}photos/sauna-laughing.jpg" alt="">
+</section>
+
+<!-- 7 · THE THIRD PLACE — the calendar carries this one -->
+<section class="hs-statement alt">
+  <div class="hs-narrow">
+    <h2>Where everybody knows your name</h2>
+    <p>Not home, not work &mdash; the other one. Most weeks the floor turns into something else in
+       the evening: a workshop, a tea ceremony, a supper, live music.</p>
+  </div>
+  <div class="wrap-wide hs-cal">
+    <div data-pm-calendar data-pm-calendar-src="{up}events.json" data-pm-calendar-months="1"></div>
+    <div data-pm-calendar-list></div>
+  </div>
+  <div class="hs-narrow">
+    <div class="cta-row"><a class="btn" href="{up}events/">The full calendar</a></div>
+  </div>
+</section>
+
+<!-- 8 · MEMBERSHIP — the consequence, never the ask -->
+<section class="hs-statement">
+  <div class="hs-narrow">
+    <h2>Come often enough and it gets cheaper</h2>
+    <p>That is the only real reason to take a membership. If a day here turns into a habit,
+       there are better ways to pay for it &mdash; starting at $120 a month.</p>
+    <div class="cta-row"><a class="btn" href="{up}memberships/">See the options</a></div>
+  </div>
+</section>
+'''
 
 
 # ================================================================ EVENTS =====
@@ -1138,12 +1252,12 @@ def events(up, asset):
 # =============================================================== CHERISH =====
 def cherish(up, asset):
     """Placeholder until the permits clear and the Toast site is live."""
-    return f'''{phero(asset, "photos/tea-room.jpg", "Slow down<br>with us.", "The cafe and tea lounge inside Primal Moves Venice.", "Cafe &amp; tea lounge", slot="cherish.hero")}
+    return f'''{phero(asset, "photos/tea-room.jpg", "Slow down <br>with us.", "The cafe and tea lounge inside Primal Moves Venice.", "Cafe &amp; tea lounge", slot="cherish.hero")}
 
 <section class="light">
   <div class="wrap">
     <div class="kicker">What Cherish is</div>
-    <h2 class="display-sm" style="margin-bottom:22px">a room inside<br>a <span class="ed-it">room</span></h2>
+    <h2 class="display-sm" style="margin-bottom:22px">a room inside <br>a <span class="ed-it">room</span></h2>
     <p style="font-size:clamp(17px,1.6vw,20px);line-height:1.7">Cherish is the cafe and tea lounge inside the studio &mdash; coffee in the morning, somewhere to sit and work through the day, tea when you&rsquo;re done. It is the reason a day here can be a whole day rather than an hour.</p>
     <p style="margin-top:18px;color:var(--soft)">Nourishment is not only what we consume, but how we experience it. Presence. Ritual. Nourishment.</p>
 
@@ -1169,7 +1283,7 @@ def partners(up, asset):
 <section class="pad-sm">
   <div class="wrap">
     <div class="kicker">Who we work with</div>
-    <h2 class="display-sm" style="max-width:18ch;margin-bottom:26px">Aligned, not<br><span class="ed-it">sponsored</span>.</h2>
+    <h2 class="display-sm" style="max-width:18ch;margin-bottom:26px">Aligned, not <br><span class="ed-it">sponsored</span>.</h2>
     <p class="lede">We partner with a small number of brands and practitioners whose work belongs in this room — equipment, apparel, food, bodywork, sound, and the people who run events here. If that sounds like you, get in touch.</p>
   </div>
 </section>
@@ -1192,7 +1306,7 @@ def partners(up, asset):
     <div class="split">
       <div>
         <div class="kicker">Work with us</div>
-        <h2 class="display-sm" style="margin-bottom:20px">Pitch us<br><span class="ed-it">something.</span></h2>
+        <h2 class="display-sm" style="margin-bottom:20px">Pitch us <br><span class="ed-it">something.</span></h2>
         <p class="lede">Brand collaborations, product partnerships, event hosting, affiliate arrangements, or using the space for a shoot. Tell us what you have in mind.</p>
         <div class="cta-row" style="margin-top:28px">
           <a class="btn on-dark" href="mailto:hello@venice.primalmoves.com?subject=Partnership%20enquiry">Partnership enquiry</a>
@@ -1214,7 +1328,7 @@ def shop(up, asset):
 <section class="pad-sm">
   <div class="wrap-wide">
     <div class="section-head">
-      <div><div class="kicker">Merch</div><h2 class="display-sm">Not a<br><span class="ed-it">gym tee</span>.</h2></div>
+      <div><div class="kicker">Merch</div><h2 class="display-sm">Not a <br><span class="ed-it">gym tee</span>.</h2></div>
       <a class="link-arrow" data-pm-link="shopUrl" data-pm-hide target="_blank" rel="noopener">Shop all →</a>
     </div>
     <div class="collage">
@@ -1234,7 +1348,7 @@ def shop(up, asset):
 
 <section class="statement flush">
   <div class="wrap-wide" style="padding:clamp(44px,7vw,92px) var(--gut)">
-    <div class="big">If you know,<br>you <em>know</em>.</div>
+    <div class="big">If you know, <br>you <em>know</em>.</div>
   </div>
 </section>
 
@@ -1265,6 +1379,11 @@ page("partners/index.html", 1, "partners/", "Primal Partners — Primal Moves Ve
 page("shop/index.html", 1, "shop/", "Shop — Primal Moves Venice",
      "Primal Moves Venice merchandise.", shop)
 
+# The House template — its own markup, its own URL, its own copy handles.
+page("house/index.html", 1, None, "Primal Moves Venice — Think less, move more, breathe",
+     "A community wellness club in Venice built around a daily movement practice.",
+     house_home, body_cls="house")
+
 # --- 404 -----------------------------------------------------------------
 # Served by Cloudflare for any path that isn't a page (wrangler.toml,
 # not_found_handling). A wrong URL should still look like the studio and
@@ -1274,7 +1393,7 @@ def notfound(up, asset):
 <section class="hero" style="min-height:min(72vh,640px)">
   <div class="wrap-wide" style="position:relative;z-index:2">
     <div class="kicker">404</div>
-    <h1 class="display" style="max-width:16ch;margin:14px 0 0">this page<br>isn&rsquo;t <span class="ed-it">here</span></h1>
+    <h1 class="display" style="max-width:16ch;margin:14px 0 0">this page <br>isn&rsquo;t <span class="ed-it">here</span></h1>
     <p class="lede" style="max-width:34em;margin-top:22px">Either it moved or the link was wrong. The floor, the sauna and the tea are all still where you left them.</p>
     <div class="cta-row" style="margin-top:32px">
       <a class="btn sage lg" href="{up}">back to the start</a>

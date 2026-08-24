@@ -1010,9 +1010,19 @@
                 "One title size across the site"] }
   ];
 
+  function housePath() {
+    // design-9 is the site root; the CSS href is the reliable way back to it
+    var css = (document.querySelector('link[rel="stylesheet"][href*="style.css"]') || {}).href || "";
+    return css ? css.replace(/style\.css.*$/, "house/") : "house/";
+  }
+
   function renderLayout() {
     var body = document.getElementById("pm-body");
     body.innerHTML =
+      '<div class="live-state on" style="margin-bottom:16px"><b>New: a real House template.</b> ' +
+      "The three below are one set of pages restyled. The template is its own design &mdash; " +
+      "full-bleed photographs, centred statements, a card grid \u2014 built as its own markup. " +
+      'Homepage only so far. <a href="' + housePath() + '" style="color:#B4D18A">Open it &rarr;</a></div>' +
       '<p class="pm-note" style="margin-bottom:18px">Three takes on the same content. Switch and scroll &mdash; ' +
       "the choice follows you from page to page.</p>" +
       LAYOUTS.map(function (L) {

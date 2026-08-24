@@ -1741,3 +1741,13 @@ body.house .hero .kicker{font-size:11px;font-weight:400;letter-spacing:.22em;
   body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > .kicker,
   body.house section:not(.hero):not(.phero) .kicker{font-size:clamp(26px,7vw,36px)}
 }
+
+/* --- page heroes ----------------------------------------------------------
+   The interior page title is the same role as the hero headline, so it takes
+   the same treatment: caps at weight 200. And the small label above it goes —
+   on /events/ it read "WHAT'S ON" directly above a section heading that also
+   read "WHAT'S ON", which is the same words twice and text we don't need. */
+body.house .phero :is(h1,.display,.display-sm){
+  text-transform:uppercase;font-weight:200;letter-spacing:.015em;
+  font-size:clamp(38px,6vw,84px);line-height:1.04;color:var(--cream)}
+body.house .phero .kicker{display:none}

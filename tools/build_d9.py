@@ -187,7 +187,7 @@ def two_ways(up, compact=False):
     <a class="btn sage lg" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">start two weeks &rarr;</a>
   </div>
   <div class="way">
-    <div class="kicker">not local, or not yet</div>
+    <div class="kicker">Online</div>
     <h3>Primal Online</h3>
     <div class="price">free</div>
     <p>Live-streamed classes and the full recorded library. Learn the practice from wherever you are, then come find us on the floor when you&rsquo;re in town.</p>

@@ -2,7 +2,7 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-08-24T09:07:18.727213Z",
+ "fetchedAt": "2026-08-24T13:16:29.648879Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
   {
@@ -42,17 +42,17 @@
   },
   {
    "start": "2026-08-25T00:45:00Z",
-   "name": "Breathwork",
-   "staff": "Chris Plourde",
-   "minutes": 60,
-   "category": "Other"
-  },
-  {
-   "start": "2026-08-25T00:45:00Z",
    "name": "Primal Compound (Guided Weightlifting)",
    "staff": "Andreas Alfaro",
    "minutes": 60,
    "category": "Strength training"
+  },
+  {
+   "start": "2026-08-25T00:45:00Z",
+   "name": "Breathwork",
+   "staff": "Chris Plourde",
+   "minutes": 60,
+   "category": "Other"
   },
   {
    "start": "2026-08-25T02:00:00Z",
@@ -415,6 +415,13 @@
    "start": "2026-09-01T02:00:00Z",
    "name": "Progressions",
    "staff": "Gus",
+   "minutes": 60,
+   "category": "Strength training"
+  },
+  {
+   "start": "2026-09-01T13:15:00Z",
+   "name": "Rise",
+   "staff": "Sabrina Rose",
    "minutes": 60,
    "category": "Strength training"
   }

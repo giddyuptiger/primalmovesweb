@@ -22,17 +22,17 @@
 :root{
   /* ---- BRAND PALETTE (brand/palette.md) — green as the accent ---------- */
   --ink:#132238;          /* navy, the dark neutral — body copy, headings   */
-  --deep:#303F16;         /* forest — dark sections, footer, primary button */
+  --deep:#3C3402;         /* chartreuse, dark — sections, footer, statement */
   --paper:#EDE8D2;        /* cream — the default ground                     */
   --paper-2:#DCCFB9;      /* taupe — alternate sections                     */
   --paper-3:#CFC6B0;      /* sage grey, lifted — placeholders, panels       */
   --mid:#57534A;          /* body-secondary — 6.2:1 on cream                */
   --soft:#6B685A;         /* captions, meta — 4.6:1 on cream                */
   --line:#CFC5AE;         /* hairlines                                      */
-  --sage:#303F16;         /* THE ACCENT: forest green                       */
-  --sage-btn:#303F16;     /* button fill — cream label clears 9.2:1         */
-  --sage-txt:#4C5B2A;     /* the accent when it carries words — 6.0:1       */
-  --sage-dk:#22300F;
+  --sage:#D4B906;         /* THE ACCENT: chartreuse (brand)                 */
+  --sage-btn:#D4B906;     /* button fill — INK label clears 8.2:1           */
+  --sage-txt:#6E5E00;     /* the accent when it carries words — 5.2:1       */
+  --sage-dk:#BBA305;
   --clay:#AE411C;         /* burnt red — the secondary accent, used sparely */
   --cream:#F7F3E7;
 
@@ -86,7 +86,7 @@
     --on-dark-strong: color-mix(in srgb, var(--cream) 92%, var(--deep));
     --on-dark-soft:   color-mix(in srgb, var(--cream) 60%, var(--deep));
     --accent-soft:    color-mix(in srgb, var(--sage) 34%, var(--cream));
-    --accent-deep:    color-mix(in srgb, var(--sage) 82%, var(--ink));
+    --accent-deep:    color-mix(in srgb, var(--sage) 42%, var(--ink));
     --ink-soft:       color-mix(in srgb, var(--ink) 62%, var(--soft));
     --day-mark:       color-mix(in srgb, var(--sage) 12%, var(--paper-2));
     --day-mark-dark:  color-mix(in srgb, var(--sage) 74%, var(--cream));
@@ -203,8 +203,8 @@ header.site{background:var(--paper);position:sticky;top:0;z-index:60}
   transition:background .25s ease,border-color .25s ease,color .25s ease;
 }
 .btn:hover{border-color:var(--ink)}
-.btn.sage{background:var(--sage);border-color:var(--sage);color:var(--cream)}
-.btn.sage:hover{background:var(--sage-dk);border-color:var(--sage-dk)}
+.btn.sage{background:var(--sage);border-color:var(--sage);color:var(--ink)}
+.btn.sage:hover{background:var(--sage-dk);border-color:var(--sage-dk);color:var(--ink)}
 .btn.secondary{background:transparent}
 .btn.on-dark{background:var(--cream);border-color:var(--cream);color:var(--ink)}
 .btn.on-dark:hover{background:transparent;color:var(--cream);border-color:var(--cream)}
@@ -392,7 +392,7 @@ section.ink .cls-more:hover,section.ink .cls.open .cls-more{color:var(--cream)}
   padding:10px 20px;font:inherit;font-size:12.5px;letter-spacing:.1em;
   text-transform:lowercase;color:var(--mid);cursor:pointer}
 .chip:hover{border-color:var(--ink);color:var(--ink)}
-.chip.on{background:var(--sage);border-color:var(--sage);color:var(--cream)}
+.chip.on{background:var(--sage);border-color:var(--sage);color:var(--ink)}
 
 /* -------------------------------------------------------- MEMBERSHIP ----- */
 .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line)}
@@ -708,7 +708,7 @@ section.ink .pull{color:var(--paper)}
 .pm-day.pad{visibility:hidden}
 .pm-day.today{font-weight:600;color:var(--ink)}
 .pm-day.has{color:var(--ink);font-weight:500;background:rgba(124,132,113,.13)}
-.pm-day.has:hover{background:var(--sage);color:#fff}
+.pm-day.has:hover{background:var(--sage);color:var(--ink)}
 .pm-day.has i{display:block;width:4px;height:4px;border-radius:50%;
   background:var(--clay);margin-top:3px}
 .pm-day.has:hover i{background:#fff}
@@ -854,7 +854,7 @@ footer{color:var(--on-dark)}
 
 /* design-7 has no chartreuse in its palette — .acid was a leftover class name
    with no background, so it rendered dark-on-dark. Give it a real fill. */
-.btn.acid{background:var(--sage-btn);border-color:var(--sage-btn);color:var(--cream)}
+.btn.acid{background:var(--sage-btn);border-color:var(--sage-btn);color:var(--ink)}
 .btn.acid:hover{background:var(--cream);border-color:var(--cream);color:var(--ink)}
 
 /* ==========================================================================
@@ -917,11 +917,11 @@ section:not(.ink):not(.statement):not(.hero):not(.phero) .btn.ghost-dark:hover{b
 /* ==========================================================================
    PALETTE APPLICATION — green accent
    ========================================================================== */
-.btn.sage{background:var(--sage-btn);border-color:var(--sage-btn);color:var(--cream)}
+.btn.sage{background:var(--sage-btn);border-color:var(--sage-btn);color:var(--ink)}
 .btn.sage:hover{background:var(--ink);border-color:var(--ink);color:var(--cream)}
 .pm-day.has i{background:var(--sage)}
 .pm-day.has{background:var(--day-mark)}
-.pm-day.has:hover{background:var(--sage);color:var(--cream)}
+.pm-day.has:hover{background:var(--sage);color:var(--ink)}
 .note{border-left-color:var(--sage)}
 .serie-body .s-note{border-left-color:var(--sage)}
 .hand{color:var(--clay)}
@@ -1534,7 +1534,7 @@ body.house .way,body.house .obj{
 .dchip .dw{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
 .dchip .dd{font-size:19px;font-weight:500;color:var(--ink)}
 .dchip:hover{border-color:var(--ink)}
-.dchip.on{background:var(--sage-btn);border-color:var(--sage-btn);color:var(--cream)}
+.dchip.on{background:var(--sage-btn);border-color:var(--sage-btn);color:var(--ink)}
 .dchip.on .dd{color:var(--cream)}
 section.ink .dchip{border-color:rgba(255,255,255,.2);color:var(--on-dark-soft)}
 section.ink .dchip .dd{color:var(--on-dark)}
@@ -1836,3 +1836,9 @@ body.house .nav-toggle{color:var(--ink)}
   .cls.open h3,body.house .cls.open h3{font-size:15px}
   .cls .desc{text-align:left;font-size:13px}
 }
+
+
+/* the chartreuse pill carries an ink label everywhere — cream on #D4B906 is
+   1.8:1, ink is 8.2:1 */
+body.house .btn.sage,body.house .btn.on-dark{color:var(--ink)}
+body.house .btn.sage:hover,body.house .btn.on-dark:hover{color:var(--h-fg)}

@@ -865,8 +865,19 @@ window.PM_CONFIG = {
       if (!b) return;
       var card = b.closest(".cls");
       if (!card) return;
-      var open = card.classList.toggle("open");
-      b.setAttribute("aria-expanded", open ? "true" : "false");
+      // one at a time — two open tiles both claim a full row on a phone and
+      // push everything else off the screen
+      var wasOpen = card.classList.contains("open");
+      var list = card.closest(".cls-list") || document;
+      list.querySelectorAll(".cls.open").forEach(function (c) {
+        c.classList.remove("open");
+        var m = c.querySelector(".cls-more");
+        if (m) m.setAttribute("aria-expanded", "false");
+      });
+      if (!wasOpen) {
+        card.classList.add("open");
+        b.setAttribute("aria-expanded", "true");
+      }
     });
 
     // mobile nav

@@ -648,7 +648,12 @@ window.PM_CONFIG = {
     function applyFocusSlots() {
       document.querySelectorAll("[data-pm-photo]").forEach(function (el) {
         var f = (C.photoFocus || {})[el.getAttribute("data-pm-photo")];
-        if (f) el.style.objectPosition = f;
+        if (!f) return;
+        // On a frame slot the dial must reach the image INSIDE the frame —
+        // object-position on the div itself does nothing. The custom property
+        // survives the fill arriving later, so order stops mattering.
+        el.style.objectPosition = f;
+        el.style.setProperty("--pm-focus", f);
       });
     }
     applyFocusSlots();

@@ -520,10 +520,21 @@ def practice(up, asset):
 # have yet simply is not drawn — a visitor should never read a tile that says
 # "add a teacher here". Append a dict and the tile appears.
 
+# Names pulled from the live Mindbody schedule — everyone currently leading a
+# class. Bios and portraits to follow; a card renders without either.
 TEAM = [
     dict(slot="studio.teacher-1", name="Nick Brewer", role="Founder",
          bio="Founded Primal Moves in Ibiza in 2016 after decades across movement "
              "modalities. &ldquo;Think less, move more, breathe.&rdquo;"),
+] + [
+    dict(slot="studio.teacher-%d" % (i + 2), name=n, role="Coach", bio="")
+    for i, n in enumerate([
+        "Andreas Alfaro", "Angela Kukhan", "Chris Plourde", "Gus",
+        "Jacy Cunningham", "Kelo Vallejo", "Miki Ash", "Mivon Prince-Leyva",
+        "Olivia Jaye Brown", "Sabrina Rose", "Sanjay Amin", "Travis Brewer",
+        "Tyler Gustafson", "Whakapaingia Luke", "Zagreus", "Zoe",
+        "Mandyjane", "Waka", "Vernon", "Bowen",
+    ])
 ]
 
 # name, what they do, and an optional link. Empty until there are real ones.
@@ -537,7 +548,7 @@ def studio(up, asset):
         <div class="person-body">
           <h3>{t['name']}</h3>
           <div class="role">{t['role']}</div>
-          <p>{t['bio']}</p>
+          {("<p>" + t['bio'] + "</p>") if t['bio'] else ""}
         </div>
       </div>''' for t in TEAM)
     people = f'''<div class="people{" one" if len(TEAM) == 1 else ""}">{people}</div>'''

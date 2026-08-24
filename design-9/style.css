@@ -51,7 +51,7 @@
   --hand:"Caveat","Bradley Hand",cursive;
 
   --maxw:1140px;
-  --gut:clamp(22px,6vw,84px);
+  --gut:clamp(14px,6vw,84px);
   --radius:3px;
 }
 /* --------------------------------------------------------------------------
@@ -156,9 +156,20 @@ header.site{background:var(--paper);position:sticky;top:0;z-index:60}
 .nav-links a:hover{color:var(--ink);border-bottom-color:var(--line)}
 .nav-links a.current{color:var(--ink);border-bottom-color:var(--sage)}
 .nav-cta{display:flex;gap:20px;flex:none;align-items:center}
+/* the word "menu" replaced by the icon everyone already recognises, and it
+   sits at the far right of the bar rather than beside the day-pass button */
 .nav-toggle{display:none;background:none;border:0;color:var(--ink);cursor:pointer;
-  font:inherit;font-size:13px;letter-spacing:.16em;text-transform:lowercase;
-  padding:10px 0;border-bottom:1px solid var(--line)}
+  padding:0;width:42px;height:42px;align-items:center;justify-content:center}
+.burger{display:block;position:relative;width:22px;height:1.5px;background:currentColor;
+  transition:background .18s ease}
+.burger::before,.burger::after{content:"";position:absolute;left:0;width:22px;height:1.5px;
+  background:currentColor;transition:top .18s ease,transform .18s ease}
+.burger::before{top:-7px}
+.burger::after{top:7px}
+/* open, the same three strokes become a cross */
+.nav-toggle[aria-expanded="true"] .burger{background:transparent}
+.nav-toggle[aria-expanded="true"] .burger::before{top:0;transform:rotate(45deg)}
+.nav-toggle[aria-expanded="true"] .burger::after{top:0;transform:rotate(-45deg)}
 .mobile-menu{display:none;background:var(--paper)}
 .mobile-menu.open{display:block}
 .mobile-menu ul{list-style:none;padding:8px var(--gut) 34px}
@@ -168,8 +179,8 @@ header.site{background:var(--paper);position:sticky;top:0;z-index:60}
   text-transform:lowercase;color:var(--ink);letter-spacing:-.01em}
 @media (max-width:1080px){
   .nav-links{display:none}
-  .nav-toggle{display:inline-block;margin-left:auto}
-  .nav-cta{gap:14px}
+  .nav-toggle{display:inline-flex;order:3;margin-left:14px}
+  .nav-cta{order:2;margin-left:auto;gap:14px}
 }
 @media (max-width:620px){
   .nav-cta .btn.secondary{display:none}
@@ -313,8 +324,14 @@ section.ink .day-row .desc{color:var(--on-dark)}
 .cls-list{margin-top:8px;display:grid;gap:14px;align-items:start;
   grid-template-columns:repeat(3,minmax(0,1fr));max-width:760px}
 body.house .cls-list{margin-inline:auto}
-@media (max-width:720px){ .cls-list{grid-template-columns:repeat(2,minmax(0,1fr))} }
-@media (max-width:460px){ .cls-list{grid-template-columns:1fr;max-width:340px} }
+/* three across at every width — the 3x3 square is the shape, and collapsing
+   to one column on a phone turned nine classes into nine screens */
+@media (max-width:720px){
+  .cls-list{gap:8px}
+  .cls{min-height:0;padding:14px 12px}
+  .cls h3{font-size:15px;line-height:1.2}
+  .cls .lvl{font-size:9px;letter-spacing:.12em}
+}
 .cls{display:flex;flex-direction:column;width:100%;min-height:196px;
   text-align:left;font:inherit;cursor:pointer;
   background:var(--paper);border:1px solid var(--line);border-radius:8px;
@@ -336,12 +353,37 @@ section.ink .cls{background:transparent;border-color:rgba(255,255,255,.18)}
   transition:grid-template-rows .22s ease,opacity .18s ease,margin-top .22s ease;
   overflow:hidden}
 .cls .desc > span{min-height:0;display:block}
-.cls:hover .desc,.cls:focus-visible .desc,.cls[aria-expanded="true"] .desc{
-  grid-template-rows:1fr;opacity:1;margin-top:12px}
-/* no hover on a phone — the cards open on tap instead, so never hide it there */
-@media (hover:none){
-  .cls .desc{grid-template-rows:1fr;opacity:1;margin-top:12px}
-  .cls{cursor:default}
+/* Opened by the plus, and only by the plus. Hover-to-reveal never worked on
+   a phone, and the @media(hover:none) fallback that pinned it open was what
+   made the grid so tall there in the first place. */
+.cls.open .desc{grid-template-rows:1fr;opacity:1;margin-top:12px}
+
+.cls{position:relative;cursor:default}
+.cls-head{text-decoration:none;color:inherit}
+.cls-more{position:absolute;top:8px;right:8px;width:30px;height:30px;padding:0;
+  border:0;background:transparent;color:var(--soft);cursor:pointer;
+  border-radius:50%;display:grid;place-items:center}
+.cls-more::before,.cls-more::after{content:"";position:absolute;background:currentColor;
+  transition:transform .18s ease,opacity .18s ease}
+.cls-more::before{width:11px;height:1.5px}
+.cls-more::after{width:1.5px;height:11px}
+.cls-more:hover{color:var(--ink)}
+.cls.open .cls-more{color:var(--ink)}
+.cls.open .cls-more::after{transform:rotate(90deg);opacity:0}
+.cls-more:focus-visible{outline:2px solid var(--sage);outline-offset:2px}
+section.ink .cls-more{color:var(--on-dark-soft)}
+section.ink .cls-more:hover,section.ink .cls.open .cls-more{color:var(--cream)}
+/* the head must not run under the plus */
+.cls-head h3{padding-right:26px}
+@media (max-width:720px){
+  .cls-more{top:4px;right:4px;width:26px;height:26px}
+  .cls-head h3{padding-right:22px}
+  .cls .desc{font-size:13px}
+  /* a description in a 109px column is one word per line. The open card takes
+     the whole row instead, which is the only width it reads at. */
+  .cls.open{grid-column:1 / -1}
+  .cls.open .cls-head{flex:0 0 auto;flex-direction:row;align-items:baseline;justify-content:flex-start;gap:12px}
+  .cls.open .cls-meta{flex-direction:row;gap:10px}
 }
 
 /* ------------------------------------------------------------ EVENTS ----- */
@@ -1751,3 +1793,9 @@ body.house .phero :is(h1,.display,.display-sm){
   text-transform:uppercase;font-weight:200;letter-spacing:.015em;
   font-size:clamp(38px,6vw,84px);line-height:1.04;color:var(--cream)}
 body.house .phero .kicker{display:none}
+
+
+/* the mobile menu follows the same rule as the rest of House: caps, light */
+body.house .mobile-menu a{text-transform:uppercase;font-weight:300;
+  letter-spacing:.09em;font-size:17px}
+body.house .nav-toggle{color:var(--ink)}

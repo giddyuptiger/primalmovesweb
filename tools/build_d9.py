@@ -32,7 +32,7 @@ def chrome(depth, active, cherish=False, nav_up=None):
     <a class="brand" href="{nav}index.html">Primal Moves<span>Venice</span></a>
     <nav class="nav-links">{nav_links}
     </nav>
-    <button class="nav-toggle" aria-expanded="false" aria-controls="mobile-menu">Menu</button>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu"><span class="burger" aria-hidden="true"></span></button>
     <div class="nav-cta">
       <a class="btn secondary" data-pm-link="onlineTrialUrl" target="_blank" rel="noopener">Online free</a>
       <a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 Day Pass</a>
@@ -685,14 +685,15 @@ def classes(up, asset):
     # the same ten fit in one: title, level, duration always visible, and the
     # description arriving on hover (or on tap, where there is no hover).
     body = "".join(f'''
-      <a class="cls" href="#schedule">
+      <div class="cls">
         <div class="n">{n}</div>
-        <div class="cls-head">
+        <a class="cls-head" href="#schedule">
           <h3>{name}</h3>
           <div class="cls-meta"><span class="lvl{' beginner' if beg else ''}">{lvl}</span><span class="lvl dur">{dur}</span></div>
-        </div>
+        </a>
+        <button class="cls-more" aria-expanded="false" aria-label="What {name} involves"></button>
         <div class="desc"><span>{desc}</span></div>
-      </a>''' for n, name, desc, lvl, beg, dur in rows)
+      </div>''' for n, name, desc, lvl, beg, dur in rows)
 
     return f'''{phero(asset, "photos/collective-downdog.jpg", "Classes &amp; Schedule", "What's on, who it's for, and how to book it.", "Find your entry point", slot="classes.hero")}
 
@@ -754,22 +755,28 @@ def classes(up, asset):
 
 # ============================================================== SCHEDULE =====
 
+# Which of the two reads of the pricing ships, and whether the reader gets a
+# switch. "compare" | "cards"; MEM_TOGGLE False renders only the chosen one.
+MEM_VIEW = "compare"
+MEM_TOGGLE = False
+
+
 def memberships(up, asset):
+    tabs = '''    <div class="mem-tabs" role="tablist" aria-label="How to view the memberships">
+      <button role="tab" id="tab-cards" aria-controls="view-cards" aria-selected="{a}" class="{ac}">Cards</button>
+      <button role="tab" id="tab-compare" aria-controls="view-compare" aria-selected="{b}" class="{bc}">Compare all</button>
+    </div>'''.format(a="true" if MEM_VIEW == "cards" else "false",
+                      ac="on" if MEM_VIEW == "cards" else "",
+                      b="true" if MEM_VIEW == "compare" else "false",
+                      bc="on" if MEM_VIEW == "compare" else "") if MEM_TOGGLE else ""
+    cmp_attr   = "" if MEM_VIEW == "compare" else " hidden"
+    cards_attr = "" if MEM_VIEW == "cards" else " hidden"
     return f'''{phero(asset, "photos/boat-collective.jpg", "Memberships", "The natural next step — after you've felt what this is.", "Join", slot="memberships.hero")}
 
 <section class="pad-sm">
   <div class="wrap-wide">
-    <div class="kicker">Options</div>
-    <h2 class="display-sm" style="margin-bottom:10px">Memberships &amp; passes</h2>
-    <p class="lede" style="margin-bottom:clamp(26px,3.5vw,36px)">Come for a day first, then decide. Everything below is bookable online.</p>
     <div data-pm-pricing style="margin-bottom:30px"></div>
-
-    <!-- DESIGN-MODE TOGGLE. Two reads of the same data — keep whichever wins.
-         The choice sticks in the URL (#compare) so it can be shared. -->
-    <div class="mem-tabs" role="tablist" aria-label="How to view the memberships">
-      <button role="tab" id="tab-cards" aria-controls="view-cards" aria-selected="true" class="on">Cards</button>
-      <button role="tab" id="tab-compare" aria-controls="view-compare" aria-selected="false">Compare all</button>
-    </div>
+{tabs}
 
     <!-- Most people aren't ready to pick a plan on arrival. The two short
          lengths sit here, above both views, so the first thing on the page
@@ -792,14 +799,14 @@ def memberships(up, asset):
      different memberships. That drops the table from eight columns to six
      and makes every row an apples-to-apples comparison of monthly plans.
      ========================================================================= -->
-<div class="mem-view" id="view-compare" hidden>
+<div class="mem-view" id="view-compare"{cmp_attr}>
   <div class="cmp-scroll">
 {COMPARE_TABLE}
   </div>
 
 </div>
 
-<div class="mem-view" id="view-cards">
+<div class="mem-view" id="view-cards"{cards_attr}>
     <h3 id="family" class="group-h">Start here</h3>
     <p class="group-sub">No long commitment &mdash; and something for the family.</p>
     <div class="plans four">
@@ -1251,12 +1258,13 @@ def house_method(up, asset):
 def house_classes(up, asset):
     hup = "" if up == "../" else "../"   # stay inside /house/
     cards = "".join(f'''
-      <a class="cls" href="#schedule">
-        <div class="cls-head"><h3>{name}</h3>
+      <div class="cls">
+        <a class="cls-head" href="#schedule"><h3>{name}</h3>
           <div class="cls-meta"><span class="lvl{' beginner' if beg else ''}">{lvl}</span><span class="lvl dur">{dur}</span></div>
-        </div>
+        </a>
+        <button class="cls-more" aria-expanded="false" aria-label="What {name} involves"></button>
         <div class="desc"><span>{desc}</span></div>
-      </a>''' for n, name, desc, lvl, beg, dur in CLASS_ROWS)
+      </div>''' for n, name, desc, lvl, beg, dur in CLASS_ROWS)
 
     return (
       hs_hero(asset, "house.classes.hero", "collective-downdog.jpg", "Classes",

@@ -1001,28 +1001,18 @@
                 "Statement bands go dark; clay stops carrying display type",
                 "Shorter: smaller series images, tighter heroes",
                 "Empty teacher frames hidden until there are photographs"] },
-    { id: "house", name: "House style", note: "primalmoves.com's structure, our colours and words.",
-      bullets: ["The heading comes first and is a real heading",
-                "The tiny eyebrow drops below the title as a quiet label",
-                "One line under each heading instead of three paragraphs",
-                "Centred sections, one button each",
-                "Full-width pictures; the ways-in become cards",
-                "One title size across the site"] }
+    { id: "house", name: "Primal Moves", note: "primalmoves.com's treatment, in our colours and limewash.",
+      bullets: ["Headings in caps at the lightest weight",
+                "No italics anywhere",
+                "One heading per section, never a second poetic line",
+                "Body copy in sentence case, held to one column",
+                "Roughly twice the vertical air",
+                "Outline pill buttons; tall photographs"] }
   ];
-
-  function housePath() {
-    // design-9 is the site root; the CSS href is the reliable way back to it
-    var css = (document.querySelector('link[rel="stylesheet"][href*="style.css"]') || {}).href || "";
-    return css ? css.replace(/style\.css.*$/, "house/") : "house/";
-  }
 
   function renderLayout() {
     var body = document.getElementById("pm-body");
     body.innerHTML =
-      '<div class="live-state on" style="margin-bottom:16px"><b>New: a real House template.</b> ' +
-      "The three below are one set of pages restyled. The template is its own design &mdash; " +
-      "full-bleed photographs, centred statements, a card grid \u2014 built as its own markup. " +
-      'Homepage only so far. <a href="' + housePath() + '" style="color:#B4D18A">Open it &rarr;</a></div>' +
       '<p class="pm-note" style="margin-bottom:18px">Three takes on the same content. Switch and scroll &mdash; ' +
       "the choice follows you from page to page.</p>" +
       LAYOUTS.map(function (L) {

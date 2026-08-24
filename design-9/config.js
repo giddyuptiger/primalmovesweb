@@ -856,8 +856,18 @@ window.PM_CONFIG = {
         var b = e.target.closest("button[role=tab]");
         if (b) show(b.id, true);
       });
-      show(location.hash === "#compare" ? "tab-compare" : "tab-cards", false);
+      show(location.hash === "#cards" ? "tab-cards" : "tab-compare", false);
     }
+
+    // class cards: the description opens on the plus, nowhere else.
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest(".cls-more");
+      if (!b) return;
+      var card = b.closest(".cls");
+      if (!card) return;
+      var open = card.classList.toggle("open");
+      b.setAttribute("aria-expanded", open ? "true" : "false");
+    });
 
     // mobile nav
     var toggle = document.querySelector(".nav-toggle");

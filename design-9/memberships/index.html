@@ -33,7 +33,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
         <a class="" href="../cherish/">Tea &amp; Cafe</a>
         <a class="" href="../events/">Events</a>
     </nav>
-    <button class="nav-toggle" aria-expanded="false" aria-controls="mobile-menu">Menu</button>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu"><span class="burger" aria-hidden="true"></span></button>
     <div class="nav-cta">
       <a class="btn secondary" data-pm-link="onlineTrialUrl" target="_blank" rel="noopener">Online free</a>
       <a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 Day Pass</a>
@@ -63,25 +63,16 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 
 <section class="pad-sm">
   <div class="wrap-wide">
-    <div data-pm-copy="memberships.kicker2" class="kicker">Options</div>
-    <h2 data-pm-copy="memberships.h21" class="display-sm" style="margin-bottom:10px">Memberships &amp; passes</h2>
-    <p data-pm-copy="memberships.p2" class="lede" style="margin-bottom:clamp(26px,3.5vw,36px)">Come for a day first, then decide. Everything below is bookable online.</p>
     <div data-pm-pricing style="margin-bottom:30px"></div>
 
-    <!-- DESIGN-MODE TOGGLE. Two reads of the same data — keep whichever wins.
-         The choice sticks in the URL (#compare) so it can be shared. -->
-    <div class="mem-tabs" role="tablist" aria-label="How to view the memberships">
-      <button role="tab" id="tab-cards" aria-controls="view-cards" aria-selected="true" class="on">Cards</button>
-      <button role="tab" id="tab-compare" aria-controls="view-compare" aria-selected="false">Compare all</button>
-    </div>
 
     <!-- Most people aren't ready to pick a plan on arrival. The two short
          lengths sit here, above both views, so the first thing on the page
          is a way in that costs $40. -->
     <div class="cmp-try">
       <div>
-        <div data-pm-copy="memberships.kicker3" class="kicker">before you commit</div>
-        <p data-pm-copy="memberships.p3" style="margin:6px 0 0">The Primal, bought short. Same floor, same sauna, same everything &mdash; nothing recurring.</p>
+        <div data-pm-copy="memberships.kicker2" class="kicker">before you commit</div>
+        <p data-pm-copy="memberships.p2" style="margin:6px 0 0">The Primal, bought short. Same floor, same sauna, same everything &mdash; nothing recurring.</p>
       </div>
       <div class="cta-row">
         <a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">Try Primal for a day &middot; $40</a>
@@ -96,7 +87,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
      different memberships. That drops the table from eight columns to six
      and makes every row an apples-to-apples comparison of monthly plans.
      ========================================================================= -->
-<div class="mem-view" id="view-compare" hidden>
+<div class="mem-view" id="view-compare">
   <div class="cmp-scroll">
     <table class="cmp">
       <caption class="sr-only">Membership comparison</caption>
@@ -111,9 +102,9 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 
 </div>
 
-<div class="mem-view" id="view-cards">
+<div class="mem-view" id="view-cards" hidden>
     <h3 data-pm-copy="memberships.h31" id="family" class="group-h">Start here</h3>
-    <p data-pm-copy="memberships.p4" class="group-sub">No long commitment &mdash; and something for the family.</p>
+    <p data-pm-copy="memberships.p3" class="group-sub">No long commitment &mdash; and something for the family.</p>
     <div class="plans four">
       <div class="plan hero-plan">
         <div class="tier">a day at Primal</div>
@@ -174,7 +165,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
     </div>
 
     <h3 data-pm-copy="memberships.h32" class="group-h" style="margin-top:clamp(48px,7vw,80px)">Memberships</h3>
-    <p data-pm-copy="memberships.p5" class="group-sub">Monthly autopay. Three-month minimum.</p>
+    <p data-pm-copy="memberships.p4" class="group-sub">Monthly autopay. Three-month minimum.</p>
     <div class="plans four">
       <div class="plan">
         <div class="tier">Weekend Warrior</div>
@@ -265,9 +256,9 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 
 <section class="alt" id="partners">
   <div class="wrap-wide">
-    <div data-pm-copy="memberships.kicker4" class="kicker">Community partners</div>
-    <h2 data-pm-copy="memberships.h22" class="display-sm" style="max-width:20ch;margin-bottom:14px">your membership <br>works <span class="ed-it">elsewhere</span></h2>
-    <p data-pm-copy="memberships.p6" class="lede" style="margin-bottom:34px;max-width:38em">We keep a small roster of studios and practitioners we actually send people to. Primal members get a standing discount at each.</p>
+    <div data-pm-copy="memberships.kicker3" class="kicker">Community partners</div>
+    <h2 data-pm-copy="memberships.h21" class="display-sm" style="max-width:20ch;margin-bottom:14px">your membership <br>works <span class="ed-it">elsewhere</span></h2>
+    <p data-pm-copy="memberships.p5" class="lede" style="margin-bottom:34px;max-width:38em">We keep a small roster of studios and practitioners we actually send people to. Primal members get a standing discount at each.</p>
     <div class="info-list">
       <div class="info-row">
         <div class="i-label">Moss</div>
@@ -292,7 +283,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 <section>
   <div class="wrap-wide">
     <div class="section-head">
-      <div><div data-pm-copy="memberships.kicker5" class="kicker">Why people join</div><h2 data-pm-copy="memberships.h23">Belonging, mostly.</h2></div>
+      <div><div data-pm-copy="memberships.kicker4" class="kicker">Why people join</div><h2 data-pm-copy="memberships.h22">Belonging, mostly.</h2></div>
     </div>
     <div class="voices">
       <div class="voice"><div class="theme">Consistency</div><div class="q ed">Coming five days a week stops being a decision you have to make.</div></div>
@@ -304,8 +295,8 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 
 <section>
   <div class="wrap">
-    <div data-pm-copy="memberships.kicker6" class="kicker">Questions</div>
-    <h2 data-pm-copy="memberships.h24" style="margin-bottom:30px">Before you commit.</h2>
+    <div data-pm-copy="memberships.kicker5" class="kicker">Questions</div>
+    <h2 data-pm-copy="memberships.h23" style="margin-bottom:30px">Before you commit.</h2>
     <div class="faq">
       <details open><summary data-pm-copy="memberships.summary6">Can I try before joining?</summary><div class="a">Yes — that's what the two-week trial is for. Unlimited classes, sauna and cold plunge included. Most people join after it, but you're under no obligation.</div></details>
       <details><summary data-pm-copy="memberships.summary7">Do I need experience?</summary><div class="a">No. Classes marked “Start here” assume none at all, and every class has a scaled version of whatever's being taught.</div></details>
@@ -318,23 +309,23 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 
 <section class="alt flush">
   <div class="wrap-wide" style="padding-top:clamp(50px,8vh,90px)">
-    <div data-pm-copy="memberships.kicker7" class="kicker">two ways to start</div>
-    <p data-pm-copy="memberships.p7" class="lede" style="margin-bottom:36px;max-width:34em">One hour a day, five days a week. That is genuinely all it takes to find out what your body is capable of. Or come for a single $40 day first &mdash; nobody minds which.</p>
+    <div data-pm-copy="memberships.kicker6" class="kicker">two ways to start</div>
+    <p data-pm-copy="memberships.p6" class="lede" style="margin-bottom:36px;max-width:34em">One hour a day, five days a week. That is genuinely all it takes to find out what your body is capable of. Or come for a single $40 day first &mdash; nobody minds which.</p>
   </div>
     <div class="ways">
   <div class="way feature">
-    <div data-pm-copy="memberships.kicker8" class="kicker">give us two weeks</div>
+    <div data-pm-copy="memberships.kicker7" class="kicker">give us two weeks</div>
     <h3 data-pm-copy="memberships.h33">two weeks unlimited</h3>
     <div class="price">$69</div>
-    <p data-pm-copy="memberships.p8">Every class, the sauna, the cold plunge, for fourteen days. Long enough to stop thinking of it as a trial and start thinking of it as your week.</p>
-    <p data-pm-copy="memberships.p9" class="aside" style="font-size:15.5px">Not a single drop-in. A proper run at it.</p>
+    <p data-pm-copy="memberships.p7">Every class, the sauna, the cold plunge, for fourteen days. Long enough to stop thinking of it as a trial and start thinking of it as your week.</p>
+    <p data-pm-copy="memberships.p8" class="aside" style="font-size:15.5px">Not a single drop-in. A proper run at it.</p>
     <a class="btn sage lg" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">start two weeks &rarr;</a>
   </div>
   <div class="way">
-    <div data-pm-copy="memberships.kicker9" class="kicker">Online</div>
+    <div data-pm-copy="memberships.kicker8" class="kicker">Online</div>
     <h3 data-pm-copy="memberships.h34">Primal Online</h3>
     <div class="price">free</div>
-    <p data-pm-copy="memberships.p10">Live-streamed classes and the full recorded library. Learn the practice from wherever you are, then come find us on the floor when you&rsquo;re in town.</p>
+    <p data-pm-copy="memberships.p9">Live-streamed classes and the full recorded library. Learn the practice from wherever you are, then come find us on the floor when you&rsquo;re in town.</p>
     <a class="btn lg" data-pm-link="onlineTrialUrl" target="_blank" rel="noopener">start free &rarr;</a>
   </div>
 </div>
@@ -351,13 +342,13 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 
       <div class="foot-block">
         <h4 data-pm-copy="memberships.h41">Find us</h4>
-        <p data-pm-copy="memberships.p11">
+        <p data-pm-copy="memberships.p10">
           <a href="https://maps.google.com/?q=1038+Princeton+Dr+Ste+B,+Marina+del+Rey,+CA+90292" target="_blank" rel="noopener">
             <span data-pm-text="address1">1038 Princeton Dr, Ste B</span> <br>
             <span data-pm-text="address2">Marina del Rey, CA 90292</span>
           </a>
         </p>
-        <p data-pm-copy="memberships.p12" style="margin-top:14px">
+        <p data-pm-copy="memberships.p11" style="margin-top:14px">
           <a data-pm-link="phoneHref"><span data-pm-text="phone">(310) 800-7061</span></a>
         </p>
       </div>

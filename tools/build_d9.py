@@ -15,20 +15,21 @@ NAV = [
     ("events/",      "Events"),
 ]
 
-def chrome(depth, active, cherish=False):
+def chrome(depth, active, cherish=False, nav_up=None):
     up = "../" * depth
     asset = "../" * (depth + 1) + "assets/"
+    nav = up if nav_up is None else nav_up      # /house/ links stay in /house/
 
 
     nav_links = "".join(
-        f'\n        <a class="{"current" if h == active else ""}" href="{up}{h}">{l}</a>'
+        f'\n        <a class="{"current" if h == active else ""}" href="{nav}{h}">{l}</a>'
         for h, l in NAV
     )
-    mobile_items = "".join(f'\n        <li><a href="{up}{h}">{l}</a></li>' for h, l in NAV)
+    mobile_items = "".join(f'\n        <li><a href="{nav}{h}">{l}</a></li>' for h, l in NAV)
 
     header = f'''<header class="site">
   <div class="nav-inner">
-    <a class="brand" href="{up}index.html">Primal Moves<span>Venice</span></a>
+    <a class="brand" href="{nav}index.html">Primal Moves<span>Venice</span></a>
     <nav class="nav-links">{nav_links}
     </nav>
     <button class="nav-toggle" aria-expanded="false" aria-controls="mobile-menu">Menu</button>
@@ -51,7 +52,7 @@ def chrome(depth, active, cherish=False):
     <div class="foot-grid">
 
       <div class="foot-id">
-        <a class="foot-brand-mark" href="{up}index.html">Primal Moves<span>Venice</span></a>
+        <a class="foot-brand-mark" href="{nav}index.html">Primal Moves<span>Venice</span></a>
       </div>
 
       <div class="foot-block">
@@ -116,8 +117,8 @@ def tag_copy(html, path):
     return html
 
 
-def page(path, depth, active, title, desc, body_fn, cherish=False, body_cls=""):
-    header, footer, up, asset = chrome(depth, active, cherish)
+def page(path, depth, active, title, desc, body_fn, cherish=False, body_cls="", nav_up=None):
+    header, footer, up, asset = chrome(depth, active, cherish, nav_up)
     body = body_fn(up, asset)
     classes = " ".join(x for x in [("cherish-scope" if cherish else ""), body_cls] if x)
     body_class = f' class="{classes}"' if classes else ""
@@ -723,17 +724,7 @@ def studio(up, asset):
 # =============================================================== CLASSES =====
 
 def classes(up, asset):
-    rows = [
-        ("01","Primal","The signature class. Functional bodyweight strength balancing push and pull, taught in the four-series method. If you take one thing here, take this.","Start here",True,"60 min"),
-        ("02","Compound","Strength-focused compound movement work — loaded, deliberate, and a useful counterweight to the bodyweight practice.","Beginner friendly",True,"60 min"),
-        ("03","Moves","Progressive strength and mobility. Real capacity in the spine, shoulders, hips and hands.","All levels",False,"60 min"),
-        ("04","Progressions","Dynamic-to-static skill work and hand-supported transitions. For movers ready to go further.","Intermediate",False,"60–90 min"),
-        ("05","Handstand","Complex sequences and dynamic inversions. Requires a foundation in the earlier series.","Advanced",False,"60 min"),
-        ("06","Restore","Mobility, breath and active recovery. The other half of getting strong.","Start here",True,"45–60 min"),
-        ("07","Primal Vinyasa","Breath-led flow with primal patterning underneath. Familiar shape, different engine.","All levels",False,"60 min"),
-        ("08","Primal Kids","Youth movement classes. Crawling, climbing, falling over, getting up.","Kids",False,"45 min"),
-        ("09","Meditation","Nervous-system down-regulation, run as a four-week series.","All levels",False,"45 min"),
-    ]
+    rows = CLASS_ROWS
     # Ten classes as ten full-width rows ran to nearly three screens. As cards
     # the same ten fit in one: title, level, duration always visible, and the
     # description arriving on hover (or on tap, where there is no hover).
@@ -847,15 +838,7 @@ def memberships(up, asset):
      ========================================================================= -->
 <div class="mem-view" id="view-compare" hidden>
   <div class="cmp-scroll">
-    <table class="cmp">
-      <caption class="sr-only">Membership comparison</caption>
-      <thead>
-        <tr><th scope="col" class="cmp-rowhead"><span class="sr-only">Feature</span></th><th scope="col" class="is-hero"><span class="cmp-flag">Most popular</span><span class="cmp-name">The Primal</span><span class="cmp-price">$315</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">The Nomad</span><span class="cmp-price">$375</span><span class="cmp-per">one month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">The Explorer</span><span class="cmp-price">$200</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Weekend Warrior</span><span class="cmp-price">$120</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Kids&rsquo; Primal</span><span class="cmp-price">$125</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Digital Studio</span><span class="cmp-price">$14</span><span class="cmp-per">per month</span></th></tr>
-      </thead>
-      <tbody><tr class="cmp-group"><th scope="colgroup" colspan="7">What you get</th></tr><tr><th scope="row">Classes</th><td data-l="The Primal" class="is-hero"><b>Unlimited</b></td><td data-l="The Nomad"><b>Unlimited</b></td><td data-l="The Explorer">8 a month</td><td data-l="Weekend Warrior">4 a month</td><td data-l="Kids&rsquo; Primal">Kids&rsquo; only</td><td data-l="Digital Studio">Online only</td></tr><tr><th scope="row">Sauna &amp; cold plunge</th><td data-l="The Primal" class="y is-hero">Unlimited</td><td data-l="The Nomad" class="y">Unlimited</td><td data-l="The Explorer" class="y">On class days</td><td data-l="Weekend Warrior" class="y">On class days</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th scope="row">Gym access</th><td data-l="The Primal" class="y is-hero">Yes</td><td data-l="The Nomad" class="y">Yes</td><td data-l="The Explorer" class="y">On class days</td><td data-l="Weekend Warrior" class="y">On class days</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th scope="row">Cowork &amp; wifi</th><td data-l="The Primal" class="y is-hero">Yes</td><td data-l="The Nomad" class="y">Yes</td><td data-l="The Explorer" class="y">On class days</td><td data-l="Weekend Warrior" class="y">On class days</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th scope="row">Tea ceremony</th><td data-l="The Primal" class="y is-hero">Included</td><td data-l="The Nomad" class="y">Included</td><td data-l="The Explorer" class="n">&mdash;</td><td data-l="Weekend Warrior" class="n">&mdash;</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th scope="row">Online library</th><td data-l="The Primal" class="n is-hero">&mdash;</td><td data-l="The Nomad" class="n">&mdash;</td><td data-l="The Explorer" class="n">&mdash;</td><td data-l="Weekend Warrior" class="n">&mdash;</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="y">Everything</td></tr><tr class="cmp-group"><th scope="colgroup" colspan="7">The details</th></tr><tr><th scope="row">Commitment</th><td data-l="The Primal" class="is-hero">3 months</td><td data-l="The Nomad"><b>None</b></td><td data-l="The Explorer">3 months</td><td data-l="Weekend Warrior">3 months</td><td data-l="Kids&rsquo; Primal">3 months</td><td data-l="Digital Studio">None</td></tr><tr><th scope="row">Best for</th><td data-l="The Primal" class="is-hero">Making it a habit</td><td data-l="The Nomad">Visitors &amp; short stays</td><td data-l="The Explorer">Twice a week</td><td data-l="Weekend Warrior">Once a week</td><td data-l="Kids&rsquo; Primal">Ages 5&ndash;12</td><td data-l="Digital Studio">Training anywhere</td></tr>
-        <tr class="cmp-cta"><th scope="row"><span class="sr-only">Sign up</span></th><td data-l="The Primal" class="is-hero"><a class="btn sage" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="The Nomad"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="The Explorer"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="Weekend Warrior"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="Kids&rsquo; Primal"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="Digital Studio"><a class="btn" data-pm-link="digitalStudioUrl" target="_blank" rel="noopener">Start free</a></td></tr>
-      </tbody>
-    </table>
+{COMPARE_TABLE}
   </div>
 
 </div>
@@ -1069,6 +1052,98 @@ def memberships(up, asset):
 
 
 
+
+# The membership comparison, shared by both templates.
+COMPARE_TABLE = '''    <table class="cmp">
+      <caption class="sr-only">Membership comparison</caption>
+      <thead>
+        <tr><th scope="col" class="cmp-rowhead"><span class="sr-only">Feature</span></th><th scope="col" class="is-hero"><span class="cmp-flag">Most popular</span><span class="cmp-name">The Primal</span><span class="cmp-price">$315</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">The Nomad</span><span class="cmp-price">$375</span><span class="cmp-per">one month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">The Explorer</span><span class="cmp-price">$200</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Weekend Warrior</span><span class="cmp-price">$120</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Kids&rsquo; Primal</span><span class="cmp-price">$125</span><span class="cmp-per">per month</span></th><th scope="col"><span class="cmp-flag empty" aria-hidden="true"></span><span class="cmp-name">Digital Studio</span><span class="cmp-price">$14</span><span class="cmp-per">per month</span></th></tr>
+      </thead>
+      <tbody><tr class="cmp-group"><th scope="colgroup" colspan="7">What you get</th></tr><tr><th scope="row">Classes</th><td data-l="The Primal" class="is-hero"><b>Unlimited</b></td><td data-l="The Nomad"><b>Unlimited</b></td><td data-l="The Explorer">8 a month</td><td data-l="Weekend Warrior">4 a month</td><td data-l="Kids&rsquo; Primal">Kids&rsquo; only</td><td data-l="Digital Studio">Online only</td></tr><tr><th scope="row">Sauna &amp; cold plunge</th><td data-l="The Primal" class="y is-hero">Unlimited</td><td data-l="The Nomad" class="y">Unlimited</td><td data-l="The Explorer" class="y">On class days</td><td data-l="Weekend Warrior" class="y">On class days</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th scope="row">Gym access</th><td data-l="The Primal" class="y is-hero">Yes</td><td data-l="The Nomad" class="y">Yes</td><td data-l="The Explorer" class="y">On class days</td><td data-l="Weekend Warrior" class="y">On class days</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th scope="row">Cowork &amp; wifi</th><td data-l="The Primal" class="y is-hero">Yes</td><td data-l="The Nomad" class="y">Yes</td><td data-l="The Explorer" class="y">On class days</td><td data-l="Weekend Warrior" class="y">On class days</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th scope="row">Tea ceremony</th><td data-l="The Primal" class="y is-hero">Included</td><td data-l="The Nomad" class="y">Included</td><td data-l="The Explorer" class="n">&mdash;</td><td data-l="Weekend Warrior" class="n">&mdash;</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="n">&mdash;</td></tr><tr><th scope="row">Online library</th><td data-l="The Primal" class="n is-hero">&mdash;</td><td data-l="The Nomad" class="n">&mdash;</td><td data-l="The Explorer" class="n">&mdash;</td><td data-l="Weekend Warrior" class="n">&mdash;</td><td data-l="Kids&rsquo; Primal" class="n">&mdash;</td><td data-l="Digital Studio" class="y">Everything</td></tr><tr class="cmp-group"><th scope="colgroup" colspan="7">The details</th></tr><tr><th scope="row">Commitment</th><td data-l="The Primal" class="is-hero">3 months</td><td data-l="The Nomad"><b>None</b></td><td data-l="The Explorer">3 months</td><td data-l="Weekend Warrior">3 months</td><td data-l="Kids&rsquo; Primal">3 months</td><td data-l="Digital Studio">None</td></tr><tr><th scope="row">Best for</th><td data-l="The Primal" class="is-hero">Making it a habit</td><td data-l="The Nomad">Visitors &amp; short stays</td><td data-l="The Explorer">Twice a week</td><td data-l="Weekend Warrior">Once a week</td><td data-l="Kids&rsquo; Primal">Ages 5&ndash;12</td><td data-l="Digital Studio">Training anywhere</td></tr>
+        <tr class="cmp-cta"><th scope="row"><span class="sr-only">Sign up</span></th><td data-l="The Primal" class="is-hero"><a class="btn sage" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="The Nomad"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="The Explorer"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="Weekend Warrior"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="Kids&rsquo; Primal"><a class="btn" data-pm-link="mindbodyPricingUrl" target="_blank" rel="noopener">Join</a></td><td data-l="Digital Studio"><a class="btn" data-pm-link="digitalStudioUrl" target="_blank" rel="noopener">Start free</a></td></tr>
+      </tbody>
+    </table>'''
+
+# The nine classes, shared by the shared-markup template and the House one.
+CLASS_ROWS = [
+        ("01","Primal","The signature class. Functional bodyweight strength balancing push and pull, taught in the four-series method. If you take one thing here, take this.","Start here",True,"60 min"),
+        ("02","Compound","Strength-focused compound movement work — loaded, deliberate, and a useful counterweight to the bodyweight practice.","Beginner friendly",True,"60 min"),
+        ("03","Moves","Progressive strength and mobility. Real capacity in the spine, shoulders, hips and hands.","All levels",False,"60 min"),
+        ("04","Progressions","Dynamic-to-static skill work and hand-supported transitions. For movers ready to go further.","Intermediate",False,"60–90 min"),
+        ("05","Handstand","Complex sequences and dynamic inversions. Requires a foundation in the earlier series.","Advanced",False,"60 min"),
+        ("06","Restore","Mobility, breath and active recovery. The other half of getting strong.","Start here",True,"45–60 min"),
+        ("07","Primal Vinyasa","Breath-led flow with primal patterning underneath. Familiar shape, different engine.","All levels",False,"60 min"),
+        ("08","Primal Kids","Youth movement classes. Crawling, climbing, falling over, getting up.","Kids",False,"45 min"),
+        ("09","Meditation","Nervous-system down-regulation, run as a four-week series.","All levels",False,"45 min"),
+]
+
+# ---------------------------------------------------------------- HOUSE KIT --
+# The pieces every House page is made of. Deliberately few: a hero, a centred
+# statement, a full-bleed photograph, a card grid, and a wrapper for the
+# functional blocks (timetable, calendar, comparison). One action per band.
+def hs_hero(asset, slot, img, title, line="", ctas="", tall=False):
+    return f'''
+<section class="hs-hero{" tall" if tall else " page"} flush">
+  <img data-pm-photo="{slot}" src="{asset}photos/{img}" alt="">
+  <div class="hs-hero-inner">
+    <h1 class="hs-display">{title}</h1>
+    {f'<p class="hs-hero-line">{line}</p>' if line else ""}
+    {f'<div class="cta-row">{ctas}</div>' if ctas else ""}
+  </div>
+</section>'''
+
+
+def hs_statement(title, para="", ctas="", alt=False, tight=False):
+    cls = "hs-statement" + (" alt" if alt else "") + (" tight-top" if tight else "")
+    return f'''
+<section class="{cls}">
+  <div class="hs-narrow">
+    <h2>{title}</h2>
+    {f"<p>{para}</p>" if para else ""}
+    {f'<div class="cta-row">{ctas}</div>' if ctas else ""}
+  </div>
+</section>'''
+
+
+def hs_band(asset, slot, img):
+    return f'''
+<section class="hs-band flush"><img data-pm-photo="{slot}" src="{asset}photos/{img}" alt=""></section>'''
+
+
+def hs_cards(asset, title, cards, alt=False):
+    inner = "".join(f'''
+      <a class="hs-card" href="{href}">
+        <div class="hs-card-img"><img data-pm-photo="{slot}" src="{asset}photos/{img}" alt=""></div>
+        <div class="hs-card-body">
+          <div class="hs-card-label">{label}</div>
+          <h3>{name}</h3>
+          <p>{line}</p>
+        </div>
+      </a>''' for slot, img, label, name, line, href in cards)
+    return f'''
+<section class="hs-cards-wrap{" alt" if alt else ""}">
+  <div class="wrap-wide">
+    {f'<div class="hs-head"><h2>{title}</h2></div>' if title else ""}
+    <div class="hs-cards">{inner}
+    </div>
+  </div>
+</section>'''
+
+
+def hs_module(title, para, inner, alt=False):
+    """A centred head over a full-width functional block."""
+    return f'''
+<section class="hs-module{" alt" if alt else ""}">
+  <div class="hs-narrow">
+    <h2>{title}</h2>
+    {f"<p>{para}</p>" if para else ""}
+  </div>
+  <div class="wrap-wide hs-module-body">
+{inner}
+  </div>
+</section>'''
+
+
 # ============================================================ HOUSE HOME =====
 # A real template, not a restyle. primalmoves.com's structure: a full-bleed
 # hero, then an alternation of centred statements and edge-to-edge
@@ -1078,6 +1153,7 @@ def memberships(up, asset):
 # It lives at /house/ so it can have its own markup. Layouts A and B keep
 # design-9/index.html exactly as it was.
 def house_home(up, asset):
+    hup = "" if up == "../" else "../"   # stay inside /house/
     def card(slot, img, label, title, line, href):
         return f'''
       <a class="hs-card" href="{href}">
@@ -1109,7 +1185,7 @@ def house_home(up, asset):
     <p>A daily movement practice built on how the body actually works &mdash; crawling, hanging,
        pushing, pulling, getting upside down. Taught so a complete beginner and a professional
        acrobat can stand in the same room and both get something out of it.</p>
-    <div class="cta-row"><a class="btn" href="{up}practice/">Our method</a></div>
+    <div class="cta-row"><a class="btn" href="{hup}practice/">Our method</a></div>
   </div>
 </section>
 
@@ -1126,7 +1202,7 @@ def house_home(up, asset):
        the floor, the sauna, the cold plunge and a coffee at Cherish.</p>
     <div class="cta-row">
       <a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 day pass</a>
-      <a class="btn" href="{up}classes/#schedule">See the schedule</a>
+      <a class="btn" href="{hup}classes/#schedule">See the schedule</a>
     </div>
   </div>
 </section>
@@ -1137,13 +1213,13 @@ def house_home(up, asset):
     <div class="hs-head"><h2>One studio, all of it</h2></div>
     <div class="hs-cards">
       {card("house.card-classes", "compound-dumbbells.jpg", "Practice",
-            "Classes", "Ten classes a week, from complete beginner to handstand.", up + "classes/")}
+            "Classes", "Ten classes a week, from complete beginner to handstand.", hup + "classes/")}
       {card("house.card-studio", "space-rings-wide.jpg", "The space",
-            "The Studio", "11,000 ft², rigging overhead, sauna and cold plunge.", up + "studio/")}
+            "The Studio", "11,000 ft², rigging overhead, sauna and cold plunge.", hup + "studio/")}
       {card("house.card-cherish", "tea-room.jpg", "Cafe &amp; tea",
-            "Cherish", "Coffee in the morning, tea when you&rsquo;re done, a seat all day.", up + "cherish/")}
+            "Cherish", "Coffee in the morning, tea when you&rsquo;re done, a seat all day.", hup + "cherish/")}
       {card("house.card-events", "space-floor-night.jpg", "What&rsquo;s on",
-            "Events", "Workshops, tea ceremonies, suppers and live music.", up + "events/")}
+            "Events", "Workshops, tea ceremonies, suppers and live music.", hup + "events/")}
     </div>
   </div>
 </section>
@@ -1165,7 +1241,7 @@ def house_home(up, asset):
     <div data-pm-calendar-list></div>
   </div>
   <div class="hs-narrow">
-    <div class="cta-row"><a class="btn" href="{up}events/">The full calendar</a></div>
+    <div class="cta-row"><a class="btn" href="{hup}events/">The full calendar</a></div>
   </div>
 </section>
 
@@ -1175,10 +1251,168 @@ def house_home(up, asset):
     <h2>Come often enough and it gets cheaper</h2>
     <p>That is the only real reason to take a membership. If a day here turns into a habit,
        there are better ways to pay for it &mdash; starting at $120 a month.</p>
-    <div class="cta-row"><a class="btn" href="{up}memberships/">See the options</a></div>
+    <div class="cta-row"><a class="btn" href="{hup}memberships/">See the options</a></div>
   </div>
 </section>
 '''
+
+
+
+# ------------------------------------------------------------ HOUSE PAGES ----
+def house_method(up, asset):
+    hup = "" if up == "../" else "../"   # stay inside /house/
+    return (
+      hs_hero(asset, "house.method.hero", "handstand-wall-wide.jpg", "Our method",
+              "A systematized movement practice, taught in four series.") +
+      hs_statement("Four series, one practice",
+        "Start on the floor and work up: crawling and carrying, then strength and mobility, "
+        "then skill work, then upside down. Every class sits somewhere on that ladder, and "
+        "you can join at any rung.",
+        '<a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 day pass</a>') +
+      hs_band(asset, "house.method.band-1", "collective-crawl-2.jpg") +
+      hs_cards(asset, "The four series", [
+        ("house.method.s1", "collective-crawl-2.jpg", "Series one", "Primal",
+         "Crawling, hanging, carrying. The foundation everything else stands on.", hup + "classes/"),
+        ("house.method.s2", "compound-dumbbells.jpg", "Series two", "Moves",
+         "Progressive strength and mobility through the spine, shoulders and hips.", hup + "classes/"),
+        ("house.method.s3", "handstand-parallettes.jpg", "Series three", "Progressions",
+         "Dynamic-to-static skill work for movers ready to go further.", hup + "classes/"),
+        ("house.method.s4", "handstand-wall.jpg", "Series four", "Handstand",
+         "Complex sequences and inversions, built on the three below.", hup + "classes/"),
+      ]) +
+      hs_statement("Stability, strength, mobility, tone",
+        "The practice improves how efficiently you crawl, walk, run, jump and climb — building "
+        "coordination, balance and real capacity rather than isolated muscle.",
+        alt=True) +
+      hs_band(asset, "house.method.band-2", "bands-effort.jpg") +
+      hs_statement("Come and find out",
+        "One hour a day, five days a week is genuinely all it takes. Or come for a single day first.",
+        '<a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 day pass</a>'
+        f'<a class="btn" href="{hup}classes/">See the classes</a>')
+    )
+
+
+def house_classes(up, asset):
+    hup = "" if up == "../" else "../"   # stay inside /house/
+    cards = "".join(f'''
+      <a class="cls" href="#schedule">
+        <div class="cls-head"><h3>{name}</h3>
+          <div class="cls-meta"><span class="lvl{' beginner' if beg else ''}">{lvl}</span><span class="lvl dur">{dur}</span></div>
+        </div>
+        <div class="desc"><span>{desc}</span></div>
+      </a>''' for n, name, desc, lvl, beg, dur in CLASS_ROWS)
+
+    return (
+      hs_hero(asset, "house.classes.hero", "collective-downdog.jpg", "Classes",
+              "Nine classes, from a complete beginner to upside down.") +
+      hs_module("Every class we run",
+        "Hover any card for what it actually involves. All of them are bookable through Mindbody.",
+        f'    <div class="cls-list">{cards}</div>') +
+      hs_band(asset, "house.classes.band", "assist-hands.jpg") +
+      f'''
+<section class="hs-module alt" id="schedule">
+  <div class="hs-narrow"><h2>Book your spot</h2>
+    <p>Live from Mindbody. Pick a day.</p></div>
+  <div class="wrap-wide hs-module-body">
+    <div data-pm-schedule></div>
+    <div class="cta-row sched-cta" style="margin-top:26px">
+      <a class="btn sage" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">Start your 2-week trial</a>
+      <a class="btn secondary" data-pm-link="appStoreUrl" target="_blank" rel="noopener">Get the app</a>
+    </div>
+  </div>
+</section>''' +
+      hs_statement("First time?",
+        "Book Primal or Restore — both assume no experience whatsoever. Everything else will "
+        "still be on the timetable next week.")
+    )
+
+
+def house_studio(up, asset):
+    hup = "" if up == "../" else "../"   # stay inside /house/
+    return (
+      hs_hero(asset, "house.studio.hero", "space-rings-wide.jpg", "The studio",
+              "Eleven thousand square feet, rigging overhead, and a sauna.") +
+      hs_statement("One room that changes shape",
+        "An open floor with rings, bars, stall bars, racks and free weights. Every class happens "
+        "here, and most evenings it turns into something else entirely.") +
+      hs_band(asset, "house.studio.band-1", "space-bus-rings.jpg") +
+      hs_cards(asset, "Room by room", [
+        ("house.studio.room-1", "space-bus-rings.jpg", "The floor", "Main floor",
+         "11,000 ft² of open practice space. Where every class happens.", "#"),
+        ("house.studio.room-2", "space-lounge-rugs.jpg", "After class", "The lounge",
+         "Sofas, rugs, a disco ball and a set of decks.", "#"),
+        ("house.studio.room-3", "sauna-still.jpg", "Heat", "Sauna",
+         "Wood-fired, and busiest right after the evening classes.", "#"),
+        ("house.studio.room-4", "plunge-two.jpg", "Cold", "Cold plunge",
+         "The other half of the sauna. Unlimited on most memberships.", "#"),
+      ], alt=True) +
+      hs_band(asset, "house.studio.band-2", "space-floor-night.jpg") +
+      hs_statement("Find us",
+        "1038 Princeton Dr, Ste B, Marina del Rey, CA 90292. Open from 6:30am on weekdays.",
+        f'<a class="btn" href="{hup}classes/#schedule">See the schedule</a>')
+    )
+
+
+def house_memberships(up, asset):
+    hup = "" if up == "../" else "../"   # stay inside /house/
+    return (
+      hs_hero(asset, "house.memberships.hero", "boat-collective.jpg", "Memberships",
+              "The natural next step — after you have felt what this is.") +
+      hs_statement("Come often enough and it gets cheaper",
+        "That is the only real reason to take one. Start with a day, and decide later.",
+        '<a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">Try Primal for a day · $40</a>'
+        '<a class="btn" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">Two weeks · $69</a>') +
+      hs_module("Everything side by side", "",
+        '    <div class="cmp-scroll">' + COMPARE_TABLE + "</div>", alt=True) +
+      hs_band(asset, "house.memberships.band", "boat-collective-2.jpg") +
+      hs_statement("Still deciding?",
+        "Come for a day. Nothing recurring, nothing to cancel, and it counts for the same floor, "
+        "sauna and plunge as any membership.",
+        '<a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 day pass</a>')
+    )
+
+
+def house_cherish(up, asset):
+    hup = "" if up == "../" else "../"   # stay inside /house/
+    return (
+      hs_hero(asset, "house.cherish.hero", "tea-room.jpg", "Cherish",
+              "The cafe and tea lounge inside the studio.") +
+      hs_statement("Coffee in the morning, tea when you are done",
+        "It is the reason a day here can be a whole day rather than an hour — somewhere to sit, "
+        "work, eat and stay between practices.") +
+      hs_band(asset, "house.cherish.band", "space-lounge-rugs.jpg") +
+      hs_cards(asset, "What is on", [
+        ("house.cherish.c1", "tea-room.jpg", "Mornings", "Coffee",
+         "From 6:30am, before and after the early classes.", "#"),
+        ("house.cherish.c2", "tea-room.jpg", "Afternoons", "Cowork",
+         "Wifi, a seat and no one asking you to leave.", "#"),
+        ("house.cherish.c3", "sauna-laughing.jpg", "Evenings", "Tea ceremony",
+         "Most weeks, upstairs in the tea room.", "#"),
+      ], alt=True) +
+      hs_statement("Come and sit",
+        "A day pass includes a coffee, the floor, the sauna and the plunge.",
+        '<a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 day pass</a>')
+    )
+
+
+def house_events(up, asset):
+    hup = "" if up == "../" else "../"   # stay inside /house/
+    return (
+      hs_hero(asset, "house.events.hero", "space-floor-night.jpg", "Events",
+              "Workshops, tea, music, community — and a lot of it free.") +
+      hs_module("What is on",
+        "Published through Luma, so this is always the real calendar.",
+        f'''    <div class="hs-cal">
+      <div data-pm-calendar data-pm-calendar-src="{up}events.json" data-pm-calendar-months="2"></div>
+      <div data-pm-calendar-list></div>
+    </div>''') +
+      hs_band(asset, "house.events.band", "space-floor-night.jpg") +
+      hs_statement("Host something here",
+        "The floor takes a supper, a screening, a workshop or a party. Tell us what you have in mind.",
+        '<a class="btn sage" data-pm-link="lumaPageUrl" target="_blank" rel="noopener">Follow on Luma ↗</a>'
+        '<a class="btn" href="mailto:hello@venice.primalmoves.com?subject=Hosting%20an%20event">Get in touch</a>',
+        alt=True)
+    )
 
 
 # ================================================================ EVENTS =====
@@ -1380,9 +1614,25 @@ page("shop/index.html", 1, "shop/", "Shop — Primal Moves Venice",
      "Primal Moves Venice merchandise.", shop)
 
 # The House template — its own markup, its own URL, its own copy handles.
-page("house/index.html", 1, None, "Primal Moves Venice — Think less, move more, breathe",
-     "A community wellness club in Venice built around a daily movement practice.",
-     house_home, body_cls="house")
+HOUSE = [
+    ("house/index.html", 1, None, "Primal Moves Venice — Think less, move more, breathe",
+     "A community wellness club in Venice built around a daily movement practice.", house_home),
+    ("house/practice/index.html", 2, "practice/", "Our Method — Primal Moves Venice",
+     "The Primal Moves method, in four series.", house_method),
+    ("house/classes/index.html", 2, "classes/", "Classes & Schedule — Primal Moves Venice",
+     "Every class we run, and the live timetable.", house_classes),
+    ("house/studio/index.html", 2, "studio/", "The Studio — Primal Moves Venice",
+     "Inside the 11,000 ft² studio, room by room.", house_studio),
+    ("house/memberships/index.html", 2, "memberships/", "Membership — Primal Moves Venice",
+     "Memberships and passes, side by side.", house_memberships),
+    ("house/cherish/index.html", 2, "cherish/", "Cherish — Cafe & Tea Lounge", 
+     "The cafe and tea lounge inside the studio.", house_cherish),
+    ("house/events/index.html", 2, "events/", "Events — Primal Moves Venice",
+     "Workshops, tea, music and community.", house_events),
+]
+for _p, _d, _a, _t, _desc, _fn in HOUSE:
+    page(_p, _d, _a, _t, _desc, _fn, body_cls="house",
+         nav_up=("" if _d == 1 else "../"))
 
 # --- 404 -----------------------------------------------------------------
 # Served by Cloudflare for any path that isn't a page (wrangler.toml,

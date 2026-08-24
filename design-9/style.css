@@ -1586,3 +1586,12 @@ a.cls h3{color:var(--ink)}
 /* the /house/ page is its own design — the layout-B and overlay rules that
    reinterpret the shared markup must not also fire here */
 body.house .hs-narrow .kicker{font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+
+
+/* a constrained block under a centred head is centred too */
+.hs-module-body .cls-list,
+.hs-module-body .cmp-try{margin-left:auto;margin-right:auto}
+.hs-module-body{margin-top:clamp(30px,4vw,48px)}
+.hs-module{padding:clamp(76px,10vw,128px) 0}
+.hs-module.alt{background:var(--paper-2)}
+.hs-module .hs-narrow h2{margin-bottom:0}

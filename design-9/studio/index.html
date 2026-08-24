@@ -113,82 +113,20 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
       <p data-pm-copy="studio.p3" class="lede" style="max-width:24em">Our coaches don't come from one place. They come from circus, stunt work, dance, bodywork and the desert.</p>
     </div>
 
-    <!-- ============ TEACHER GRID ============
-         To add a teacher: copy one .person block, edit name, role and bio.
-         For their photo, replace <div class="portrait empty">…</div> with
-         <div class="portrait"><img data-pm-photo="studio.collage-2" src="../../assets/photos/NAME.jpg" alt="NAME"></div>
-         Portraits look best shot vertically at 4:5.
-         ====================================== -->
-    <div class="people">
+    <!-- The roster comes from TEAM at the top of this file. Add a dict there
+         and the tile appears — nothing in this markup needs editing. Empty
+         tiles used to be rendered here with instructions written inside
+         them, which every visitor could read. Never again: if we do not
+         have the person yet, we do not draw the tile. -->
+    <div class="people one">
       <div class="person">
         <div class="portrait empty" data-pm-photo="studio.teacher-1"><span>Portrait</span></div>
         <div class="person-body">
           <h3 data-pm-copy="studio.h31">Nick Brewer</h3>
           <div class="role">Founder</div>
-          <p data-pm-copy="studio.p4">Founded Primal Moves in Ibiza in 2016 after decades across movement modalities. “Think less, move more, breathe.”</p>
+          <p data-pm-copy="studio.p4">Founded Primal Moves in Ibiza in 2016 after decades across movement modalities. &ldquo;Think less, move more, breathe.&rdquo;</p>
         </div>
-      </div>
-      <div class="person">
-      <!-- Swap .portrait.empty for: <div class="portrait"><img data-pm-photo="studio.collage-3" src="../../assets/photos/NAME.jpg" alt="NAME"></div> -->
-        <div class="portrait empty" data-pm-photo="studio.teacher-2"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3 data-pm-copy="studio.h32">Add a teacher</h3>
-          <div class="role">Role</div>
-          <p data-pm-copy="studio.p5">A short bio — background, what they teach, what a class with them actually feels like.</p>
-        </div>
-      </div>
-      <div class="person">
-        <div class="portrait empty" data-pm-photo="studio.teacher-3"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3 data-pm-copy="studio.h33">Add a teacher</h3>
-          <div class="role">Role</div>
-          <p data-pm-copy="studio.p6">Two or three sentences is plenty. Personality beats CV.</p>
-        </div>
-      </div>
-      <div class="person">
-        <div class="portrait empty" data-pm-photo="studio.teacher-4"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3 data-pm-copy="studio.h34">Add a teacher</h3>
-          <div class="role">Role</div>
-          <p data-pm-copy="studio.p7">Shoot portraits vertically at 4:5 (≈1000×1250) so the grid stays even.</p>
-        </div>
-      </div>
-      <div class="person">
-        <div class="portrait empty" data-pm-photo="studio.teacher-5"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3 data-pm-copy="studio.h35">Add a teacher</h3>
-          <div class="role">Role</div>
-          <p data-pm-copy="studio.p8">Acrobats, stuntwomen, somatic practitioners — say which.</p>
-        </div>
-      </div>
-      <div class="person">
-        <div class="portrait empty" data-pm-photo="studio.teacher-6"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3 data-pm-copy="studio.h36">Add a teacher</h3>
-          <div class="role">Role</div>
-          <p data-pm-copy="studio.p9">Add an Instagram handle if they want it public.</p>
-        </div>
-      </div>
-      <div class="person">
-        <div class="portrait empty" data-pm-photo="studio.teacher-7"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3 data-pm-copy="studio.h37">Add a teacher</h3>
-          <div class="role">Role</div>
-          <p data-pm-copy="studio.p10">Repeat for each coach on the team.</p>
-        </div>
-      </div>
-      <div class="person">
-        <div class="portrait empty" data-pm-photo="studio.teacher-8"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3 data-pm-copy="studio.h38">Add a teacher</h3>
-          <div class="role">Role</div>
-          <p data-pm-copy="studio.p11">Delete any tiles you don't need.</p>
-        </div>
-      </div>
-    </div>
-    <p data-pm-copy="studio.p12" class="note" style="margin-top:26px;border-color:var(--on-dark-soft);color:var(--on-dark)">
-      
-    </p>
+      </div></div>
   </div>
 </section>
 
@@ -215,10 +153,10 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
       <div>
         <div data-pm-copy="studio.kicker6" class="kicker">bring less than you think</div>
         <div class="exp-grid" style="grid-template-columns:1fr 1fr">
-          <div class="exp"><div class="n">01</div><h3 data-pm-copy="studio.h39">Wear</h3><p data-pm-copy="studio.p13">Something you can move in. Bare feet or flat shoes.</p></div>
-          <div class="exp"><div class="n">02</div><h3 data-pm-copy="studio.h310">Bring</h3><p data-pm-copy="studio.p14">Water. A towel if you're using the sauna.</p></div>
-          <div class="exp"><div class="n">03</div><h3 data-pm-copy="studio.h311">Arrive</h3><p data-pm-copy="studio.p15">Ten minutes early on your first visit.</p></div>
-          <div class="exp"><div class="n">04</div><h3 data-pm-copy="studio.h312">After</h3><p data-pm-copy="studio.p16">Sauna, plunge, or tea at Cherish. Or all three.</p></div>
+          <div class="exp"><div class="n">01</div><h3 data-pm-copy="studio.h32">Wear</h3><p data-pm-copy="studio.p5">Something you can move in. Bare feet or flat shoes.</p></div>
+          <div class="exp"><div class="n">02</div><h3 data-pm-copy="studio.h33">Bring</h3><p data-pm-copy="studio.p6">Water. A towel if you're using the sauna.</p></div>
+          <div class="exp"><div class="n">03</div><h3 data-pm-copy="studio.h34">Arrive</h3><p data-pm-copy="studio.p7">Ten minutes early on your first visit.</p></div>
+          <div class="exp"><div class="n">04</div><h3 data-pm-copy="studio.h35">After</h3><p data-pm-copy="studio.p8">Sauna, plunge, or tea at Cherish. Or all three.</p></div>
         </div>
       </div>
     </div>
@@ -233,8 +171,8 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
     <div class="split" style="--split-ratio:1fr 1fr;align-items:center">
       <div>
         <div data-pm-copy="studio.kicker7" class="kicker">Private hire</div>
-        <h3 data-pm-copy="studio.h313" style="font-size:clamp(22px,2.6vw,34px);margin-bottom:14px">Want to use it?</h3>
-        <p data-pm-copy="studio.p17" style="color:var(--mid);max-width:36em">The whole floor is available for workshops, brand activations, retreat days, team offsites and film shoots — rigging, sauna and cold plunge included, with catering through Cherish. Tell us what you have in mind and we'll come back with availability and rates.</p>
+        <h3 data-pm-copy="studio.h36" style="font-size:clamp(22px,2.6vw,34px);margin-bottom:14px">Want to use it?</h3>
+        <p data-pm-copy="studio.p9" style="color:var(--mid);max-width:36em">The whole floor is available for workshops, brand activations, retreat days, team offsites and film shoots — rigging, sauna and cold plunge included, with catering through Cherish. Tell us what you have in mind and we'll come back with availability and rates.</p>
         <div class="cta-row" style="margin-top:24px">
           <a class="btn" href="mailto:hello@venice.primalmoves.com?subject=Private%20hire%20enquiry%20%E2%80%94%20Primal%20Moves%20Venice">Enquire about hire</a>
           <a class="btn secondary" href="../events/">What we host here</a>
@@ -264,22 +202,22 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 <section class="alt flush">
   <div class="wrap-wide" style="padding-top:clamp(50px,8vh,90px)">
     <div data-pm-copy="studio.kicker9" class="kicker">two ways to start</div>
-    <p data-pm-copy="studio.p18" class="lede" style="margin-bottom:36px;max-width:34em">One hour a day, five days a week. That is genuinely all it takes to find out what your body is capable of. Or come for a single $40 day first &mdash; nobody minds which.</p>
+    <p data-pm-copy="studio.p10" class="lede" style="margin-bottom:36px;max-width:34em">One hour a day, five days a week. That is genuinely all it takes to find out what your body is capable of. Or come for a single $40 day first &mdash; nobody minds which.</p>
   </div>
     <div class="ways">
   <div class="way feature">
     <div data-pm-copy="studio.kicker10" class="kicker">give us two weeks</div>
-    <h3 data-pm-copy="studio.h314">two weeks unlimited</h3>
+    <h3 data-pm-copy="studio.h37">two weeks unlimited</h3>
     <div class="price">$69</div>
-    <p data-pm-copy="studio.p19">Every class, the sauna, the cold plunge, for fourteen days. Long enough to stop thinking of it as a trial and start thinking of it as your week.</p>
-    <p data-pm-copy="studio.p20" class="aside" style="font-size:15.5px">Not a single drop-in. A proper run at it.</p>
+    <p data-pm-copy="studio.p11">Every class, the sauna, the cold plunge, for fourteen days. Long enough to stop thinking of it as a trial and start thinking of it as your week.</p>
+    <p data-pm-copy="studio.p12" class="aside" style="font-size:15.5px">Not a single drop-in. A proper run at it.</p>
     <a class="btn sage lg" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">start two weeks &rarr;</a>
   </div>
   <div class="way">
     <div data-pm-copy="studio.kicker11" class="kicker">not local, or not yet</div>
-    <h3 data-pm-copy="studio.h315">Primal Online</h3>
+    <h3 data-pm-copy="studio.h38">Primal Online</h3>
     <div class="price">free</div>
-    <p data-pm-copy="studio.p21">Live-streamed classes and the full recorded library. Learn the practice from wherever you are, then come find us on the floor when you&rsquo;re in town.</p>
+    <p data-pm-copy="studio.p13">Live-streamed classes and the full recorded library. Learn the practice from wherever you are, then come find us on the floor when you&rsquo;re in town.</p>
     <a class="btn lg" data-pm-link="onlineTrialUrl" target="_blank" rel="noopener">start free &rarr;</a>
   </div>
 </div>
@@ -296,13 +234,13 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 
       <div class="foot-block">
         <h4 data-pm-copy="studio.h41">Find us</h4>
-        <p data-pm-copy="studio.p22">
+        <p data-pm-copy="studio.p14">
           <a href="https://maps.google.com/?q=1038+Princeton+Dr+Ste+B,+Marina+del+Rey,+CA+90292" target="_blank" rel="noopener">
             <span data-pm-text="address1">1038 Princeton Dr, Ste B</span> <br>
             <span data-pm-text="address2">Marina del Rey, CA 90292</span>
           </a>
         </p>
-        <p data-pm-copy="studio.p23" style="margin-top:14px">
+        <p data-pm-copy="studio.p15" style="margin-top:14px">
           <a data-pm-link="phoneHref"><span data-pm-text="phone">(310) 800-7061</span></a>
         </p>
       </div>

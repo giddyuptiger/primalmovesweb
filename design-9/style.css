@@ -449,10 +449,20 @@ section.ink .person .portrait.empty{background:rgba(255,255,255,.07)}
 .person .portrait.empty span{font-size:10px;font-weight:500;letter-spacing:.2em;
   text-transform:uppercase;color:var(--soft)}
 .person-body{padding:16px 0 0;display:flex;flex-direction:column;gap:4px}
-.person h3{font-size:18px}
+.person h3{font-size:18px;text-transform:none}
 .person .role{font-size:10.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--sage)}
 section.ink .person .role{color:var(--accent-soft)}
 .person p{font-size:14.5px;color:var(--mid);line-height:1.65;margin-top:6px}
+/* one coach on the roster shouldn't sit as a lonely quarter-width tile in a
+   four-up grid — it reads as a page with seven things missing. Side by side,
+   the same card reads as a deliberate founder block. */
+.people.one{grid-template-columns:1fr}
+.people.one .person{flex-direction:row;align-items:center;gap:clamp(24px,4vw,48px);max-width:760px}
+.people.one .person .portrait{flex:0 0 clamp(190px,26vw,270px)}
+.people.one .person-body{padding:0}
+.people.one .person h3{font-size:clamp(22px,2.4vw,30px)}
+.people.one .person p{font-size:16px;max-width:34em}
+@media (max-width:640px){ .people.one .person{flex-direction:column;align-items:stretch} }
 section.ink .person p{color:var(--on-dark)}
 
 /* ---------------------------------------------------------- VOICES ------- */
@@ -1397,7 +1407,7 @@ body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.d
 body.house section:not(.hero):not(.phero) .kicker{
   font-size:clamp(28px,3.4vw,44px);line-height:1.08;font-weight:400;
   letter-spacing:-.015em;text-transform:none;color:var(--ink);margin-bottom:12px}
-body.house section.ink .kicker{color:var(--cream)}
+body.house section.ink:not(.hero):not(.phero) .kicker{color:var(--cream)}
 
 /* 1 · the eyebrow is now the title */
 body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > .kicker{
@@ -1416,14 +1426,20 @@ body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.d
 body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > :is(h1,h2,h3,.display,.display-sm) br{display:none}
 
 /* 3 · and the paragraph stops shouting (inline styles need the !important) */
-body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > :is(p,.lede){order:3;font-size:16px !important;line-height:1.65;
+body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > :is(p,.lede):not(.embed-note){order:3;font-size:16px !important;line-height:1.65;
   color:var(--mid);max-width:52ch !important}
-body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > .cta-row{order:4;margin-top:8px}
+body.house section.ink:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > :is(p,.lede):not(.embed-note){color:var(--on-dark)}
+/* the heading-only case on a dark band (no eyebrow beside it) */
+body.house section.ink:not(.hero):not(.phero) *:not(:has(> .kicker)) > :is(h2,.display-sm){color:var(--cream)}
 body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > :is(ul,ol,.info-list,.plans,.ways){order:5}
+/* a footnote sits under whatever it annotates, and the buttons come last —
+   on /events/ the old order:4 put both above the list of events they follow */
+body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > .embed-note{order:7;margin-top:18px}
+body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > .cta-row{order:8;margin-top:clamp(22px,2.6vw,32px)}
 
 /* on the dark bands the same two roles, in the light palette */
-body.house section.ink *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > .kicker{color:var(--cream)}
-body.house section.ink *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > :is(h1, h2, h3, .display, .display-sm){color:var(--on-dark)}
+body.house section.ink:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > .kicker{color:var(--cream)}
+body.house section.ink:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > :is(h1, h2, h3, .display, .display-sm){color:var(--on-dark)}
 
 /* --- where a section has no eyebrow, the heading stays the heading ------- */
 body.house section:not(.hero):not(.phero) *:not(:has(> .kicker)) > :is(h2,.display-sm){
@@ -1436,7 +1452,12 @@ body.house .hero .kicker{font-size:11.5px;letter-spacing:.2em;text-transform:upp
 
 /* --- everything else keeps the alignment it has in the other layouts ----- */
 body.house .btn{border-radius:999px;padding:15px 30px;font-size:12px;letter-spacing:.14em}
-body.house section{padding:clamp(64px,8vw,110px) 0}
+/* House runs tighter than the base layout — but .flush means "no padding,
+   this section owns its own spacing" (the hero, the closing block) and
+   .pad-sm is already the tight one. Overriding both was what pushed the
+   hero copy off the bottom edge and opened a hole above "two ways to start". */
+body.house section:not(.flush):not(.hero):not(.phero):not(.pad-sm){padding:clamp(64px,8vw,110px) 0}
+body.house section.pad-sm{padding:clamp(46px,6vw,84px) 0}
 body.house .split img,body.house .split video[data-pm-photo]{
   height:clamp(300px,40vw,500px);border-radius:6px}
 body.house .photo-slot{max-height:460px}
@@ -1595,3 +1616,128 @@ body.house .hs-narrow .kicker{font-size:11px;letter-spacing:.2em;text-transform:
 .hs-module{padding:clamp(76px,10vw,128px) 0}
 .hs-module.alt{background:var(--paper-2)}
 .hs-module .hs-narrow h2{margin-bottom:0}
+
+/* ==========================================================================
+   HOUSE  ·  primalmoves.com's treatment, in our palette
+   --------------------------------------------------------------------------
+   The brief, stated plainly: the ONLY things House keeps from our own design
+   are the colours and the limewash. Everything else follows their site.
+
+   What theirs actually does, once you stop guessing and look:
+
+     · type at weight 200-300 — never bold, never italic, anywhere
+     · a small uppercase label, or one large uppercase heading. Never both a
+       heading and a poetic second line underneath it.
+     · body copy in sentence case, ~62 characters, generous leading
+     · a great deal of vertical air — a section is mostly empty
+     · outline pill buttons, uppercase and tracked out
+     · tall photographs, one to a section, held to one side
+
+   Our lowercase headings and italic serif accents were ours, not theirs.
+   Both are gone here. The cream, the taupe, the forest and the limewash all
+   stay exactly as they are — that is the whole of what we keep.
+
+   Scoped to body.house throughout: layouts A and B are untouched.
+   ========================================================================== */
+
+body.house{
+  /* our palette, named for the roles their layout needs */
+  --h-fg:var(--ink);
+  --h-mid:var(--mid);
+  --h-line:var(--line);
+}
+/* on the forest bands the same three roles, in the light values */
+body.house :is(section.ink,.statement,.hero,.phero){
+  --h-fg:var(--cream);
+  --h-mid:var(--on-dark);
+  --h-line:rgba(247,243,231,.22);
+}
+
+/* --- air ------------------------------------------------------------------ */
+body.house section:not(.flush):not(.hero):not(.phero):not(.pad-sm){padding:clamp(88px,12vw,170px) 0}
+body.house section.pad-sm{padding:clamp(70px,9vw,128px) 0}
+body.house .hs-module{padding:clamp(88px,12vw,170px) 0}
+
+/* --- the heading system ---------------------------------------------------
+   One large uppercase line at weight 200. House promotes the eyebrow into
+   that role because the eyebrow is where our real section names live. */
+body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > .kicker,
+body.house section:not(.hero):not(.phero) .kicker,
+body.house section:not(.hero):not(.phero) *:not(:has(> .kicker)) > :is(h2,.display-sm),
+body.house .hs-narrow h2,body.house .hs-hero h1{
+  font-family:var(--sans);font-weight:200;text-transform:uppercase;
+  font-size:clamp(30px,4.1vw,56px);line-height:1.08;letter-spacing:.015em;
+  color:var(--h-fg);margin:0 0 20px;max-width:22ch;
+}
+
+/* the poetic line that used to be the headline does not appear in this
+   layout — demoting it to a subhead was the "massive subtitles, just moved"
+   problem, and their site has no such line at all */
+body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > :is(h1,h2,h3,.display,.display-sm){display:none}
+
+/* no italic serif accents — theirs has none */
+body.house *{font-style:normal !important}
+body.house :is(h1,h2,h3,h4,.display,.display-sm,.kicker) :is(em,.ed,.ed-it,span){
+  font-family:inherit;font-weight:inherit;color:inherit;
+  text-transform:inherit;letter-spacing:inherit}
+body.house :is(h1,h2,h3,h4,.display,.display-sm) br{display:none}
+
+/* --- sub-headings: card titles, class names, coach names ------------------ */
+body.house :is(h3,h4),body.house :is(.person h3,.cls h3,.exp h3,.ev h3,.way h3,.obj h3){
+  font-weight:300;text-transform:uppercase;letter-spacing:.09em;
+  font-size:clamp(14px,1.15vw,16px);line-height:1.4;color:var(--h-fg)}
+
+/* --- body copy ------------------------------------------------------------ */
+body.house :is(p,li,dd,td,.lede,.a,.desc,.meta,.aside){
+  font-weight:300;color:var(--h-mid);letter-spacing:.005em}
+body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > :is(p,.lede):not(.embed-note){
+  order:3;font-size:clamp(16px,1.25vw,19px) !important;line-height:1.75;
+  color:var(--h-mid);max-width:62ch !important}
+body.house .lede{font-size:clamp(16px,1.25vw,19px);line-height:1.75;max-width:62ch}
+body.house .faq summary{font-weight:300;text-transform:none;letter-spacing:0;
+  font-size:clamp(16px,1.3vw,19px);color:var(--h-fg)}
+
+/* the small tracked-out labels, theirs and ours alike */
+body.house :is(.role,.theme,.tag,.lvl,.n,.foot-top h4,th,.cmp-per,.day-head){
+  font-size:10.5px;font-weight:400;letter-spacing:.2em;text-transform:uppercase}
+
+/* --- nav and buttons: their form, our colours ----------------------------- */
+body.house :is(.brand,.nav-links a){text-transform:uppercase;font-weight:300;letter-spacing:.1em}
+body.house .nav-links a{font-size:12px}
+body.house .btn{border-radius:999px;padding:15px 32px;font-size:11.5px;font-weight:300;
+  letter-spacing:.16em;text-transform:uppercase}
+body.house .btn.lg{padding:17px 38px;font-size:12.5px}
+
+/* --- photographs: tall, one to a section ---------------------------------- */
+body.house .split img,body.house .split video[data-pm-photo]{
+  height:clamp(420px,46vw,700px);border-radius:2px;object-fit:cover}
+body.house .photo-slot{max-height:none}
+body.house .person .portrait{aspect-ratio:3/4}
+body.house .hs-band img{height:clamp(380px,44vw,640px)}
+
+/* --- the standing statement: one centred uppercase line ------------------- */
+body.house .statement .big{
+  font-family:var(--sans);font-weight:200;text-transform:uppercase;
+  font-size:clamp(30px,4.4vw,62px);line-height:1.1;letter-spacing:.015em;
+  color:var(--cream);text-align:center;max-width:20ch;margin-inline:auto}
+body.house .statement .big :is(em,span){color:inherit}
+body.house .statement :is(p,.kicker){text-align:center;margin-inline:auto}
+
+/* prices read as headings here, not as sentences */
+body.house :is(.price,.amt){text-transform:uppercase;font-weight:200;letter-spacing:.01em}
+
+/* --- footer --------------------------------------------------------------- */
+body.house .foot-top li a{text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:300}
+body.house .foot-brand .display-sm{text-transform:uppercase;font-weight:200;letter-spacing:.015em;
+  font-size:clamp(28px,3.8vw,52px)}
+
+/* --- the hero keeps its photograph and its scale -------------------------- */
+body.house .hero .display{font-size:clamp(44px,7.4vw,100px);font-weight:200;
+  letter-spacing:.01em;text-transform:uppercase;color:var(--cream)}
+body.house .hero .kicker{font-size:11px;font-weight:400;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--cream);max-width:none;margin-bottom:18px}
+
+@media (max-width:820px){
+  body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > .kicker,
+  body.house section:not(.hero):not(.phero) .kicker{font-size:clamp(26px,7vw,36px)}
+}

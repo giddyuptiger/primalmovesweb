@@ -302,7 +302,7 @@ def home(up, asset):
   <div class="wrap-wide">
     <div class="third-head">
       <div>
-        <div class="kicker">the third place</div>
+        <div class="kicker">Events</div>
         <h2 class="display-sm" style="max-width:14ch">where everybody <br>knows your <span class="ed-it">name</span></h2>
       </div>
       <div>
@@ -515,7 +515,33 @@ def practice(up, asset):
 {final_cta(up)}'''
 
 
+# ============================================================== ROSTERS =====
+# Two lists that used to be hand-written tiles on the page. Anything we do not
+# have yet simply is not drawn — a visitor should never read a tile that says
+# "add a teacher here". Append a dict and the tile appears.
+
+TEAM = [
+    dict(slot="studio.teacher-1", name="Nick Brewer", role="Founder",
+         bio="Founded Primal Moves in Ibiza in 2016 after decades across movement "
+             "modalities. &ldquo;Think less, move more, breathe.&rdquo;"),
+]
+
+# name, what they do, and an optional link. Empty until there are real ones.
+PARTNERS = []
+
+
 def studio(up, asset):
+    people = "".join(f'''
+      <div class="person">
+        <div class="portrait empty" data-pm-photo="{t['slot']}"><span>Portrait</span></div>
+        <div class="person-body">
+          <h3>{t['name']}</h3>
+          <div class="role">{t['role']}</div>
+          <p>{t['bio']}</p>
+        </div>
+      </div>''' for t in TEAM)
+    people = f'''<div class="people{" one" if len(TEAM) == 1 else ""}">{people}</div>'''
+
     return f'''{phero(asset, "photos/space-rings-wide.jpg", "The Studio", "The room, the people who hold it, and everything you need to walk in the door.", "Where it happens", slot="studio.hero")}
 
 <!-- ===== THE SPACE ===== -->
@@ -570,82 +596,12 @@ def studio(up, asset):
       <p class="lede" style="max-width:24em">Our coaches don't come from one place. They come from circus, stunt work, dance, bodywork and the desert.</p>
     </div>
 
-    <!-- ============ TEACHER GRID ============
-         To add a teacher: copy one .person block, edit name, role and bio.
-         For their photo, replace <div class="portrait empty">…</div> with
-         <div class="portrait"><img data-pm-photo="studio.collage-2" src="../../assets/photos/NAME.jpg" alt="NAME"></div>
-         Portraits look best shot vertically at 4:5.
-         ====================================== -->
-    <div class="people">
-      <div class="person">
-        <div class="portrait empty" data-pm-photo="studio.teacher-1"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3>Nick Brewer</h3>
-          <div class="role">Founder</div>
-          <p>Founded Primal Moves in Ibiza in 2016 after decades across movement modalities. “Think less, move more, breathe.”</p>
-        </div>
-      </div>
-      <div class="person">
-      <!-- Swap .portrait.empty for: <div class="portrait"><img data-pm-photo="studio.collage-3" src="../../assets/photos/NAME.jpg" alt="NAME"></div> -->
-        <div class="portrait empty" data-pm-photo="studio.teacher-2"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3>Add a teacher</h3>
-          <div class="role">Role</div>
-          <p>A short bio — background, what they teach, what a class with them actually feels like.</p>
-        </div>
-      </div>
-      <div class="person">
-        <div class="portrait empty" data-pm-photo="studio.teacher-3"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3>Add a teacher</h3>
-          <div class="role">Role</div>
-          <p>Two or three sentences is plenty. Personality beats CV.</p>
-        </div>
-      </div>
-      <div class="person">
-        <div class="portrait empty" data-pm-photo="studio.teacher-4"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3>Add a teacher</h3>
-          <div class="role">Role</div>
-          <p>Shoot portraits vertically at 4:5 (≈1000×1250) so the grid stays even.</p>
-        </div>
-      </div>
-      <div class="person">
-        <div class="portrait empty" data-pm-photo="studio.teacher-5"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3>Add a teacher</h3>
-          <div class="role">Role</div>
-          <p>Acrobats, stuntwomen, somatic practitioners — say which.</p>
-        </div>
-      </div>
-      <div class="person">
-        <div class="portrait empty" data-pm-photo="studio.teacher-6"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3>Add a teacher</h3>
-          <div class="role">Role</div>
-          <p>Add an Instagram handle if they want it public.</p>
-        </div>
-      </div>
-      <div class="person">
-        <div class="portrait empty" data-pm-photo="studio.teacher-7"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3>Add a teacher</h3>
-          <div class="role">Role</div>
-          <p>Repeat for each coach on the team.</p>
-        </div>
-      </div>
-      <div class="person">
-        <div class="portrait empty" data-pm-photo="studio.teacher-8"><span>Portrait</span></div>
-        <div class="person-body">
-          <h3>Add a teacher</h3>
-          <div class="role">Role</div>
-          <p>Delete any tiles you don't need.</p>
-        </div>
-      </div>
-    </div>
-    <p class="note" style="margin-top:26px;border-color:var(--on-dark-soft);color:var(--on-dark)">
-      
-    </p>
+    <!-- The roster comes from TEAM at the top of this file. Add a dict there
+         and the tile appears — nothing in this markup needs editing. Empty
+         tiles used to be rendered here with instructions written inside
+         them, which every visitor could read. Never again: if we do not
+         have the person yet, we do not draw the tile. -->
+    {people}
   </div>
 </section>
 
@@ -780,7 +736,7 @@ def classes(up, asset):
 <section class="pad-sm" id="schedule">
   <div class="wrap-wide">
     <div class="section-head">
-      <div><div class="kicker">Live from Mindbody</div><h2>Book your spot.</h2></div>
+      <div><div class="kicker">Schedule</div><h2>Book your spot.</h2></div>
     </div>
     <div data-pm-schedule
          data-pm-schedule-label="Book through Mindbody"
@@ -805,7 +761,7 @@ def memberships(up, asset):
   <div class="wrap-wide">
     <div class="kicker">Options</div>
     <h2 class="display-sm" style="margin-bottom:10px">Memberships &amp; passes</h2>
-    <p class="lede" style="margin-bottom:clamp(26px,3.5vw,36px)">Come for a day first, then decide. Everything below is bookable through Mindbody.</p>
+    <p class="lede" style="margin-bottom:clamp(26px,3.5vw,36px)">Come for a day first, then decide. Everything below is bookable online.</p>
     <div data-pm-pricing style="margin-bottom:30px"></div>
 
     <!-- DESIGN-MODE TOGGLE. Two reads of the same data — keep whichever wins.
@@ -1027,9 +983,9 @@ def memberships(up, asset):
       <div><div class="kicker">Why people join</div><h2>Belonging, mostly.</h2></div>
     </div>
     <div class="voices">
-      <div class="voice placeholder"><div class="theme">Theme — Consistency</div><div class="q ed">“Membership made me actually show up.”</div><div class="who">Add a real quote</div></div>
-      <div class="voice placeholder"><div class="theme">Theme — Value</div><div class="q ed">“What I stopped paying for once I joined.”</div><div class="who">Add a real quote</div></div>
-      <div class="voice placeholder"><div class="theme">Theme — Community</div><div class="q ed">“The people I've met here.”</div><div class="who">Add a real quote</div></div>
+      <div class="voice"><div class="theme">Consistency</div><div class="q ed">Coming five days a week stops being a decision you have to make.</div></div>
+      <div class="voice"><div class="theme">Value</div><div class="q ed">The sauna, the cold plunge and the floor are all already in it.</div></div>
+      <div class="voice"><div class="theme">Community</div><div class="q ed">You start knowing the people in the room, and they start expecting you.</div></div>
     </div>
   </div>
 </section>
@@ -1306,13 +1262,13 @@ def house_classes(up, asset):
       hs_hero(asset, "house.classes.hero", "collective-downdog.jpg", "Classes",
               "Nine classes, from a complete beginner to upside down.") +
       hs_module("Every class we run",
-        "Hover any card for what it actually involves. All of them are bookable through Mindbody.",
+        "Hover any card for what it actually involves. Every one of them is bookable online.",
         f'    <div class="cls-list">{cards}</div>') +
       hs_band(asset, "house.classes.band", "assist-hands.jpg") +
       f'''
 <section class="hs-module alt" id="schedule">
   <div class="hs-narrow"><h2>Book your spot</h2>
-    <p>Live from Mindbody. Pick a day.</p></div>
+    <p>Pick a day and reserve your place.</p></div>
   <div class="wrap-wide hs-module-body">
     <div data-pm-schedule></div>
     <div class="cta-row sched-cta" style="margin-top:26px">
@@ -1400,8 +1356,8 @@ def house_events(up, asset):
     return (
       hs_hero(asset, "house.events.hero", "space-floor-night.jpg", "Events",
               "Workshops, tea, music, community — and a lot of it free.") +
-      hs_module("What is on",
-        "Published through Luma, so this is always the real calendar.",
+      hs_module("What’s coming up",
+        "Workshops, tea ceremonies, suppers and live music — most of it open to day-pass holders.",
         f'''    <div class="hs-cal">
       <div data-pm-calendar data-pm-calendar-src="{up}events.json" data-pm-calendar-months="2"></div>
       <div data-pm-calendar-list></div>
@@ -1512,6 +1468,22 @@ def cherish(up, asset):
 
 
 def partners(up, asset):
+    # The roster section only exists once there is a roster. Five tiles reading
+    # "Add a partner" told every visitor the page was unfinished.
+    roster = ""
+    if PARTNERS:
+        tiles = "".join(
+            f'''<div class="exp"><h3>{x["name"]}</h3><p>{x["what"]}</p>'''
+            + (f'''<a class="link-arrow" href="{x["url"]}" target="_blank" rel="noopener">Visit &rarr;</a>''' if x.get("url") else "")
+            + "</div>" for x in PARTNERS)
+        roster = f'''
+<section class="alt">
+  <div class="wrap-wide">
+    <div class="section-head"><div><div class="kicker">Current partners</div><h2>The roster.</h2></div></div>
+    <div class="exp-grid">{tiles}</div>
+  </div>
+</section>'''
+
     return f'''{phero(asset, "photos/compound-dumbbells-crop.jpg", "Primal Partners", "Brands, studios and people we actually work with.", "Collaborate", slot="partners.hero")}
 
 <section class="pad-sm">
@@ -1522,18 +1494,7 @@ def partners(up, asset):
   </div>
 </section>
 
-<section class="alt">
-  <div class="wrap-wide">
-    <div class="section-head"><div><div class="kicker">Current partners</div><h2>The roster.</h2></div></div>
-    <div class="exp-grid">
-      <div class="exp"><div class="n">—</div><h3>Add a partner</h3><p>Name, what they do, and why they're here.</p></div>
-      <div class="exp"><div class="n">—</div><h3>Add a partner</h3><p>Logo, one line, link out.</p></div>
-      <div class="exp"><div class="n">—</div><h3>Add a partner</h3><p>Affiliate relationships can be flagged here.</p></div>
-      <div class="exp"><div class="n">—</div><h3>Add a partner</h3><p>Event collaborators belong on this list too.</p></div>
-      <div class="exp"><div class="n">—</div><h3>Add a partner</h3><p>Delete the tiles you don't need.</p></div>
-    </div>
-  </div>
-</section>
+{roster}
 
 <section class="ink">
   <div class="wrap-wide">

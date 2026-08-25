@@ -672,6 +672,22 @@
   }
 
   function renderPhoto() {
+    // The panel's copy of the live map can be stale — opened before the store
+    // answered, or another editor published since. Re-read it, then paint.
+    if (LIVE && !renderPhoto._fresh) {
+      renderPhoto._fresh = true;
+      setTimeout(function () { renderPhoto._fresh = false; }, 4000);
+      fetch(LIVE + "/live", { cache: "no-cache" })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) {
+          if (!d || d.error) return;
+          livePhotos = { photos: d.photos || {}, photoFocus: d.photoFocus || {},
+                         updatedAt: d.updatedAt || "", by: d.by || "" };
+          var pane = document.getElementById("pm-body");
+          if (pane && pane.querySelector(".slots")) renderPhoto();
+        })
+        .catch(function () {});
+    }
     var body = document.getElementById("pm-body");
     var slots = [].slice.call(document.querySelectorAll("[data-pm-photo]"));
     var when = livePhotos.updatedAt
@@ -719,6 +735,26 @@
           ls(KEY_PHOTOS, JSON.stringify(photos));
           toast("Back to the photograph in the repo.");
           location.reload();
+        });
+      });
+    });
+
+    // clicking a card scrolls to its photograph and pulses the Swap button —
+    // the card itself was never the control, but everyone clicks it first
+    [].slice.call(body.querySelectorAll(".slot")).forEach(function (card) {
+      card.style.cursor = "pointer";
+      card.addEventListener("click", function (e) {
+        if (e.target.closest(".p-reset")) return;
+        var el = document.querySelector('[data-pm-photo="' + card.getAttribute("data-slot") + '"]');
+        if (!el) return;
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        var badge = el.parentElement && el.parentElement.querySelector(".pm-swap-badge");
+        if (!badge) badge = document.querySelector(".pm-swap-badge");
+        [0, 400, 800].forEach(function (t) {
+          setTimeout(function () {
+            (badge || el).style.outline = "3px solid #B9C79E";
+            setTimeout(function () { (badge || el).style.outline = ""; }, 220);
+          }, t);
         });
       });
     });

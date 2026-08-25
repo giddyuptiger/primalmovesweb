@@ -1497,7 +1497,7 @@ body.house section.ink:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h
 
 /* --- where a section has no eyebrow, the heading stays the heading ------- */
 body.house section:not(.hero):not(.phero) *:not(:has(> .kicker)) > :is(h2,.display-sm){
-  font-size:clamp(28px,3.4vw,44px);line-height:1.08;letter-spacing:-.015em}
+  font-size:clamp(27px,3.2vw,42px);line-height:1.08;letter-spacing:.015em}
 
 /* --- the hero keeps its scale; it is the one place a big line belongs ---- */
 body.house .hero .display{font-size:clamp(44px,7vw,92px);line-height:1.02}
@@ -1720,7 +1720,7 @@ body.house section:not(.hero):not(.phero) .kicker,
 body.house section:not(.hero):not(.phero) *:not(:has(> .kicker)) > :is(h2,.display-sm),
 body.house .hs-narrow h2,body.house .hs-hero h1{
   font-family:var(--sans);font-weight:200;text-transform:uppercase;
-  font-size:clamp(30px,4.1vw,56px);line-height:1.08;letter-spacing:.015em;
+  font-size:clamp(28px,3.7vw,50px);line-height:1.08;letter-spacing:.015em;
   color:var(--h-fg);margin:0 0 20px;max-width:22ch;
 }
 
@@ -1745,9 +1745,9 @@ body.house :is(h3,h4),body.house :is(.person h3,.cls h3,.exp h3,.ev h3,.way h3,.
 body.house :is(p,li,dd,td,.lede,.a,.desc,.meta,.aside){
   font-weight:300;color:var(--h-mid);letter-spacing:.005em}
 body.house section:not(.hero):not(.phero) *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm)) > :is(p,.lede):not(.embed-note){
-  order:3;font-size:clamp(16px,1.25vw,19px) !important;line-height:1.75;
+  order:3;font-size:clamp(17px,1.35vw,20px) !important;line-height:1.75;
   color:var(--h-mid);max-width:62ch !important}
-body.house .lede{font-size:clamp(16px,1.25vw,19px);line-height:1.75;max-width:62ch}
+body.house .lede{font-size:clamp(17px,1.35vw,20px);line-height:1.75;max-width:62ch}
 body.house .faq summary{font-weight:300;text-transform:none;letter-spacing:0;
   font-size:clamp(16px,1.3vw,19px);color:var(--h-fg)}
 
@@ -1756,8 +1756,17 @@ body.house :is(.role,.theme,.tag,.lvl,.n,.foot-top h4,th,.cmp-per,.day-head){
   font-size:10.5px;font-weight:400;letter-spacing:.2em;text-transform:uppercase}
 
 /* --- nav and buttons: their form, our colours ----------------------------- */
-body.house :is(.brand,.nav-links a){text-transform:uppercase;font-weight:300;letter-spacing:.1em}
-body.house .nav-links a{font-size:12px}
+/* The chrome was rendering in Light — Harmonia has no Regular here yet, so
+   anything asking for 400 falls DOWN to 300, and 12px caps at weight 300 is
+   genuinely hard to read. The nav and the wordmark take SemiBd, the one
+   heavier weight we have; the ink colour instead of the grey for the same
+   reason. Swap to 400 when the Regular file lands, if SemiBd reads heavy. */
+body.house :is(.brand,.nav-links a){text-transform:uppercase;font-weight:600;letter-spacing:.1em}
+body.house .brand{color:var(--ink)}
+body.house .nav-links a{font-size:12px;color:var(--ink);opacity:.75}
+body.house .nav-links a:hover,body.house .nav-links a.current{opacity:1}
+body.house .mobile-menu a{font-weight:600}
+body.house .brand span{font-weight:400;color:var(--soft)}
 body.house .btn{border-radius:999px;padding:15px 32px;font-size:11.5px;font-weight:300;
   letter-spacing:.16em;text-transform:uppercase}
 body.house .btn.lg{padding:17px 38px;font-size:12.5px}

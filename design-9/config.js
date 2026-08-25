@@ -300,6 +300,15 @@ window.PM_CONFIG = {
     //
     // Note clients.mindbodyonline.com can never be framed — it sends
     // X-Frame-Options: SAMEORIGIN. Link to it, never embed it.
+    var teachersUrl = (function () {
+      var css = (document.querySelector('link[rel="stylesheet"][href*="style.css"]') || {}).href || "";
+      return css ? css.replace(/style\.css.*$/, "teachers.json") : "teachers.json";
+    })();
+    var teachersReady = fetch(teachersUrl, { cache: "no-cache" })
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .then(function (d) { window.PM_TEACHERS = d || {}; })
+      .catch(function () { window.PM_TEACHERS = {}; });
+
     document.querySelectorAll("[data-pm-schedule]").forEach(function (el) {
       var srcAttr = el.getAttribute("data-pm-schedule-src");
       var cssHref2 = (document.querySelector('link[rel="stylesheet"][href*="style.css"]') || {}).href || "";
@@ -368,6 +377,7 @@ window.PM_CONFIG = {
         g.items.forEach(function (x) {
           html += '<li><a href="' + book + '" target="_blank" rel="noopener">' +
             '<span class="s-time">' + x.t + "</span>" +
+            (x.c.staff ? '<span class="s-ava" data-t-name="' + String(x.c.staff).replace(/"/g, "&quot;") + '"></span>' : "") +
             '<span class="s-name">' + x.c.name + "</span>" +
             '<span class="s-meta">' + (x.c.staff || "") +
               (x.c.minutes ? '<span class="s-dur">' + x.c.minutes + " min</span>" : "") +
@@ -379,6 +389,8 @@ window.PM_CONFIG = {
       // no "book a class" line here — the buttons under the timetable say it
       el.classList.add("sched-wrap");
       el.innerHTML = html;
+      if (window.PM_FILL_AVATARS) window.PM_FILL_AVATARS();
+      if (teachersReady) teachersReady.then(function () { if (window.PM_FILL_AVATARS) window.PM_FILL_AVATARS(); });
 
       var chips = [].slice.call(el.querySelectorAll(".dchip"));
       var panes = [].slice.call(el.querySelectorAll(".sched-day"));
@@ -389,7 +401,10 @@ window.PM_CONFIG = {
           var on = b.getAttribute("data-key") === key;
           b.classList.toggle("on", on);
           b.setAttribute("aria-selected", on ? "true" : "false");
-          if (on) b.scrollIntoView({ block: "nearest", inline: "nearest" });
+          if (on && rail) {
+            var bl = b.offsetLeft - rail.offsetLeft;
+            rail.scrollLeft = Math.max(0, bl - (rail.clientWidth - b.offsetWidth) / 2);
+          }
         });
         panes.forEach(function (p2) { p2.classList.toggle("on", p2.getAttribute("data-key") === key); });
       }
@@ -558,6 +573,18 @@ window.PM_CONFIG = {
       var play = v.play(); if (play && play.catch) play.catch(function () { /* autoplay blocked */ });
     }
 
+    function fillAvatars() {
+      document.querySelectorAll(".s-ava[data-t-name]").forEach(function (el) {
+        var slot = (window.PM_TEACHERS || {})[el.getAttribute("data-t-name")];
+        var file = slot ? (C.photos || {})[slot] : "";
+        if (!file) return;
+        var abs = /^(https?:)?\/\//.test(file) || file.charAt(0) === "/" || file.indexOf("data:") === 0;
+        el.style.backgroundImage = "url(" + (abs ? file : assetBase() + file) + ")";
+        el.classList.add("on");
+      });
+    }
+    window.PM_FILL_AVATARS = fillAvatars;
+
     function applyPhotoSlots() {
       document.querySelectorAll("[data-pm-photo]").forEach(function (el) {
         var slot = el.getAttribute("data-pm-photo");
@@ -674,6 +701,7 @@ window.PM_CONFIG = {
           } catch (e) { /* private browsing — the fetch still works, just no cache */ }
           mergeLive(d);
           applyPhotoSlots(); applyFocusSlots();
+          if (window.PM_FILL_AVATARS) window.PM_FILL_AVATARS();
           document.dispatchEvent(new CustomEvent("pm:live", { detail: d }));
         })
         .catch(function () { /* Worker unreachable — the repo photographs stand */ });

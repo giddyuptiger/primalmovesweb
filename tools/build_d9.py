@@ -265,7 +265,7 @@ def home(up, asset):
         <h2 class="display-sm" style="max-width:16ch;margin-bottom:26px">not a gym. <br>a <span class="ed-it">practice</span>.</h2>
         <p style="font-size:clamp(17px,1.6vw,20px);line-height:1.7">Movement built on how the body actually works — crawling, hanging, pushing, pulling, balancing, getting upside down. Patterns you\'d recognise from being a kid, taught so a complete beginner and a professional acrobat can stand in the same room and both get something out of it. What people stay for is the community.</p>
         <p class="pull" style="margin-top:26px">When was the last time you went to a gym where nobody was wearing headphones?</p>
-        <p class="aside" style="margin-top:22px">You won&rsquo;t find one definition of Primal here, you&rsquo;ll find yours.</p>
+        <p class="aside hand-line" style="margin-top:22px">You won&rsquo;t find one definition of Primal here, you&rsquo;ll find yours.</p>
         <div class="cta-row" style="margin-top:28px">
           <a class="btn" href="{up}practice/">our method</a>
           <a class="btn" href="{up}classes/">see the classes</a>
@@ -380,10 +380,10 @@ def home(up, asset):
 
 def practice(up, asset):
     """The Method — content carried across from primalmoves.com/about/."""
-    return f'''{phero(asset, "photos/handstand-wall-wide.jpg", "Our Method", "A systematized movement method built on bipedal and quadrupedal flows.", "The method", slot="method.hero")}
+    return f'''{phero(asset, "photos/handstand-wall-wide.jpg", "The Method", "A systematized movement method built on bipedal and quadrupedal flows.", slot="method.hero")}
 
 <!-- ===== OBJECTIVES ===== -->
-<section class="light" style="padding-top:clamp(50px,8vh,90px)">
+<section style="padding-top:clamp(50px,8vh,90px)">
   <div class="wrap">
     <div class="kicker">Objectives</div>
     <h2 class="display-sm" style="max-width:20ch;margin-bottom:26px">stability, strength, <br>mobility, <span class="ed-it">tone</span></h2>
@@ -411,12 +411,11 @@ def practice(up, asset):
 </section>
 
 <!-- ===== THE FOUR SERIES — one per screen, with room to breathe ===== -->
-<section class="alt" id="series">
+<section id="series">
   <div class="wrap-wide">
     <div class="section-head">
       <div class="kicker">The four series</div>
       <h2 class="display-sm">four series. <br>one <span class="ed-it">practice</span>.</h2>
-      <p class="lede" style="margin-top:22px">A progressive system that loads the joints equally, so the practice keeps giving over decades rather than years.</p>
     </div>
 
     <div class="series">
@@ -426,7 +425,6 @@ def practice(up, asset):
           <div class="s-n">Series 1</div>
           <h3>Primal</h3>
           <p>A functional bodyweight strength practice designed to balance anterior and posterior chains through push&ndash;pull movements.</p>
-          <div class="s-note">Conditioning and movement foundations. No requirements &mdash; this is where everyone starts.</div>
         </div>
       </div>
       <div class="serie">
@@ -737,8 +735,7 @@ def classes(up, asset):
   <div class="wrap-wide">
     <div class="split" style="--split-ratio:1fr 1fr;align-items:start">
       <div>
-        <div class="kicker">Never done this before?</div>
-        <h2 class="display-sm" style="margin-bottom:20px">Take <span class="ed-it">Primal</span>. <br>That's the answer.</h2>
+        <h2 class="display-sm" style="margin-bottom:20px">One place. One membership. <br>Four types of <span class="ed-it">offerings</span>.</h2>
         <p class="lede">Every class marked <span class="mark" style="font-weight:600">Start here</span> assumes you've never crawled across a floor in your life. You'll be shown what to do, given a version that fits, and left alone about it.</p>
         <p style="margin-top:16px;color:var(--mid)">Come ten minutes early, wear something you can move in, bring water. Bare feet or flat shoes. That's genuinely the whole list.</p>
         <div class="cta-row" style="margin-top:28px">
@@ -1601,8 +1598,8 @@ def shop(up, asset):
 page("index.html", 0, None,
      "Primal Moves Venice — Start Your 2-Week Trial",
      "A community wellness club in Venice built around a daily movement practice. Sauna, cold plunge, Cherish cafe and events. Start with a two-week trial, or try Primal online free.", home)
-page("practice/index.html", 1, "practice/", "Our Method — Primal Moves Venice",
-     "The Primal Moves method: stability, strength, mobility and muscle tone, in four series.", practice)
+page("practice/index.html", 1, "practice/", "The Method — Primal Moves Venice",
+     "The Primal Moves method: stability, strength, mobility and muscle tone, in four series.", practice, body_cls="page-method")
 page("studio/index.html", 1, "studio/", "The Studio — Primal Moves Venice",
      "Inside the 11,000 ft² studio room by room, the coaching team, and everything you need for your first visit.", studio)
 page("classes/index.html", 1, "classes/", "Classes &amp; Schedule — Primal Moves Venice",
@@ -1668,6 +1665,13 @@ _p404 = ROOT / "404.html"
 _h = _p404.read_text()
 _p404.write_text(_h.replace("<head>", '<head>\n<base href="/">', 1))
 print("404: base href set")
+
+# the schedule shows each coach's portrait from our own slots — Mindbody's
+# feed carries only the name, so the name is the key
+import json as _json
+(ROOT / "teachers.json").write_text(_json.dumps(
+    { t["name"]: t["slot"] for t in TEAM }, indent=1))
+print("teachers.json:", len(TEAM), "coaches")
 
 # --- redirect stubs so design-5 URLs don't 404 -------------------------------
 REDIRECTS = {"schedule/": "../classes/#schedule", "visit/": "../studio/#visit", "about/": "../practice/"}

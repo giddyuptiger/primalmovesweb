@@ -257,7 +257,7 @@ section.flush{padding:0}
 @media (max-width:760px){ .hero-meta{display:none} }
 
 /* interior page hero — quieter, shorter */
-.phero{position:relative;min-height:clamp(340px,44vh,460px);display:flex;align-items:flex-end;
+.phero{position:relative;min-height:clamp(480px,68vh,760px);display:flex;align-items:flex-end;
   overflow:hidden;background:var(--paper-3)}
 .phero>img,.phero>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .phero::after{content:"";position:absolute;inset:0;
@@ -1357,7 +1357,7 @@ body.tight section.alt{background:var(--paper-2)}
 /* --- 5 · shorter pages -------------------------------------------------- */
 body.tight .serie img{height:clamp(230px,26vw,340px)}
 body.tight .series{gap:clamp(42px,6vw,84px)}
-body.tight .phero{min-height:clamp(280px,34vh,360px)}
+body.tight .phero{min-height:clamp(420px,58vh,640px)}
 body.tight .hero{min-height:min(78vh,720px)}
 /* empty portrait frames read as neglect — hide until there's a photograph */
 body.tight .person:has(.portrait.empty){display:none}
@@ -1928,3 +1928,36 @@ body.texture :is(.way,.plan,.cls,.voice,.obj,.ev-item,.embed-placeholder,.exp) >
 /* the old text styling no longer applies to anything, but the link keeps
    its hit area */
 .brand{display:inline-flex;align-items:center}
+
+/* ==========================================================================
+   THE REVIEW BATCH
+   ========================================================================== */
+
+/* the definition line, in the hand — bold, slanted, unmistakably not body
+   copy. The house layout's no-italics rule stands down for this one line:
+   a handwritten aside is the exception that proves it. */
+.hand-line{font-family:var(--hand);font-style:italic;font-weight:600;
+  font-size:clamp(24px,2.4vw,34px);line-height:1.3;color:var(--ink);
+  letter-spacing:0;text-transform:none;max-width:24em}
+body.house .hand-line{font-style:italic !important;font-family:var(--hand)}
+section.ink .hand-line{color:var(--cream)}
+
+/* the four objectives sit as a 2x2 square at every desktop width — they
+   used to auto-fill, which reflowed them 3+1 or 4-across depending on how
+   wide the window happened to be */
+.obj-list{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,2.5vw,34px)}
+@media (max-width:640px){ .obj-list{grid-template-columns:1fr} }
+
+/* on the method page the tiles dissolve into the wall: no panel ground, no
+   second coat of wash — the whole section is one textured tone and the four
+   parts are just type sitting on it, in their square */
+body.page-method .obj{background:transparent;border:0;padding:0}
+body.page-method .obj::before{content:none}
+
+/* coach portraits on the timetable, from our own slots */
+.s-ava{display:none;width:30px;height:30px;border-radius:50%;flex:none;
+  background-size:cover;background-position:var(--pm-focus,50% 18%);
+  border:1px solid var(--line)}
+.s-ava.on{display:inline-block}
+.sched-day li a{display:flex;align-items:center;gap:12px}
+section.ink .s-ava{border-color:rgba(255,255,255,.25)}

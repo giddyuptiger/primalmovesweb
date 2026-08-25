@@ -175,9 +175,9 @@
     { v: "--clay",     label: "Second accent",    hint: "used sparingly" },
     /* Tea & Cafe runs its own warmer ground — everything else on that page
        (its rules, muted type and panels) is mixed from these two. */
-    { v: "--cherish-paper", label: "Tea & Cafe ground", hint: "that page only" },
-    { v: "--oxblood",       label: "Tea & Cafe accent", hint: "buttons and marks there" },
-    { v: "--cherish-ink",   label: "Tea & Cafe text",   hint: "and everything mixed from it" }
+    { v: "--cherish-paper", label: "Cafe + Tea ground", hint: "that page only" },
+    { v: "--oxblood",       label: "Cafe + Tea accent", hint: "buttons and marks there" },
+    { v: "--cherish-ink",   label: "Cafe + Tea text",   hint: "and everything mixed from it" }
   ];
 
   /* ------------------------------------------------------------ contrast -- */

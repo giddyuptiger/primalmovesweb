@@ -11,7 +11,7 @@ NAV = [
     ("classes/",     "Classes"),
     ("studio/",      "Studio"),
     ("memberships/", "Memberships"),
-    ("cherish/",     "Tea &amp; Cafe"),
+    ("cherish/",     "Cafe + Tea"),
     ("events/",      "Events"),
 ]
 
@@ -227,7 +227,6 @@ def home(up, asset):
       <a class="btn sage lg" data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 Day Pass</a>
       <a class="btn ghost-dark lg" data-pm-link="onlineTrialUrl" target="_blank" rel="noopener">Primal Online</a>
     </div>
-    <p class="hero-invite">This is your invitation to feel better.</p>
   </div>
 </section>
 
@@ -240,7 +239,7 @@ def home(up, asset):
         <h2 class="display-sm" style="max-width:16ch;margin-bottom:26px">not a gym. <br>a <span class="ed-it">practice</span>.</h2>
         <p style="font-size:clamp(17px,1.6vw,20px);line-height:1.7">Movement built on how the body actually works — crawling, hanging, pushing, pulling, balancing, getting upside down. Patterns you\'d recognise from being a kid, taught so a complete beginner and a professional acrobat can stand in the same room and both get something out of it. What people stay for is the community.</p>
         <p class="pull" style="margin-top:26px">When was the last time you went to a gym where nobody was wearing headphones?</p>
-        <p class="aside" style="margin-top:22px">Ask ten members what Primal is and you\'ll get ten answers. That\'s rather the point.</p>
+        <p class="aside" style="margin-top:22px">You won&rsquo;t find one definition of Primal here, you&rsquo;ll find yours.</p>
         <div class="cta-row" style="margin-top:28px">
           <a class="btn" href="{up}practice/">our method</a>
           <a class="btn" href="{up}classes/">see the classes</a>
@@ -288,7 +287,7 @@ def home(up, asset):
         <div class="i-val">Tea ceremony &middot; Group meditation &middot; Breathwork &middot; Restore</div>
       </div>
     </div>
-    <p class="aside" style="margin-top:30px;max-width:40em">One price, one day, no commitment of any kind.</p>
+    <p class="aside" style="margin-top:30px;max-width:40em">One day. Full access. Zero commitment. $40</p>
     <div class="cta-row" style="margin-top:28px">
       <a class="btn sage lg" data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 Day Pass</a>
       <a class="btn" href="{up}classes/#schedule">see today&rsquo;s schedule</a>

@@ -114,6 +114,32 @@ def tag_copy(html, path):
         kn[0] += 1
         return m.group(0).replace("<div ", "<div data-pm-copy=\"%s.kicker%d\" " % (page_key, kn[0]), 1)
     html = _re.sub(r"<div class=\"kicker[^\"]*\"[^>]*>", addk, html)
+
+    # Real copy also lives in styled divs and spans the tag list above never
+    # sees — the class-card descriptions, plan tiers and prices, fine print,
+    # coach roles. Tag those by class so the Copy tab can reach them.
+    COPY_CLASSES = ["tier", "plan-line", "fine", "amt", "price", "role",
+                    "theme", "q", "who", "ph-title", "cmp-per", "lvl"]
+    cn = {}
+    def addc(m):
+        if "data-pm-copy" in m.group(0): return m.group(0)
+        cls = m.group(3)
+        cn[cls] = cn.get(cls, 0) + 1
+        return "<%s data-pm-copy=\"%s.%s%d\"%s" % (
+            m.group(1), page_key, cls, cn[cls], m.group(2))
+    html = _re.sub(
+        r"<(div|span)( class=\"(" + "|".join(COPY_CLASSES) + r")(?:[\" ][^\"]*)?\"[^>]*)",
+        addc, html)
+
+    # the class-card description is a bare span inside .desc — the span takes
+    # the tag (not the div: the div's 0fr/1fr child is what animates the
+    # reveal, and replacing the div's innerHTML would delete it)
+    dn = [0]
+    def addd(m):
+        if "data-pm-copy" in m.group(0): return m.group(0)
+        dn[0] += 1
+        return m.group(1) + " data-pm-copy=\"%s.desc%d\"" % (page_key, dn[0]) + ">"
+    html = _re.sub(r"(<div class=\"desc\"[^>]*><span)>", addd, html)
     return html
 
 
@@ -1141,7 +1167,7 @@ def house_home(up, asset):
     return f'''
 <!-- 1 · HERO — one picture, one line, one action -->
 <section class="hs-hero flush">
-  <img data-pm-photo="house.hero" src="{asset}photos/joy-laughing.jpg" alt="A class mid-practice at Primal Moves Venice">
+  <img data-pm-photo="home.hero" src="{asset}photos/joy-laughing.jpg" alt="A class mid-practice at Primal Moves Venice">
   <div class="hs-hero-inner">
     <p class="hs-eyebrow">Venice, California</p>
     <h1 class="hs-display">Think less<br>Move more<br>Breathe</h1>
@@ -1185,13 +1211,13 @@ def house_home(up, asset):
   <div class="wrap-wide">
     <div class="hs-head"><h2>One studio, all of it</h2></div>
     <div class="hs-cards">
-      {card("house.card-classes", "compound-dumbbells.jpg", "Practice",
+      {card("classes.hero", "compound-dumbbells.jpg", "Practice",
             "Classes", "Ten classes a week, from complete beginner to handstand.", hup + "classes/")}
-      {card("house.card-studio", "space-rings-wide.jpg", "The space",
+      {card("studio.hero", "space-rings-wide.jpg", "The space",
             "The Studio", "11,000 ft², rigging overhead, sauna and cold plunge.", hup + "studio/")}
-      {card("house.card-cherish", "tea-room.jpg", "Cafe &amp; tea",
+      {card("cherish.hero", "tea-room.jpg", "Cafe &amp; tea",
             "Cherish", "Coffee in the morning, tea when you&rsquo;re done, a seat all day.", hup + "cherish/")}
-      {card("house.card-events", "space-floor-night.jpg", "What&rsquo;s on",
+      {card("events.hero", "space-floor-night.jpg", "What&rsquo;s on",
             "Events", "Workshops, tea ceremonies, suppers and live music.", hup + "events/")}
     </div>
   </div>
@@ -1235,7 +1261,7 @@ def house_home(up, asset):
 def house_method(up, asset):
     hup = "" if up == "../" else "../"   # stay inside /house/
     return (
-      hs_hero(asset, "house.method.hero", "handstand-wall-wide.jpg", "Our method",
+      hs_hero(asset, "method.hero", "handstand-wall-wide.jpg", "Our method",
               "A systematized movement practice, taught in four series.") +
       hs_statement("Four series, one practice",
         "Start on the floor and work up: crawling and carrying, then strength and mobility, "
@@ -1244,13 +1270,13 @@ def house_method(up, asset):
         '<a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 day pass</a>') +
       hs_band(asset, "house.method.band-1", "collective-crawl-2.jpg") +
       hs_cards(asset, "The four series", [
-        ("house.method.s1", "collective-crawl-2.jpg", "Series one", "Primal",
+        ("method.series-1", "collective-crawl-2.jpg", "Series one", "Primal",
          "Crawling, hanging, carrying. The foundation everything else stands on.", hup + "classes/"),
-        ("house.method.s2", "compound-dumbbells.jpg", "Series two", "Moves",
+        ("method.series-2", "compound-dumbbells.jpg", "Series two", "Moves",
          "Progressive strength and mobility through the spine, shoulders and hips.", hup + "classes/"),
-        ("house.method.s3", "handstand-parallettes.jpg", "Series three", "Progressions",
+        ("method.series-3", "handstand-parallettes.jpg", "Series three", "Progressions",
          "Dynamic-to-static skill work for movers ready to go further.", hup + "classes/"),
-        ("house.method.s4", "handstand-wall.jpg", "Series four", "Handstand",
+        ("method.series-4", "handstand-wall.jpg", "Series four", "Handstand",
          "Complex sequences and inversions, built on the three below.", hup + "classes/"),
       ]) +
       hs_statement("Stability, strength, mobility, tone",
@@ -1277,7 +1303,7 @@ def house_classes(up, asset):
       </div>''' for n, name, desc, lvl, beg, dur in CLASS_ROWS)
 
     return (
-      hs_hero(asset, "house.classes.hero", "collective-downdog.jpg", "Classes",
+      hs_hero(asset, "classes.hero", "collective-downdog.jpg", "Classes",
               "Nine classes, from a complete beginner to upside down.") +
       hs_module("Every class we run",
         "Hover any card for what it actually involves. Every one of them is bookable online.",
@@ -1304,20 +1330,20 @@ def house_classes(up, asset):
 def house_studio(up, asset):
     hup = "" if up == "../" else "../"   # stay inside /house/
     return (
-      hs_hero(asset, "house.studio.hero", "space-rings-wide.jpg", "The studio",
+      hs_hero(asset, "studio.hero", "space-rings-wide.jpg", "The studio",
               "Eleven thousand square feet, rigging overhead, and a sauna.") +
       hs_statement("One room that changes shape",
         "An open floor with rings, bars, stall bars, racks and free weights. Every class happens "
         "here, and most evenings it turns into something else entirely.") +
       hs_band(asset, "house.studio.band-1", "space-bus-rings.jpg") +
       hs_cards(asset, "Room by room", [
-        ("house.studio.room-1", "space-bus-rings.jpg", "The floor", "Main floor",
+        ("studio.room-main-floor", "space-bus-rings.jpg", "The floor", "Main floor",
          "11,000 ft² of open practice space. Where every class happens.", "#"),
-        ("house.studio.room-2", "space-lounge-rugs.jpg", "After class", "The lounge",
+        ("studio.room-lounge", "space-lounge-rugs.jpg", "After class", "The lounge",
          "Sofas, rugs, a disco ball and a set of decks.", "#"),
-        ("house.studio.room-3", "sauna-still.jpg", "Heat", "Sauna",
+        ("studio.room-sauna", "sauna-still.jpg", "Heat", "Sauna",
          "Wood-fired, and busiest right after the evening classes.", "#"),
-        ("house.studio.room-4", "plunge-two.jpg", "Cold", "Cold plunge",
+        ("studio.room-plunge", "plunge-two.jpg", "Cold", "Cold plunge",
          "The other half of the sauna. Unlimited on most memberships.", "#"),
       ], alt=True) +
       hs_band(asset, "house.studio.band-2", "space-floor-night.jpg") +
@@ -1330,7 +1356,7 @@ def house_studio(up, asset):
 def house_memberships(up, asset):
     hup = "" if up == "../" else "../"   # stay inside /house/
     return (
-      hs_hero(asset, "house.memberships.hero", "boat-collective.jpg", "Memberships",
+      hs_hero(asset, "memberships.hero", "boat-collective.jpg", "Memberships",
               "The natural next step — after you have felt what this is.") +
       hs_statement("Come often enough and it gets cheaper",
         "That is the only real reason to take one. Start with a day, and decide later.",
@@ -1349,7 +1375,7 @@ def house_memberships(up, asset):
 def house_cherish(up, asset):
     hup = "" if up == "../" else "../"   # stay inside /house/
     return (
-      hs_hero(asset, "house.cherish.hero", "tea-room.jpg", "Cherish",
+      hs_hero(asset, "cherish.hero", "tea-room.jpg", "Cherish",
               "The cafe and tea lounge inside the studio.") +
       hs_statement("Coffee in the morning, tea when you are done",
         "It is the reason a day here can be a whole day rather than an hour — somewhere to sit, "
@@ -1372,7 +1398,7 @@ def house_cherish(up, asset):
 def house_events(up, asset):
     hup = "" if up == "../" else "../"   # stay inside /house/
     return (
-      hs_hero(asset, "house.events.hero", "space-floor-night.jpg", "Events",
+      hs_hero(asset, "events.hero", "space-floor-night.jpg", "Events",
               "Workshops, tea, music, community — and a lot of it free.") +
       hs_module("What’s coming up",
         "Workshops, tea ceremonies, suppers and live music — most of it open to day-pass holders.",

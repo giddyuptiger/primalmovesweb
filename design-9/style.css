@@ -199,7 +199,7 @@ header.site{background:var(--paper);position:sticky;top:0;z-index:60}
   display:inline-flex;align-items:center;justify-content:center;gap:10px;
   background:transparent;color:var(--ink);border:1px solid var(--line);
   border-radius:100px;padding:15px 30px;
-  font-size:13px;font-weight:400;letter-spacing:.1em;text-transform:lowercase;
+  font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:lowercase;
   transition:background .25s ease,border-color .25s ease,color .25s ease;
 }
 .btn:hover{border-color:var(--ink)}
@@ -668,7 +668,7 @@ section.ink .pull{color:var(--paper)}
    .display-sm, h2 and h3 in the base sheet above and delete nothing here. */
 .hero .display{text-transform:uppercase;letter-spacing:-.02em}
 .nav-links a{text-transform:uppercase;letter-spacing:.1em;font-size:11.5px;font-weight:500}
-.btn,.nav-cta .btn{text-transform:uppercase;letter-spacing:.13em;font-weight:500}
+.btn,.nav-cta .btn{text-transform:uppercase;letter-spacing:.13em;font-weight:600}
 .brand{text-transform:uppercase;letter-spacing:.18em}
 
 /* --- HERO EYEBROW + INVITATION ------------------------------------------ */
@@ -711,11 +711,11 @@ section.ink .pull{color:var(--paper)}
 .pm-day.has:hover{background:var(--sage);color:var(--ink)}
 .pm-day.has i{display:block;width:4px;height:4px;border-radius:50%;
   background:var(--clay);margin-top:3px}
-.pm-day.has:hover i{background:#fff}
+.pm-day.has:hover i{background:var(--ink)}
 section.ink .pm-day{color:var(--on-dark)}
 section.ink .pm-day.today{color:#fff}
 section.ink .pm-day.has{color:#fff;background:rgba(255,255,255,.13)}
-section.ink .pm-day.has:hover{background:var(--sage)}
+section.ink .pm-day.has:hover{background:var(--sage);color:var(--ink)}
 section.ink .pm-month-name,section.ink .pm-dows span{color:var(--on-dark-soft)}
 
 .pm-cal-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
@@ -817,7 +817,7 @@ section.ink .faq{color:var(--ink)}
 .btn.sage:hover{background:var(--ink);border-color:var(--ink)}
 .photo-slot span,.person .portrait.empty span{color:var(--mid)}
 .pm-day.has{background:var(--day-mark)}
-section.ink .pm-day.has{background:var(--day-mark-dark);color:#fff}
+section.ink .pm-day.has{background:var(--day-mark-dark);color:var(--ink)}
 section.ink .pm-day.has:hover{background:var(--sage)}
 
 /* ==========================================================================
@@ -1766,8 +1766,8 @@ body.house .brand{color:var(--ink)}
 body.house .nav-links a{font-size:12px;color:var(--ink);opacity:.75}
 body.house .nav-links a:hover,body.house .nav-links a.current{opacity:1}
 body.house .mobile-menu a{font-weight:600}
-body.house .brand span{font-weight:400;color:var(--soft)}
-body.house .btn{border-radius:999px;padding:15px 32px;font-size:11.5px;font-weight:300;
+body.house .brand span{font-weight:600;color:var(--soft)}
+body.house .btn{border-radius:999px;padding:15px 32px;font-size:11.5px;font-weight:600;
   letter-spacing:.16em;text-transform:uppercase}
 body.house .btn.lg{padding:17px 38px;font-size:12.5px}
 
@@ -1896,3 +1896,35 @@ body.house,body.house :is(input,button,select,textarea){
    were tuned on Helvetica, so the lightest tier comes up one step */
 body.house :is(h1,h2,h3,.display,.display-sm,.kicker,.price,.amt){font-weight:300}
 body.house .hero .display{font-weight:300}
+
+
+/* ==========================================================================
+   LIMEWASH ON THE PANELS
+   The wash covered sections but every card painted its own flat ground on
+   top of it — the plans, the class tiles, the ways-in all sat as clean
+   rectangles on a textured wall. Same overlay, same blend, one level down.
+   ========================================================================== */
+body.texture :is(.way,.plan,.cls,.voice,.obj,.ev-item,.embed-placeholder,.exp){position:relative}
+body.texture :is(.way,.plan,.cls,.voice,.obj,.ev-item,.embed-placeholder,.exp)::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  border-radius:inherit;
+  background:var(--lime) 0 0/760px 760px repeat;
+  mix-blend-mode:overlay;
+  opacity:var(--lime-op);
+}
+/* words above the wash, always */
+body.texture :is(.way,.plan,.cls,.voice,.obj,.ev-item,.embed-placeholder,.exp) > *{position:relative;z-index:1}
+
+
+/* ==========================================================================
+   THE REAL LOGO
+   The wordmark was set in the site's own type; the brand mark exists, so it
+   goes in — black on the light header, white in the footer. The files are
+   2x for retina; height is set here, width follows.
+   ========================================================================== */
+.brand img{display:block;height:46px;width:auto}
+.foot-brand-mark img{display:block;height:56px;width:auto}
+@media (max-width:620px){ .brand img{height:36px} }
+/* the old text styling no longer applies to anything, but the link keeps
+   its hit area */
+.brand{display:inline-flex;align-items:center}

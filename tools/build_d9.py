@@ -29,7 +29,7 @@ def chrome(depth, active, cherish=False, nav_up=None):
 
     header = f'''<header class="site">
   <div class="nav-inner">
-    <a class="brand" href="{nav}index.html">Primal Moves<span>Venice</span></a>
+    <a class="brand" href="{nav}index.html"><img src="{asset}brand/logo-venice.png" alt="Primal Moves Venice"></a>
     <nav class="nav-links">{nav_links}
     </nav>
     <button class="nav-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu"><span class="burger" aria-hidden="true"></span></button>
@@ -52,7 +52,7 @@ def chrome(depth, active, cherish=False, nav_up=None):
     <div class="foot-grid">
 
       <div class="foot-id">
-        <a class="foot-brand-mark" href="{nav}index.html">Primal Moves<span>Venice</span></a>
+        <a class="foot-brand-mark" href="{nav}index.html"><img src="{asset}brand/logo-venice-light.png" alt="Primal Moves Venice"></a>
       </div>
 
       <div class="foot-block">

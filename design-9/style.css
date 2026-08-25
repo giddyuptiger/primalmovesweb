@@ -1862,7 +1862,25 @@ body.house .btn.sage:hover,body.house .btn.on-dark:hover{color:var(--h-fg)}
    the site's Helvetica stack, which is why it never quite read as theirs.
    Scoped to body.house; layouts A and B stay on Helvetica Neue.
    ========================================================================== */
-body.house{--sans:"Jost","Helvetica Neue",Helvetica,"Inter",Arial,sans-serif}
+/* Harmonia Sans Std, self-hosted — the files came out of primalmoves.com's
+   own brand assets (Jeremy pulled them through the site's console; direct
+   URLs are hotlink-blocked). Light carries the headings; SemiBd the rare
+   emphasis. Regular (400) is still to come — until it lands, body text
+   resolves to Light, which is a shade thinner than theirs. */
+@font-face{
+  font-family:"Harmonia";font-style:normal;font-weight:300;font-display:swap;
+  src:url("fonts/HarmoniaSansStd-Light.woff2") format("woff2")}
+@font-face{
+  font-family:"Harmonia";font-style:normal;font-weight:600;font-display:swap;
+  src:url("fonts/HarmoniaSansStd-SemiBd.woff2") format("woff2")}
+
+/* CORRECTION: their computed body font is Harmonia (Harmonia Sans, Monotype)
+   — read straight off primalmoves.com in DevTools, not guessed. It is a
+   licensed face, so the files have to come from their brand kit or their
+   server; "Harmonia" leads the stack now and activates the moment an
+   @font-face for it lands here. Until then Jost is the stand-in — the
+   closest free geometric — not the destination. */
+body.house{--sans:"Harmonia","Jost","Helvetica Neue",Helvetica,"Inter",Arial,sans-serif}
 body.house,body.house :is(input,button,select,textarea){
   font-family:var(--sans)}
 /* Jost runs a touch smaller than Helvetica at the same size — the weights

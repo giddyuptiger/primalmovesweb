@@ -131,10 +131,24 @@
   function uploadPhoto(file) {
     var h = writeHeaders({ "Content-Type": file.type });
     if (!h) return Promise.resolve({ error: "No write key." });
+    // Say no here, with the real reason, rather than letting the edge cut the
+    // connection mid-upload and reporting "not answering". The store caps a
+    // film at 64MB and a photograph at 12MB — and a hero loop should be ~10MB
+    // once it's compressed for the web anyway.
+    var film = /^video\//.test(file.type);
+    var capMB = film ? 64 : 12;
+    if (file.size > capMB * 1048576) {
+      return Promise.resolve({ error: "This " + (film ? "video" : "photo") + " is " +
+        Math.round(file.size / 1048576) + "MB — the store takes up to " + capMB +
+        "MB. Compress it for the web first (a hero loop wants to be ~10MB)." });
+    }
     return fetch(LIVE + "/upload?name=" + encodeURIComponent(file.name), {
       method: "POST", headers: h, body: file
-    }).then(function (r) { return r.json(); })
-      .catch(function () { return { error: "Upload failed — the photo store is not answering." }; });
+    }).then(function (r) {
+      return r.json().catch(function () {
+        return { error: "Upload failed — the store said " + r.status + " " + r.statusText + "." };
+      });
+    }).catch(function () { return { error: "Upload failed — the photo store is not answering." }; });
   }
 
   function toast(msg, bad) {

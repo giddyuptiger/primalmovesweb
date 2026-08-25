@@ -1854,3 +1854,18 @@ body.house .nav-toggle{color:var(--ink)}
    1.8:1, ink is 8.2:1 */
 body.house .btn.sage,body.house .btn.on-dark{color:var(--ink)}
 body.house .btn.sage:hover,body.house .btn.on-dark:hover{color:var(--h-fg)}
+
+/* ==========================================================================
+   THE PRIMAL MOVES LAYOUT RUNS THEIR TYPEFACE
+   primalmoves.com is set in Jost — the double-story a, the open single-story
+   g, the slant-cut t, the circular rounds. Until now this layout borrowed
+   the site's Helvetica stack, which is why it never quite read as theirs.
+   Scoped to body.house; layouts A and B stay on Helvetica Neue.
+   ========================================================================== */
+body.house{--sans:"Jost","Helvetica Neue",Helvetica,"Inter",Arial,sans-serif}
+body.house,body.house :is(input,button,select,textarea){
+  font-family:var(--sans)}
+/* Jost runs a touch smaller than Helvetica at the same size — the weights
+   were tuned on Helvetica, so the lightest tier comes up one step */
+body.house :is(h1,h2,h3,.display,.display-sm,.kicker,.price,.amt){font-weight:300}
+body.house .hero .display{font-weight:300}

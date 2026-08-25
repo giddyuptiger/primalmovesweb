@@ -129,7 +129,9 @@ window.PM_CONFIG = {
   photoFocus: {},
 
   photos: {
-    "home.hero":              "joy-laughing.jpg",
+    // the hero film ships in the repo — no photo store involved, so it plays
+    // even if the store is down. joy-laughing.jpg stays as the poster frame.
+    "home.hero":              "hero-loop.mp4",
     "home.what-is-primal":    "collective-crawl.jpg",
     "home.third-place":       "sauna-laughing.jpg",
     "home.family":            "",                      // <-- kids on the floor, still needed

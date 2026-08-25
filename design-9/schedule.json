@@ -2,30 +2,9 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-08-25T13:14:23.891097Z",
+ "fetchedAt": "2026-08-25T16:58:36.264122Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
-  {
-   "start": "2026-08-25T13:15:00Z",
-   "name": "Rise",
-   "staff": "Sabrina Rose",
-   "minutes": 60,
-   "category": "Strength training"
-  },
-  {
-   "start": "2026-08-25T14:30:00Z",
-   "name": "Primal - The Push/Pull Practice",
-   "staff": "Gus",
-   "minutes": 60,
-   "category": "Gym classes"
-  },
-  {
-   "start": "2026-08-25T15:45:00Z",
-   "name": "Primal Compound (Guided Weightlifting)",
-   "staff": "Zagreus",
-   "minutes": 60,
-   "category": "Strength training"
-  },
   {
    "start": "2026-08-25T17:00:00Z",
    "name": "Moves - The Signature Practice",
@@ -410,6 +389,34 @@
    "staff": "Miki Ash",
    "minutes": 60,
    "category": "Gym classes"
+  },
+  {
+   "start": "2026-09-02T13:15:00Z",
+   "name": "Tea Ceremony",
+   "staff": "Tyler Gustafson",
+   "minutes": 60,
+   "category": "Meditation"
+  },
+  {
+   "start": "2026-09-02T13:15:00Z",
+   "name": "Primal Hybrid (60 Min)",
+   "staff": "Zagreus",
+   "minutes": 60,
+   "category": "Gym classes"
+  },
+  {
+   "start": "2026-09-02T14:30:00Z",
+   "name": "Restore",
+   "staff": "Miki Ash",
+   "minutes": 60,
+   "category": "Yoga"
+  },
+  {
+   "start": "2026-09-02T15:45:00Z",
+   "name": "Primal Compound (Guided Weightlifting)",
+   "staff": "Zagreus",
+   "minutes": 60,
+   "category": "Strength training"
   }
  ]
 }

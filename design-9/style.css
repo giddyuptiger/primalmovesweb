@@ -1898,22 +1898,11 @@ body.house :is(h1,h2,h3,.display,.display-sm,.kicker,.price,.amt){font-weight:30
 body.house .hero .display{font-weight:300}
 
 
-/* ==========================================================================
-   LIMEWASH ON THE PANELS
-   The wash covered sections but every card painted its own flat ground on
-   top of it — the plans, the class tiles, the ways-in all sat as clean
-   rectangles on a textured wall. Same overlay, same blend, one level down.
-   ========================================================================== */
-body.texture :is(.way,.plan,.cls,.voice,.obj,.ev-item,.embed-placeholder,.exp){position:relative}
-body.texture :is(.way,.plan,.cls,.voice,.obj,.ev-item,.embed-placeholder,.exp)::before{
-  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
-  border-radius:inherit;
-  background:var(--lime) 0 0/760px 760px repeat;
-  mix-blend-mode:overlay;
-  opacity:var(--lime-op);
-}
-/* words above the wash, always */
-body.texture :is(.way,.plan,.cls,.voice,.obj,.ev-item,.embed-placeholder,.exp) > *{position:relative;z-index:1}
+/* The panel-wash experiment is gone: overlaying the wash on components
+   painted grey boxes over TRANSPARENT tiles (the objectives, the what-to-
+   bring grid) - a second coat where there was no panel at all. The wash
+   lives on the walls; anything transparent shows it naturally, and solid
+   cards read as clean surfaces against the washed ground. */
 
 
 /* ==========================================================================

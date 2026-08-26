@@ -590,8 +590,28 @@ window.PM_CONFIG = {
     }
 
     function fillAvatars() {
+      var slotFor = function (name) {
+        var T = window.PM_TEACHERS || {};
+        if (T[name]) return T[name];
+        var norm = function (x) { return String(x).toLowerCase().trim(); };
+        var first = function (x) { return norm(x).split(/\s+/)[0]; };
+        var names = Object.keys(T);
+        // a duo like "Zoe & Sanjay" borrows the first partner with a portrait
+        if (/[&+]/.test(name)) {
+          var parts = name.split(/\s*[&+]\s*/);
+          for (var i = 0; i < parts.length; i++) {
+            var hit = slotFor(parts[i]);
+            if (hit && (C.photos || {})[hit]) return hit;
+          }
+          return "";
+        }
+        // unique first-name match: schedule "Gus" -> teacher "Gus", etc.
+        var f = first(name);
+        var matches = names.filter(function (n) { return first(n) === f; });
+        return matches.length === 1 ? T[matches[0]] : "";
+      };
       document.querySelectorAll(".s-ava[data-t-name]").forEach(function (el) {
-        var slot = (window.PM_TEACHERS || {})[el.getAttribute("data-t-name")];
+        var slot = slotFor(el.getAttribute("data-t-name"));
         if (slot && !el.getAttribute("data-pm-photo")) el.setAttribute("data-pm-photo", slot);
         var file = slot ? (C.photos || {})[slot] : "";
         if (!file) return;

@@ -121,6 +121,10 @@
         if (d.error) { if (/write key/i.test(d.error)) lsDel(KEY_WKEY); return d; }
         livePhotos = { photos: d.live.photos || {}, photoFocus: d.live.photoFocus || {},
                        updatedAt: d.live.updatedAt || "", by: d.live.by || "" };
+        if (window.PM_CONFIG) {
+          window.PM_CONFIG.photos = Object.assign({}, window.PM_CONFIG.photos || {}, livePhotos.photos);
+          if (window.PM_FILL_AVATARS) window.PM_FILL_AVATARS();
+        }
         return d;
       })
       .catch(function () { return { error: "Could not reach the photo store." }; });
@@ -253,8 +257,15 @@
   function isFilm(u) { return /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(u) || /^data:video\//.test(u); }
 
   function applyPhotos() {
+    // the page's avatar painter reads window.PM_CONFIG.photos - keep it fed
+    if (window.PM_CONFIG) {
+      window.PM_CONFIG.photos = Object.assign({}, window.PM_CONFIG.photos || {}, photos);
+      if (window.PM_FILL_AVATARS) window.PM_FILL_AVATARS();
+    }
     Object.keys(photos).forEach(function (slot) {
-      var el = document.querySelector('[data-pm-photo="' + slot + '"]');
+      var els = [].slice.call(document.querySelectorAll('[data-pm-photo="' + slot + '"]'))
+        .filter(function (e) { return !(e.classList && e.classList.contains("s-ava")); });
+      var el = els[0];
       if (!el) return;
       // a published photograph is a full URL; a repo one is just a filename
       var val = String(photos[slot]);

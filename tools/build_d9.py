@@ -632,10 +632,10 @@ def studio(up, asset):
   <div class="wrap-wide">
     <div class="section-head">
       <div>
-        <div class="kicker">Front desk</div>
+        <div class="kicker">Staff</div>
         <h2 class="display-sm">The people at <br>the <span class="ed-it">door</span>.</h2>
       </div>
-      <p class="lede" style="max-width:24em">The founder and the front desk team - the people who run the room day to day. The coaches live on <a href="{up}classes/#teachers" style="text-decoration:underline">the classes page</a>.</p>
+      <p class="lede" style="max-width:24em">The founder and the staff - the people who run the room day to day. The coaches live on <a href="{up}classes/#teachers" style="text-decoration:underline">the classes page</a>.</p>
     </div>
 
     <!-- The roster comes from TEAM at the top of this file. Add a dict there

@@ -257,7 +257,7 @@ section.flush{padding:0}
 @media (max-width:760px){ .hero-meta{display:none} }
 
 /* interior page hero — quieter, shorter */
-.phero{position:relative;min-height:clamp(480px,68vh,760px);display:flex;align-items:flex-end;
+.phero{position:relative;min-height:clamp(560px,86vh,940px);display:flex;align-items:flex-end;
   overflow:hidden;background:var(--paper-3)}
 .phero>img,.phero>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .phero::after{content:"";position:absolute;inset:0;
@@ -1271,7 +1271,7 @@ section:not(.ink) .photo-slot span{color:var(--ink-soft)}
   text-transform:uppercase;color:var(--sage-txt);position:sticky;top:calc(var(--nav-h,84px) + 20px)}
 .sched-day ul{list-style:none;margin:0;padding:0}
 .sched-day li + li{border-top:1px solid var(--line)}
-.sched-day a{display:grid;grid-template-columns:96px 1fr auto;gap:18px;
+.sched-day a{display:grid;grid-template-columns:96px 1fr auto auto;gap:12px 18px;
   align-items:baseline;padding:13px 0;text-decoration:none;color:inherit}
 .sched-day a:hover .s-name{color:var(--sage-txt)}
 .s-time{font-size:14px;font-weight:500;color:var(--ink);letter-spacing:.02em}
@@ -1357,7 +1357,7 @@ body.tight section.alt{background:var(--paper-2)}
 /* --- 5 · shorter pages -------------------------------------------------- */
 body.tight .serie img{height:clamp(230px,26vw,340px)}
 body.tight .series{gap:clamp(42px,6vw,84px)}
-body.tight .phero{min-height:clamp(420px,58vh,640px)}
+body.tight .phero{min-height:clamp(500px,74vh,820px)}
 body.tight .hero{min-height:min(78vh,720px)}
 /* empty portrait frames read as neglect — hide until there's a photograph */
 body.tight .person:has(.portrait.empty){display:none}
@@ -1955,9 +1955,25 @@ body.page-method .obj{background:transparent;border:0;padding:0}
 body.page-method .obj::before{content:none}
 
 /* coach portraits on the timetable, from our own slots */
-.s-ava{display:none;width:30px;height:30px;border-radius:50%;flex:none;
+/* the row is a grid: time | class | ......... portrait | teacher, right.
+   The portrait sits beside the name it belongs to, both on the right edge. */
+.s-ava{display:none;width:34px;height:34px;border-radius:50%;
   background-size:cover;background-position:var(--pm-focus,50% 18%);
-  border:1px solid var(--line)}
-.s-ava.on{display:inline-block}
-.sched-day li a{display:flex;align-items:center;gap:12px}
+  border:1px solid var(--line);grid-column:3;grid-row:1;align-self:center}
+.s-ava.on{display:block}
+.s-time{grid-column:1}
+.s-name{grid-column:2}
+.s-meta{grid-column:4;grid-row:1;align-self:center}
 section.ink .s-ava{border-color:rgba(255,255,255,.25)}
+
+/* class-group headings — small caps rails between the tile blocks */
+.cls-group{font-size:11.5px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--soft);margin:clamp(30px,4vw,44px) 0 4px}
+.cls-group:first-of-type{margin-top:0}
+body.house .cls-group{font-size:11.5px;letter-spacing:.24em;color:var(--soft);max-width:none}
+body.house .cls-groups .cls-group{text-align:center}
+
+/* the online-portal nudge under the schedule */
+.online-nudge{display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  margin-top:clamp(26px,3.5vw,40px);padding-top:22px;border-top:1px solid var(--line)}
+.online-nudge p{margin:0;color:var(--mid);font-size:15.5px}

@@ -1,7 +1,7 @@
 {
  "source": "luma",
  "calendarId": "cal-CRQbJyS4jRRrfsN",
- "fetchedAt": "2026-08-26T04:58:05.832146Z",
+ "fetchedAt": "2026-08-26T09:05:21.869319Z",
  "calendarUrl": "https://luma.com/user/PrimalMoves",
  "events": [
   {
@@ -16,6 +16,13 @@
    "start": "2026-09-12T21:00:00Z",
    "allDay": false,
    "url": "https://luma.com/primalinstinct",
+   "location": "Primal Moves, 1038 Princeton Dr Ste B, Marina Del Rey, CA 90292, USA"
+  },
+  {
+   "title": "Spa Party \u2014 Decompression + Integration (Post-Burn)",
+   "start": "2026-09-13T23:00:00Z",
+   "allDay": false,
+   "url": "https://luma.com/8szb6j0d",
    "location": "Primal Moves, 1038 Princeton Dr Ste B, Marina Del Rey, CA 90292, USA"
   },
   {

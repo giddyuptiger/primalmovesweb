@@ -2,7 +2,7 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-08-26T04:58:05.446292Z",
+ "fetchedAt": "2026-08-26T09:05:21.490990Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
   {
@@ -273,17 +273,17 @@
   },
   {
    "start": "2026-09-02T13:15:00Z",
-   "name": "Tea Ceremony",
-   "staff": "Tyler Gustafson",
-   "minutes": 60,
-   "category": "Meditation"
-  },
-  {
-   "start": "2026-09-02T13:15:00Z",
    "name": "Primal Hybrid (60 Min)",
    "staff": "Zagreus",
    "minutes": 60,
    "category": "Gym classes"
+  },
+  {
+   "start": "2026-09-02T13:15:00Z",
+   "name": "Tea Ceremony",
+   "staff": "Tyler Gustafson",
+   "minutes": 60,
+   "category": "Meditation"
   },
   {
    "start": "2026-09-02T14:30:00Z",

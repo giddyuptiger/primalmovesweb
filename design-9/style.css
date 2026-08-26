@@ -1986,5 +1986,4 @@ body.house .cls-groups .cls-group{text-align:center}
   text-transform:uppercase;color:var(--soft)}
 @media (max-width:860px){ .spaces{grid-template-columns:repeat(2,1fr)} }
 
-/* the no-membership ways in */
-.ways-in{margin-top:clamp(26px,3.5vw,40px);padding-top:22px;border-top:1px solid var(--line)}
+

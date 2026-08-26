@@ -1,5 +1,5 @@
 /* ============================================================================
-   PRIMAL MOVES VENICE — DESIGN 8 CONFIG
+   PRIMAL MOVES VENICE - DESIGN 8 CONFIG
    One file. Fill a value, commit, done. Blank values degrade gracefully:
    buttons hide or link to a sensible fallback, embeds show a real card
    instead of a broken iframe.
@@ -18,7 +18,7 @@ window.PM_CONFIG = {
   veniceTrialUrl: "",
   veniceTrialPriceLabel: "$69",          // shown on the card; edit if it changes
 
-  // Where "Try Primal Online Free" goes — the digital studio's free week.
+  // Where "Try Primal Online Free" goes - the digital studio's free week.
   // Note: primalmoves.com currently advertises a 14-DAY free trial, not 7.
   // Confirm which is right before launch; the label below is what visitors see.
   onlineTrialUrl: "https://app.primalmoves.com/register/trial/",
@@ -27,7 +27,7 @@ window.PM_CONFIG = {
   /* --- BOOKING / SCHEDULE ------------------------------------------------
      IMPORTANT: Mindbody's own schedule page (clients.mindbodyonline.com)
      sends `X-Frame-Options: SAMEORIGIN`, so it CANNOT be put in an iframe
-     on our domain — it renders as a blank white box in every browser.
+     on our domain - it renders as a blank white box in every browser.
 
      The only supported way to show the live timetable inline is a
      Healcode / Branded Web widget, generated inside your Mindbody account:
@@ -39,7 +39,7 @@ window.PM_CONFIG = {
   mindbodySiteId: "5745965",             // verified: Primal Moves Venice Beach
   healcodeWidgetId: "",                  // <-- paste the Healcode SCHEDULE widget ID here
 
-  // OPTIONAL escape hatch. Renders Mindbody's own pricing widget inline —
+  // OPTIONAL escape hatch. Renders Mindbody's own pricing widget inline -
   // which works, but arrives in Mindbody's markup and fights this design
   // system. Preferred approach is the hand-built tiers on the memberships
   // page, each linking out to its Mindbody purchase URL. Blank = slot is
@@ -52,20 +52,20 @@ window.PM_CONFIG = {
   lumaPageUrl: "https://luma.com/user/PrimalMoves",
 
   // Live Luma Calendar embed (cal-CRQbJyS4jRRrfsN). Verified iframe-able:
-  // 200, no X-Frame-Options. Only *Calendars* have embed URLs — host
+  // 200, no X-Frame-Options. Only *Calendars* have embed URLs - host
   // profiles do not. Replace via Luma → Manage Calendar → Embed.
   lumaEmbedUrl: "https://luma.com/embed/calendar/cal-CRQbJyS4jRRrfsN/events",
 
   linktreeUrl: "",
 
   /* --- PHOTOS ------------------------------------------------------------
-     SWAPPING A PHOTO — two ways, both easy:
+     SWAPPING A PHOTO - two ways, both easy:
 
      1. Same name.  Drop your new file into assets/photos/ using the SAME
         filename as the one you're replacing. Nothing else to change.
 
      2. New name.   Put the file in assets/photos/ and change the filename
-        on the matching line below. That's it — the page picks it up.
+        on the matching line below. That's it - the page picks it up.
 
      Slot names follow Miki's `page - section - slot` convention. The full
      list, with what each shot is doing, is in assets/photos/PHOTOS.md.
@@ -93,8 +93,8 @@ window.PM_CONFIG = {
      false = hidden unless someone goes to /admin/ and enters the passphrase.
 
      >>> FLIP THIS TO false BEFORE THE SITE GOES LIVE. <<<
-     Nothing the studio does can change what other people see — it's all
-     preview — but a public EDIT tab on a real business site looks unfinished. */
+     Nothing the studio does can change what other people see - it's all
+     preview - but a public EDIT tab on a real business site looks unfinished. */
   studioOpenToAll: true,
 
   /* --- COPY OVERRIDES -----------------------------------------------------
@@ -119,17 +119,17 @@ window.PM_CONFIG = {
               within seconds, with no push and no deploy.
 
      Photographs are the only thing that publishes this way. Colour and
-     wording stay as saved configs — changing those for everyone is still a
+     wording stay as saved configs - changing those for everyone is still a
      commit, on purpose. Setup: strategy/live-editing.md              */
   liveApi: "https://pm-studio.primal-0d7.workers.dev",
 
-  // Focal point per slot — where the crop should hold as the frame changes
+  // Focal point per slot - where the crop should hold as the frame changes
   // shape. "50% 50%" is the centre; "50% 30%" pulls the crop upward, which is
   // usually what a photo of a face wants. Set these in the /admin studio.
   photoFocus: {},
 
   photos: {
-    // the hero film ships in the repo — no photo store involved, so it plays
+    // the hero film ships in the repo - no photo store involved, so it plays
     // even if the store is down. joy-laughing.jpg stays as the poster frame.
     "home.hero":              "hero-loop.mp4",
     "home.what-is-primal":    "collective-crawl.jpg",
@@ -160,7 +160,7 @@ window.PM_CONFIG = {
 
   /* --- COMMUNITY PARTNERS ------------------------------------------------
      Moss sells the joint membership in THEIR system, so this must deep-link
-     straight to Moss's own signup — not to a page on our site. Blank = the
+     straight to Moss's own signup - not to a page on our site. Blank = the
      button falls back to /partners/.                                      */
   mossJoinUrl: "",
   summitUrl: "",
@@ -184,7 +184,7 @@ window.PM_CONFIG = {
   phoneHref:        "tel:+13108007061",
   /* --- HOURS --------------------------------------------------------------
      From the Google Business listing. The footer marks today and works out
-     open/closed live in the browser, in LA time — so it's always current
+     open/closed live in the browser, in LA time - so it's always current
      without calling anything. Edit here when the hours change.
      Use 24h "HH:MM". A day with open === close reads as Closed.          */
   hours: [
@@ -202,7 +202,7 @@ window.PM_CONFIG = {
 };
 
 /* ============================================================================
-   Runtime — no need to edit below.
+   Runtime - no need to edit below.
    ========================================================================== */
 (function () {
   var C = window.PM_CONFIG;
@@ -227,7 +227,7 @@ window.PM_CONFIG = {
   // one Worker serves both; presetsApi only needs setting if it lives elsewhere
   if (!C.presetsApi && C.liveApi) C.presetsApi = C.liveApi.replace(/\/+$/, "") + "/presets";
 
-  // each membership's own contract checkout — straight to the plan, not the
+  // each membership's own contract checkout - straight to the plan, not the
   // whole store (prodIds from Mindbody's Online Store > Contracts)
   (function () {
     var contract = function (id) {
@@ -306,7 +306,7 @@ window.PM_CONFIG = {
 
     // data-pm-schedule → the live timetable, in three fallbacks:
     //
-    //   1. schedule.json — built by tools/fetch_schedule.py from Mindbody's
+    //   1. schedule.json - built by tools/fetch_schedule.py from Mindbody's
     //      own PUBLIC class-times API (the one behind mindbodyonline.com/
     //      explore). No key, no widget, no cost, and it renders in OUR type.
     //   2. the Branded Web / Healcode widget, if healcodeWidgetId is ever set.
@@ -314,7 +314,7 @@ window.PM_CONFIG = {
     //      style.
     //   3. a plain link to Mindbody.
     //
-    // Note clients.mindbodyonline.com can never be framed — it sends
+    // Note clients.mindbodyonline.com can never be framed - it sends
     // X-Frame-Options: SAMEORIGIN. Link to it, never embed it.
     var teachersUrl = (function () {
       var css = (document.querySelector('link[rel="stylesheet"][href*="style.css"]') || {}).href || "";
@@ -373,7 +373,7 @@ window.PM_CONFIG = {
       var todayKey = la(new Date().toISOString()).key;
       var book = d.bookUrl || C.mindbodyScheduleUrl;
 
-      /* A day at a time, chosen from a rail you can scroll — the whole week
+      /* A day at a time, chosen from a rail you can scroll - the whole week
          stacked was eight screens of timetable nobody reads to the end. */
       var html = '<div class="daybar"><button class="dnav prev" type="button" aria-label="Earlier days">&#8249;</button>' +
         '<div class="days" role="tablist">' +
@@ -402,7 +402,7 @@ window.PM_CONFIG = {
         html += "</ul></div>";
       });
       html += "</div>";
-      // no "book a class" line here — the buttons under the timetable say it
+      // no "book a class" line here - the buttons under the timetable say it
       el.classList.add("sched-wrap");
       el.innerHTML = html;
       if (window.PM_FILL_AVATARS) window.PM_FILL_AVATARS();
@@ -489,7 +489,7 @@ window.PM_CONFIG = {
         return;
       }
       // Not configured: leave the slot empty. The hand-built tiers below are
-      // the intended presentation — Mindbody's own widget markup does not
+      // the intended presentation - Mindbody's own widget markup does not
       // match this design system.
       el.remove();
     });
@@ -554,11 +554,11 @@ window.PM_CONFIG = {
     // A blank or missing entry leaves the markup's own src alone; a named
     // file that doesn't exist falls back to it too, so a typo can't leave
     // a broken image on the page.
-    // a slot holds a photograph or a film — .mp4/.webm/.mov means film
+    // a slot holds a photograph or a film - .mp4/.webm/.mov means film
     function isFilm(u) { return /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(u) || /^data:video\//.test(u); }
 
     /* Where a bare filename lives. An <img> slot can tell us from its own src,
-       but a FRAME — an empty portrait — has no src, and resolving against the
+       but a FRAME - an empty portrait - has no src, and resolving against the
        page instead gave /studio/joy-laughing.jpg. That 404s quietly, which is
        why published portraits appeared for nobody. */
     function assetBase() {
@@ -592,6 +592,7 @@ window.PM_CONFIG = {
     function fillAvatars() {
       document.querySelectorAll(".s-ava[data-t-name]").forEach(function (el) {
         var slot = (window.PM_TEACHERS || {})[el.getAttribute("data-t-name")];
+        if (slot && !el.getAttribute("data-pm-photo")) el.setAttribute("data-pm-photo", slot);
         var file = slot ? (C.photos || {})[slot] : "";
         if (!file) return;
         var abs = /^(https?:)?\/\//.test(file) || file.charAt(0) === "/" || file.indexOf("data:") === 0;
@@ -603,6 +604,7 @@ window.PM_CONFIG = {
 
     function applyPhotoSlots() {
       document.querySelectorAll("[data-pm-photo]").forEach(function (el) {
+        if (el.classList && el.classList.contains("s-ava")) return;  // painted by fillAvatars
         var slot = el.getAttribute("data-pm-photo");
         var file = (C.photos || {})[slot];
         if (!file) return;
@@ -624,7 +626,7 @@ window.PM_CONFIG = {
           return;
         }
 
-        /* Some slots are FRAMES, not pictures — a teacher portrait is an
+        /* Some slots are FRAMES, not pictures - a teacher portrait is an
            empty <div class="portrait"> waiting for one. Fill it rather than
            replacing it: the frame carries the 4:5 aspect-ratio that keeps
            every portrait the same size, and replacing it would throw that
@@ -667,7 +669,7 @@ window.PM_CONFIG = {
     if (C.layout === "tight") document.documentElement.classList.add("pm-pre-tight");
     if (C.layout === "house") document.body.classList.add("house");
 
-    // limewash — on by default now; the panel can still turn it off
+    // limewash - on by default now; the panel can still turn it off
     if (C.texture) {
       document.body.classList.add("texture");
       if (C.texture === "faint") document.body.classList.add("lime-faint");
@@ -686,7 +688,7 @@ window.PM_CONFIG = {
             if (el) el.innerHTML = map[k];
           });
         })
-        .catch(function () { /* no overrides file — the page stands as written */ });
+        .catch(function () { /* no overrides file - the page stands as written */ });
     }
 
     // data-pm-photo-focus / config.photoFocus → object-position per slot
@@ -694,7 +696,7 @@ window.PM_CONFIG = {
       document.querySelectorAll("[data-pm-photo]").forEach(function (el) {
         var f = (C.photoFocus || {})[el.getAttribute("data-pm-photo")];
         if (!f) return;
-        // On a frame slot the dial must reach the image INSIDE the frame —
+        // On a frame slot the dial must reach the image INSIDE the frame -
         // object-position on the div itself does nothing. The custom property
         // survives the fill arriving later, so order stops mattering.
         el.style.objectPosition = f;
@@ -704,7 +706,7 @@ window.PM_CONFIG = {
     applyFocusSlots();
 
     /* The live set, fetched fresh. Anything published since this browser
-       last looked lands here — no deploy, no cache to bust. */
+       last looked lands here - no deploy, no cache to bust. */
     if (C.liveApi) {
       fetch(C.liveApi.replace(/\/+$/, "") + "/live", { cache: "no-cache" })
         .then(function (r) { return r.ok ? r.json() : null; })
@@ -714,13 +716,13 @@ window.PM_CONFIG = {
             localStorage.setItem(LIVE_CACHE, JSON.stringify({
               photos: d.photos || {}, photoFocus: d.photoFocus || {}
             }));
-          } catch (e) { /* private browsing — the fetch still works, just no cache */ }
+          } catch (e) { /* private browsing - the fetch still works, just no cache */ }
           mergeLive(d);
           applyPhotoSlots(); applyFocusSlots();
           if (window.PM_FILL_AVATARS) window.PM_FILL_AVATARS();
           document.dispatchEvent(new CustomEvent("pm:live", { detail: d }));
         })
-        .catch(function () { /* Worker unreachable — the repo photographs stand */ });
+        .catch(function () { /* Worker unreachable - the repo photographs stand */ });
     }
 
     // data-pm-calendar → our own month grid, built from events.json.
@@ -773,7 +775,7 @@ window.PM_CONFIG = {
 
       function render(events, calUrl) {
         if (!events.length) {
-          el.innerHTML = '<div class="pm-cal-empty">Nothing on the calendar just now — ' +
+          el.innerHTML = '<div class="pm-cal-empty">Nothing on the calendar just now - ' +
             '<a href="' + (calUrl || C.lumaPageUrl) + '" target="_blank" rel="noopener">follow us on Luma</a> ' +
             "and you'll hear about the next one first.</div>";
           return;
@@ -789,7 +791,7 @@ window.PM_CONFIG = {
 
         var nowLa = la(new Date().toISOString());
         if (limit) events = events.slice(0, limit);
-        // Start at the current month, never earlier — and inside that month,
+        // Start at the current month, never earlier - and inside that month,
         // skip whole weeks that have already been and gone.
         var first = events[0]._la;
         var startY = nowLa.y, startM = nowLa.m;
@@ -916,7 +918,7 @@ window.PM_CONFIG = {
       if (!b) return;
       var card = b.closest(".cls");
       if (!card) return;
-      // one at a time — two open tiles both claim a full row on a phone and
+      // one at a time - two open tiles both claim a full row on a phone and
       // push everything else off the screen
       var wasOpen = card.classList.contains("open");
       var list = card.closest(".cls-list") || document;

@@ -1,17 +1,17 @@
 /* ============================================================================
-   PRIMAL MOVES VENICE — DESIGN STUDIO
+   PRIMAL MOVES VENICE - DESIGN STUDIO
    A small in-page panel for trying colours and photos without touching code.
 
    WHAT IT DOES        Changes the live page instantly so you can see a choice
                        in context, and hands you the exact config to save.
-   WHAT IT DOES NOT DO Save anything. This is a static site — there's no server
+   WHAT IT DOES NOT DO Save anything. This is a static site - there's no server
                        to write to. Everything lives in your browser until you
                        hit "Copy config" and paste it into the repo (or send it
                        to whoever pushes).
 
    NOT SECURITY        The /admin gate hides the panel from casual visitors.
                        Anyone determined can turn it on. That's fine, because
-                       it cannot change what other people see — only your own
+                       it cannot change what other people see - only your own
                        browser. Don't mistake it for a login.
 
    TURN IT ON          Visit /admin/ , or add ?admin=1 to any URL.
@@ -60,7 +60,7 @@
 
   /* ---------------------------------------------------------------- live --
      Photographs are the one thing that publishes. Swap or upload one and it
-     is live for every visitor within seconds — no push, no deploy. Colour
+     is live for every visitor within seconds - no push, no deploy. Colour
      and wording deliberately do NOT work this way: they are saved into
      configs so people can try things without moving the real site.
      The store is the Worker in tools/pm-worker.js.                       */
@@ -74,7 +74,7 @@
     if (liveOpen) return "";                    // nothing to ask for
     var k = ls(KEY_WKEY);
     if (k && !force) return k;
-    k = prompt("Write key\n\nThis is what lets you change the live site. Ask Jeremy for it — " +
+    k = prompt("Write key\n\nThis is what lets you change the live site. Ask Jeremy for it - " +
                "it is stored in this browser only.");
     if (k) ls(KEY_WKEY, k);
     return k;
@@ -133,22 +133,22 @@
     if (!h) return Promise.resolve({ error: "No write key." });
     // Say no here, with the real reason, rather than letting the edge cut the
     // connection mid-upload and reporting "not answering". The store caps a
-    // film at 64MB and a photograph at 12MB — and a hero loop should be ~10MB
+    // film at 64MB and a photograph at 12MB - and a hero loop should be ~10MB
     // once it's compressed for the web anyway.
     var film = /^video\//.test(file.type);
     var capMB = film ? 64 : 12;
     if (file.size > capMB * 1048576) {
       return Promise.resolve({ error: "This " + (film ? "video" : "photo") + " is " +
-        Math.round(file.size / 1048576) + "MB — the store takes up to " + capMB +
+        Math.round(file.size / 1048576) + "MB - the store takes up to " + capMB +
         "MB. Compress it for the web first (a hero loop wants to be ~10MB)." });
     }
     return fetch(LIVE + "/upload?name=" + encodeURIComponent(file.name), {
       method: "POST", headers: h, body: file
     }).then(function (r) {
       return r.json().catch(function () {
-        return { error: "Upload failed — the store said " + r.status + " " + r.statusText + "." };
+        return { error: "Upload failed - the store said " + r.status + " " + r.statusText + "." };
       });
-    }).catch(function () { return { error: "Upload failed — the photo store is not answering." }; });
+    }).catch(function () { return { error: "Upload failed - the photo store is not answering." }; });
   }
 
   function toast(msg, bad) {
@@ -169,7 +169,7 @@
     ["Blush",       "#CD826A"], ["Orange",     "#C16838"], ["Rust",       "#9F663A"],
     ["Brown",       "#945A38"], ["Gold",       "#CE9C3B"], ["Burnt red",  "#AE411C"],
     ["Oxblood",     "#7A3A34"], ["Off-white",  "#F7F3E7"],
-    /* Miki's second set. Flame and mustard are mark colours — at 2.8 and 1.6
+    /* Miki's second set. Flame and mustard are mark colours - at 2.8 and 1.6
        against cream they cannot carry words, so the two darkened versions sit
        beside them for when they have to. */
     ["Mustard",     "#D4B906"], ["Deep mustard", "#6F5E03"],
@@ -187,7 +187,7 @@
     { v: "--sage-btn", label: "Button fill",      hint: "the primary CTA" },
     { v: "--sage-txt", label: "Accent as text",   hint: "kickers, pull quotes" },
     { v: "--clay",     label: "Second accent",    hint: "used sparingly" },
-    /* Tea & Cafe runs its own warmer ground — everything else on that page
+    /* Tea & Cafe runs its own warmer ground - everything else on that page
        (its rules, muted type and panels) is mixed from these two. */
     { v: "--cherish-paper", label: "Cafe + Tea ground", hint: "that page only" },
     { v: "--oxblood",       label: "Cafe + Tea accent", hint: "buttons and marks there" },
@@ -224,7 +224,7 @@
     });
   }
 
-  /* Limewash — the studio's wall finish, generated in CSS so it tints with
+  /* Limewash - the studio's wall finish, generated in CSS so it tints with
      whatever palette is loaded. See the block at the end of style.css. */
   // 0 off · 1 limewash · 2 a heavier coat
   var texture = (function () {
@@ -286,7 +286,7 @@
         return;
       }
       if (el.tagName === "IMG") { el.src = src; return; }
-      // a frame — a teacher portrait, a photo slot — gets the picture put
+      // a frame - a teacher portrait, a photo slot - gets the picture put
       // INSIDE it, so the frame's own aspect-ratio still governs the size
       var inner = el.querySelector("img[data-pm-fill]");
       if (!inner) {
@@ -311,7 +311,7 @@
     "  display:flex;flex-direction:column;box-shadow:-14px 0 40px rgba(0,0,0,.3);transition:transform .22s ease}",
     "#pm-studio.closed{transform:translateX(344px)}",
     "#pm-studio *,#pm-picker *{box-sizing:border-box;font-family:'Helvetica Neue',Helvetica,Inter,Arial,sans-serif}",
-    /* Reset only TEXT elements — resetting div wiped the panel's own padding,
+    /* Reset only TEXT elements - resetting div wiped the panel's own padding,
        which is what made it feel cramped. */
     "#pm-studio h2,#pm-studio h3,#pm-studio p,#pm-studio b,#pm-studio label,#pm-studio span,#pm-studio code,",
     "#pm-picker h3,#pm-picker p,#pm-picker span{color:inherit;font-style:normal;letter-spacing:normal;",
@@ -386,6 +386,10 @@
     ".pm-swap-badge button{background:#15171A;color:#fff;border:0;padding:8px 13px;cursor:pointer;",
     "  font:600 11px/1 'Helvetica Neue',Arial,sans-serif;letter-spacing:.08em}",
     ".pm-swap-badge button:hover{background:#8BA85F;color:#11140E}",
+    /* while photo mode is on, even coaches with no portrait yet show a
+       clickable empty circle on the timetable */
+    "body.pm-photos-on .s-ava{display:inline-block;background-color:rgba(139,168,95,.3);",
+    "  outline:1px dashed #8BA85F;outline-offset:2px}",
 
     /* focus picker overlay */
     ".pm-focus{box-shadow:inset 0 0 0 2px #8BA85F, 0 0 0 9999px rgba(10,11,13,.45)}",
@@ -427,6 +431,12 @@
     "  transition:outline-color .15s ease}",
     ".pm-editing:hover{outline-color:#8BA85F;outline-style:solid}",
     ".pm-editing:focus{outline:2px solid #8BA85F;outline-offset:4px;background:rgba(139,168,95,.10)}",
+    /* the class-card description lives in a clipped reveal wrapper, which
+       was eating its dashed box. In copy mode every description opens and
+       the wrapper stops clipping, so each one is visible and boxed. */
+    ".pm-copy-mode .cls .desc{grid-template-rows:1fr !important;opacity:1 !important;",
+    "  margin-top:12px !important;overflow:visible !important}",
+    ".pm-copy-mode .cls .desc .pm-editing{display:block}",
     "body.pm-copy-mode .pm-swap-badge{opacity:.28}",
     "#pm-studio label.tog{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:12.5px;color:#E8E6E0}",
     "#pm-studio label.tog input{accent-color:#8BA85F;width:15px;height:15px}",
@@ -473,6 +483,10 @@
     "#pm-studio .live-state b{color:#E8E6E0;font-weight:600}",
     "#pm-studio .live-state span{display:block;margin-top:5px;font-size:10.5px;color:#6E737A}",
     "#pm-studio .slot .tagline{display:block;margin-top:5px;font-size:10px;color:#8BA85F}",
+    "#pm-studio .pm-save{font-size:10.5px;letter-spacing:.02em}",
+    "#pm-studio .pm-save.busy{color:#B7A34A}",
+    "#pm-studio .pm-save.ok{color:#8BA85F}",
+    "#pm-studio .pm-save.err{color:#E8B48A}",
     "#pm-studio .p-reset{background:none;border:0;padding:0;font:inherit;font-size:10px;",
     "  color:#6E737A;cursor:pointer;text-decoration:underline}",
     "#pm-studio .p-reset:hover{color:#D08A72}",
@@ -597,7 +611,7 @@
     }).join("");
     return '<div class="field tex-field"><label class="p-lab">Wall finish</label>' +
       '<div class="seg-row">' + opts + "</div>" +
-      '<p class="pm-note" style="margin-top:9px">The studio\u2019s own walls &mdash; mineral plaster, ' +
+      '<p class="pm-note" style="margin-top:9px">The studio\u2019s own walls - mineral plaster, ' +
       "cloudy rather than flat. Drawn in CSS, so it takes the colour of whatever is under it, never " +
       "repeats, and leaves the photographs alone.</p></div>";
   }
@@ -606,6 +620,7 @@
     [].slice.call(document.querySelectorAll("#pm-body .seg[data-tex]")).forEach(function (b) {
       b.addEventListener("click", function () {
         texture = parseInt(b.dataset.tex, 10);
+        autosave();
         ls(KEY_TEX, String(texture));
         applyTexture();
         renderColor();
@@ -641,7 +656,7 @@
       var c = colors[t[0]] || cssVar(t[0]);
       var r = ratio(c, ground);
       if (r < t[1]) {
-        el.textContent = "⚠ " + r.toFixed(2) + ":1 on the page ground — needs 4.5 for body text.";
+        el.textContent = "⚠ " + r.toFixed(2) + ":1 on the page ground - needs 4.5 for body text.";
         el.classList.add("show");
       } else { el.classList.remove("show"); }
     });
@@ -650,7 +665,7 @@
       var f = colors["--sage-btn"] || cssVar("--sage-btn");
       var r2 = ratio(cssVar("--cream") || "#F7F3E7", f);
       if (r2 < 4.5) {
-        btn.textContent = "⚠ " + r2.toFixed(2) + ":1 against the button label — the text will be hard to read.";
+        btn.textContent = "⚠ " + r2.toFixed(2) + ":1 against the button label - the text will be hard to read.";
         btn.classList.add("show");
       } else { btn.classList.remove("show"); }
     }
@@ -672,7 +687,7 @@
   }
 
   function renderPhoto() {
-    // The panel's copy of the live map can be stale — opened before the store
+    // The panel's copy of the live map can be stale - opened before the store
     // answered, or another editor published since. Re-read it, then paint.
     if (LIVE && !renderPhoto._fresh) {
       renderPhoto._fresh = true;
@@ -697,17 +712,17 @@
 
     body.innerHTML =
       '<div class="field"><p class="pm-note">A <b style="color:#B9C79E">Swap</b> button sits on every photo ' +
-      "while this panel is open &mdash; empty slots included.</p>" +
+      "while this panel is open - empty slots included.</p>" +
       '<div class="live-state' + (LIVE ? " on" : "") + '">' +
         (LIVE
           ? "<b>Photographs are live.</b> A swap or an upload here changes the site for every visitor " +
-            "within seconds &mdash; no push, no deploy." +
+            "within seconds - no push, no deploy." +
             (when ? "<span>Last change " + when + (livePhotos.by ? " by " + livePhotos.by : "") + "</span>" : "") +
             (liveOpen ? "<span style=\"color:#E8B48A\">Open: anyone with this link can change photographs. " +
                         "Lock it down before launch.</span>" : "") +
             (liveErr ? '<span style="color:#E8B48A">' + liveErr + "</span>" : "")
           : "<b>Preview only.</b> No photo store is connected, so a swap changes your browser and nobody " +
-            "else&rsquo;s. Set <code>liveApi</code> in <code>config.js</code> &mdash; see " +
+            "else&rsquo;s. Set <code>liveApi</code> in <code>config.js</code> - see " +
             "<code>strategy/live-editing.md</code>.") +
       "</div>" +
       '<p class="pm-note" style="margin-top:10px">Colour and wording are <b>not</b> published this way. ' +
@@ -739,7 +754,7 @@
       });
     });
 
-    // clicking a card scrolls to its photograph and pulses the Swap button —
+    // clicking a card scrolls to its photograph and pulses the Swap button -
     // the card itself was never the control, but everyone clicks it first
     [].slice.call(body.querySelectorAll(".slot")).forEach(function (card) {
       card.style.cursor = "pointer";
@@ -774,6 +789,7 @@
 
 
   function hideBadges() {
+    document.body.classList.remove("pm-photos-on");
     [].slice.call(document.querySelectorAll(".pm-swap-badge")).forEach(function (b) { b.remove(); });
   }
 
@@ -784,6 +800,7 @@
 
   function showBadges() {
     hideBadges();
+    document.body.classList.add("pm-photos-on");
     [].slice.call(document.querySelectorAll("[data-pm-photo]")).forEach(function (el) {
       var b = document.createElement("div");
       b.className = "pm-swap-badge";
@@ -794,7 +811,7 @@
         var t = ev.target.closest("button"); if (!t) return;
         ev.preventDefault(); ev.stopPropagation();
         if (t.dataset.a === "swap") { openPicker(el); return; }
-        // Focus is a toggle — pressing it again leaves focus mode
+        // Focus is a toggle - pressing it again leaves focus mode
         if (activeFocus === el) { closeFocus(); return; }
         focusMode(el);
       });
@@ -878,7 +895,7 @@
   /* Photographs added in the browser live here for the session. They are
      previews: a static site has no server to write to, so the file itself
      still has to reach assets/photos/ in the repo before anyone else sees
-     it. Uploading many at once is fine — they queue up in the picker and
+     it. Uploading many at once is fine - they queue up in the picker and
      you assign them slot by slot. */
   var freshUploads = [];
 
@@ -898,9 +915,9 @@
           '<div class="drop" id="pm-drop">' +
             '<button class="up" id="pm-up">Upload photos</button>' +
             '<div class="d-txt">' + (LIVE
-              ? "<b>Drag them anywhere in this window</b> &mdash; as many as you like. " +
+              ? "<b>Drag them anywhere in this window</b> - as many as you like. " +
                 "They upload to the photo store and go live for every visitor as soon as you pick one."
-              : "<b>Drag them anywhere in this window</b> &mdash; as many as you like. " +
+              : "<b>Drag them anywhere in this window</b> - as many as you like. " +
                 "No photo store is connected yet, so an upload previews in this browser only: the file " +
                 "still has to reach <code>assets/photos/</code> and be pushed.") + "</div>" +
             '<input type="file" accept="image/*,video/mp4,video/webm,video/quicktime" multiple id="pm-file" hidden>' +
@@ -944,14 +961,14 @@
       function choose(src) {
         photos[slot] = src;
         try { ls(KEY_PHOTOS, JSON.stringify(photos)); }
-        catch (e) { /* a data: URL can overflow the quota — the preview still works */ }
+        catch (e) { /* a data: URL can overflow the quota - the preview still works */ }
         applyPhotos(); showBadges();
         wrap.remove();
         if (!LIVE) { renderPhoto(); return; }
         if (String(src).indexOf("data:") === 0) { renderPhoto(); return; }  // never publishable
         publishSlot(slot, src).then(function (d) {
           if (d.error) toast(d.error, true);
-          else toast("Published — everyone sees this now.");
+          else toast("Published - everyone sees this now.");
           renderPhoto();
         });
       }
@@ -965,8 +982,8 @@
         var list = [].slice.call(files || []).filter(function (f) { return /^(image|video)\//.test(f.type); });
         if (!list.length) return;
 
-        /* With a photo store connected the file goes UP — to R2, through the
-           Worker — and comes back as a URL every visitor can load. Without
+        /* With a photo store connected the file goes UP - to R2, through the
+           Worker - and comes back as a URL every visitor can load. Without
            one all we can do is read it into this browser as a preview. */
         if (LIVE) {
           var done = 0, urls = [];
@@ -981,7 +998,7 @@
               if (done < list.length) return;
               var ok = urls.filter(Boolean);
               if (ok.length === 1) choose(ok[0].url);          // you meant this slot
-              else { say(ok.length + " uploaded &mdash; pick one for this slot."); renderLib(); }
+              else { say(ok.length + " uploaded - pick one for this slot."); renderLib(); }
             });
           });
           return;
@@ -1046,7 +1063,7 @@
                 "Nine-plus type sizes in play"] },
     { id: "tight", name: "Tightened", note: "The design critique applied.",
       bullets: ["Two big moments per page, the rest become bands",
-                "Secondary CTAs demoted to text links — one primary per screen",
+                "Secondary CTAs demoted to text links - one primary per screen",
                 "Type collapsed to six sizes",
                 "Statement bands go dark; clay stops carrying display type",
                 "Shorter: smaller series images, tighter heroes",
@@ -1063,7 +1080,7 @@
   function renderLayout() {
     var body = document.getElementById("pm-body");
     body.innerHTML =
-      '<p class="pm-note" style="margin-bottom:18px">Three takes on the same content. Switch and scroll &mdash; ' +
+      '<p class="pm-note" style="margin-bottom:18px">Three takes on the same content. Switch and scroll - ' +
       "the choice follows you from page to page.</p>" +
       LAYOUTS.map(function (L) {
         var on = layout === L.id;
@@ -1082,6 +1099,7 @@
     body.querySelectorAll(".preset.lay").forEach(function (el) {
       el.addEventListener("click", function () {
         applyLayout(el.getAttribute("data-lay"));
+        autosave();
         renderLayout();
         [].slice.call(document.querySelectorAll(".pm-swap-badge")).forEach(function (x) { if (x._place) x._place(); });
       });
@@ -1106,7 +1124,7 @@
     });
   }
 
-  // Replace the whole set of text edits at once — anything the incoming set
+  // Replace the whole set of text edits at once - anything the incoming set
   // doesn't mention goes back to the written copy rather than lingering.
   function setCopy(map) {
     snapshotOriginals();
@@ -1172,7 +1190,7 @@
   }
 
   // the list of changes refreshes when you leave a field, not on every
-  // keystroke — re-rendering mid-type would steal the caret
+  // keystroke - re-rendering mid-type would steal the caret
   function onBlur() { if (copyOn) renderCopy(); }
 
   function onEdit(e) {
@@ -1182,17 +1200,71 @@
     ls(KEY_COPY, JSON.stringify(copyEdits));
     var n = document.getElementById("pm-copy-count");
     if (n) n.textContent = Object.keys(copyEdits).length;
+    autosave();
+  }
+
+  /* Every tracked change writes itself to the ACTIVE config in the shared
+     store, debounced - type, pause a beat, and it is saved for every device.
+     No active config means the Default site is on screen, and the Default
+     never takes an edit: it only changes through a deploy. */
+  function saveState(el, cls, txt) {
+    var t = el || document.getElementById("pm-autosave");
+    if (!t) return;
+    t.className = "pm-save " + cls; t.textContent = txt;
+  }
+  function autosave() {
+    if (!activeName || !api()) return;
+    saveState(null, "busy", "saving\u2026");
+    clearTimeout(autosave._t);
+    autosave._t = setTimeout(function () {
+      var note = ((remote || []).filter(function (x) { return x.name === activeName; })[0] || {}).note || "";
+      var body = Object.assign({ name: activeName, note: note }, current());
+      var h = writeHeaders({ "Content-Type": "application/json" });
+      if (!h) { saveState(null, "err", "no write key"); return; }
+      fetch(api(), { method: "POST", headers: h, body: JSON.stringify(body) })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d.error) { saveState(null, "err", d.error); return; }
+          remote = d.presets || remote;
+          saveState(null, "ok", "saved \u2713 \u00b7 every device sees it");
+        })
+        .catch(function () { saveState(null, "err", "store not answering \u2014 kept locally"); });
+    }, 900);
   }
 
   function renderCopy() {
     var body = document.getElementById("pm-body");
     var keys = Object.keys(copyEdits);
+    var shared = (remote || []).map(function (x) { return x.name; });
+    var locked = !activeName;
     body.innerHTML =
+      '<div class="field"><h4 style="margin:0 0 8px">Editing</h4>' +
+        '<select id="pm-cfg-pick" style="width:100%;padding:10px 12px;background:#1D2024;color:#E8E6E0;' +
+          'border:1px solid #26292E;border-radius:5px;font:inherit;font-size:12.5px">' +
+          '<option value=""' + (locked ? " selected" : "") + ">Default \u2014 the real site (locked)</option>" +
+          shared.map(function (n) {
+            return '<option value="' + n.replace(/"/g, "&quot;") + '"' +
+              (n === activeName ? " selected" : "") + ">" + n + "</option>";
+          }).join("") +
+          '<option value="__new__">\u002b New config\u2026</option>' +
+        "</select>" +
+        (locked
+          ? '<p class="pm-note" style="margin-top:9px">The Default is what visitors see \u2014 it only ' +
+            "changes through a deploy, so it can\u2019t be edited here. Pick a config, or create one, " +
+            "and everything you type saves to it as you go.</p>"
+          : '<p class="pm-note" style="margin-top:9px">Everything you change saves to ' +
+            "<b style=\"color:#B9C79E\">" + activeName + "</b> as you type \u2014 open the same config " +
+            'on any device and it\u2019s there. <span id="pm-autosave" class="pm-save"></span></p>') +
+      "</div>" +
       '<div class="field">' +
-        '<label class="tog"><input type="checkbox" id="pm-copy-on"' + (copyOn ? " checked" : "") +
+        '<label class="tog"><input type="checkbox" id="pm-copy-on"' +
+        (copyOn && !locked ? " checked" : "") + (locked ? " disabled" : "") +
         "> Edit text on the page</label>" +
-        '<p class="pm-note" style="margin-top:9px">Every heading and paragraph becomes editable. ' +
-        "Click into one and type. <b>Enter</b> finishes, <b>Esc</b> puts the original back.</p>" +
+        '<p class="pm-note" style="margin-top:9px">' +
+        (locked
+          ? "Editing unlocks once a config is selected."
+          : "Every heading and paragraph becomes editable. Click into one and type. " +
+            "<b>Enter</b> finishes, <b>Esc</b> puts the original back.") + "</p>" +
       "</div>" +
       '<div class="p-group"><h4>Changed &middot; <span id="pm-copy-count">' + keys.length + "</span></h4>" +
       (keys.length ? keys.map(function (k) {
@@ -1207,9 +1279,35 @@
       '<p class="pm-note" style="margin-top:10px">Paste the result into <code>design-9/copy.json</code>, ' +
       "commit and push, and everyone sees the new wording.</p>";
 
-    document.getElementById("pm-copy-on").checked = copyOn;
+    document.getElementById("pm-copy-on").checked = copyOn && !locked;
     document.getElementById("pm-copy-on").addEventListener("change", function (e) {
       e.target.checked ? startCopy() : stopCopy();
+    });
+    document.getElementById("pm-cfg-pick").addEventListener("change", function (e) {
+      var v = e.target.value;
+      if (v === "__new__") {
+        var n = (prompt("Name the config \u2014 e.g. \u201cmiki\u201d or \u201ccaley 2\u201d") || "").trim();
+        if (!n) { renderCopy(); return; }
+        if ((remote || []).some(function (x) { return x.name === n; })) {
+          toast("\u201c" + n + "\u201d already exists \u2014 selected it instead.");
+          var pr = (remote || []).filter(function (x) { return x.name === n; })[0];
+          applyPreset(pr); renderCopy(); return;
+        }
+        setActive(n); autosave(); if (!copyOn) startCopy(); renderCopy();
+        toast("\u201c" + n + "\u201d created \u2014 edits save to it as you type.");
+        return;
+      }
+      if (!v) {                       // back to the locked Default
+        if (copyOn) stopCopy();
+        colors = {}; ls(KEY_COLORS, "{}");
+        ROLES.forEach(function (r) { document.documentElement.style.removeProperty(r.v); });
+        applyColors(); setCopy({}); applyLayout(CFG.layout || "a");
+        texture = CFG.texture ? (CFG.texture === "faint" ? 1 : 2) : 0;
+        ls(KEY_TEX, String(texture)); applyTexture();
+        setActive(""); renderCopy(); return;
+      }
+      var pr = (remote || []).filter(function (x) { return x.name === v; })[0];
+      if (pr) { applyPreset(pr); if (!copyOn) startCopy(); renderCopy(); }
     });
     body.querySelectorAll(".p-revert").forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -1238,9 +1336,9 @@
 
   /* ------------------------------------------------------------ presets --- */
   /* Three places a preset can live:
-       shared   — the Worker, if PM_CONFIG.presetsApi is set. Everyone sees it.
-       repo     — presets.json, committed. Everyone sees it, saving needs a push.
-       mine     — this browser only, for something half-finished.             */
+       shared   - the Worker, if PM_CONFIG.presetsApi is set. Everyone sees it.
+       repo     - presets.json, committed. Everyone sees it, saving needs a push.
+       mine     - this browser only, for something half-finished.             */
 
   // read lazily: config.js derives presetsApi from liveApi, and depending on
   // load order this file can run first
@@ -1333,13 +1431,13 @@
 
     body.innerHTML =
       '<p class="pm-note" style="margin-bottom:16px">A config is colour, wording and layout together. ' +
-      "Save one, keep working, then save back into it. Nothing here changes what visitors see &mdash; " +
+      "Save one, keep working, then save back into it. Nothing here changes what visitors see - " +
       "photographs are the part that publishes.</p>" +
       '<div class="live-state' + (api() ? " on" : "") + '" style="margin-bottom:16px">' +
         (api()
           ? "<b>Saved for everyone.</b> Configs live in the shared store, so anyone who opens this " +
-            "site sees the same list &mdash; name one <i>Caley 1</i> and Caley can load it on her own laptop." +
-            (remote === null ? '<span style="color:#E8B48A">Not reachable right now — showing the repo copy.</span>' : "")
+            "site sees the same list - name one <i>Caley 1</i> and Caley can load it on her own laptop." +
+            (remote === null ? '<span style="color:#E8B48A">Not reachable right now - showing the repo copy.</span>' : "")
           : "<b>This browser only.</b> No shared store is connected, so a config saves locally. " +
             "Set <code>liveApi</code> in <code>config.js</code>.") +
       "</div>" +
@@ -1349,7 +1447,7 @@
                                            : "<span>Changes on screen aren’t part of a config yet.</span>") + "</div>" +
         (active ? '<button class="act" id="pm-pupdate">Update &ldquo;' + active.name + '&rdquo;</button>' : "") +
         '<label class="p-lab" style="margin-top:16px">Save as a new config</label>' +
-        '<input id="pm-pname" type="text" placeholder="Name it — e.g. Warmer, tighter" maxlength="60">' +
+        '<input id="pm-pname" type="text" placeholder="Name it - e.g. Warmer, tighter" maxlength="60">' +
         '<input id="pm-pnote" type="text" placeholder="One line about it (optional)" maxlength="200">' +
         '<div class="p-actions">' +
           '<button class="act' + (active ? " ghost" : "") + '" id="pm-psave">' +
@@ -1480,6 +1578,7 @@
     var sw = e.target.closest(".sw");
     if (!sw) return;
     colors[sw.dataset.var] = sw.dataset.hex;
+    autosave();
     ls(KEY_COLORS, JSON.stringify(colors));
     applyColors(); renderColor();
   });
@@ -1505,7 +1604,7 @@
     out += "\n/* config.js */\ntexture: " +
       (texture === 1 ? '"faint"' : texture === 2 ? "true" : "false") + ",\n";
     var skipped = Object.keys(photos).length - named.length;
-    if (skipped) out += "\n/* " + skipped + " uploaded preview(s) not included — add those files to assets/photos/ first. */\n";
+    if (skipped) out += "\n/* " + skipped + " uploaded preview(s) not included - add those files to assets/photos/ first. */\n";
     if (out.indexOf("--") === -1 && !named.length && !fk.length) out = "/* Nothing changed yet. */";
     navigator.clipboard ? navigator.clipboard.writeText(out).then(flash, function () { prompt("Copy:", out); })
                         : prompt("Copy:", out);
@@ -1533,7 +1632,7 @@
   renderColor();
   loadPresets();
 
-  // what's live right now — and a header line that tells the truth about it
+  // what's live right now - and a header line that tells the truth about it
   if (LIVE) {
     loadLive().then(function () {
       var sub = document.getElementById("pm-sub");

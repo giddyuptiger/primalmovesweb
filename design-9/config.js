@@ -193,8 +193,8 @@ window.PM_CONFIG = {
     { day: "Wed", open: "06:30", close: "20:00" },
     { day: "Thu", open: "06:30", close: "20:00" },
     { day: "Fri", open: "06:30", close: "20:00" },
-    { day: "Sat", open: "08:30", close: "13:00" },
-    { day: "Sun", open: "08:30", close: "13:00" }
+    { day: "Sat", open: "08:00", close: "15:00" },
+    { day: "Sun", open: "08:00", close: "17:00" }
   ],
 
   address1:         "1038 Princeton Dr, Ste B",
@@ -226,6 +226,22 @@ window.PM_CONFIG = {
     "https://clients.mindbodyonline.com/classic/ws?studioid=" + C.mindbodySiteId + "&stype=-98";
   // one Worker serves both; presetsApi only needs setting if it lives elsewhere
   if (!C.presetsApi && C.liveApi) C.presetsApi = C.liveApi.replace(/\/+$/, "") + "/presets";
+
+  // each membership's own contract checkout — straight to the plan, not the
+  // whole store (prodIds from Mindbody's Online Store > Contracts)
+  (function () {
+    var contract = function (id) {
+      return "https://clients.mindbodyonline.com/classic/ws?studioid=" +
+        C.mindbodySiteId + "&stype=40&prodId=" + id;
+    };
+    if (!C.planPrimalUrl)   C.planPrimalUrl   = contract(413);
+    if (!C.planNomadUrl)    C.planNomadUrl    = contract(414);
+    if (!C.planExplorerUrl) C.planExplorerUrl = contract(412);
+    if (!C.planWeekendUrl)  C.planWeekendUrl  = contract(411);
+    if (!C.planKidsUrl)     C.planKidsUrl     = contract(416);
+    if (!C.saunaHourUrl)    C.saunaHourUrl    =
+      "https://go.mindbodyonline.com/book/app/pricing/bus_11kV2FCbMt1nMdkxkd/po_11kV2FCbMt1nM8pd9v?mbo_src=po-mgmt-copy-link";
+  })();
 
   if (!C.veniceTrialUrl) C.veniceTrialUrl = C.mindbodyPricingUrl;
   if (!C.dayPassUrl) C.dayPassUrl = C.mindbodyPricingUrl;

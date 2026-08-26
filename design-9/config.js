@@ -391,9 +391,14 @@ window.PM_CONFIG = {
         html += '<div class="sched-day' + (i === 0 ? " on" : "") + '" data-key="' + g.key + '">' +
           '<div class="sched-date">' + g.day + "</div><ul>";
         g.items.forEach(function (x) {
+          var staffParts = x.c.staff ? String(x.c.staff).split(/\s*[&+]\s*/) : [];
+          var avas = staffParts.length
+            ? '<span class="s-avas">' + staffParts.map(function (nm) {
+                return '<span class="s-ava" data-t-name="' + nm.replace(/"/g, "&quot;") + '"></span>';
+              }).join("") + "</span>"
+            : "";
           html += '<li><a href="' + book + '" target="_blank" rel="noopener">' +
-            '<span class="s-time">' + x.t + "</span>" +
-            (x.c.staff ? '<span class="s-ava" data-t-name="' + String(x.c.staff).replace(/"/g, "&quot;") + '"></span>' : "") +
+            '<span class="s-time">' + x.t + "</span>" + avas +
             '<span class="s-name">' + x.c.name + "</span>" +
             '<span class="s-meta">' + (x.c.staff || "") +
               (x.c.minutes ? '<span class="s-dur">' + x.c.minutes + " min</span>" : "") +
@@ -596,15 +601,6 @@ window.PM_CONFIG = {
         var norm = function (x) { return String(x).toLowerCase().trim(); };
         var first = function (x) { return norm(x).split(/\s+/)[0]; };
         var names = Object.keys(T);
-        // a duo like "Zoe & Sanjay" borrows the first partner with a portrait
-        if (/[&+]/.test(name)) {
-          var parts = name.split(/\s*[&+]\s*/);
-          for (var i = 0; i < parts.length; i++) {
-            var hit = slotFor(parts[i]);
-            if (hit && (C.photos || {})[hit]) return hit;
-          }
-          return "";
-        }
         // unique first-name match: schedule "Gus" -> teacher "Gus", etc.
         var f = first(name);
         var matches = names.filter(function (n) { return first(n) === f; });

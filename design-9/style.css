@@ -1946,10 +1946,13 @@ body.page-method .obj::before{content:none}
 /* coach portraits on the timetable, from our own slots */
 /* the row is a grid: time | class | ......... portrait | teacher, right.
    The portrait sits beside the name it belongs to, both on the right edge. */
+.s-avas{grid-column:3;grid-row:1;align-self:center;display:flex;align-items:center}
 .s-ava{display:none;width:34px;height:34px;border-radius:50%;
   background-size:cover;background-position:var(--pm-focus,50% 18%);
-  border:1px solid var(--line);grid-column:3;grid-row:1;align-self:center}
+  border:1.5px solid var(--paper);box-shadow:0 0 0 1px var(--line)}
 .s-ava.on{display:block}
+/* a duo overlaps like a facepile */
+.s-avas .s-ava.on ~ .s-ava.on{margin-left:-9px}
 .s-time{grid-column:1}
 .s-name{grid-column:2}
 .s-meta{grid-column:4;grid-row:1;align-self:center}

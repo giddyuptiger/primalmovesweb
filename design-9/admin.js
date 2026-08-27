@@ -495,6 +495,15 @@
     "#pm-studio .live-state span{display:block;margin-top:5px;font-size:10.5px;color:#6E737A}",
     "#pm-studio .slot .tagline{display:block;margin-top:5px;font-size:10px;color:#8BA85F}",
     "#pm-studio .pm-save{font-size:10.5px;letter-spacing:.02em}",
+    "#pm-studio .st-row{display:flex;gap:8px;align-items:center;margin:0 0 8px}",
+    "#pm-studio .st-thumb{flex:none;width:34px;height:34px;border-radius:50%;background:#2A2F35 center/cover;",
+    "  display:grid;place-items:center;color:#8BA85F;font-size:16px;cursor:pointer;border:1px solid #33383E}",
+    "#pm-studio .st-row input{flex:1;min-width:0;background:#1D2024;border:1px solid #26292E;border-radius:4px;",
+    "  color:#E8E6E0;font:inherit;font-size:12px;padding:8px 10px}",
+    "#pm-studio .st-row .st-role{flex:0 0 92px}",
+    "#pm-studio .st-del{flex:none;background:none;border:0;color:#6E737A;cursor:pointer;font-size:15px;padding:4px}",
+    "#pm-studio .st-del:hover{color:#D08A72}",
+    "#pm-studio .st-add{margin-top:6px}",
     "#pm-studio .pm-save.busy{color:#B7A34A}",
     "#pm-studio .pm-save.ok{color:#8BA85F}",
     "#pm-studio .pm-save.err{color:#E8B48A}",
@@ -558,6 +567,7 @@
     '<div id="pm-tabs"><button data-tab="color" class="on">Colour</button>' +
     '<button data-tab="photo">Photos</button>' +
     '<button data-tab="copy">Copy</button>' +
+    '<button data-tab="staff">Staff</button>' +
     '<button data-tab="layout">Layout</button>' +
     '<button data-tab="preset">Configs</button></div>' +
     '<div id="pm-body"></div>' +
@@ -1246,7 +1256,7 @@
   function renderCopy() {
     var body = document.getElementById("pm-body");
     var keys = Object.keys(copyEdits);
-    var shared = (remote || []).map(function (x) { return x.name; });
+    var shared = (remote || []).map(function (x) { return x.name; }).filter(function (n) { return String(n).indexOf("__") !== 0; });
     var locked = !activeName;
     body.innerHTML =
       '<div class="field"><h4 style="margin:0 0 8px">Editing</h4>' +
@@ -1345,6 +1355,100 @@
     });
   }
 
+  /* -------------------------------------------------------------- staff --- */
+  /* Teachers and staff, managed in place - names, roles, add, remove -
+     saved to the shared store so every device and every visitor gets the
+     same roster. Photographs still publish through the photo slots; the
+     thumbnail here jumps you to that person's portrait when it is on the
+     current page. */
+  function rosterState() {
+    var r = window.PM_ROSTER;
+    if (r && r.teachers) return { teachers: r.teachers.slice(), staff: (r.staff || []).slice() };
+    return { teachers: [], staff: [] };
+  }
+  function nextSlot(r) {
+    var n = 1;
+    r.teachers.concat(r.staff).forEach(function (t) {
+      var m = /teacher-(\d+)$/.exec(t.slot || "");
+      if (m) n = Math.max(n, parseInt(m[1], 10));
+    });
+    return "studio.teacher-" + (n + 1);
+  }
+  function saveRoster(r, chipEl) {
+    window.PM_ROSTER = r;
+    if (window.PM_APPLY_ROSTER) window.PM_APPLY_ROSTER(r);
+    clearTimeout(saveRoster._t);
+    var chip = function (cls, txt) { if (chipEl) { chipEl.className = "pm-save " + cls; chipEl.textContent = txt; } };
+    chip("busy", "saving\u2026");
+    saveRoster._t = setTimeout(function () {
+      var h = writeHeaders({ "Content-Type": "application/json" });
+      if (!h || !api()) { chip("err", "no store"); return; }
+      fetch(api(), { method: "POST", headers: h,
+        body: JSON.stringify({ name: "__staff__", note: "the roster - managed from the Staff tab",
+          copy: { __roster__: JSON.stringify(r) } }) })
+        .then(function (x) { return x.json(); })
+        .then(function (d) { chip(d.error ? "err" : "ok", d.error || "saved \u2713 \u00b7 live for everyone"); })
+        .catch(function () { chip("err", "store not answering"); });
+    }, 800);
+  }
+  function renderStaff() {
+    var body = document.getElementById("pm-body");
+    var r = rosterState();
+    function rows(list, kind) {
+      return list.map(function (t, i) {
+        var ph = (window.PM_CONFIG && (window.PM_CONFIG.photos || {})[t.slot]) || "";
+        var abs = /^(https?:)?\/\//.test(ph) || ph.indexOf("data:") === 0 || ph.charAt(0) === "/";
+        var thumb = ph ? '<span class="st-thumb" data-slot="' + t.slot + '" style="background-image:url(' +
+          (abs ? ph : ((document.querySelector("[data-pm-photo][src]") || { src: "" }).src || "").replace(/[^/]+$/, "") + ph) + ')"></span>'
+          : '<span class="st-thumb empty" data-slot="' + t.slot + '">+</span>';
+        return '<div class="st-row" data-kind="' + kind + '" data-i="' + i + '">' + thumb +
+          '<input class="st-name" value="' + String(t.name || "").replace(/"/g, "&quot;") + '" placeholder="Name">' +
+          '<input class="st-role" value="' + String(t.role || "").replace(/"/g, "&quot;") + '" placeholder="Role">' +
+          '<button class="st-del" aria-label="Remove">\u00d7</button></div>';
+      }).join("");
+    }
+    body.innerHTML =
+      '<div class="field"><p class="pm-note">Names and roles save as you type - to the shared store, ' +
+      "so every device sees the same roster. The thumbnail jumps to that person\u2019s portrait " +
+      "when their card is on this page (teachers live on Classes, staff on Studio). " +
+      '<span id="pm-staff-save" class="pm-save"></span></p></div>' +
+      '<div class="p-group"><h4>Teachers \u00b7 on the classes page</h4><div id="st-teachers">' +
+      rows(r.teachers, "teachers") + "</div>" +
+      '<button class="act ghost st-add" data-kind="teachers">+ Add a teacher</button></div>' +
+      '<div class="p-group"><h4>Staff \u00b7 on the studio page</h4><div id="st-staff">' +
+      rows(r.staff, "staff") + "</div>" +
+      '<button class="act ghost st-add" data-kind="staff">+ Add staff</button></div>';
+
+    var chip = document.getElementById("pm-staff-save");
+    function commit() { saveRoster(r, chip); }
+    body.addEventListener("input", function (e) {
+      var row = e.target.closest(".st-row"); if (!row) return;
+      var t = r[row.getAttribute("data-kind")][+row.getAttribute("data-i")];
+      if (e.target.classList.contains("st-name")) t.name = e.target.value.trim();
+      if (e.target.classList.contains("st-role")) t.role = e.target.value.trim();
+      commit();
+    });
+    body.addEventListener("click", function (e) {
+      var del = e.target.closest(".st-del");
+      if (del) {
+        var row = del.closest(".st-row");
+        r[row.getAttribute("data-kind")].splice(+row.getAttribute("data-i"), 1);
+        saveRoster(r, chip); renderStaff(); return;
+      }
+      var add = e.target.closest(".st-add");
+      if (add) {
+        r[add.getAttribute("data-kind")].push({ slot: nextSlot(r), name: "", role: add.getAttribute("data-kind") === "staff" ? "Front desk" : "Coach", bio: "" });
+        saveRoster(r, chip); renderStaff(); return;
+      }
+      var th = e.target.closest(".st-thumb");
+      if (th) {
+        var el = document.querySelector('.portrait[data-pm-photo="' + th.getAttribute("data-slot") + '"], [data-pm-photo="' + th.getAttribute("data-slot") + '"]');
+        if (el && el.offsetParent) { openPicker(el); }
+        else toast("Their portrait frame isn\u2019t on this page - open Classes (teachers) or Studio (staff) and try again.");
+      }
+    });
+  }
+
   /* ------------------------------------------------------------ presets --- */
   /* Three places a preset can live:
        shared   - the Worker, if PM_CONFIG.presetsApi is set. Everyone sees it.
@@ -1418,7 +1522,7 @@
   function renderPresets() {
     var body = document.getElementById("pm-body");
     var mine = localPresets();
-    var shared = remote !== null ? remote : repo || [];
+    var shared = (remote !== null ? remote : repo || []).filter(function (x) { return String(x.name).indexOf("__") !== 0; });
     var sharedLabel = remote !== null ? "Shared &middot; everyone sees these" : "Shared &middot; from the repo";
     var active = shared.concat(mine).filter(function (x) { return x.name === activeName; })[0];
 
@@ -1581,6 +1685,7 @@
     if (b.dataset.tab === "color") renderColor();
     else if (b.dataset.tab === "photo") renderPhoto();
     else if (b.dataset.tab === "copy") renderCopy();
+    else if (b.dataset.tab === "staff") renderStaff();
     else if (b.dataset.tab === "layout") renderLayout();
     else renderPresets();
   });

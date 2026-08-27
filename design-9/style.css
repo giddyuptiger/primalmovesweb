@@ -2011,3 +2011,32 @@ body.house .hero .kicker{font-weight:600}
 body.house :is(.role,.theme,.lvl,.foot-top h4,.cmp-per,.day-head){
   font-weight:600;color:var(--mid);font-size:11.5px}
 body.house .foot-top h4{color:var(--cream);font-size:12.5px}
+
+/* ==========================================================================
+   ONE ACCENT PER PAGE
+   Every accent-derived token in the file mixes from --sage, so a page only
+   has to redeclare it and the buttons, chips, marks, calendar days and
+   soft/deep derivatives all follow. --accent-label rides along because a
+   fill this dark needs cream where a fill this bright needs ink - every
+   pairing below clears WCAG AA on its own fill.
+   Home keeps the brand chartreuse; Cherish keeps its oxblood world.
+   ========================================================================== */
+:root{--accent-label:var(--ink)}
+
+body.page-method{      --sage:#A68460; --sage-btn:#A68460; --sage-dk:#8F7050;
+  --sage-txt:#6E5232; --accent-label:var(--ink)}          /* mushroom */
+body.page-classes{     --sage:#AE411C; --sage-btn:#AE411C; --sage-dk:#933615;
+  --sage-txt:#943717; --accent-label:var(--cream)}        /* clay    */
+body.page-studio{      --sage:#B9B784; --sage-btn:#B9B784; --sage-dk:#A09E6C;
+  --sage-txt:#5F5E38; --accent-label:var(--ink)}          /* light sage */
+body.page-memberships{ --sage:#CE9C3B; --sage-btn:#CE9C3B; --sage-dk:#B3852E;
+  --sage-txt:#77571B; --accent-label:var(--ink)}          /* gold    */
+body.page-events{      --sage:#CD826A; --sage-btn:#CD826A; --sage-dk:#B36D55;
+  --sage-txt:#8E4F3B; --accent-label:var(--ink)}          /* blush   */
+body.page-partners{    --sage:#945A38; --sage-btn:#945A38; --sage-dk:#7C4A2D;
+  --sage-txt:#7C4A2D; --accent-label:var(--cream)}        /* brown   */
+
+/* the accent's label colour, wherever the accent is the fill */
+.btn.sage,.btn.sage:hover,.btn.acid,.chip.on,.dchip.on,
+.pm-day.has:hover,section.ink .pm-day.has,section.ink .pm-day.has:hover,
+body.house .btn.sage{color:var(--accent-label)}

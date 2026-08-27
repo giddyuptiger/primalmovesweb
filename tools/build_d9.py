@@ -582,7 +582,7 @@ PARTNERS = []
 
 
 def studio(up, asset):
-    people = people_grid(STAFF)
+    people = '<div data-pm-people="staff">' + people_grid(STAFF) + "</div>"
 
     return f'''{phero(asset, "photos/space-rings-wide.jpg", "The Studio", "The room, the people who hold it, and everything you need to walk in the door.", "Where it happens", slot="studio.hero")}
 
@@ -786,7 +786,7 @@ def classes(up, asset):
       </div>
       <p class="lede" style="max-width:24em">Our coaches don't come from one place. They come from circus, stunt work, dance, bodywork and the desert.</p>
     </div>
-    {people_grid(TEACHERS)}
+    <div data-pm-people="teachers">{people_grid(TEACHERS)}</div>
   </div>
 </section>
 
@@ -1688,17 +1688,17 @@ page("index.html", 0, None,
 page("practice/index.html", 1, "practice/", "The Method - Primal Moves Venice",
      "The Primal Moves method: stability, strength, mobility and muscle tone, in four series.", practice, body_cls="page-method")
 page("studio/index.html", 1, "studio/", "The Studio - Primal Moves Venice",
-     "Inside the 11,000 ft² studio room by room, the coaching team, and everything you need for your first visit.", studio)
+     "Inside the 11,000 ft² studio room by room, the coaching team, and everything you need for your first visit.", studio, body_cls="page-studio")
 page("classes/index.html", 1, "classes/", "Classes &amp; Schedule - Primal Moves Venice",
-     "Every class we run, who it's for, where to start, and the live schedule to book it.", classes)
+     "Every class we run, who it's for, where to start, and the live schedule to book it.", classes, body_cls="page-classes")
 page("memberships/index.html", 1, "memberships/", "Membership - Primal Moves Venice",
-     "Membership options, benefits and FAQs - the natural next step after the two-week trial.", memberships)
+     "Membership options, benefits and FAQs - the natural next step after the two-week trial.", memberships, body_cls="page-memberships")
 page("cherish/index.html", 1, "cherish/", "Cherish - Cafe &amp; Tea Lounge at Primal Moves Venice",
      "Cherish is the cafe and tea lounge inside Primal Moves Venice. Slow down with us.", cherish, cherish=True)
 page("events/index.html", 1, "events/", "Events - Primal Moves Venice",
-     "Workshops, tea ceremonies, music, community nights and free events at Primal Moves Venice.", events)
+     "Workshops, tea ceremonies, music, community nights and free events at Primal Moves Venice.", events, body_cls="page-events")
 page("partners/index.html", 1, "partners/", "Primal Partners - Primal Moves Venice",
-     "Brands, studios and practitioners we work with, and how to partner with Primal Moves Venice.", partners)
+     "Brands, studios and practitioners we work with, and how to partner with Primal Moves Venice.", partners, body_cls="page-partners")
 page("shop/index.html", 1, "shop/", "Shop - Primal Moves Venice",
      "Primal Moves Venice merchandise.", shop)
 
@@ -1758,7 +1758,9 @@ print("404: base href set")
 import json as _json
 (ROOT / "teachers.json").write_text(_json.dumps(
     { t["name"]: t["slot"] for t in TEAM }, indent=1))
-print("teachers.json:", len(TEAM), "coaches")
+(ROOT / "roster.json").write_text(_json.dumps(
+    { "teachers": TEACHERS, "staff": STAFF }, indent=1))
+print("teachers.json + roster.json:", len(TEAM), "people")
 
 # --- redirect stubs so design-5 URLs don't 404 -------------------------------
 REDIRECTS = {"schedule/": "../classes/#schedule", "visit/": "../studio/#visit", "about/": "../practice/"}

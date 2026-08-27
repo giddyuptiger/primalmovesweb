@@ -316,14 +316,50 @@ window.PM_CONFIG = {
     //
     // Note clients.mindbodyonline.com can never be framed - it sends
     // X-Frame-Options: SAMEORIGIN. Link to it, never embed it.
-    var teachersUrl = (function () {
+    var rosterUrl = (function () {
       var css = (document.querySelector('link[rel="stylesheet"][href*="style.css"]') || {}).href || "";
-      return css ? css.replace(/style\.css.*$/, "teachers.json") : "teachers.json";
+      return css ? css.replace(/style\.css.*$/, "roster.json") : "roster.json";
     })();
-    var teachersReady = fetch(teachersUrl, { cache: "no-cache" })
-      .then(function (r) { return r.ok ? r.json() : {}; })
-      .then(function (d) { window.PM_TEACHERS = d || {}; })
-      .catch(function () { window.PM_TEACHERS = {}; });
+    function applyRoster(r) {
+      if (!r || !r.teachers) return;
+      window.PM_ROSTER = r;
+      var map = {};
+      (r.teachers || []).concat(r.staff || []).forEach(function (t) {
+        if (t && t.name && t.slot) map[t.name] = t.slot;
+      });
+      window.PM_TEACHERS = map;
+      // re-render the people grids from the roster
+      var card = function (t) {
+        return '<div class="person">' +
+          '<div class="portrait empty" data-pm-photo="' + t.slot + '"><span>Portrait</span></div>' +
+          '<div class="person-body"><h3>' + t.name + "</h3>" +
+          '<div class="role">' + (t.role || "") + "</div>" +
+          (t.bio ? "<p>" + t.bio + "</p>" : "") + "</div></div>";
+      };
+      document.querySelectorAll("[data-pm-people]").forEach(function (holder) {
+        var list = r[holder.getAttribute("data-pm-people")] || [];
+        holder.innerHTML = '<div class="people' + (list.length === 1 ? " one" : "") + '">' +
+          list.map(card).join("") + "</div>";
+      });
+      applyPhotoSlots(); applyFocusSlots(); fillAvatars();
+    }
+    window.PM_APPLY_ROSTER = applyRoster;
+    var teachersReady = fetch(rosterUrl, { cache: "no-cache" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (d) applyRoster(d);
+        // the shared store may hold a newer roster than the repo
+        var api = String(C.presetsApi || "");
+        if (!api) return;
+        return fetch(api, { cache: "no-store" })
+          .then(function (r2) { return r2.ok ? r2.json() : null; })
+          .then(function (p) {
+            var hit = ((p && p.presets) || []).filter(function (x) { return x.name === "__staff__"; })[0];
+            if (!hit || !hit.copy || !hit.copy.__roster__) return;
+            try { applyRoster(JSON.parse(hit.copy.__roster__)); } catch (e) {}
+          }).catch(function () {});
+      })
+      .catch(function () { window.PM_TEACHERS = window.PM_TEACHERS || {}; });
 
     document.querySelectorAll("[data-pm-schedule]").forEach(function (el) {
       var srcAttr = el.getAttribute("data-pm-schedule-src");

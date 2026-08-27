@@ -1,0 +1,132 @@
+{
+ "teachers": [
+  {
+   "slot": "studio.teacher-2",
+   "name": "Andreas Alfaro",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-3",
+   "name": "Angela Kukhan",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-4",
+   "name": "Chris Plourde",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-5",
+   "name": "Gus",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-6",
+   "name": "Jacy Cunningham",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-7",
+   "name": "Kelo Vallejo",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-8",
+   "name": "Miki Ash",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-9",
+   "name": "Mivon Prince-Leyva",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-10",
+   "name": "Olivia Jaye Brown",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-11",
+   "name": "Sabrina Rose",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-12",
+   "name": "Sanjay Amin",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-13",
+   "name": "Travis Brewer",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-14",
+   "name": "Tyler Gustafson",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-15",
+   "name": "Whakapaingia Luke",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-16",
+   "name": "Zagreus",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-17",
+   "name": "Zoe",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-18",
+   "name": "Mandyjane",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-19",
+   "name": "Waka",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-20",
+   "name": "Vernon",
+   "role": "Coach",
+   "bio": ""
+  },
+  {
+   "slot": "studio.teacher-21",
+   "name": "Bowen",
+   "role": "Coach",
+   "bio": ""
+  }
+ ],
+ "staff": [
+  {
+   "slot": "studio.teacher-1",
+   "name": "Nick Brewer",
+   "role": "Founder",
+   "bio": "Founded Primal Moves in Ibiza in 2016 after decades across movement modalities. &ldquo;Think less, move more, breathe.&rdquo;"
+  }
+ ]
+}

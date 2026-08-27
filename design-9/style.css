@@ -1959,10 +1959,10 @@ body.page-method .obj::before{content:none}
 section.ink .s-ava{border-color:rgba(255,255,255,.25)}
 
 /* class-group headings — small caps rails between the tile blocks */
-.cls-group{font-size:11.5px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;
-  color:var(--soft);margin:clamp(30px,4vw,44px) 0 4px}
+.cls-group{font-size:13px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--ink);margin:clamp(30px,4vw,44px) 0 4px}
 .cls-group:first-of-type{margin-top:0}
-body.house .cls-group{font-size:11.5px;letter-spacing:.24em;color:var(--soft);max-width:none}
+body.house .cls-group{font-size:13px;font-weight:600;letter-spacing:.24em;color:var(--ink);max-width:none}
 body.house .cls-groups .cls-group{text-align:center}
 
 /* the online-portal nudge under the schedule */
@@ -1979,3 +1979,35 @@ body.house .cls-groups .cls-group{text-align:center}
 @media (max-width:860px){ .spaces{grid-template-columns:repeat(2,1fr)} }
 
 
+
+/* ==========================================================================
+   THE READABILITY FLOOR
+   Every small-caps label on the site - kickers, footer headings, group
+   rails, roles, levels - was 10.5-11px at weight 500 in the soft grey.
+   Individually defensible, collectively unreadable. One floor, at the end
+   of the file so it wins on order: nothing label-like renders below 12px,
+   lighter than 600, or greyer than --mid. Dark grounds get the cream.
+   ========================================================================== */
+.kicker{font-size:12px;font-weight:600;color:var(--mid)}
+section.ink .kicker,.statement .kicker{color:var(--accent-soft)}
+.phero .kicker{color:rgba(251,248,243,.85)!important}
+
+.foot-top h4{font-size:12.5px;font-weight:700;color:var(--cream)}
+.foot-block h4{font-size:12.5px;font-weight:700;color:var(--cream)}
+
+.person .role,.voice .theme,.cmp-per,.spaces figcaption,
+.cls .lvl,.day-head,.i-label{font-weight:700;color:var(--mid)}
+.cls .lvl{font-size:11px}
+.cls .lvl.beginner{color:var(--sage-txt)}
+.spaces figcaption{font-size:12px;color:var(--ink)}
+.person .role{font-size:11.5px}
+section.ink .person .role{color:var(--accent-soft)}
+.i-label{color:var(--ink)}
+section.ink :is(.i-label,.day-head){color:var(--cream)}
+
+/* the Primal Moves layout keeps its own scale for promoted kickers - this
+   floor touches only the ones that stayed small */
+body.house .hero .kicker{font-weight:600}
+body.house :is(.role,.theme,.lvl,.foot-top h4,.cmp-per,.day-head){
+  font-weight:600;color:var(--mid);font-size:11.5px}
+body.house .foot-top h4{color:var(--cream);font-size:12.5px}

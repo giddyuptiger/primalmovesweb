@@ -64,7 +64,11 @@ def chrome(depth, active, cherish=False, nav_up=None):
         </p>
         <p style="margin-top:14px">
           <a data-pm-link="phoneHref"><span data-pm-text="phone">(310) 800-7061</span></a> <br>
-          <a href="sms:+13108007061">Text us</a> &middot; <a href="https://wa.me/13108007061" target="_blank" rel="noopener">WhatsApp</a>
+          <a href="sms:+13108007061">Text us</a> &middot; <a href="https://wa.me/13108007061" target="_blank" rel="noopener">WhatsApp</a> <br>
+          <a data-pm-link="instagramUrl" target="_blank" rel="noopener" class="foot-ig">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/>
+            </svg>@primalmovesvenice</a>
         </p>
       </div>
 
@@ -76,7 +80,7 @@ def chrome(depth, active, cherish=False, nav_up=None):
     </div>
     <div class="foot-bottom">
       <div>Copyright 2026 &copy; Primal Moves Venice &middot; Part of Primal Moves</div>
-      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a> &middot; <a href="{nav}terms/">Terms of Use</a> &middot; <a href="{nav}disclaimer/">Disclaimer</a> &middot; <a data-pm-link="instagramUrl" target="_blank" rel="noopener">@primalmovesvenice</a></div>
+      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a> &middot; <a href="{nav}terms/">Terms of Use</a> &middot; <a href="{nav}disclaimer/">Disclaimer</a></div>
     </div>
   </div>
 </footer>'''
@@ -663,10 +667,10 @@ def studio(up, asset):
         <div class="day">
           <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Address</div><div class="desc"><span data-pm-text="address1">1038 Princeton Dr, Ste B</span> <br><span data-pm-text="address2">Marina del Rey, CA 90292</span></div></div>
           <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Phone</div><div class="desc"><a data-pm-link="phoneHref" style="text-decoration:underline"><span data-pm-text="phone">(310) 800-7061</span></a></div></div>
-          <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Email</div><div class="desc"><a href="mailto:hello@venice.primalmoves.com" style="text-decoration:underline">hello@venice.primalmoves.com</a></div></div>
+          <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Email</div><div class="desc"><a href="mailto:hellovenice@primalmoves.com" style="text-decoration:underline">hellovenice@primalmoves.com</a></div></div>
           <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Hours</div><div class="desc">Mon&ndash;Fri from 6:30am &middot; Sat 8am&ndash;3pm &middot; Sun 8am&ndash;5pm</div></div>
           <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Parking</div><div class="desc">Free in the neighborhood off Thatcher Ave - two minutes through the car gate. Bike racks on site. <a href="https://maps.app.goo.gl/UNstys5Qd5UNMMRD7" target="_blank" rel="noopener" style="text-decoration:underline">Free parking map →</a></div></div>
-          <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Tours</div><div class="desc">Come by the cafe, check us out and ask for a tour - or <a href="mailto:hello@venice.primalmoves.com?subject=Book%20a%20tour" style="text-decoration:underline">book one with the membership team</a>.</div></div>
+          <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Tours</div><div class="desc">Come by the cafe, check us out and ask for a tour - or <a href="mailto:hellovenice@primalmoves.com?subject=Book%20a%20tour" style="text-decoration:underline">book one with the membership team</a>.</div></div>
         </div>
         <div class="cta-row" style="margin-top:28px">
           <a class="btn" href="https://maps.google.com/?q=1038+Princeton+Dr+Ste+B+Marina+del+Rey+CA+90292" target="_blank" rel="noopener">Open in Maps ↗</a>
@@ -698,7 +702,7 @@ def studio(up, asset):
         <h3 style="font-size:clamp(22px,2.6vw,34px);margin-bottom:14px">Want to use it?</h3>
         <p style="color:var(--mid);max-width:36em">The whole floor is available for workshops, brand activations, retreat days, team offsites and film shoots - rigging, sauna and cold plunge included, with catering through Cherish. Tell us what you have in mind and we'll come back with availability and rates.</p>
         <div class="cta-row" style="margin-top:24px">
-          <a class="btn" href="mailto:hello@venice.primalmoves.com?subject=Private%20hire%20enquiry%20%E2%80%94%20Primal%20Moves%20Venice">Enquire about hire</a>
+          <a class="btn" href="mailto:hellovenice@primalmoves.com?subject=Private%20hire%20enquiry%20%E2%80%94%20Primal%20Moves%20Venice">Enquire about hire</a>
           <a class="btn secondary" href="{up}events/">What we host here</a>
         </div>
       </div>
@@ -865,6 +869,26 @@ def memberships(up, asset):
   <div class="wrap-wide">
     <div data-pm-pricing style="margin-bottom:30px"></div>
 {tabs}
+    <!-- Most people aren't ready to pick a plan on arrival. The two short
+         lengths sit here, above both views, so the first thing on the page
+         is a way in that costs $40. -->
+    <div class="cmp-try">
+      <div>
+        <div class="kicker">Come try something new for 90 days</div>
+        <p style="margin:6px 0 0">Four visits a week, ninety minutes at a time - six hours a week for twelve weeks. Give us an honest chance and see real change in your life.</p>
+      </div>
+      <div class="try-right">
+      <div class="cta-row">
+        <a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">Try Primal for a day &middot; $40</a>
+        <a class="btn" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">Two weeks &middot; $69</a>
+      </div>
+      <p class="embed-note try-more" style="margin:14px 0 0">Also with no commitment:
+        <a data-pm-link="saunaHourUrl" target="_blank" rel="noopener" style="text-decoration:underline">a 1-hour sauna &amp; plunge</a>,
+        <a href="{up}classes/#schedule" style="text-decoration:underline">a tea ceremony</a>,
+        or <a data-pm-link="planNomadUrl" target="_blank" rel="noopener" style="text-decoration:underline">a single month on The Nomad</a>.</p>
+      </div>
+    </div>
+
 
 
 
@@ -883,25 +907,6 @@ def memberships(up, asset):
 
 </div>
 
-<div class="wrap-wide">
-    <!-- Most people aren't ready to pick a plan on arrival. The two short
-         lengths sit here, above both views, so the first thing on the page
-         is a way in that costs $40. -->
-    <div class="cmp-try">
-      <div>
-        <div class="kicker">Come try something new for 90 days</div>
-        <p style="margin:6px 0 0">Four visits a week, ninety minutes at a time - six hours a week for twelve weeks. Give us an honest chance and see real change in your life.</p>
-      </div>
-      <div class="cta-row">
-        <a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">Try Primal for a day &middot; $40</a>
-        <a class="btn" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">Two weeks &middot; $69</a>
-      </div>
-      <p class="embed-note" style="margin:14px 0 0">Also with no commitment:
-        <a data-pm-link="saunaHourUrl" target="_blank" rel="noopener" style="text-decoration:underline">a 1-hour sauna &amp; plunge</a>,
-        <a href="{up}classes/#schedule" style="text-decoration:underline">a tea ceremony</a>,
-        or <a data-pm-link="planNomadUrl" target="_blank" rel="noopener" style="text-decoration:underline">a single month on The Nomad</a>.</p>
-    </div>
-</div>
 
 
 <div class="mem-view" id="view-cards"{cards_attr}>
@@ -1500,7 +1505,7 @@ def house_events(up, asset):
       hs_statement("Host something here",
         "The floor takes a supper, a screening, a workshop or a party. Tell us what you have in mind.",
         '<a class="btn sage" data-pm-link="lumaPageUrl" target="_blank" rel="noopener">Follow on Luma ↗</a>'
-        '<a class="btn" href="mailto:hello@venice.primalmoves.com?subject=Hosting%20an%20event">Get in touch</a>',
+        '<a class="btn" href="mailto:hellovenice@primalmoves.com?subject=Hosting%20an%20event">Get in touch</a>',
         alt=True)
     )
 
@@ -1548,7 +1553,7 @@ def events(up, asset):
 
         <div class="cta-row ev-cta">
           <a class="btn" data-pm-link="lumaPageUrl" target="_blank" rel="noopener">Follow us on Luma &#8599;</a>
-          <a class="btn secondary" href="mailto:hello@venice.primalmoves.com?subject=Hosting%20an%20event%20at%20Primal%20Moves%20Venice">Host an event here</a>
+          <a class="btn secondary" href="mailto:hellovenice@primalmoves.com?subject=Hosting%20an%20event%20at%20Primal%20Moves%20Venice">Host an event here</a>
         </div>
       </div>
     </div>
@@ -1562,7 +1567,7 @@ def events(up, asset):
     </div>
     <p class="lede" style="max-width:40em">11,000 ft², rigging overhead, sauna and cold plunge, a cafe attached. Available for workshops, brand activations, retreat days, team offsites and film shoots. Cherish handles catering.</p>
     <div class="cta-row" style="margin-top:28px">
-      <a class="btn on-dark" href="mailto:hello@venice.primalmoves.com?subject=Private%20hire%20enquiry">Enquire about hire</a>
+      <a class="btn on-dark" href="mailto:hellovenice@primalmoves.com?subject=Private%20hire%20enquiry">Enquire about hire</a>
       <a class="btn ghost-dark" href="{up}studio/#space">See the space ↓</a>
       <a class="btn ghost-dark" href="{up}cherish/">Catering via Cherish</a>
     </div>
@@ -1638,7 +1643,7 @@ def partners(up, asset):
         <h2 class="display-sm" style="margin-bottom:20px">Pitch us <br><span class="ed-it">something.</span></h2>
         <p class="lede">Brand collaborations, product partnerships, event hosting, affiliate arrangements, or using the space for a shoot. Tell us what you have in mind.</p>
         <div class="cta-row" style="margin-top:28px">
-          <a class="btn on-dark" href="mailto:hello@venice.primalmoves.com?subject=Partnership%20enquiry">Partnership enquiry</a>
+          <a class="btn on-dark" href="mailto:hellovenice@primalmoves.com?subject=Partnership%20enquiry">Partnership enquiry</a>
           <a class="btn ghost-dark" href="{up}events/">Private hire</a>
         </div>
       </div>
@@ -1740,7 +1745,7 @@ def _legal(title, blocks):
   <div class="wrap">
     <div class="kicker">The small print</div>
     <h1 class="display-sm" style="margin-bottom:8px">{title}</h1>
-    <p class="aside">Questions about any of this: <a href="mailto:hello@venice.primalmoves.com" style="text-decoration:underline">hello@venice.primalmoves.com</a></p>
+    <p class="aside">Questions about any of this: <a href="mailto:hellovenice@primalmoves.com" style="text-decoration:underline">hellovenice@primalmoves.com</a></p>
     {body}
   </div>
 </section>'''
@@ -1752,7 +1757,7 @@ page("terms/index.html", 1, None, "Terms of Use - Primal Moves Venice",
         ("Using this site",
          "This site is operated by Primal Moves Venice. By using it you agree to these terms. The content is for general information about the studio, our classes and our memberships."),
         ("Bookings and payments",
-         "Classes, passes and memberships are booked and billed through Mindbody, and their checkout shows the price, term and cancellation terms for each purchase before you buy. Membership cancellation and freeze requests go through the front desk or hello@venice.primalmoves.com."),
+         "Classes, passes and memberships are booked and billed through Mindbody, and their checkout shows the price, term and cancellation terms for each purchase before you buy. Membership cancellation and freeze requests go through the front desk or hellovenice@primalmoves.com."),
         ("Your account",
          "Keep your booking account details accurate and your login to yourself. We can decline or cancel bookings that misuse the booking system."),
         ("Content",

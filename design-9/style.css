@@ -2051,3 +2051,32 @@ footer h4,.foot-block h4,.foot-top h4,
 body.house footer h4,body.house .foot-block h4,body.house .foot-top h4{
   font-size:12.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
   color:var(--cream);opacity:1}
+
+/* the four spaces are the point of that section - their names should read
+   like headings, not like filing labels */
+.spaces figcaption,body.house .spaces figcaption{
+  margin-top:14px;font-size:clamp(15px,1.5vw,20px);font-weight:600;
+  letter-spacing:.06em;line-height:1.25;color:var(--ink);text-transform:uppercase}
+section.ink .spaces figcaption{color:var(--cream)}
+
+/* the no-commitment footnote belongs with the buttons it describes, not
+   stranded under the heading on the far side of the band */
+.cmp-try .try-right{display:flex;flex-direction:column;align-items:flex-end}
+.cmp-try .try-more{max-width:38ch;text-align:right;margin-top:14px}
+@media (max-width:820px){
+  .cmp-try .try-right{align-items:flex-start}
+  .cmp-try .try-more{text-align:left}
+}
+
+/* the reason is the headline; the sentence explains it. That was inverted:
+   a 10.5px label over 24px serif-scale prose. */
+.voice .theme,body.house .voice .theme{
+  font-size:clamp(19px,2vw,26px);font-weight:600;letter-spacing:.02em;
+  line-height:1.2;color:var(--ink);text-transform:uppercase;margin-bottom:4px}
+.voice .q,body.house .voice .q{
+  font-size:clamp(15px,1.25vw,17px);font-weight:300;line-height:1.65;color:var(--mid)}
+section.ink .voice .theme{color:var(--cream)}
+
+/* Instagram sits with the other ways to reach us, not in the legal fine print */
+.foot-ig{display:inline-flex;align-items:center;gap:7px;margin-top:8px}
+.foot-ig svg{flex:none;opacity:.85}

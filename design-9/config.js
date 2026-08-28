@@ -179,7 +179,7 @@ window.PM_CONFIG = {
   teacherTrainingUrl:"https://primalmoves.com/teacher-training/",
   instagramUrl:     "https://www.instagram.com/primalmovesvenice",
   appStoreUrl:      "https://apps.apple.com/app/id6749153748",
-  email:            "hello@venice.primalmoves.com",
+  email:            "hellovenice@primalmoves.com",
   phone:            "(310) 800-7061",
   phoneHref:        "tel:+13108007061",
   /* --- HOURS --------------------------------------------------------------

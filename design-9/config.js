@@ -15,7 +15,13 @@ window.PM_CONFIG = {
   dayPassPriceLabel: "$40",
 
   // Still used, but only on the membership page now.
-  veniceTrialUrl: "",
+  // Read off the studio's own public booking page, not guessed: this is the
+  // pricing option Mindbody calls "2 Week Unlimited Intro", $69, unlimited,
+  // expires 14 days after purchase - the trial this site sells. Before, the
+  // button fell through to the general pricing list and left the visitor to
+  // find it. To repoint it: Mindbody > Pricing Options > the option > Copy
+  // link, and paste the whole URL here.
+  veniceTrialUrl: "https://go.mindbodyonline.com/book/app/pricing/bus_11kV2FCbMt1nMdkxkd/po_11kV2FCbMt1nM8pepZ",
   veniceTrialPriceLabel: "$69",          // shown on the card; edit if it changes
 
   // Where "Try Primal Online Free" goes - the digital studio's free week.
@@ -127,6 +133,13 @@ window.PM_CONFIG = {
   // shape. "50% 50%" is the centre; "50% 30%" pulls the crop upward, which is
   // usually what a photo of a face wants. Set these in the /admin studio.
   photoFocus: {},
+
+  // A film slot can carry a second, phone-sized cut. The key is the file the
+  // slot names; the value is the file a narrow screen plays instead. Both are
+  // made by tools/hero_loop.sh, which also writes the matching poster frame.
+  filmSmall: {
+    "hero-loop.mp4": "hero-loop-sm.mp4"
+  },
 
   photos: {
     // the hero film ships in the repo - no photo store involved, so it plays
@@ -614,12 +627,43 @@ window.PM_CONFIG = {
       var any = document.querySelector("img[data-pm-photo][src]");
       if (any) return (any.getAttribute("src") || "").replace(/[^/]+$/, "");
       var css = (document.querySelector('link[rel="stylesheet"][href*="style.css"]') || {}).href || "";
-      return css ? css.replace(/design-9\/style\.css.*$/, "assets/photos/") : "../../assets/photos/";
+      /* Strip the stylesheet's filename and go up one - do not look for a
+         "design-9/" segment. Cloudflare publishes design-9 AS the site root,
+         so live the href is /style.css and the old pattern never matched:
+         it returned the stylesheet's own URL as the photo folder, which is
+         why published portraits could resolve to nothing. */
+      return css ? css.replace(/[^/]*$/, "") + "assets/photos/" : "../../assets/photos/";
     }
 
     // swap an <img> for a silent looping <video> (or the other way back),
     // keeping the slot name and the shape the picture had
+    /* A browser does not stream an autoplaying loop - measured, it pulls the
+       whole file within five seconds of arrival - so a phone paid the full
+       weight of the hero film to watch a few seconds of it. A phone now gets
+       a phone-sized cut of the same film instead. C.filmSmall names the
+       small file explicitly rather than guessing a filename, so a slot with
+       no small version keeps playing the one that exists. */
+    function filmFor(url) {
+      try {
+        if (!window.matchMedia || !window.matchMedia("(max-width: 760px)").matches) return url;
+        var small = (C.filmSmall || {})[String(url).split("/").pop()];
+        return small ? String(url).replace(/[^/]+$/, small) : url;
+      } catch (e) { return url; }
+    }
+
+    /* Save-Data and 2G are a different question: there the answer is no film
+       at all, and the still the loop was posterised from carries the hero. */
+    function filmRefused(el) {
+      try {
+        if (!(el.getAttribute && el.getAttribute("src"))) return false;  // no still to fall back to
+        var c = navigator.connection || {};
+        return !!c.saveData || /^(slow-)?2g$/.test(c.effectiveType || "");
+      } catch (e) { return false; }
+    }
+
     function toFilm(el, url, slot) {
+      if (el.tagName !== "VIDEO" && filmRefused(el)) return;     // keep the still
+      url = filmFor(url);
       if (el.tagName === "VIDEO") {
         if (el.getAttribute("src") !== url) el.setAttribute("src", url);
         return;
@@ -627,14 +671,24 @@ window.PM_CONFIG = {
       var v = document.createElement("video");
       v.setAttribute("data-pm-photo", slot);
       v.setAttribute("src", url);
-      v.setAttribute("poster", el.getAttribute("src") || "");   // the photo holds the frame
+      /* currentSrc, not src: with a <picture> around it the browser has
+         already chosen an AVIF or WebP, and asking for the src attribute
+         hands back the JPEG fallback - which the poster would then fetch
+         a second time. This was why the responsive pass made the page
+         heavier the first time it was tried. */
+      v.setAttribute("poster", el.currentSrc || el.getAttribute("src") || "");
       v.setAttribute("playsinline", "");                        // iOS won't full-screen it
       v.muted = true; v.autoplay = true; v.loop = true;
       v.setAttribute("muted", ""); v.setAttribute("autoplay", ""); v.setAttribute("loop", "");
       if (el.className) v.className = el.className;
       if (el.getAttribute("style")) v.setAttribute("style", el.getAttribute("style"));
       if (el.getAttribute("alt")) v.setAttribute("aria-label", el.getAttribute("alt"));
-      el.replaceWith(v);
+      /* The photograph sits inside a <picture> that carries its AVIF and WebP
+         sources. A film needs none of them, and leaving the wrapper behind
+         would put the <video> a level deeper than the CSS expects - the hero
+         rules are written as direct children. So the whole wrapper goes. */
+      var host = (el.parentElement && el.parentElement.tagName === "PICTURE") ? el.parentElement : el;
+      host.replaceWith(v);
       var play = v.play(); if (play && play.catch) play.catch(function () { /* autoplay blocked */ });
     }
 
@@ -661,6 +715,46 @@ window.PM_CONFIG = {
       });
     }
     window.PM_FILL_AVATARS = fillAvatars;
+
+    // A <picture> serves AVIF/WebP through <source>, which outranks the
+    // <img>'s own src. When a slot is swapped we drop the sources so the
+    // new photograph is what shows.
+    var OPT = null;                              // stem -> {avif:[w],webp:[w]}
+    (function () {
+      var css = (document.querySelector('link[rel="stylesheet"][href*="style.css"]') || {}).href || "";
+      var u = css ? css.replace(/[^/]*$/, "") + "assets/photos/opt/manifest.json"
+                  : "../../assets/photos/opt/manifest.json";
+      fetch(u, { cache: "force-cache" }).then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) { OPT = d || {}; }).catch(function () { OPT = {}; });
+    })();
+
+    // A swapped photograph should still ship as AVIF/WebP. If the new file is
+    // one of ours, rebuild the <source>s to point at its optimised variants;
+    // only a foreign URL (a panel upload) falls back to dropping them.
+    function dropSources(el, next) {
+      var pic = el.parentElement;
+      if (!pic || pic.tagName !== "PICTURE") { el.removeAttribute("srcset"); el.removeAttribute("sizes"); return; }
+      var ss = pic.getElementsByTagName("source");
+      var stem = null, base = "";
+      if (next && !/^(https?:)?\/\//.test(next) && next.indexOf("data:") !== 0) {
+        var file = next.split("/").pop();
+        stem = file.replace(/\.[^.]+$/, "");
+        base = next.slice(0, next.length - file.length) + "opt/";
+      }
+      var have = stem && OPT && OPT[stem];
+      if (!have) { while (ss.length) ss[0].parentNode.removeChild(ss[0]); 
+                   el.removeAttribute("srcset"); el.removeAttribute("sizes"); return; }
+      while (ss.length) ss[0].parentNode.removeChild(ss[0]);
+      ["avif", "webp"].forEach(function (kind) {
+        var ws = have[kind]; if (!ws || !ws.length) return;
+        var sc = document.createElement("source");
+        sc.type = "image/" + kind;
+        sc.setAttribute("sizes", el.getAttribute("sizes") || "100vw");
+        sc.srcset = ws.map(function (w) { return base + stem + "-" + w + "." + kind + " " + w + "w"; }).join(", ");
+        pic.insertBefore(sc, pic.firstChild);
+      });
+    }
+    window.PM_DROP_SOURCES = dropSources;
 
     function applyPhotoSlots() {
       document.querySelectorAll("[data-pm-photo]").forEach(function (el) {
@@ -693,8 +787,7 @@ window.PM_CONFIG = {
            away. (Setting .src on a <div> silently does nothing, which is why
            swapped portraits never appeared for anybody else.) */
         if (el.tagName !== "IMG") {
-          var probe2 = new Image();
-          probe2.onload = function () {
+          var setInner = function () {
             var inner = el.querySelector("img[data-pm-fill]");
             if (!inner) {
               inner = document.createElement("img");
@@ -703,23 +796,23 @@ window.PM_CONFIG = {
               el.textContent = "";                       // drop the "PORTRAIT" label
               el.appendChild(inner);
             }
+            inner.onerror = function () {
+              inner.onerror = null;
+              if (window.console) console.warn("[PM_CONFIG] photos['" + slot + "'] → " + next +
+                " did not load. Is the file in assets/photos/?");
+            };
             inner.src = next;
             el.classList.remove("empty");
           };
-          probe2.onerror = function () {
-            if (window.console) console.warn("[PM_CONFIG] photos['" + slot + "'] → " + next +
-              " did not load. Is the file in assets/photos/?");
-          };
-          probe2.src = next;
+          setInner();
           return;
         }
 
-        var probe = new Image();
-        probe.onload = function () { el.src = next; };
-        probe.onerror = function () {
-          if (window.console) console.warn("[PM_CONFIG] photos['" + slot + "'] → " + file +
-            " could not be loaded. Keeping the existing image.");
-        };
+        var prev = el.getAttribute("src");
+        dropSources(el, next);
+        el.onerror = function () { el.onerror = null; if (prev) el.src = prev; };
+        var probe = { set src(v) { el.src = v; } };   // assign once; no probe fetch
+        probe.onload = null;
         probe.src = next;
       });
     }

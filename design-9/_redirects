@@ -1,0 +1,4 @@
+/shop      /              301
+/shop/*    /              301
+/partners  /memberships/#partners  301
+/partners/*  /memberships/#partners  301

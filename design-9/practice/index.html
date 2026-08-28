@@ -12,9 +12,7 @@
 <meta property="og:image" content="https://venice.primalmoves.com/assets/photos/joy-laughing.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../../assets/images/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Caveat:wght@500;600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="../fonts/HarmoniaSansStd-Light.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../style.css">
 <script src="../config.js"></script>
 <script>/* layout class before first paint, so B never flashes as A */
@@ -24,7 +22,11 @@ if(l==="house")document.documentElement.classList.add("house-pending");
 var t=localStorage.getItem("pm_studio_texture");
 if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.classList.add("texture-pending");
 }catch(e){}})();</script>
-<script src="../admin.js?v=5" defer></script>
+<script>
+(function(){try{if(localStorage.getItem("pm_admin")!=="1")return;}catch(e){return;}
+var s=document.createElement("script");s.src="../admin.js?v=6";s.defer=true;
+document.head.appendChild(s);})();
+</script>
 </head>
 <body class="page-method">
 
@@ -59,7 +61,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 </header>
 
 <section class="phero flush">
-  <img data-pm-photo="method.hero" src="../../assets/photos/handstand-wall-wide.jpg" alt="">
+  <picture><source type="image/avif" sizes="100vw" srcset="../../assets/photos/opt/handstand-wall-wide-800.avif 800w, ../../assets/photos/opt/handstand-wall-wide-1400.avif 1400w, ../../assets/photos/opt/handstand-wall-wide-2200.avif 2200w"><img data-pm-photo="method.hero"  src="../../assets/photos/handstand-wall-wide.jpg" alt="" decoding="async" fetchpriority="high"></picture>
   <div class="phero-inner">
     <h1 data-pm-copy="practice.h11" class="display-sm">The Method</h1>
     <p data-pm-copy="practice.p1">A systematized movement method built on bipedal and quadrupedal flows.</p>
@@ -104,7 +106,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 
     <div class="series">
       <div class="serie">
-        <img data-pm-photo="method.series-1" src="../../assets/photos/collective-crawl-2.jpg" alt="Series 1 - Primal">
+        <picture><source type="image/avif" sizes="(max-width: 820px) 100vw, 50vw" srcset="../../assets/photos/opt/collective-crawl-2-800.avif 800w, ../../assets/photos/opt/collective-crawl-2-1400.avif 1400w, ../../assets/photos/opt/collective-crawl-2-2200.avif 2200w"><img data-pm-photo="method.series-1"  src="../../assets/photos/collective-crawl-2.jpg" alt="Series 1 - Primal" loading="lazy" decoding="async"></picture>
         <div class="serie-body">
           <div class="s-n">Series 1</div>
           <h3 data-pm-copy="practice.h35">Primal</h3>
@@ -112,7 +114,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
         </div>
       </div>
       <div class="serie">
-        <img data-pm-photo="method.series-2" src="../../assets/photos/compound-dumbbells.jpg" alt="Series 2 - Moves">
+        <picture><source type="image/avif" sizes="(max-width: 820px) 100vw, 50vw" srcset="../../assets/photos/opt/compound-dumbbells-800.avif 800w, ../../assets/photos/opt/compound-dumbbells-1400.avif 1400w, ../../assets/photos/opt/compound-dumbbells-2200.avif 2200w"><img data-pm-photo="method.series-2"  src="../../assets/photos/compound-dumbbells.jpg" alt="Series 2 - Moves" loading="lazy" decoding="async"></picture>
         <div class="serie-body">
           <div class="s-n">Series 2</div>
           <h3 data-pm-copy="practice.h36">Moves</h3>
@@ -120,7 +122,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
         </div>
       </div>
       <div class="serie">
-        <img data-pm-photo="method.series-3" src="../../assets/photos/handstand-parallettes.jpg" alt="Series 3 - Progressions">
+        <picture><source type="image/avif" sizes="(max-width: 820px) 100vw, 50vw" srcset="../../assets/photos/opt/handstand-parallettes-800.avif 800w, ../../assets/photos/opt/handstand-parallettes-1400.avif 1400w, ../../assets/photos/opt/handstand-parallettes-2200.avif 2200w"><img data-pm-photo="method.series-3"  src="../../assets/photos/handstand-parallettes.jpg" alt="Series 3 - Progressions" loading="lazy" decoding="async"></picture>
         <div class="serie-body">
           <div class="s-n">Series 3</div>
           <h3 data-pm-copy="practice.h37">Progressions</h3>
@@ -129,7 +131,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
         </div>
       </div>
       <div class="serie">
-        <img data-pm-photo="method.series-4" src="../../assets/photos/handstand-wall.jpg" alt="Series 4 - Handstand">
+        <picture><source type="image/avif" sizes="(max-width: 820px) 100vw, 50vw" srcset="../../assets/photos/opt/handstand-wall-800.avif 800w, ../../assets/photos/opt/handstand-wall-1400.avif 1400w, ../../assets/photos/opt/handstand-wall-2200.avif 2200w"><img data-pm-photo="method.series-4"  src="../../assets/photos/handstand-wall.jpg" alt="Series 4 - Handstand" loading="lazy" decoding="async"></picture>
         <div class="serie-body">
           <div class="s-n">Series 4</div>
           <h3 data-pm-copy="practice.h38">Handstand</h3>

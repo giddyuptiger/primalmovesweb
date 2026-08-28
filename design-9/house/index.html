@@ -12,9 +12,7 @@
 <meta property="og:image" content="https://venice.primalmoves.com/assets/photos/joy-laughing.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../../assets/images/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Caveat:wght@500;600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="../fonts/HarmoniaSansStd-Light.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../style.css">
 <script src="../config.js"></script>
 <script>/* layout class before first paint, so B never flashes as A */
@@ -24,7 +22,11 @@ if(l==="house")document.documentElement.classList.add("house-pending");
 var t=localStorage.getItem("pm_studio_texture");
 if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.classList.add("texture-pending");
 }catch(e){}})();</script>
-<script src="../admin.js?v=5" defer></script>
+<script>
+(function(){try{if(localStorage.getItem("pm_admin")!=="1")return;}catch(e){return;}
+var s=document.createElement("script");s.src="../admin.js?v=6";s.defer=true;
+document.head.appendChild(s);})();
+</script>
 </head>
 <body class="house">
 
@@ -61,7 +63,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 
 <!-- 1 · HERO - one picture, one line, one action -->
 <section class="hs-hero flush">
-  <img data-pm-photo="home.hero" src="../../assets/photos/joy-laughing.jpg" alt="A class mid-practice at Primal Moves Venice">
+  <picture><source type="image/avif" sizes="100vw" srcset="../../assets/photos/opt/hero-loop-poster-800.avif 800w"><img data-pm-photo="home.hero"  src="../../assets/photos/hero-loop-poster.jpg" alt="Inside Primal Moves Venice" decoding="async" fetchpriority="high"></picture>
   <div class="hs-hero-inner">
     <p data-pm-copy="house.p1" class="hs-eyebrow">Venice, California</p>
     <h1 data-pm-copy="house.h11" class="hs-display">Think less<br>Move more<br>Breathe</h1>
@@ -84,7 +86,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 
 <!-- 3 · a photograph, edge to edge, doing nothing but existing -->
 <section class="hs-band flush">
-  <img data-pm-photo="house.band-1" src="../../assets/photos/collective-crawl.jpg" alt="">
+  <picture><source type="image/avif" sizes="(max-width: 820px) 100vw, 50vw" srcset="../../assets/photos/opt/collective-crawl-800.avif 800w, ../../assets/photos/opt/collective-crawl-1400.avif 1400w, ../../assets/photos/opt/collective-crawl-2200.avif 2200w"><img data-pm-photo="house.band-1"  src="../../assets/photos/collective-crawl.jpg" alt="" loading="lazy" decoding="async"></picture>
 </section>
 
 <!-- 4 · COME TO CLASS -->
@@ -107,7 +109,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
     <div class="hs-cards">
       
       <a class="hs-card" href="classes/">
-        <div class="hs-card-img"><img data-pm-photo="classes.hero" src="../../assets/photos/compound-dumbbells.jpg" alt=""></div>
+        <div class="hs-card-img"><picture><source type="image/avif" sizes="100vw" srcset="../../assets/photos/opt/compound-dumbbells-800.avif 800w, ../../assets/photos/opt/compound-dumbbells-1400.avif 1400w, ../../assets/photos/opt/compound-dumbbells-2200.avif 2200w"><img data-pm-photo="classes.hero"  src="../../assets/photos/compound-dumbbells.jpg" alt="" decoding="async" fetchpriority="high"></picture></div>
         <div class="hs-card-body">
           <div class="hs-card-label">Practice</div>
           <h3 data-pm-copy="house.h31">Classes</h3>
@@ -116,7 +118,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
       </a>
       
       <a class="hs-card" href="studio/">
-        <div class="hs-card-img"><img data-pm-photo="studio.hero" src="../../assets/photos/space-rings-wide.jpg" alt=""></div>
+        <div class="hs-card-img"><picture><source type="image/avif" sizes="100vw" srcset="../../assets/photos/opt/space-rings-wide-800.avif 800w, ../../assets/photos/opt/space-rings-wide-1400.avif 1400w, ../../assets/photos/opt/space-rings-wide-2200.avif 2200w"><img data-pm-photo="studio.hero"  src="../../assets/photos/space-rings-wide.jpg" alt="" decoding="async" fetchpriority="high"></picture></div>
         <div class="hs-card-body">
           <div class="hs-card-label">The space</div>
           <h3 data-pm-copy="house.h32">The Studio</h3>
@@ -125,7 +127,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
       </a>
       
       <a class="hs-card" href="cherish/">
-        <div class="hs-card-img"><img data-pm-photo="cherish.hero" src="../../assets/photos/tea-room.jpg" alt=""></div>
+        <div class="hs-card-img"><picture><source type="image/avif" sizes="100vw" srcset="../../assets/photos/opt/tea-room-800.avif 800w, ../../assets/photos/opt/tea-room-1400.avif 1400w, ../../assets/photos/opt/tea-room-2200.avif 2200w"><img data-pm-photo="cherish.hero"  src="../../assets/photos/tea-room.jpg" alt="" decoding="async" fetchpriority="high"></picture></div>
         <div class="hs-card-body">
           <div class="hs-card-label">Cafe &amp; tea</div>
           <h3 data-pm-copy="house.h33">Cherish</h3>
@@ -134,7 +136,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
       </a>
       
       <a class="hs-card" href="events/">
-        <div class="hs-card-img"><img data-pm-photo="events.hero" src="../../assets/photos/space-floor-night.jpg" alt=""></div>
+        <div class="hs-card-img"><picture><source type="image/avif" sizes="100vw" srcset="../../assets/photos/opt/space-floor-night-800.avif 800w, ../../assets/photos/opt/space-floor-night-1400.avif 1400w, ../../assets/photos/opt/space-floor-night-2200.avif 2200w"><img data-pm-photo="events.hero"  src="../../assets/photos/space-floor-night.jpg" alt="" decoding="async" fetchpriority="high"></picture></div>
         <div class="hs-card-body">
           <div class="hs-card-label">What&rsquo;s on</div>
           <h3 data-pm-copy="house.h34">Events</h3>
@@ -147,7 +149,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 
 <!-- 6 · a second photograph -->
 <section class="hs-band flush">
-  <img data-pm-photo="house.band-2" src="../../assets/photos/sauna-laughing.jpg" alt="">
+  <picture><source type="image/avif" sizes="(max-width: 820px) 100vw, 50vw" srcset="../../assets/photos/opt/sauna-laughing-800.avif 800w, ../../assets/photos/opt/sauna-laughing-1400.avif 1400w, ../../assets/photos/opt/sauna-laughing-2200.avif 2200w"><img data-pm-photo="house.band-2"  src="../../assets/photos/sauna-laughing.jpg" alt="" loading="lazy" decoding="async"></picture>
 </section>
 
 <!-- 7 · THE THIRD PLACE - the calendar carries this one -->
@@ -212,7 +214,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
     </div>
     <div class="foot-bottom">
       <div>Copyright 2026 &copy; Primal Moves Venice &middot; Part of Primal Moves</div>
-      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a> &middot; <a href="terms/">Terms of Use</a> &middot; <a href="disclaimer/">Disclaimer</a></div>
+      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a> &middot; <a href="../terms/">Terms of Use</a> &middot; <a href="../disclaimer/">Disclaimer</a></div>
     </div>
   </div>
 </footer>

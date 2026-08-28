@@ -12,9 +12,7 @@
 <meta property="og:image" content="https://venice.primalmoves.com/assets/photos/joy-laughing.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../../assets/images/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Caveat:wght@500;600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="../fonts/HarmoniaSansStd-Light.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../style.css">
 <script src="../config.js"></script>
 <script>/* layout class before first paint, so B never flashes as A */
@@ -24,7 +22,11 @@ if(l==="house")document.documentElement.classList.add("house-pending");
 var t=localStorage.getItem("pm_studio_texture");
 if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.classList.add("texture-pending");
 }catch(e){}})();</script>
-<script src="../admin.js?v=5" defer></script>
+<script>
+(function(){try{if(localStorage.getItem("pm_admin")!=="1")return;}catch(e){return;}
+var s=document.createElement("script");s.src="../admin.js?v=6";s.defer=true;
+document.head.appendChild(s);})();
+</script>
 </head>
 <body class="page-studio">
 
@@ -59,7 +61,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 </header>
 
 <section class="phero flush">
-  <img data-pm-photo="studio.hero" src="../../assets/photos/space-rings-wide.jpg" alt="">
+  <picture><source type="image/avif" sizes="100vw" srcset="../../assets/photos/opt/space-rings-wide-800.avif 800w, ../../assets/photos/opt/space-rings-wide-1400.avif 1400w, ../../assets/photos/opt/space-rings-wide-2200.avif 2200w"><img data-pm-photo="studio.hero"  src="../../assets/photos/space-rings-wide.jpg" alt="" decoding="async" fetchpriority="high"></picture>
   <div class="phero-inner"><div data-pm-copy="studio.kicker1" class="kicker" style="color:rgba(255,255,255,.75)">Where it happens</div>
     <h1 data-pm-copy="studio.h11" class="display-sm">The Studio</h1>
     <p data-pm-copy="studio.p1">The room, the people who hold it, and everything you need to walk in the door.</p>
@@ -79,10 +81,10 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
     <!-- Four spaces, four squares - the collage gave way to one photo per
          part of the studio, each labelled and each still a live photo slot. -->
     <div class="spaces" style="margin-bottom:44px">
-      <figure><img data-pm-photo="studio.room-main-floor" src="../../assets/photos/space-bus-rings.jpg" alt="The movement space and gym"><figcaption data-pm-copy="studio.figcaption1">Movement Space + Gym</figcaption></figure>
-      <figure><img data-pm-photo="studio.room-cafe" src="../../assets/photos/space-lounge-rugs.jpg" alt="The cafe"><figcaption data-pm-copy="studio.figcaption2">Cafe</figcaption></figure>
-      <figure><img data-pm-photo="studio.room-tea" src="../../assets/photos/tea-room.jpg" alt="The tea lounge"><figcaption data-pm-copy="studio.figcaption3">Tea Lounge</figcaption></figure>
-      <figure><img data-pm-photo="studio.room-sauna" src="../../assets/photos/sauna-still.jpg" alt="The sauna and cold plunge"><figcaption data-pm-copy="studio.figcaption4">Sauna + Cold Plunge</figcaption></figure>
+      <figure><picture><source type="image/avif" sizes="(max-width: 820px) 100vw, 50vw" srcset="../../assets/photos/opt/space-bus-rings-800.avif 800w, ../../assets/photos/opt/space-bus-rings-1400.avif 1400w, ../../assets/photos/opt/space-bus-rings-2200.avif 2200w"><img data-pm-photo="studio.room-main-floor"  src="../../assets/photos/space-bus-rings.jpg" alt="The movement space and gym" loading="lazy" decoding="async"></picture><figcaption data-pm-copy="studio.figcaption1">Movement Space + Gym</figcaption></figure>
+      <figure><picture><source type="image/avif" sizes="(max-width: 820px) 100vw, 50vw" srcset="../../assets/photos/opt/space-lounge-rugs-800.avif 800w, ../../assets/photos/opt/space-lounge-rugs-1400.avif 1400w, ../../assets/photos/opt/space-lounge-rugs-2200.avif 2200w"><img data-pm-photo="studio.room-cafe"  src="../../assets/photos/space-lounge-rugs.jpg" alt="The cafe" loading="lazy" decoding="async"></picture><figcaption data-pm-copy="studio.figcaption2">Cafe</figcaption></figure>
+      <figure><picture><source type="image/avif" sizes="(max-width: 820px) 100vw, 50vw" srcset="../../assets/photos/opt/tea-room-800.avif 800w, ../../assets/photos/opt/tea-room-1400.avif 1400w, ../../assets/photos/opt/tea-room-2200.avif 2200w"><img data-pm-photo="studio.room-tea"  src="../../assets/photos/tea-room.jpg" alt="The tea lounge" loading="lazy" decoding="async"></picture><figcaption data-pm-copy="studio.figcaption3">Tea Lounge</figcaption></figure>
+      <figure><picture><source type="image/avif" sizes="(max-width: 820px) 100vw, 50vw" srcset="../../assets/photos/opt/sauna-still-800.avif 800w, ../../assets/photos/opt/sauna-still-1400.avif 1400w, ../../assets/photos/opt/sauna-still-2200.avif 2200w"><img data-pm-photo="studio.room-sauna"  src="../../assets/photos/sauna-still.jpg" alt="The sauna and cold plunge" loading="lazy" decoding="async"></picture><figcaption data-pm-copy="studio.figcaption4">Sauna + Cold Plunge</figcaption></figure>
     </div>
     <div class="info-list" style="margin-bottom:clamp(40px,6vw,70px)">
       <div class="info-row">
@@ -184,7 +186,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
           <a class="btn secondary" href="../events/">What we host here</a>
         </div>
       </div>
-      <img data-pm-photo="studio.collage-4" src="../../assets/photos/space-floor-night.jpg" alt="The studio floor set up for an event">
+      <picture><source type="image/avif" sizes="(max-width: 820px) 100vw, 50vw" srcset="../../assets/photos/opt/space-floor-night-800.avif 800w, ../../assets/photos/opt/space-floor-night-1400.avif 1400w, ../../assets/photos/opt/space-floor-night-2200.avif 2200w"><img data-pm-photo="studio.collage-4"  src="../../assets/photos/space-floor-night.jpg" alt="The studio floor set up for an event" loading="lazy" decoding="async"></picture>
     </div>
   </div>
 </section>

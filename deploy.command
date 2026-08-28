@@ -29,6 +29,23 @@ fi
 
 restore_generated
 
+# A tarball can add and replace files but never remove one. When a package
+# retires a page, it carries pm-remove.txt - one path per line, each inside
+# design-9/ - and those get deleted here before the commit. Anything outside
+# design-9/, or containing "..", is ignored.
+if [ -f pm-remove.txt ]; then
+  while IFS= read -r p; do
+    case "$p" in
+      ""|"#"*) continue ;;
+      design-9/*) ;;
+      *) echo "skipping $p (outside design-9/)"; continue ;;
+    esac
+    case "$p" in *..*) echo "skipping $p"; continue ;; esac
+    if [ -e "$p" ]; then echo "removing $p"; rm -rf "$p"; fi
+  done < pm-remove.txt
+  rm -f pm-remove.txt
+fi
+
 if [ -z "$(git status --porcelain)" ]; then
   echo "✓ nothing to deploy, the repo already matches"
   read -r -p "press return to close"; exit 0

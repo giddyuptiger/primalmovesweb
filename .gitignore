@@ -1,3 +1,9 @@
 .DS_Store
 _fonts/
 .wrangler/
+
+# Built, not authored: wrangler.toml's build step is
+#   cp -r assets design-9/ && npx wrangler deploy
+# so design-9/assets is a copy of assets/ made at deploy time. Committing it
+# would double every photograph in the repository.
+design-9/assets/

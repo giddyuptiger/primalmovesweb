@@ -80,7 +80,7 @@ def chrome(depth, active, cherish=False, nav_up=None):
     </div>
     <div class="foot-bottom">
       <div>Copyright 2026 &copy; Primal Moves Venice &middot; Part of Primal Moves</div>
-      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a> &middot; <a href="{nav}terms/">Terms of Use</a> &middot; <a href="{nav}disclaimer/">Disclaimer</a></div>
+      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a> &middot; <a href="{up}terms/">Terms of Use</a> &middot; <a href="{up}disclaimer/">Disclaimer</a></div>
     </div>
   </div>
 </footer>'''
@@ -147,6 +147,68 @@ def tag_copy(html, path):
     return html
 
 
+
+# ============================================================ PICTURES =====
+# Every photo ships as AVIF and WebP at three widths, with the JPEG as the
+# fallback. Done as one pass over the finished HTML rather than by editing
+# forty <img> tags by hand, so it cannot drift out of sync with the markup.
+#
+# The runtime photo-swap sets .src on the <img>; a stale <source> would win
+# over it, so config.js strips the sources whenever a slot is swapped.
+_IMG_SIZES = {}
+
+def _dims(fname):
+    if fname in _IMG_SIZES: return _IMG_SIZES[fname]
+    try:
+        from PIL import Image
+        with Image.open(ROOT.parent / "assets" / "photos" / fname) as im:
+            _IMG_SIZES[fname] = im.size
+    except Exception:
+        _IMG_SIZES[fname] = None
+    return _IMG_SIZES[fname]
+
+
+def responsive(html):
+    import os as _os
+    opt = ROOT.parent / "assets" / "photos" / "opt"
+
+    def one(m):
+        whole, pre, src, post = m.group(0), m.group(1), m.group(2), m.group(3)
+        if "data:" in src: return whole
+        fname = src.split("/")[-1]
+        stem, ext = _os.path.splitext(fname)
+        if ext.lower() not in (".jpg", ".jpeg"): return whole
+        widths = [w for w in (800, 1400, 2200)
+                  if (opt / ("%s-%d.avif" % (stem, w))).exists()]
+        if not widths: return whole
+        base = src[: -len(fname)] + "opt/"
+
+        attrs = pre + post
+        hero = 'class="c-a"' in attrs or "hero" in attrs.lower()
+        add = ""
+        if "loading=" not in attrs and not hero:
+            add += ' loading="lazy" decoding="async"'
+        elif hero:
+            add += ' decoding="async" fetchpriority="high"'
+        # No width/height attributes. They would help CLS, but on this site
+        # most photographs are sized by CSS width alone - the height attribute
+        # then acts as a presentational hint and wins, and four square tiles
+        # on /studio/ stretched to the full 1467px of the master. Measured,
+        # not assumed: the page grew from 8942px to 11592px.
+        if "alt=" not in attrs:
+            add += ' alt=""'
+
+        def srcset(kind):
+            return ", ".join("%s%s-%d.%s %dw" % (base, stem, w, kind, w) for w in widths)
+
+        sizes = "100vw" if hero else "(max-width: 820px) 100vw, 50vw"
+        return ('<picture>'
+                '<source type="image/avif" sizes="%s" srcset="%s">'
+                '<img%s src="%s"%s%s></picture>'
+                % (sizes, srcset("avif"), pre, src, post, add))
+
+    return _re.sub(r'<img([^>]*?)src="([^"]+)"([^>]*?)>', one, html)
+
 def page(path, depth, active, title, desc, body_fn, cherish=False, body_cls="", nav_up=None):
     header, footer, up, asset = chrome(depth, active, cherish, nav_up)
     body = body_fn(up, asset)
@@ -166,9 +228,7 @@ def page(path, depth, active, title, desc, body_fn, cherish=False, body_cls="", 
 <meta property="og:image" content="https://venice.primalmoves.com/assets/photos/joy-laughing.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{asset}images/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Caveat:wght@500;600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="{up}fonts/HarmoniaSansStd-Light.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{up}style.css">
 <script src="{up}config.js"></script>
 <script>/* layout class before first paint, so B never flashes as A */
@@ -178,7 +238,11 @@ if(l==="house")document.documentElement.classList.add("house-pending");
 var t=localStorage.getItem("pm_studio_texture");
 if(t==="1"||(t===null&&(window.PM_CONFIG||{{}}).texture))document.documentElement.classList.add("texture-pending");
 }}catch(e){{}}}})();</script>
-<script src="{up}admin.js?v=5" defer></script>
+<script>
+(function(){{try{{if(localStorage.getItem("pm_admin")!=="1")return;}}catch(e){{return;}}
+var s=document.createElement("script");s.src="{up}admin.js?v=6";s.defer=true;
+document.head.appendChild(s);}})();
+</script>
 </head>
 <body{body_class}>
 
@@ -191,6 +255,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{{}}).texture))document.documentElemen
 </body>
 </html>
 '''
+    html = responsive(html)
     html = tag_copy(html, path)
     p = ROOT / path
     p.parent.mkdir(parents=True, exist_ok=True)
@@ -249,7 +314,7 @@ def final_cta(up):
 def home(up, asset):
     return f'''<!-- 1 · HERO - video slot, poster frame until Miki's cut lands -->
 <section class="hero flush" id="top">
-  <img data-pm-photo="home.hero" src="{asset}photos/joy-laughing.jpg" alt="A member laughing mid-class at Primal Moves Venice" data-pm-video-poster>
+  <img data-pm-photo="home.hero" src="{asset}photos/hero-loop-poster.jpg" alt="Inside Primal Moves Venice" data-pm-video-poster>
   <div class="hero-meta">
     <i class="palm lg" aria-hidden="true"></i>
     <div>Venice, California</div>
@@ -1101,7 +1166,7 @@ def memberships(up, asset):
     </div>
     <div class="cta-row" style="margin-top:28px">
       <a class="btn sage" data-pm-link="mossJoinUrl" data-pm-hide target="_blank" rel="noopener">join through Moss &rarr;</a>
-      <a class="btn" href="{up}partners/">become a Primal partner</a>
+      <a class="btn" href="mailto:hellovenice@primalmoves.com?subject=Primal%20partner%20enquiry">become a Primal partner</a>
     </div>
   </div>
 </section>
@@ -1269,7 +1334,7 @@ def house_home(up, asset):
     return f'''
 <!-- 1 · HERO - one picture, one line, one action -->
 <section class="hs-hero flush">
-  <img data-pm-photo="home.hero" src="{asset}photos/joy-laughing.jpg" alt="A class mid-practice at Primal Moves Venice">
+  <img data-pm-photo="home.hero" src="{asset}photos/hero-loop-poster.jpg" alt="Inside Primal Moves Venice">
   <div class="hs-hero-inner">
     <p class="hs-eyebrow">Venice, California</p>
     <h1 class="hs-display">Think less<br>Move more<br>Breathe</h1>
@@ -1727,10 +1792,12 @@ page("cherish/index.html", 1, "cherish/", "Cherish - Cafe &amp; Tea Lounge at Pr
      "Cherish is the cafe and tea lounge inside Primal Moves Venice. Slow down with us.", cherish, cherish=True)
 page("events/index.html", 1, "events/", "Events - Primal Moves Venice",
      "Workshops, tea ceremonies, music, community nights and free events at Primal Moves Venice.", events, body_cls="page-events")
-page("partners/index.html", 1, "partners/", "Primal Partners - Primal Moves Venice",
-     "Brands, studios and practitioners we work with, and how to partner with Primal Moves Venice.", partners, body_cls="page-partners")
-page("shop/index.html", 1, "shop/", "Shop - Primal Moves Venice",
-     "Primal Moves Venice merchandise.", shop)
+# /partners/ and /shop/ are not built. Both were placeholders that said a
+# version of "coming soon", which is worse than not existing: they were in the
+# sitemap, so they were the pages Google could offer for "primal moves shop".
+# The partner roster and its call to action live on /memberships/#partners,
+# and _redirects sends the old URLs there rather than to a 404. The page
+# functions are kept below - when there is a real shop, uncomment and build.
 
 # The House template - its own markup, its own URL, its own copy handles.
 HOUSE = [
@@ -1848,7 +1915,7 @@ page("admin/index.html", 1, None, "Staff - Primal Moves Venice",
 # --- robots + sitemap ----------------------------------------------------
 _base = "https://venice.primalmoves.com"
 _urls = ["", "practice/", "classes/", "studio/", "memberships/", "cherish/",
-         "events/", "partners/", "shop/", "terms/", "disclaimer/"]
+         "events/", "terms/", "disclaimer/"]
 (ROOT / "robots.txt").write_text(
     "User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: %s/sitemap.xml\n" % _base)
 (ROOT / "sitemap.xml").write_text(
@@ -1857,6 +1924,16 @@ _urls = ["", "practice/", "classes/", "studio/", "memberships/", "cherish/",
     "".join("  <url><loc>%s/%s</loc></url>\n" % (_base, u) for u in _urls) +
     "</urlset>\n")
 print("robots.txt + sitemap.xml written")
+
+# Cloudflare Pages reads _redirects from the published root. The two retired
+# placeholders keep their inbound links alive instead of dying in a 404, and
+# 301 tells a crawler the old URL is gone for good.
+(ROOT / "_redirects").write_text(
+    "/shop      /              301\n"
+    "/shop/*    /              301\n"
+    "/partners  /memberships/#partners  301\n"
+    "/partners/*  /memberships/#partners  301\n")
+print("_redirects written")
 
 
 # --- 404 -----------------------------------------------------------------

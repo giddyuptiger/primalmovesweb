@@ -11,7 +11,12 @@ window.PM_CONFIG = {
      design-8 leads with the $40 day pass. The two-week trial is demoted to
      the membership page. Point dayPassUrl at the day-pass pricing option in
      Mindbody (not the general pricing page) so the click lands on checkout. */
-  dayPassUrl: "",
+  // Mindbody's own "Copy link" for the Day Pass pricing option. Verified: the
+  // page it opens is titled "Day Pass" and carries $40, which is what the
+  // button says. Until now this was blank and fell through to the general
+  // pricing list - the nav button on every page landed people on a price
+  // list and left them to find the day pass themselves.
+  dayPassUrl: "https://go.mindbodyonline.com/book/app/pricing/bus_11kV2FCbMt1nMdkxkd/po_11kV2FCbMt1nM8pejU",
   dayPassPriceLabel: "$40",
 
   // Still used, but only on the membership page now.
@@ -240,20 +245,36 @@ window.PM_CONFIG = {
   // one Worker serves both; presetsApi only needs setting if it lives elsewhere
   if (!C.presetsApi && C.liveApi) C.presetsApi = C.liveApi.replace(/\/+$/, "") + "/presets";
 
-  // each membership's own contract checkout - straight to the plan, not the
-  // whole store (prodIds from Mindbody's Online Store > Contracts)
+  /* Every Join button, straight to that plan's checkout.
+     All six now go through go.mindbodyonline.com, Mindbody's current booking
+     app, rather than the classic clients.mindbodyonline.com store. Two
+     reasons. The classic links were built from prodIds nobody could check -
+     and prodId 413 was standing in for The Primal, which turns out not to be
+     a contract at all but a pricing option, so at least one of them was
+     wrong. And these ids were read off the studio's own public pricing page,
+     where each one's title and price is printed next to it:
+
+       Day Pass                                          $40   po_...8pejU
+       2 Week Unlimited Intro                            $69   po_...8pepZ
+       Weekend Warrior (4 Passes - 3 Month Contract)    $120   po_...8pihN
+       Kids' Primal (Unlimited - 3 Month Contract)      $125   cntr_...K1ZS
+       The Explorer (8 Passes - 3 Month Contract)       $200   cntr_...K1VN
+       The Nomad (Unlimited - 1 Month, No Contract)     $375   cntr_...K1XQ
+
+     Each of those matches the price on its card. The Primal (po_...8pgN5) is
+     the one exception: its page does not print a name or price in the HTML,
+     so it is the studio's own Copy link taken on trust and worth one click.
+     To repoint any of them: Mindbody > the item > Copy link, paste here. */
   (function () {
-    var contract = function (id) {
-      return "https://clients.mindbodyonline.com/classic/ws?studioid=" +
-        C.mindbodySiteId + "&stype=40&prodId=" + id;
+    var mb = function (id) {
+      return "https://go.mindbodyonline.com/book/app/pricing/bus_11kV2FCbMt1nMdkxkd/" + id;
     };
-    if (!C.planPrimalUrl)   C.planPrimalUrl   = contract(413);
-    if (!C.planNomadUrl)    C.planNomadUrl    = contract(414);
-    if (!C.planExplorerUrl) C.planExplorerUrl = contract(412);
-    if (!C.planWeekendUrl)  C.planWeekendUrl  = contract(411);
-    if (!C.planKidsUrl)     C.planKidsUrl     = contract(416);
-    if (!C.saunaHourUrl)    C.saunaHourUrl    =
-      "https://go.mindbodyonline.com/book/app/pricing/bus_11kV2FCbMt1nMdkxkd/po_11kV2FCbMt1nM8pd9v?mbo_src=po-mgmt-copy-link";
+    if (!C.planPrimalUrl)   C.planPrimalUrl   = mb("po_11kV2FCbMt1nM8pgN5");
+    if (!C.planWeekendUrl)  C.planWeekendUrl  = mb("po_11kV2FCbMt1nM8pihN");
+    if (!C.planNomadUrl)    C.planNomadUrl    = mb("cntr_11kV2FCbMt1nM8K1XQ");
+    if (!C.planExplorerUrl) C.planExplorerUrl = mb("cntr_11kV2FCbMt1nM8K1VN");
+    if (!C.planKidsUrl)     C.planKidsUrl     = mb("cntr_11kV2FCbMt1nM8K1ZS");
+    if (!C.saunaHourUrl)    C.saunaHourUrl    = mb("po_11kV2FCbMt1nM8pd9v");
   })();
 
   if (!C.veniceTrialUrl) C.veniceTrialUrl = C.mindbodyPricingUrl;

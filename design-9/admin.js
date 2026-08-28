@@ -497,10 +497,9 @@
     "#pm-studio .live-state b{color:#E8E6E0;font-weight:600}",
     "#pm-studio .live-state span{display:block;margin-top:5px;font-size:10.5px;color:#6E737A}",
     "#pm-studio .slot .tagline{display:block;margin-top:5px;font-size:10px;color:#8BA85F}",
+    "#pm-studio .slot .slot-swap{margin-top:8px;width:auto;padding:6px 14px;font-size:11px}",
     "#pm-studio .pm-save{font-size:10.5px;letter-spacing:.02em}",
-    "#pm-studio #pm-logout{margin-left:auto;background:none;border:0;color:#6E737A;cursor:pointer;",
-    "  font:inherit;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:6px 2px}",
-    "#pm-studio #pm-logout:hover{color:#D08A72}",
+    "#pm-studio #pm-logout:hover{border-color:#D08A72;color:#D08A72}",
     "#pm-studio .st-row{display:flex;gap:8px;align-items:center;margin:0 0 8px}",
     "#pm-studio .st-thumb{flex:none;width:34px;height:34px;border-radius:50%;background:#2A2F35 center/cover;",
     "  display:grid;place-items:center;color:#8BA85F;font-size:16px;cursor:pointer;border:1px solid #33383E}",
@@ -575,15 +574,12 @@
     '<button data-tab="copy">Copy</button>' +
     '<button data-tab="staff">Staff</button>' +
     '<button data-tab="layout">Layout</button>' +
-    '<button data-tab="preset">Configs</button>' +
-    '<button id="pm-logout" title="Log out of editing">Log out</button></div>' +
+    '<button data-tab="preset">Configs</button></div>' +
     '<div id="pm-body"></div>' +
     '<footer>' +
-      '<button class="act" id="pm-copy">Copy config</button>' +
-      '<button class="act ghost" id="pm-reset">Reset to saved</button>' +
-      '<button class="act ghost" id="pm-exit">Exit studio</button>' +
-      '<p class="pm-note" id="pm-foot-note">Changes are yours alone until the copied config is pasted ' +
-      "into the repo.</p>" +
+      '<button class="act ghost" id="pm-exit">Close the panel</button>' +
+      '<button class="act ghost" id="pm-logout">Log out</button>' +
+      '<p class="pm-note" id="pm-foot-note"></p>' +
     '</footer>';
   document.body.appendChild(panel);
 
@@ -739,8 +735,10 @@
       : "";
 
     body.innerHTML =
-      '<div class="field"><p class="pm-note">A <b style="color:#B9C79E">Swap</b> button sits on every photo ' +
-      "while this panel is open - empty slots included.</p>" +
+      '<div class="field"><p class="pm-note">Every photograph on the page wears two buttons while this ' +
+      'panel is open: <b style="color:#B9C79E">Swap</b> changes the picture, ' +
+      '<b style="color:#B9C79E">Focus</b> sets the point that stays in frame when it crops. ' +
+      "Or swap any photograph from the list below, wherever you are on the site.</p>" +
       '<div class="live-state' + (LIVE ? " on" : "") + '">' +
         (LIVE
           ? "<b>Photographs are live.</b> A swap or an upload here changes the site for every visitor " +
@@ -753,8 +751,7 @@
             "else&rsquo;s. Set <code>liveApi</code> in <code>config.js</code> - see " +
             "<code>strategy/live-editing.md</code>.") +
       "</div>" +
-      '<p class="pm-note" style="margin-top:10px">Colour and wording are <b>not</b> published this way. ' +
-      "Those save into configs, so you can try versions without moving the real site.</p></div>" +
+      "</div>" +
       '<div class="slots">' + (slots.length ? slots.map(function (img) {
         var slot = img.getAttribute("data-pm-photo");
         var file = photos[slot] || (img.getAttribute("src") || "").split("/").pop();
@@ -764,10 +761,10 @@
         var isLive = LIVE && livePhotos.photos[slot];
         return '<div class="slot" data-slot="' + slot + '"><b>' + slot + "</b><span>" + file + f + "</span>" +
           (isLive ? '<span class="tagline">Published &middot; <button class="p-reset">put the original back</button></span>' : "") +
+          '<button class="act ghost slot-swap" data-slot="' + slot + '">Swap</button>' +
           "</div>";
       }).join("") : '<p class="pm-note">No photo slots on this page.</p>') + "</div>" +
-      (LIVE ? '<div class="p-actions" style="margin-top:14px">' +
-        '<button class="act ghost" id="pm-live-undo">Undo the last photo change</button></div>' : "");
+      "";
 
     body.querySelectorAll(".p-reset").forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -800,6 +797,10 @@
           }, t);
         });
       });
+    });
+
+    body.querySelectorAll(".slot-swap").forEach(function (b) {
+      b.addEventListener("click", function (ev) { ev.stopPropagation(); openPicker(b.getAttribute("data-slot")); });
     });
 
     var undo = document.getElementById("pm-live-undo");
@@ -928,6 +929,17 @@
   var freshUploads = [];
 
   function openPicker(img) {
+    // A slot is the thing being edited - the frame on the page was only ever
+    // needed for local preview. Given a slot name with no frame on this page,
+    // stand in a detached one so photographs can be managed from anywhere.
+    if (typeof img === "string") {
+      var want = img;
+      img = document.querySelector('[data-pm-photo="' + want + '"]');
+      if (!img) {
+        img = document.createElement("img");
+        img.setAttribute("data-pm-photo", want);
+      }
+    }
     var slot = img.getAttribute("data-pm-photo");
 
     loadLibrary().then(function (lib) {
@@ -1124,8 +1136,8 @@
   function renderLayout() {
     var body = document.getElementById("pm-body");
     body.innerHTML =
-      '<p class="pm-note" style="margin-bottom:18px">Three takes on the same content. Switch and scroll - ' +
-      "the choice follows you from page to page.</p>" +
+      '<p class="pm-note" style="margin-bottom:18px">Three takes on the same content. <b>Switch</b> previews ' +
+      "one in your browser; <b>Make this the site default</b> changes what every visitor gets.</p>" +
       LAYOUTS.map(function (L) {
         var on = layout === L.id;
         var isDefault = (window.PM_SITE_LAYOUT || (window.PM_CONFIG || {}).layout || "a") === L.id;
@@ -1327,10 +1339,7 @@
           '<div class="p-top"><b>' + k + "</b><span class=\"p-apply p-revert\">Revert</span></div>" +
           '<div class="p-note">' + now.slice(0, 120) + (now.length > 120 ? "\u2026" : "") + "</div></div>";
       }).join("") : '<p class="pm-note">Nothing changed yet.</p>') + "</div>" +
-      '<div class="p-actions"><button class="act" id="pm-copy-export">Copy copy.json</button>' +
-      '<button class="act ghost" id="pm-copy-clear">Revert everything</button></div>' +
-      '<p class="pm-note" style="margin-top:10px">Paste the result into <code>design-9/copy.json</code>, ' +
-      "commit and push, and everyone sees the new wording.</p>";
+      '<div class="p-actions"><button class="act ghost" id="pm-copy-clear">Undo every text change</button></div>';
 
     document.getElementById("pm-copy-on").checked = copyOn && !locked;
     document.getElementById("pm-copy-on").addEventListener("change", function (e) {
@@ -1473,11 +1482,7 @@
         saveRoster(r, chip); renderStaff(); return;
       }
       var th = e.target.closest(".st-thumb");
-      if (th) {
-        var el = document.querySelector('.portrait[data-pm-photo="' + th.getAttribute("data-slot") + '"], [data-pm-photo="' + th.getAttribute("data-slot") + '"]');
-        if (el && el.offsetParent) { openPicker(el); }
-        else toast("Their portrait frame isn\u2019t on this page - open Classes (teachers) or Studio (staff) and try again.");
-      }
+      if (th) openPicker(th.getAttribute("data-slot"));
     });
   }
 
@@ -1575,11 +1580,18 @@
           (where !== "repo" ? '<button class="p-del">Delete</button>' : "") +
         "</div></div>";
     }
+    var devTools =
+      '<div class="p-group" style="margin-top:22px"><h4>For the developer</h4>' +
+      '<p class="pm-note" style="margin-bottom:10px">Copies the current colour, photo and wording ' +
+      "values as code, to be pasted into the repo so they become the site&rsquo;s permanent defaults.</p>" +
+      '<div class="p-actions"><button class="act ghost" id="pm-copy">Copy config as code</button>' +
+      '<button class="act ghost" id="pm-reset">Discard my local changes</button></div></div>';
 
     body.innerHTML =
-      '<p class="pm-note" style="margin-bottom:16px">A config is colour, wording and layout together. ' +
-      "Save one, keep working, then save back into it. Nothing here changes what visitors see - " +
-      "photographs are the part that publishes.</p>" +
+      '<p class="pm-note" style="margin-bottom:16px"><b style="color:#B9C79E">A config is a saved look</b> - ' +
+      "colour, wording and layout together, under a name. Load one to try it, keep working, save back " +
+      "into it. Configs are for trying things: they change what <i>you</i> see, not the live site. " +
+      "(Photographs and the staff roster are different - those go live the moment you change them.)</p>" +
       '<div class="live-state' + (api() ? " on" : "") + '" style="margin-bottom:16px">' +
         (api()
           ? "<b>Saved for everyone.</b> Configs live in the shared store, so anyone who opens this " +
@@ -1610,7 +1622,8 @@
                        : '<p class="pm-note">Nothing saved yet.</p>') +
       "</div>" +
       (mine.length ? '<div class="p-group"><h4>Only in this browser</h4>' +
-        mine.map(function (p2) { return card(p2, "local"); }).join("") + "</div>" : "");
+        mine.map(function (p2) { return card(p2, "local"); }).join("") + "</div>" : "") +
+      devTools;
 
     /* ---- saving ---------------------------------------------------------
        Same path for a new config and for an update: the store replaces by
@@ -1736,7 +1749,7 @@
     applyColors(); renderColor();
   });
 
-  document.getElementById("pm-copy").addEventListener("click", function () {
+  function copyConfigOut() {
     var out = "/* Paste into :root in design-9/style.css */\n:root{\n";
     ROLES.forEach(function (r) {
       if (colors[r.v]) out += "  " + r.v + ":" + colors[r.v] + ";  /* " + r.label + " */\n";
@@ -1762,16 +1775,21 @@
     navigator.clipboard ? navigator.clipboard.writeText(out).then(flash, function () { prompt("Copy:", out); })
                         : prompt("Copy:", out);
     function flash() {
-      var b = document.getElementById("pm-copy"), t = b.textContent;
+      var b = document.getElementById("pm-copy"); if (!b) return;
+      var t = b.textContent;
       b.textContent = "Copied ✓"; setTimeout(function () { b.textContent = t; }, 1400);
     }
-  });
+  }
 
-  document.getElementById("pm-reset").addEventListener("click", function () {
+  document.body.addEventListener("click", function (ev) {
+    if (ev.target && ev.target.id === "pm-reset") resetToSaved();
+    if (ev.target && ev.target.id === "pm-copy") copyConfigOut();
+  });
+  function resetToSaved() {
     colors = {}; photos = {}; focus = {}; copyEdits = {};
     lsDel(KEY_COLORS); lsDel(KEY_PHOTOS); lsDel(KEY_FOCUS); lsDel(KEY_COPY);
     location.reload();
-  });
+  }
 
   document.getElementById("pm-exit").addEventListener("click", function () {
     lsDel(KEY_ON); lsDel(KEY_COLORS); lsDel(KEY_PHOTOS); lsDel(KEY_FOCUS); lsDel(KEY_COPY); lsDel(KEY_LAYOUT);
@@ -1789,10 +1807,10 @@
   if (LIVE) {
     loadLive().then(function () {
       var sub = document.getElementById("pm-sub");
-      if (sub) sub.innerHTML = "Photos publish live &middot; colour and text are configs";
+      if (sub) sub.innerHTML = "Photos, staff and layout go live &middot; colour and wording save to configs";
       var fn = document.getElementById("pm-foot-note");
-      if (fn) fn.innerHTML = "Photographs publish as you swap them. Colour and wording stay yours " +
-        "until a config is pushed.";
+      if (fn) fn.innerHTML = "<b>Live for everyone:</b> photographs, the staff roster, the site default " +
+        "layout. <b>Only you:</b> colour and wording, until they are saved into a config.";
       var on = document.querySelector("#pm-tabs button.on");
       if (on && on.dataset.tab === "photo") renderPhoto();
     });

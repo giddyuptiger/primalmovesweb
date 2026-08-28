@@ -1701,7 +1701,7 @@ body.house{
   --h-line:var(--line);
 }
 /* on the forest bands the same three roles, in the light values */
-body.house :is(section.ink,.statement,.hero,.phero){
+body.house :is(section.ink,.statement,.hero,.phero,footer){
   --h-fg:var(--cream);
   --h-mid:var(--on-dark);
   --h-line:rgba(247,243,231,.22);
@@ -2040,3 +2040,14 @@ body.page-partners{    --sage:#945A38; --sage-btn:#945A38; --sage-dk:#7C4A2D;
 .btn.sage,.btn.sage:hover,.btn.acid,.chip.on,.dchip.on,
 .pm-day.has:hover,section.ink .pm-day.has,section.ink .pm-day.has:hover,
 body.house .btn.sage{color:var(--accent-label)}
+
+
+/* The footer headings lost twice: the Primal Moves layout styles h3 and h4
+   together (out-specifying .foot-block h4), and it paints them with a token
+   that only flips to cream inside the dark bands - the footer was not on
+   that list, so FIND US resolved to navy on olive. Both fixed: the footer
+   joins the dark grounds above, and these rules carry the weight to win. */
+footer h4,.foot-block h4,.foot-top h4,
+body.house footer h4,body.house .foot-block h4,body.house .foot-top h4{
+  font-size:12.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cream);opacity:1}

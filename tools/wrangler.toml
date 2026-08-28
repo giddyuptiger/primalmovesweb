@@ -28,7 +28,7 @@ ALLOW_ORIGIN = "*"
 # "false" = the write key is required.
 #
 #   >>> FLIP THIS TO "false" BEFORE LAUNCH, THEN REDEPLOY. <<<
-OPEN_WRITES = "true"
+OPEN_WRITES = "false"
 
 # The write key is a secret, never a var. Set it now even while writes are
 # open, so locking down later is one word and one deploy:

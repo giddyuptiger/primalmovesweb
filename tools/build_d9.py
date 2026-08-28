@@ -75,8 +75,8 @@ def chrome(depth, active, cherish=False, nav_up=None):
 
     </div>
     <div class="foot-bottom">
-      <div>&copy; 2026 Primal Moves Venice &middot; Part of Primal Moves - Ibiza &middot; Barcelona &middot; Lisbon &middot; Venice</div>
-      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy</a> &middot; <a href="https://primalmoves.com/terms/" target="_blank" rel="noopener">Terms</a> &middot; <a data-pm-link="instagramUrl" target="_blank" rel="noopener">@primalmovesvenice</a></div>
+      <div>Copyright 2026 &copy; Primal Moves Venice &middot; Part of Primal Moves</div>
+      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a> &middot; <a href="{nav}terms/">Terms of Use</a> &middot; <a href="{nav}disclaimer/">Disclaimer</a> &middot; <a data-pm-link="instagramUrl" target="_blank" rel="noopener">@primalmovesvenice</a></div>
     </div>
   </div>
 </footer>'''
@@ -155,6 +155,12 @@ def page(path, depth, active, title, desc, body_fn, cherish=False, body_cls="", 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
 <meta name="description" content="{desc}">
+<meta property="og:title" content="{title}">
+<meta property="og:description" content="{desc}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Primal Moves Venice">
+<meta property="og:image" content="https://venice.primalmoves.com/assets/photos/joy-laughing.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{asset}images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1722,6 +1728,112 @@ HOUSE = [
 for _p, _d, _a, _t, _desc, _fn in HOUSE:
     page(_p, _d, _a, _t, _desc, _fn, body_cls="house",
          nav_up=("" if _d == 1 else "../"))
+
+# --- legal ---------------------------------------------------------------
+def _legal(title, blocks):
+    body = "".join(
+        f"\n    <h2 style=\"margin:34px 0 10px;font-size:clamp(19px,1.8vw,24px)\">{h}</h2>\n    <p>{t}</p>"
+        for h, t in blocks)
+    def fn(up, asset):
+        return f'''
+<section style="padding-top:clamp(120px,18vh,190px)">
+  <div class="wrap">
+    <div class="kicker">The small print</div>
+    <h1 class="display-sm" style="margin-bottom:8px">{title}</h1>
+    <p class="aside">Questions about any of this: <a href="mailto:hello@venice.primalmoves.com" style="text-decoration:underline">hello@venice.primalmoves.com</a></p>
+    {body}
+  </div>
+</section>'''
+    return fn
+
+page("terms/index.html", 1, None, "Terms of Use - Primal Moves Venice",
+     "The terms for using this site and training with us.",
+     _legal("Terms of Use", [
+        ("Using this site",
+         "This site is operated by Primal Moves Venice. By using it you agree to these terms. The content is for general information about the studio, our classes and our memberships."),
+        ("Bookings and payments",
+         "Classes, passes and memberships are booked and billed through Mindbody, and their checkout shows the price, term and cancellation terms for each purchase before you buy. Membership cancellation and freeze requests go through the front desk or hello@venice.primalmoves.com."),
+        ("Your account",
+         "Keep your booking account details accurate and your login to yourself. We can decline or cancel bookings that misuse the booking system."),
+        ("Content",
+         "Everything on this site - words, photographs, the method and the marks - belongs to Primal Moves or its licensors. Do not reuse it commercially without asking us first."),
+        ("Changes",
+         "We can update these terms and the site at any time; the version here is the current one."),
+     ]))
+
+page("disclaimer/index.html", 1, None, "Disclaimer - Primal Moves Venice",
+     "Health and liability disclaimer for training at Primal Moves Venice.",
+     _legal("Disclaimer", [
+        ("Movement carries risk",
+         "Primal Moves classes, the gym floor, the sauna and the cold plunge are physical activities that carry inherent risk. Every member and guest signs a liability waiver before their first visit, and that waiver - not this page - is the operative agreement."),
+        ("Not medical advice",
+         "Nothing on this site is medical advice. Check with a medical professional before starting a new training practice, using the sauna or the cold plunge - especially if you are pregnant, have a heart condition, or are managing an injury."),
+        ("Listen to your body",
+         "Coaches offer scaled versions of everything. Work at the level that is right for you on the day, and tell the coach about anything they should know before class."),
+        ("Site information",
+         "We keep the schedule, pricing and hours on this site current, but the booking system is the source of truth for times and prices, and the studio may change programming without notice."),
+     ]))
+
+
+# --- /admin: the door to the EDIT panel ----------------------------------
+# The password is checked as a SHA-256 hash (never stored in the page in
+# clear) and doubles as the write key the store demands once OPEN_WRITES is
+# off - so the same word gates the panel AND authenticates every write.
+ADMIN_HASH = "21a2a5af9dee8ec7b6079e08ebb1c877d99e6f4ae7440fd2e1f7ea4e24d941da"
+
+def admin_page(up, asset):
+    return f'''
+<section style="padding-top:clamp(140px,22vh,220px);min-height:70vh">
+  <div class="wrap" style="max-width:480px">
+    <div class="kicker">Staff only</div>
+    <h1 class="display-sm" style="margin-bottom:18px">Edit the site</h1>
+    <p class="aside" style="margin-bottom:26px">Enter the studio password. Editing stays on for this browser until you log out.</p>
+    <form id="adm" autocomplete="off">
+      <input id="adm-pw" type="password" placeholder="Password" autocomplete="current-password"
+        style="width:100%;padding:16px 18px;font:inherit;font-size:16px;border:1px solid var(--line);
+               border-radius:6px;background:var(--cream);color:var(--ink)">
+      <button class="btn sage lg" type="submit" style="margin-top:16px;width:100%">Unlock editing</button>
+      <p id="adm-err" style="display:none;color:var(--clay);margin-top:14px">That&rsquo;s not it.</p>
+    </form>
+  </div>
+</section>
+<script>
+(function () {{
+  var HASH = "{ADMIN_HASH}";
+  document.getElementById("adm").addEventListener("submit", function (e) {{
+    e.preventDefault();
+    var pw = document.getElementById("adm-pw").value;
+    crypto.subtle.digest("SHA-256", new TextEncoder().encode(pw)).then(function (buf) {{
+      var hex = Array.prototype.map.call(new Uint8Array(buf), function (b) {{
+        return b.toString(16).padStart(2, "0"); }}).join("");
+      if (hex !== HASH) {{ document.getElementById("adm-err").style.display = "block"; return; }}
+      try {{
+        localStorage.setItem("pm_admin", "1");
+        localStorage.setItem("pm_studio_wkey", pw);   // the store's write key
+      }} catch (err) {{}}
+      location.href = "{up}";
+    }});
+  }});
+}})();
+</script>'''
+
+page("admin/index.html", 1, None, "Staff - Primal Moves Venice",
+     "Staff sign-in.", admin_page)
+
+
+# --- robots + sitemap ----------------------------------------------------
+_base = "https://venice.primalmoves.com"
+_urls = ["", "practice/", "classes/", "studio/", "memberships/", "cherish/",
+         "events/", "partners/", "shop/", "terms/", "disclaimer/"]
+(ROOT / "robots.txt").write_text(
+    "User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: %s/sitemap.xml\n" % _base)
+(ROOT / "sitemap.xml").write_text(
+    '<?xml version="1.0" encoding="UTF-8"?>\n'
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    "".join("  <url><loc>%s/%s</loc></url>\n" % (_base, u) for u in _urls) +
+    "</urlset>\n")
+print("robots.txt + sitemap.xml written")
+
 
 # --- 404 -----------------------------------------------------------------
 # Served by Cloudflare for any path that isn't a page (wrangler.toml,

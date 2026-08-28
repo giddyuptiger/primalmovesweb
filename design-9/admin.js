@@ -18,6 +18,9 @@
    TURN IT OFF         The Exit button, or ?admin=0.
    ========================================================================== */
 (function () {
+  // The panel is staff-only: /admin sets pm_admin after the password. A
+  // browser without it gets no EDIT handle, no panel, nothing to discover.
+  try { if (localStorage.getItem("pm_admin") !== "1") return; } catch (e) { return; }
   "use strict";
 
   var KEY_ON = "pm_studio_on", KEY_COLORS = "pm_studio_colors", KEY_PHOTOS = "pm_studio_photos",
@@ -495,6 +498,9 @@
     "#pm-studio .live-state span{display:block;margin-top:5px;font-size:10.5px;color:#6E737A}",
     "#pm-studio .slot .tagline{display:block;margin-top:5px;font-size:10px;color:#8BA85F}",
     "#pm-studio .pm-save{font-size:10.5px;letter-spacing:.02em}",
+    "#pm-studio #pm-logout{margin-left:auto;background:none;border:0;color:#6E737A;cursor:pointer;",
+    "  font:inherit;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:6px 2px}",
+    "#pm-studio #pm-logout:hover{color:#D08A72}",
     "#pm-studio .st-row{display:flex;gap:8px;align-items:center;margin:0 0 8px}",
     "#pm-studio .st-thumb{flex:none;width:34px;height:34px;border-radius:50%;background:#2A2F35 center/cover;",
     "  display:grid;place-items:center;color:#8BA85F;font-size:16px;cursor:pointer;border:1px solid #33383E}",
@@ -569,7 +575,8 @@
     '<button data-tab="copy">Copy</button>' +
     '<button data-tab="staff">Staff</button>' +
     '<button data-tab="layout">Layout</button>' +
-    '<button data-tab="preset">Configs</button></div>' +
+    '<button data-tab="preset">Configs</button>' +
+    '<button id="pm-logout" title="Log out of editing">Log out</button></div>' +
     '<div id="pm-body"></div>' +
     '<footer>' +
       '<button class="act" id="pm-copy">Copy config</button>' +
@@ -1098,6 +1105,22 @@
                 "Outline pill buttons; tall photographs"] }
   ];
 
+  function setSiteDefault(id, btn) {
+    var h = writeHeaders({ "Content-Type": "application/json" });
+    if (!h || !api()) { toast("No store - can't set the default.", true); return; }
+    btn.textContent = "Setting\u2026";
+    fetch(api(), { method: "POST", headers: h,
+      body: JSON.stringify({ name: "__site__", note: "site-wide defaults",
+        copy: { __layout__: id } }) })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.error) { toast(d.error, true); btn.textContent = "Make this the site default"; return; }
+        toast("Done - every visitor now gets this layout.");
+        renderLayout();
+      })
+      .catch(function () { toast("Store not answering.", true); btn.textContent = "Make this the site default"; });
+  }
+
   function renderLayout() {
     var body = document.getElementById("pm-body");
     body.innerHTML =
@@ -1105,18 +1128,27 @@
       "the choice follows you from page to page.</p>" +
       LAYOUTS.map(function (L) {
         var on = layout === L.id;
+        var isDefault = (window.PM_SITE_LAYOUT || (window.PM_CONFIG || {}).layout || "a") === L.id;
         return '<div class="preset lay' + (on ? " on" : "") + '" data-lay="' + L.id + '">' +
-          '<div class="p-top"><b>' + L.name + "</b>" +
+          '<div class="p-top"><b>' + L.name + (isDefault ? ' \u00b7 <span style="color:#8BA85F">site default</span>' : "") + "</b>" +
           '<span class="p-apply">' + (on ? "Showing" : "Switch") + "</span></div>" +
           '<div class="p-note">' + L.note + "</div>" +
           "<ul class=\"lay-list\">" + L.bullets.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul>" +
+          (isDefault ? "" : '<button class="act ghost lay-default" data-lay="' + L.id + '" ' +
+            'style="margin-top:10px">Make this the site default</button>') +
           "</div>";
       }).join("") +
-      '<p class="pm-note" style="margin-top:16px">Neither can fix the real gap: <b>two photographs in 5,700px of homepage</b>. ' +
-      "That needs pictures, not CSS. See <code>strategy/design-critique.md</code>.</p>" +
+      '<p class="pm-note" style="margin-top:16px">Switching previews a layout in this browser only. ' +
+      "<b>Make this the site default</b> changes what every visitor gets, immediately.</p>" +
       '<p class="pm-note" style="margin-top:12px">To make one the default for everyone, set ' +
       "<code>layout</code> in <code>config.js</code>.</p>";
 
+    body.querySelectorAll(".lay-default").forEach(function (b) {
+      b.addEventListener("click", function (ev) {
+        ev.stopPropagation();
+        setSiteDefault(b.getAttribute("data-lay"), b);
+      });
+    });
     body.querySelectorAll(".preset.lay").forEach(function (el) {
       el.addEventListener("click", function () {
         applyLayout(el.getAttribute("data-lay"));
@@ -1688,6 +1720,11 @@
     else if (b.dataset.tab === "staff") renderStaff();
     else if (b.dataset.tab === "layout") renderLayout();
     else renderPresets();
+  });
+
+  document.getElementById("pm-logout").addEventListener("click", function () {
+    try { localStorage.removeItem("pm_admin"); localStorage.removeItem(KEY_WKEY); } catch (e) {}
+    location.href = "/";
   });
 
   document.getElementById("pm-body").addEventListener("click", function (e) {

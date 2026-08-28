@@ -3,71 +3,131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design Studio — Primal Moves Venice</title>
-<meta name="robots" content="noindex, nofollow">
+<title>Staff - Primal Moves Venice</title>
+<meta name="description" content="Staff sign-in.">
+<meta property="og:title" content="Staff - Primal Moves Venice">
+<meta property="og:description" content="Staff sign-in.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Primal Moves Venice">
+<meta property="og:image" content="https://venice.primalmoves.com/assets/photos/joy-laughing.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../../assets/images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-code{font:400 13px ui-monospace,Menlo,monospace;background:#E4DCCD;padding:2px 6px;border-radius:3px}
-:root{--ink:#132238;--paper:#EDE8D2;--mid:#57534A;--soft:#6B685A;--forest:#303F16;--line:#CFC5AE}
-*{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);
-  font:400 16px/1.65 "Helvetica Neue",Helvetica,Inter,Arial,sans-serif;
-  display:flex;align-items:center;justify-content:center;min-height:100vh;padding:32px}
-.card{max-width:560px;width:100%}
-h1{font-size:clamp(28px,4vw,40px);line-height:1.1;font-weight:400;letter-spacing:-.014em;margin:0 0 6px}
-.kick{font-size:12.5px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
-  color:var(--forest);margin-bottom:14px}
-p{color:var(--mid);margin:0 0 16px}
-ol{color:var(--mid);padding-left:20px;margin:0 0 22px}
-li{margin-bottom:9px}
-.gate{display:flex;gap:9px;margin:26px 0 12px;flex-wrap:wrap}
-input[type=password]{flex:1;min-width:190px;padding:13px 15px;border:1px solid var(--line);
-  border-radius:3px;background:#F7F3E7;font:inherit;font-size:15px;color:var(--ink)}
-input[type=password]:focus{outline:2px solid var(--forest);outline-offset:-1px;border-color:var(--forest)}
-button{background:var(--forest);color:#F7F3E7;border:0;border-radius:999px;padding:13px 26px;
-  font:inherit;font-size:13px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;cursor:pointer}
-button:hover{background:var(--ink)}
-.err{color:#AE411C;font-size:14px;min-height:22px;margin:0 0 10px}
-.note{font-size:13.5px;color:var(--soft);line-height:1.6;border-left:2px solid var(--forest);
-  padding:2px 0 2px 16px;margin-top:30px}
-a{color:var(--ink)}
-</style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Caveat:wght@500;600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script src="../config.js"></script>
+<script>/* layout class before first paint, so B never flashes as A */
+(function(){try{var l=localStorage.getItem("pm_studio_layout")||(window.PM_CONFIG||{}).layout;
+if(l==="tight")document.documentElement.classList.add("tight-pending");
+if(l==="house")document.documentElement.classList.add("house-pending");
+var t=localStorage.getItem("pm_studio_texture");
+if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.classList.add("texture-pending");
+}catch(e){}})();</script>
+<script src="../admin.js?v=5" defer></script>
 </head>
 <body>
-<div class="card">
-  <div class="kick">Primal Moves Venice</div>
-  <h1>Design studio</h1>
-  <p>Try colours and photographs on the live site, see them in place immediately, then copy the result out for whoever pushes the code.</p>
 
-  <ol>
-    <li>We&rsquo;re in design mode, so there&rsquo;s no passphrase &mdash; the <b>EDIT</b> tab
-        shows on every page for everyone. Click it to open the panel.</li>
-    <li>Browse the site normally — the panel follows you from page to page.</li>
-    <li><b>Colour</b> assigns any brand colour to any role, and warns you when a choice becomes hard to read.</li>
-    <li><b>Photos</b> puts <b>Swap</b> and <b>Focus</b> on every image. Swap picks a new one; Focus sets which part of a picture stays in frame when it&rsquo;s cropped.</li>
-    <li><b>Copy</b> lets you edit any heading or paragraph straight on the page.</li>
-    <li><b>Presets</b> saves a whole look under a name, so we can compare directions.</li>
-    <li>Hit <b>Copy config</b> and paste it to Jeremy, or into the repo yourself.</li>
-  </ol>
-
-  <div class="gate">
-    <button id="go">Open the studio</button>
+<header class="site">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html"><img src="../../assets/brand/logo-venice.png" alt="Primal Moves Venice"></a>
+    <nav class="nav-links">
+        <a class="" href="../practice/">Our Method</a>
+        <a class="" href="../classes/">Classes</a>
+        <a class="" href="../studio/">Studio</a>
+        <a class="" href="../memberships/">Memberships</a>
+        <a class="" href="../cherish/">Cafe + Tea</a>
+        <a class="" href="../events/">Events</a>
+    </nav>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu"><span class="burger" aria-hidden="true"></span></button>
+    <div class="nav-cta">
+      <a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 Day Pass</a>
+    </div>
   </div>
-  <p class="err" id="err"></p>
+  <nav class="mobile-menu" id="mobile-menu">
+    <ul>
+        <li data-pm-copy="admin.li1"><a href="../practice/">Our Method</a></li>
+        <li data-pm-copy="admin.li2"><a href="../classes/">Classes</a></li>
+        <li data-pm-copy="admin.li3"><a href="../studio/">Studio</a></li>
+        <li data-pm-copy="admin.li4"><a href="../memberships/">Memberships</a></li>
+        <li data-pm-copy="admin.li5"><a href="../cherish/">Cafe + Tea</a></li>
+        <li data-pm-copy="admin.li6"><a href="../events/">Events</a></li>
+      <li data-pm-copy="admin.li7"><a data-pm-link="dayPassUrl" target="_blank" rel="noopener">$40 Day Pass →</a></li>
+      <li data-pm-copy="admin.li8"><a data-pm-link="onlineTrialUrl" target="_blank" rel="noopener">Try Primal online free →</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <p class="note"><b>Nothing here saves to the website.</b> Everything you change lives in your own browser until the copied config is pasted into the repo and pushed — so experiment as freely as you like. Nobody can break the live site from in here.<br><br>The <b>EDIT</b> tab is visible to everyone while we're designing. It gets switched off before launch — one line in <code>config.js</code>.</p>
-</div>
 
+<section style="padding-top:clamp(140px,22vh,220px);min-height:70vh">
+  <div class="wrap" style="max-width:480px">
+    <div data-pm-copy="admin.kicker1" class="kicker">Staff only</div>
+    <h1 data-pm-copy="admin.h11" class="display-sm" style="margin-bottom:18px">Edit the site</h1>
+    <p data-pm-copy="admin.p1" class="aside" style="margin-bottom:26px">Enter the studio password. Editing stays on for this browser until you log out.</p>
+    <form id="adm" autocomplete="off">
+      <input id="adm-pw" type="password" placeholder="Password" autocomplete="current-password"
+        style="width:100%;padding:16px 18px;font:inherit;font-size:16px;border:1px solid var(--line);
+               border-radius:6px;background:var(--cream);color:var(--ink)">
+      <button class="btn sage lg" type="submit" style="margin-top:16px;width:100%">Unlock editing</button>
+      <p data-pm-copy="admin.p2" id="adm-err" style="display:none;color:var(--clay);margin-top:14px">That&rsquo;s not it.</p>
+    </form>
+  </div>
+</section>
 <script>
-/* Design mode: no gate. The studio can't write to the site, so there is
-   nothing here worth locking. If studioOpenToAll is switched off in
-   config.js, this button is how you get in. */
-document.getElementById("go").addEventListener("click", function () {
-  try { localStorage.setItem("pm_studio_on", "1"); } catch (e) {}
-  location.href = "../";
-});
+(function () {
+  var HASH = "21a2a5af9dee8ec7b6079e08ebb1c877d99e6f4ae7440fd2e1f7ea4e24d941da";
+  document.getElementById("adm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var pw = document.getElementById("adm-pw").value;
+    crypto.subtle.digest("SHA-256", new TextEncoder().encode(pw)).then(function (buf) {
+      var hex = Array.prototype.map.call(new Uint8Array(buf), function (b) {
+        return b.toString(16).padStart(2, "0"); }).join("");
+      if (hex !== HASH) { document.getElementById("adm-err").style.display = "block"; return; }
+      try {
+        localStorage.setItem("pm_admin", "1");
+        localStorage.setItem("pm_studio_wkey", pw);   // the store's write key
+      } catch (err) {}
+      location.href = "../";
+    });
+  });
+})();
 </script>
+
+<footer>
+  <span class="foot-palm" aria-hidden="true"></span>
+  <div class="wrap-wide">
+    <div class="foot-grid">
+
+      <div class="foot-id">
+        <a class="foot-brand-mark" href="../index.html"><img src="../../assets/brand/logo-venice-light.png" alt="Primal Moves Venice"></a>
+      </div>
+
+      <div class="foot-block">
+        <h4 data-pm-copy="admin.h41">Find us</h4>
+        <p data-pm-copy="admin.p3">
+          <a href="https://maps.google.com/?q=1038+Princeton+Dr+Ste+B,+Marina+del+Rey,+CA+90292" target="_blank" rel="noopener">
+            <span data-pm-text="address1">1038 Princeton Dr, Ste B</span> <br>
+            <span data-pm-text="address2">Marina del Rey, CA 90292</span>
+          </a>
+        </p>
+        <p data-pm-copy="admin.p4" style="margin-top:14px">
+          <a data-pm-link="phoneHref"><span data-pm-text="phone">(310) 800-7061</span></a> <br>
+          <a href="sms:+13108007061">Text us</a> &middot; <a href="https://wa.me/13108007061" target="_blank" rel="noopener">WhatsApp</a>
+        </p>
+      </div>
+
+      <div class="foot-block">
+        <h4 data-pm-copy="admin.h42">Hours</h4>
+        <div class="foot-hours" data-pm-hours></div>
+      </div>
+
+    </div>
+    <div class="foot-bottom">
+      <div>Copyright 2026 &copy; Primal Moves Venice &middot; Part of Primal Moves</div>
+      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a> &middot; <a href="../terms/">Terms of Use</a> &middot; <a href="../disclaimer/">Disclaimer</a> &middot; <a data-pm-link="instagramUrl" target="_blank" rel="noopener">@primalmovesvenice</a></div>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>

@@ -83,7 +83,7 @@ window.PM_CONFIG = {
      EDIT panel under Colour; set it here to make it the default.          */
   texture: true,          // true = limewash · "faint" = a lighter coat · false = off
 
-  layout: "a",
+  layout: "house",
 
   /* --- DESIGN STUDIO ------------------------------------------------------
      true  = the EDIT tab shows for ANYONE who loads the site. Right for
@@ -355,8 +355,16 @@ window.PM_CONFIG = {
           .then(function (r2) { return r2.ok ? r2.json() : null; })
           .then(function (p) {
             var hit = ((p && p.presets) || []).filter(function (x) { return x.name === "__staff__"; })[0];
-            if (!hit || !hit.copy || !hit.copy.__roster__) return;
-            try { applyRoster(JSON.parse(hit.copy.__roster__)); } catch (e) {}
+            if (hit && hit.copy && hit.copy.__roster__) {
+              try { applyRoster(JSON.parse(hit.copy.__roster__)); } catch (e) {}
+            }
+            var site = ((p && p.presets) || []).filter(function (x) { return x.name === "__site__"; })[0];
+            var lay = site && site.copy && site.copy.__layout__;
+            if (lay && lay !== C.layout && !localStorage.getItem("pm_studio_layout")) {
+              window.PM_SITE_LAYOUT = lay;
+              document.body.classList.remove("house", "tight");
+              if (lay !== "a") document.body.classList.add(lay);
+            } else if (lay) { window.PM_SITE_LAYOUT = lay; }
           }).catch(function () {});
       })
       .catch(function () { window.PM_TEACHERS = window.PM_TEACHERS || {}; });

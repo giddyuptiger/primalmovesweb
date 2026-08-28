@@ -907,10 +907,29 @@ def memberships(up, asset):
 
 </div>
 
+<div class="wrap-wide">
+  <!-- Kids' Primal is on the chart; a whole family on one account is not a
+       SKU - it is a conversation. So this asks for the conversation. -->
+  <div class="cmp-try" id="family">
+    <div>
+      <div class="kicker">Families</div>
+      <p style="margin:6px 0 0">Kids&rsquo; Primal runs on the same floor you train on, and Saturday mornings are the family session. For a whole family on one account - partners, kids, or both - we put it together with you rather than selling it off a shelf.</p>
+    </div>
+    <div class="try-right">
+      <div class="cta-row">
+        <a class="btn sage" href="mailto:hellovenice@primalmoves.com?subject=Family%20membership%20enquiry">Ask about family memberships</a>
+      </div>
+      <p class="embed-note try-more" style="margin:14px 0 0">Or email
+        <a href="mailto:hellovenice@primalmoves.com" style="text-decoration:underline">hellovenice@primalmoves.com</a>
+        and tell us who is coming.</p>
+    </div>
+  </div>
+</div>
+
 
 
 <div class="mem-view" id="view-cards"{cards_attr}>
-    <h3 id="family" class="group-h">Start here</h3>
+    <h3 class="group-h">Start here</h3>
     <p class="group-sub">No long commitment - and something for the family.</p>
     <div class="plans four">
       <div class="plan hero-plan">

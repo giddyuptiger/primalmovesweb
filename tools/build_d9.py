@@ -4,6 +4,14 @@
  partners, and a calendar built from Luma's ICS feed rather than their embed."""
 import pathlib
 
+# Two addresses, on purpose:
+#   hellovenice@primalmoves.com   everything else - tours, memberships,
+#                                 families, partners, the legal pages
+#   events@primalmoves.com        hosting and private hire only: the four
+#                                 buttons on /events/ and the studio page's
+#                                 private-hire block
+# Both are plain mailto: links in the markup below; grep before changing one.
+
 ROOT = pathlib.Path("/tmp/primalmovesweb/design-9")
 
 NAV = [
@@ -781,7 +789,7 @@ def studio(up, asset):
         <h3 style="font-size:clamp(22px,2.6vw,34px);margin-bottom:14px">Want to use it?</h3>
         <p style="color:var(--mid);max-width:36em">The whole floor is available for workshops, brand activations, retreat days, team offsites and film shoots - rigging, sauna and cold plunge included, with catering through Cherish. Tell us what you have in mind and we'll come back with availability and rates.</p>
         <div class="cta-row" style="margin-top:24px">
-          <a class="btn" href="mailto:hellovenice@primalmoves.com?subject=Private%20hire%20enquiry%20%E2%80%94%20Primal%20Moves%20Venice">Enquire about hire</a>
+          <a class="btn" href="mailto:events@primalmoves.com?subject=Private%20hire%20enquiry%20%E2%80%94%20Primal%20Moves%20Venice">Enquire about hire</a>
           <a class="btn secondary" href="{up}events/">What we host here</a>
         </div>
       </div>
@@ -1603,7 +1611,7 @@ def house_events(up, asset):
       hs_statement("Host something here",
         "The floor takes a supper, a screening, a workshop or a party. Tell us what you have in mind.",
         '<a class="btn sage" data-pm-link="lumaPageUrl" target="_blank" rel="noopener">Follow on Luma ↗</a>'
-        '<a class="btn" href="mailto:hellovenice@primalmoves.com?subject=Hosting%20an%20event">Get in touch</a>',
+        '<a class="btn" href="mailto:events@primalmoves.com?subject=Hosting%20an%20event">Get in touch</a>',
         alt=True)
     )
 
@@ -1651,7 +1659,7 @@ def events(up, asset):
 
         <div class="cta-row ev-cta">
           <a class="btn" data-pm-link="lumaPageUrl" target="_blank" rel="noopener">Follow us on Luma &#8599;</a>
-          <a class="btn secondary" href="mailto:hellovenice@primalmoves.com?subject=Hosting%20an%20event%20at%20Primal%20Moves%20Venice">Host an event here</a>
+          <a class="btn secondary" href="mailto:events@primalmoves.com?subject=Hosting%20an%20event%20at%20Primal%20Moves%20Venice">Host an event here</a>
         </div>
       </div>
     </div>
@@ -1665,7 +1673,7 @@ def events(up, asset):
     </div>
     <p class="lede" style="max-width:40em">11,000 ft², rigging overhead, sauna and cold plunge, a cafe attached. Available for workshops, brand activations, retreat days, team offsites and film shoots. Cherish handles catering.</p>
     <div class="cta-row" style="margin-top:28px">
-      <a class="btn on-dark" href="mailto:hellovenice@primalmoves.com?subject=Private%20hire%20enquiry">Enquire about hire</a>
+      <a class="btn on-dark" href="mailto:events@primalmoves.com?subject=Private%20hire%20enquiry">Enquire about hire</a>
       <a class="btn ghost-dark" href="{up}studio/#space">See the space ↓</a>
       <a class="btn ghost-dark" href="{up}cherish/">Catering via Cherish</a>
     </div>

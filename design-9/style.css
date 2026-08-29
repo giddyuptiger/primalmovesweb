@@ -626,6 +626,22 @@ picture{display:contents}
    home page's experience band 68px taller. They are never painted; say so. */
 picture>source{display:none}
 
+/* ---- legal pages -------------------------------------------------------
+   A document, not a section head: one title over a stack of headed clauses.
+   The eyebrow carries .kicker's look without its name, so the house
+   section-head rule cannot claim this page. The headings then need to look
+   like headings - the inline sizes on them are the fallback, this is the
+   intent. */
+.legal-eyebrow{font-size:11px;font-weight:500;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--soft);margin-bottom:22px}
+.wrap.legal h2{font-weight:600;color:var(--ink);letter-spacing:-.005em}
+body.house .wrap.legal h2{font-weight:600;color:var(--ink)}
+.wrap.legal p{max-width:64ch}
+.wrap.legal p + h2{margin-top:38px}
+/* the header is sticky, so a jump to /terms/#stopping-messages would land
+   the heading underneath it */
+.wrap.legal :is(h1,h2){scroll-margin-top:96px}
+
 /* --------------------------------------------------- MOBILE TAP TARGETS -- */
 @media (max-width:820px){
   .nav-toggle{min-height:44px}

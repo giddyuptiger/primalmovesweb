@@ -113,3 +113,47 @@ Digital Studio trial, Luma host profile.
 The brief recommends Squarespace for self-editing. Everything here is a static
 HTML prototype for settling direction, structure and copy — it translates to
 Squarespace sections cleanly. It is not the production build.
+
+---
+
+## Known issue: the house layout's heading system is inferred, not declared
+
+**Found:** 29 Aug 2026, while adding the SMS terms to /terms/.
+**Symptom when it bites:** every `h1` and `h2` on a page collapses to 17px grey
+body text, indistinguishable from the paragraphs around it. It did exactly that
+to /terms/ and /disclaimer/, live, for as long as the house layout has been the
+default.
+
+**Why.** `style.css` has a section-head transform for the house layout:
+
+```css
+body.house section:not(.hero):not(.phero)
+  *:has(> .kicker):has(> :is(h1,h2,h3,.display,.display-sm))
+  > :is(h1,h2,h3,.display,.display-sm) { font-size:17px !important; color:var(--mid); ... }
+```
+
+It matches `*` — any element at all that happens to contain a `.kicker` and a
+heading as direct children. On a marketing section that is the intended effect:
+the eyebrow becomes the headline and the old headline drops to a quiet line
+beneath it. On a legal page, where one `.wrap` holds the eyebrow **and a dozen
+`h2`s**, it demoted the whole document.
+
+Measured across the site: **35 containers match this rule; 34 of them match by
+structure alone.** Only one carries the `.section-head` class that describes what
+is happening. The styling is being inferred from markup shape rather than
+declared, so any future block that puts a kicker next to a heading inherits a
+transform nobody asked for, silently, with `!important` on top.
+
+**The fix** (not done — needs its own pass, it touches every page):
+
+1. Scope the rule to `.section-head`, so it applies where it is asked for:
+   `body.house .section-head > :is(h1,h2,h3,...)`.
+2. Add `class="section-head"` to the ~34 blocks that currently rely on the
+   structural match. They are already a consistent shape, so this is mechanical.
+3. Drop the `!important`s — with an explicit class they stop being needed.
+4. Then remove the `.legal-eyebrow` workaround in `_legal()` (build_d9.py) and
+   the `.wrap.legal` block in style.css, and put `.kicker` back on those pages.
+
+Until then: **a page that is a document rather than a marketing section must not
+put a `.kicker` and a heading in the same container.** That is what
+`.legal-eyebrow` exists to avoid, and it is a workaround, not a design.

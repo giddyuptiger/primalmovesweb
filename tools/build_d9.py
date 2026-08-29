@@ -80,7 +80,7 @@ def chrome(depth, active, cherish=False, nav_up=None):
     </div>
     <div class="foot-bottom">
       <div>Copyright 2026 &copy; Primal Moves Venice &middot; Part of Primal Moves</div>
-      <div><a href="https://primalmoves.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a> &middot; <a href="{up}terms/">Terms of Use</a> &middot; <a href="{up}disclaimer/">Disclaimer</a></div>
+      <div><a href="{up}privacy/">Privacy Policy</a> &middot; <a href="{up}terms/">Terms of Use</a> &middot; <a href="{up}disclaimer/">Disclaimer</a></div>
     </div>
   </div>
 </footer>'''
@@ -1835,17 +1835,36 @@ for _p, _d, _a, _t, _desc, _fn in HOUSE:
          nav_up=("" if _d == 1 else "../"))
 
 # --- legal ---------------------------------------------------------------
-def _legal(title, blocks):
-    body = "".join(
-        f"\n    <h2 style=\"margin:34px 0 10px;font-size:clamp(19px,1.8vw,24px)\">{h}</h2>\n    <p>{t}</p>"
-        for h, t in blocks)
+def _legal(title, blocks, updated=""):
+    """A legal page. A block is (heading, text) or (heading, [paragraph, ...]);
+    every heading gets an id so a section can be linked to directly - the SMS
+    terms are cited from inside Klaviyo as /terms/#mobile-messaging."""
+    def slug(h):
+        return "".join(c if c.isalnum() else "-" for c in h.lower()).strip("-")
+    parts = []
+    for h, t in blocks:
+        paras = [t] if isinstance(t, str) else list(t)
+        parts.append(
+            f'''\n    <h2 id="{slug(h)}" style="margin:34px 0 10px;font-size:clamp(19px,1.8vw,24px)">{h}</h2>'''
+            + "".join(f"\n    <p>{x}</p>" for x in paras))
+    body = "".join(parts)
+    stamp = (f'''\n    <p class="aside" style="margin-top:6px">Last updated: {updated}</p>'''
+             if updated else "")
     def fn(up, asset):
+        # The eyebrow is .legal-eyebrow, not .kicker, deliberately. The house
+        # layout has a section-head rule - any container holding a .kicker and
+        # a heading gets the kicker promoted to the headline and every heading
+        # in it demoted to a quiet 17px grey line. On a page that is one title
+        # over a stack of h2s that matched .wrap and flattened the whole
+        # document into undifferentiated body text, headings included. Renaming
+        # the eyebrow takes this page out of that rule's reach; it looks the
+        # same, and Stopping messages is findable again.
         return f'''
 <section style="padding-top:clamp(120px,18vh,190px)">
-  <div class="wrap">
-    <div class="kicker">The small print</div>
+  <div class="wrap legal">
+    <div class="legal-eyebrow">The small print</div>
     <h1 class="display-sm" style="margin-bottom:8px">{title}</h1>
-    <p class="aside">Questions about any of this: <a href="mailto:hellovenice@primalmoves.com" style="text-decoration:underline">hellovenice@primalmoves.com</a></p>
+    <p class="aside">Questions about any of this: <a href="mailto:hellovenice@primalmoves.com" style="text-decoration:underline">hellovenice@primalmoves.com</a></p>{stamp}
     {body}
   </div>
 </section>'''
@@ -1864,7 +1883,177 @@ page("terms/index.html", 1, None, "Terms of Use - Primal Moves Venice",
          "Everything on this site - words, photographs, the method and the marks - belongs to Primal Moves or its licensors. Do not reuse it commercially without asking us first."),
         ("Changes",
          "We can update these terms and the site at any time; the version here is the current one."),
-     ]))
+
+        # ---- Mobile messaging ------------------------------------------------
+        # Klaviyo's generated mobile terms, kept substantively word for word:
+        # this is the page their SMS setup points at, and carriers check it.
+        # Reformatted into headed sections so a person can actually find the
+        # opt-out, but no sentence has been rewritten. Anchor: /terms/#mobile-messaging
+        ("Mobile messaging",
+         ["The Primal Moves Venice mobile message service (the &ldquo;Service&rdquo;) is operated by "
+          "Primal Moves Venice (&ldquo;Primal Moves Venice&rdquo;, &ldquo;we&rdquo;, or &ldquo;us&rdquo;). "
+          "Your use of the Service constitutes your agreement to these terms and conditions "
+          "(&ldquo;Mobile Terms&rdquo;). We may modify or cancel the Service or any of its features "
+          "without notice. To the extent permitted by applicable law, we may also modify these Mobile "
+          "Terms at any time and your continued use of the Service following the effective date of any "
+          "such changes shall constitute your acceptance of such changes."]),
+
+        ("What you agree to receive",
+         ["By consenting to Primal Moves Venice&rsquo;s SMS/text messaging service, you agree to receive "
+          "recurring SMS/text messages from and on behalf of Primal Moves Venice through your wireless "
+          "provider to the mobile number you provided, even if your mobile number is registered on any "
+          "state or federal Do Not Call list. Text messages may be sent using an automatic telephone "
+          "dialing system or other technology. Service-related messages may include updates, alerts, and "
+          "information (e.g., order updates, account alerts, etc.). Promotional messages may include "
+          "promotions, specials, and other marketing offers (e.g., cart reminders).",
+          "You understand that you do not have to sign up for this program in order to make any purchases, "
+          "and your consent is not a condition of any purchase with Primal Moves Venice. Your participation "
+          "in this program is completely voluntary."]),
+
+        ("What it costs",
+         "We do not charge for the Service, but you are responsible for all charges and fees associated "
+         "with text messaging imposed by your wireless provider. Message frequency varies. Message and "
+         "data rates may apply. Check your mobile plan and contact your wireless provider for details. "
+         "You are solely responsible for all charges related to SMS/text messages, including charges from "
+         "your wireless provider."),
+
+        ("Stopping messages",
+         "You may opt-out of the Service at any time. Text the single keyword command STOP to "
+         "+1&nbsp;833&nbsp;987&nbsp;8032 or click the unsubscribe link (where available) in any text "
+         "message to cancel. You&rsquo;ll receive a one-time opt-out confirmation text message. No further "
+         "messages will be sent to your mobile device, unless initiated by you. If you have subscribed to "
+         "other Primal Moves Venice mobile message programs and wish to cancel, except where applicable "
+         "law requires otherwise, you will need to opt out separately from those programs by following "
+         "the instructions provided in their respective mobile terms."),
+
+        ("Help",
+         "For Service support or assistance, text HELP to +1&nbsp;833&nbsp;987&nbsp;8032 or email "
+         "<a href=\"mailto:hellovenice@primalmoves.com\" style=\"text-decoration:underline\">"
+         "hellovenice@primalmoves.com</a>."),
+
+        ("Numbers we send from",
+         "We may change any short code or telephone number we use to operate the Service at any time and "
+         "will notify you of these changes. You acknowledge that any messages, including any STOP or HELP "
+         "requests, you send to a short code or telephone number we have changed may not be received and "
+         "we will not be responsible for honoring requests made in such messages."),
+
+        ("Delivery",
+         "The wireless carriers supported by the Service are not liable for delayed or undelivered "
+         "messages. You agree to provide us with a valid mobile number. If you get a new mobile number, "
+         "you will need to sign up for the program with your new number."),
+
+        ("Liability for the Service",
+         "To the extent permitted by applicable law, you agree that we will not be liable for failed, "
+         "delayed, or misdirected delivery of any information sent through the Service, any errors in "
+         "such information, and/or any action you may or may not take in reliance on the information or "
+         "Service."),
+
+        ("Privacy",
+         "We respect your right to privacy. To see how we collect and use your personal information, "
+         "please see our <a href=\"../privacy/\" style=\"text-decoration:underline\">"
+         "Privacy Notice</a>."),
+     ], updated="28 August 2026"))
+
+# ---- Privacy -----------------------------------------------------------
+# Venice's own policy, not the parent site's. Written against what this
+# codebase actually does - one third-party script (GTM), self-hosted fonts,
+# no embeds, four localStorage keys - rather than from a template, so every
+# sentence here can be checked against the source.
+page("privacy/index.html", 1, None, "Privacy Policy - Primal Moves Venice",
+     "What venice.primalmoves.com collects, why, and how to opt out.",
+     _legal("Privacy Policy", [
+        ("Who this covers",
+         "This policy covers venice.primalmoves.com and the Primal Moves Venice studio at "
+         "1038 Princeton Dr, Ste B, Marina del Rey, CA 90292. Primal Moves Venice is the "
+         "controller of the information described here. Questions, requests and complaints: "
+         "<a href=\"mailto:hellovenice@primalmoves.com\" style=\"text-decoration:underline\">"
+         "hellovenice@primalmoves.com</a>."),
+
+        ("What we collect on this site",
+         ["Browsing this site does not require an account and we do not ask you to identify "
+          "yourself to read any page. Two things are collected automatically. Our host, "
+          "Cloudflare, keeps standard server logs - IP address, browser, the page requested, "
+          "the time - to serve the site and defend it from abuse. And Google Analytics, loaded "
+          "through Google Tag Manager, records how the site is used: pages viewed, device and "
+          "approximate location derived from IP, and which buttons are clicked.",
+          "What we ask Analytics to record about clicks is deliberately narrow: which offer or "
+          "class a booking button was for, which section of the page it sat in, whether the "
+          "timetable was viewed, and whether someone tapped the phone, WhatsApp or email links. "
+          "Class names and coach names are in that data. Nothing that identifies you is."]),
+
+        ("Cookies and what is stored in your browser",
+         ["Google Analytics sets cookies to tell one visit from another. Blocking them in your "
+          "browser, or using an ad or tracker blocker, stops that and the site still works. "
+          "Google publishes a browser add-on that opts you out of Analytics on every site: "
+          "<a href=\"https://tools.google.com/dlpage/gaoptout\" target=\"_blank\" rel=\"noopener\" "
+          "style=\"text-decoration:underline\">tools.google.com/dlpage/gaoptout</a>.",
+          "The site itself stores a few small values in your own browser to remember a display "
+          "preference and to show the current photographs on your next visit. They never leave "
+          "your device and we cannot read them. Clearing your site data removes them.",
+          "We do not run advertising or retargeting pixels on this site. Our typefaces are served "
+          "from our own domain rather than a font network, so reading a page does not announce "
+          "your visit to a third party."]),
+
+        ("Booking, membership and payment",
+         "Classes, passes and memberships are booked and paid for through Mindbody, not on this "
+         "site. When you follow a booking button you leave venice.primalmoves.com and Mindbody's "
+         "own privacy policy governs what you enter there, including payment details. We never "
+         "see or store your card. Inside Mindbody we hold what a gym needs to hold: your name, "
+         "contact details, your bookings and attendance, your membership and its billing history, "
+         "and the liability waiver you sign before your first visit."),
+
+        ("Email and text messages",
+         ["If you give us your email address or mobile number - on this site, at the front desk, "
+          "or on a form - we use Klaviyo to send you studio news, schedule changes and offers. "
+          "Consent is separate for email and for text, it is never a condition of buying anything, "
+          "and you can withdraw it at any time: unsubscribe in any email, or reply STOP to any "
+          "text. The full text messaging terms, including the STOP and HELP keywords, are on our "
+          "<a href=\"../terms/#mobile-messaging\" style=\"text-decoration:underline\">Terms of "
+          "Use</a> page.",
+          "This site has no shopping cart and no checkout, so we do not track abandoned carts and "
+          "we do not send abandoned-cart messages. If that ever changes this policy will be "
+          "updated first to say exactly how an incomplete purchase is detected."]),
+
+        ("Who we share it with",
+         ["We share personal information only with the services that run the studio, and only so "
+          "they can do their job: Mindbody for booking, payment and membership; Klaviyo for email "
+          "and text messages; Google Analytics for site usage; Cloudflare for hosting. We also "
+          "share information where the law requires it.",
+          "We do not sell your personal information, and we do not share it for cross-context "
+          "behavioural advertising.",
+          "The above excludes text messaging originator opt-in data and consent; this information "
+          "will not be shared with any third parties."]),
+
+        ("Location",
+         "We do not track your location. Google Analytics estimates a city or region from your IP "
+         "address, which is the only location data this site produces, and it is not precise and "
+         "not tied to you by name. The studio address links on this site open Google Maps in a new "
+         "tab; nothing about where you are is sent when the page loads."),
+
+        ("How long we keep it",
+         "Booking, membership and waiver records are kept for as long as you are a member and then "
+         "for as long as tax, insurance and liability rules require. Marketing contacts are kept "
+         "until you unsubscribe or ask us to delete them. Analytics data is kept on Google's "
+         "standard retention schedule. Server logs are kept briefly, for security."),
+
+        ("Your rights",
+         "If you live in California, the CCPA gives you the right to know what personal information "
+         "we hold about you, to have it deleted or corrected, and to be free from discrimination "
+         "for exercising those rights. Wherever you live, you can ask us for the same things and we "
+         "will do it. Email <a href=\"mailto:hellovenice@primalmoves.com\" "
+         "style=\"text-decoration:underline\">hellovenice@primalmoves.com</a> and we will respond "
+         "within the time the law allows. We may need to verify who you are before acting on a "
+         "request about someone's records."),
+
+        ("Children",
+         "This site is not directed at children and we do not knowingly collect information from "
+         "anyone under 13 through it. Kids&rsquo; classes are booked by a parent or guardian, who "
+         "provides the child&rsquo;s details and consents on their behalf."),
+
+        ("Changes",
+         "We update this policy when what we do changes. The date at the top is when it last "
+         "changed, and the version here is the current one."),
+     ], updated="28 August 2026"))
 
 page("disclaimer/index.html", 1, None, "Disclaimer - Primal Moves Venice",
      "Health and liability disclaimer for training at Primal Moves Venice.",
@@ -1929,7 +2118,7 @@ page("admin/index.html", 1, None, "Staff - Primal Moves Venice",
 # --- robots + sitemap ----------------------------------------------------
 _base = "https://venice.primalmoves.com"
 _urls = ["", "practice/", "classes/", "studio/", "memberships/", "cherish/",
-         "events/", "terms/", "disclaimer/"]
+         "events/", "terms/", "privacy/", "disclaimer/"]
 (ROOT / "robots.txt").write_text(
     "User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: %s/sitemap.xml\n" % _base)
 (ROOT / "sitemap.xml").write_text(

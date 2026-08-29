@@ -756,7 +756,7 @@ def studio(up, asset):
           <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Phone</div><div class="desc"><a data-pm-link="phoneHref" style="text-decoration:underline"><span data-pm-text="phone">(310) 800-7061</span></a></div></div>
           <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Email</div><div class="desc"><a href="mailto:hellovenice@primalmoves.com" style="text-decoration:underline">hellovenice@primalmoves.com</a></div></div>
           <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Hours</div><div class="desc">Mon&ndash;Fri from 6:30am &middot; Sat 8am&ndash;3pm &middot; Sun 8am&ndash;5pm</div></div>
-          <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Parking</div><div class="desc">Free in the neighborhood off Thatcher Ave - two minutes through the car gate. Bike racks on site. <a href="https://maps.app.goo.gl/UNstys5Qd5UNMMRD7" target="_blank" rel="noopener" style="text-decoration:underline">Free parking map →</a></div></div>
+          <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Parking</div><div class="desc">Free in the neighborhood off Thatcher Ave - two minutes through the car gate. Bike racks on site. <a href="https://maps.app.goo.gl/UNstys5Qd5UNMMRD7" target="_blank" rel="noopener" style="text-decoration:underline">Directions to free parking →</a></div></div>
           <div class="day-row" style="grid-template-columns:130px 1fr"><div class="act">Tours</div><div class="desc">Come by the cafe, check us out and ask for a tour - or <a href="mailto:hellovenice@primalmoves.com?subject=Book%20a%20tour" style="text-decoration:underline">book one with the membership team</a>.</div></div>
         </div>
         <div class="cta-row" style="margin-top:28px">
@@ -920,7 +920,7 @@ def classes(up, asset):
         <p class="lede">Free street parking in the neighborhood around Thatcher Ave and Burrell St. Walk through the car gate off Berkeley Dr and you&rsquo;re at our door in two minutes.</p>
         <p style="margin-top:16px;color:var(--mid)">Coming from Lincoln Blvd, turn onto Washington and drop down Thatcher. Bike racks are on site, right by the entrance.</p>
         <div class="cta-row" style="margin-top:26px">
-          <a class="btn sage" href="https://maps.app.goo.gl/UNstys5Qd5UNMMRD7" target="_blank" rel="noopener">Free parking map ↗</a>
+          <a class="btn sage" href="https://maps.app.goo.gl/UNstys5Qd5UNMMRD7" target="_blank" rel="noopener">Directions to free parking ↗</a>
           <a class="btn secondary" href="https://maps.google.com/?q=1038+Princeton+Dr+Ste+B+Marina+del+Rey+CA+90292" target="_blank" rel="noopener">Directions to the door ↗</a>
         </div>
       </div>
@@ -1259,7 +1259,7 @@ CLASS_GROUPS = [
         ("11","Breathwork","Guided breath practice - the fastest way down the nervous system has.","All levels",False,"45 min"),
     ]),
     ("Recovery", [
-        ("12","Restore","Mobility, breath and active recovery. The other half of getting strong.","Start here",True,"45–60 min"),
+        ("12","Restore (Yoga)","Mobility, breath and active recovery. The other half of getting strong.","Start here",True,"45–60 min"),
         ("13","Sauna & Cold Plunge","Heat, cold, repeat. Included with any day pass or membership.","Every day",False,"6:30am–9pm"),
     ]),
 ]

@@ -219,6 +219,15 @@ def page(path, depth, active, title, desc, body_fn, cherish=False, body_cls="", 
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- dataLayer before the container, so nothing pushed early is dropped -->
+<script>window.dataLayer = window.dataLayer || [];</script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){{w[l]=w[l]||[];w[l].push({{'gtm.start':
+new Date().getTime(),event:'gtm.js'}});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+}})(window,document,'script','dataLayer','GTM-T6LRVCFQ');</script>
+<!-- End Google Tag Manager -->
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta property="og:title" content="{title}">
@@ -231,6 +240,7 @@ def page(path, depth, active, title, desc, body_fn, cherish=False, body_cls="", 
 <link rel="preload" href="{up}fonts/HarmoniaSansStd-Light.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{up}style.css">
 <script src="{up}config.js"></script>
+<script src="{up}analytics.js" defer></script>
 <script>/* layout class before first paint, so B never flashes as A */
 (function(){{try{{var l=localStorage.getItem("pm_studio_layout")||(window.PM_CONFIG||{{}}).layout;
 if(l==="tight")document.documentElement.classList.add("tight-pending");
@@ -245,6 +255,10 @@ document.head.appendChild(s);}})();
 </script>
 </head>
 <body{body_class}>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T6LRVCFQ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 {header}
 

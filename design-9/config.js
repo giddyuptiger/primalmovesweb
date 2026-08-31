@@ -288,6 +288,21 @@ window.PM_CONFIG = {
   }
 
   ready(function () {
+    // The FAQ blocks are exclusive accordions: opening one closes the rest.
+    // <details name="faq"> does that natively with no script at all, so this
+    // only steps in for a browser too old to know the attribute - without the
+    // check, two handlers would fight over the same click.
+    if (!("name" in HTMLDetailsElement.prototype)) {
+      document.querySelectorAll("details[name]").forEach(function (d) {
+        d.addEventListener("toggle", function () {
+          if (!d.open) return;
+          document.querySelectorAll(
+            'details[name="' + d.getAttribute("name") + '"]'
+          ).forEach(function (o) { if (o !== d) o.open = false; });
+        });
+      });
+    }
+
     // data-pm-link="key" → href; data-pm-hide removes it when the key is blank
     document.querySelectorAll("[data-pm-link]").forEach(function (el) {
       var url = C[el.getAttribute("data-pm-link")];

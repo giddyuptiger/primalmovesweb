@@ -508,9 +508,20 @@ section.ink .person .role{color:var(--accent-soft)}
 section.ink .person p{color:var(--on-dark)}
 
 /* ---------------------------------------------------------- VOICES ------- */
-.voices{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line)}
-@media (max-width:900px){ .voices{grid-template-columns:1fr} }
-.voice{background:var(--paper);padding:40px 32px;display:flex;flex-direction:column;gap:20px}
+/* The three columns used to be opaque --paper tiles laid on a --line ground,
+   the 2px grid gap showing through as the rules between them. That worked as
+   a divider but painted a flat slab over the paper texture behind the
+   section. Same rules, drawn as borders instead, so the ground shows through. */
+.voices{display:grid;grid-template-columns:repeat(3,1fr)}
+.voice{background:none;padding:40px 32px;display:flex;flex-direction:column;gap:20px;
+  border-left:1px solid var(--line)}
+.voice:first-child{border-left:none}
+@media (max-width:900px){
+  .voices{grid-template-columns:1fr}
+  /* stacked, the rule between them runs across, not down */
+  .voice{border-left:none;border-top:1px solid var(--line)}
+  .voice:first-child{border-top:none}
+}
 .voice .q{font-family:var(--serif);font-weight:300;font-size:clamp(19px,1.9vw,24px);
   line-height:1.45;color:var(--ink)}
 .voice .who{margin-top:auto;font-size:11px;font-weight:500;letter-spacing:.2em;
@@ -2125,10 +2136,24 @@ section.ink .spaces figcaption{color:var(--cream)}
 /* the no-commitment footnote belongs with the buttons it describes, not
    stranded under the heading on the far side of the band */
 .cmp-try .try-right{display:flex;flex-direction:column;align-items:flex-end}
-.cmp-try .try-more{max-width:38ch;text-align:right;margin-top:14px}
+.cmp-try .try-more{text-align:right;margin-top:14px}
+
+/* The three other ways in were an underlined run-on sentence squeezed into
+   38ch, which broke it over three ragged right-aligned lines under buttons
+   twice that wide. They are offers, so they get an offer's shape - but a
+   quieter one than the two above: no fill, hairline border, small type. The
+   row is free to use the column's full width, so it reads as one line. */
+.cmp-try .try-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;
+  margin-top:10px}
+.try-chip{border:1px solid var(--line);border-radius:100px;padding:7px 15px;
+  font-size:13px;line-height:1.2;color:var(--mid);text-decoration:none;
+  white-space:nowrap;transition:border-color .15s,color .15s}
+.try-chip:hover{border-color:var(--ink);color:var(--ink);text-decoration:none}
+
 @media (max-width:820px){
   .cmp-try .try-right{align-items:flex-start}
   .cmp-try .try-more{text-align:left}
+  .cmp-try .try-chips{justify-content:flex-start}
 }
 
 /* the reason is the headline; the sentence explains it. That was inverted:
@@ -2141,5 +2166,15 @@ section.ink .spaces figcaption{color:var(--cream)}
 section.ink .voice .theme{color:var(--cream)}
 
 /* Instagram sits with the other ways to reach us, not in the legal fine print */
-.foot-ig{display:inline-flex;align-items:center;gap:7px;margin-top:8px}
-.foot-ig svg{flex:none;opacity:.85}
+.foot-ig{margin-top:8px}
+
+/* Phone, SMS, WhatsApp and Instagram: a mark, then the label. Ordinary inline
+   text rather than inline-flex, for two reasons. A flex box shifts the line's
+   baseline, which dropped the middot between "Text us" and "WhatsApp" until it
+   read as a full stop; and the mobile tap-target rule below sets
+   .foot-block p a to inline-block, which outranks a display here and silently
+   killed flex `gap` — the icon and handle ran together on a phone. A margin on
+   the mark survives both. nowrap keeps a mark from being orphaned from its
+   label at a line break. */
+.foot-ic,.foot-ig{white-space:nowrap}
+.foot-ic svg,.foot-ig svg{opacity:.85;vertical-align:-2px;margin-right:9px}

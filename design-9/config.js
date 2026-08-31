@@ -29,10 +29,12 @@ window.PM_CONFIG = {
   veniceTrialUrl: "https://go.mindbodyonline.com/book/app/pricing/bus_11kV2FCbMt1nMdkxkd/po_11kV2FCbMt1nM8pepZ",
   veniceTrialPriceLabel: "$69",          // shown on the card; edit if it changes
 
-  // Where "Try Primal Online Free" goes - the digital studio's free week.
+  // Where "Try Primal Online Free" goes. Was app.primalmoves.com/register/trial/,
+  // which 404s - the sign-up flow moved. Points at the digital studio's own
+  // page now, which carries the trial offer and the sign-up from there.
   // Note: primalmoves.com currently advertises a 14-DAY free trial, not 7.
-  // Confirm which is right before launch; the label below is what visitors see.
-  onlineTrialUrl: "https://app.primalmoves.com/register/trial/",
+  // Confirm which is right; the label below is what visitors see.
+  onlineTrialUrl: "https://primalmoves.com/digital-studio/",
   onlineTrialLabel: "1 week free",
 
   /* --- BOOKING / SCHEDULE ------------------------------------------------

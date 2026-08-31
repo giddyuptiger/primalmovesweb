@@ -7,7 +7,7 @@
 
    THE SIX EVENTS
      begin_booking         any outbound click to mindbodyonline.com
-     begin_online_trial    app.primalmoves.com/register/trial/
+     begin_online_trial    primalmoves.com/digital-studio/
      view_schedule         the timetable comes into view (once per page view)
      select_schedule_day   a day chosen from the schedule's day rail
      contact_click         phone, SMS, WhatsApp or email
@@ -193,7 +193,11 @@
       return;
     }
 
-    if (h === "app.primalmoves.com" && /\/register\/trial/.test(href)) {
+    // The trial sign-up used to be app.primalmoves.com/register/trial/, which
+    // now 404s; the link points at primalmoves.com/digital-studio/ instead.
+    // Both are matched so the event keeps firing either way.
+    if ((h === "app.primalmoves.com" && /\/register\/trial/.test(href)) ||
+        (/(^|\.)primalmoves\.com$/.test(h) && /\/digital-studio/.test(href))) {
       push({ event: "begin_online_trial", source_section: section });
       return;
     }

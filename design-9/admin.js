@@ -135,7 +135,7 @@
 
   function focusOf(slot) { return focus[slot] || ""; }
 
-  function uploadPhoto(file) {
+  function uploadPhoto(file, onProgress) {
     var h = writeHeaders({ "Content-Type": file.type });
     if (!h) return Promise.resolve({ error: "No write key." });
     // Say no here, with the real reason, rather than letting the edge cut the
@@ -149,13 +149,38 @@
         Math.round(file.size / 1048576) + "MB - the store takes up to " + capMB +
         "MB. Compress it for the web first (a hero loop wants to be ~10MB)." });
     }
-    return fetch(LIVE + "/upload?name=" + encodeURIComponent(file.name), {
-      method: "POST", headers: h, body: file
-    }).then(function (r) {
-      return r.json().catch(function () {
-        return { error: "Upload failed - the store said " + r.status + " " + r.statusText + "." };
-      });
-    }).catch(function () { return { error: "Upload failed - the photo store is not answering." }; });
+    /* XHR rather than fetch, for one reason: fetch cannot report how much of
+       a body it has sent, and a 12MB photograph on studio wifi is a long
+       silence to sit through. onProgress is optional - callers that don't
+       care about the bar can leave it out. */
+    return new Promise(function (resolve) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", LIVE + "/upload?name=" + encodeURIComponent(file.name));
+      Object.keys(h).forEach(function (k) { xhr.setRequestHeader(k, h[k]); });
+
+      if (onProgress && xhr.upload) {
+        xhr.upload.addEventListener("progress", function (e) {
+          // lengthComputable is false on some proxies; the caller falls back
+          // to counting whole files when that happens
+          if (e.lengthComputable) onProgress(e.loaded, e.total);
+        });
+        // the bytes are gone; whatever is left is the store thinking
+        xhr.upload.addEventListener("load", function () { onProgress(file.size, file.size); });
+      }
+
+      xhr.onload = function () {
+        var d;
+        try { d = JSON.parse(xhr.responseText); }
+        catch (err) {
+          d = { error: "Upload failed - the store said " + xhr.status + " " + xhr.statusText + "." };
+        }
+        resolve(d);
+      };
+      xhr.onerror = function () {
+        resolve({ error: "Upload failed - the photo store is not answering." });
+      };
+      xhr.send(file);
+    });
   }
 
   function toast(msg, bad) {
@@ -227,7 +252,7 @@
   function applyFocus() {
     Object.keys(focus).forEach(function (slot) {
       var el = document.querySelector('[data-pm-photo="' + slot + '"]');
-      if (el && el.tagName === "IMG") el.style.objectPosition = focus[slot];
+      if (el && (el.tagName === "IMG" || el.tagName === "VIDEO")) el.style.objectPosition = focus[slot];
     });
   }
 
@@ -286,7 +311,15 @@
         v.muted = true; v.autoplay = true; v.loop = true;
         if (el.className) v.className = el.className;
         if (el.getAttribute("style")) v.setAttribute("style", el.getAttribute("style"));
-        el.replaceWith(v);
+        if (focus[slot]) v.style.objectPosition = focus[slot];
+        /* The heroes wrap their photograph in <picture> for the avif sources.
+           Swapping the <img> alone left the film sitting inside that <picture>,
+           where .phero>picture>img no longer matched and .phero>video could
+           not - so nothing sized it and it drew at its own aspect ratio
+           instead of filling the frame. The <source> elements mean nothing to
+           a video, so the whole <picture> goes. */
+        var host = el.parentNode && el.parentNode.tagName === "PICTURE" ? el.parentNode : el;
+        host.replaceWith(v);
         var p = v.play(); if (p && p.catch) p.catch(function () {});
         return;
       }
@@ -299,7 +332,15 @@
         el.replaceWith(im);
         return;
       }
-      if (el.tagName === "IMG") { el.src = src; return; }
+      if (el.tagName === "IMG") {
+        /* A <picture> serves AVIF through <source>, which outranks the <img>'s
+           own src - so setting .src alone left the OLD photograph on screen
+           until the page was reloaded, which is when config.js does this same
+           step. Do it here too and the swap shows the moment it publishes. */
+        if (window.PM_DROP_SOURCES) window.PM_DROP_SOURCES(el, src);
+        el.src = src;
+        return;
+      }
       // a frame - a teacher portrait, a photo slot - gets the picture put
       // INSIDE it, so the frame's own aspect-ratio still governs the size
       var inner = el.querySelector("img[data-pm-fill]");
@@ -551,6 +592,18 @@
     "#pm-picker .up:hover{background:#9CBA6C}",
     "#pm-picker .drop .d-txt{flex:1;min-width:200px;font-size:11.5px;color:#8D9198;line-height:1.5}",
     "#pm-picker .drop .d-txt b{color:#E8E6E0;font-weight:600}",
+    // the upload bar takes the whole width under the button and the message
+    "#pm-picker .prog{flex-basis:100%;display:flex;align-items:center;gap:12px}",
+    "#pm-picker .prog[hidden]{display:none}",
+    "#pm-picker .pbar{flex:1;height:4px;border-radius:100px;background:#2A2E34;overflow:hidden}",
+    "#pm-picker .pbar span{display:block;height:100%;width:0;border-radius:100px;",
+    "  background:#8BA85F;transition:width .18s ease-out}",
+    // once the bytes are gone the wait is the store's, and no percentage can
+    // describe it honestly - so the bar stops measuring and just breathes
+    "#pm-picker .prog.waiting .pbar span{width:100%;animation:pm-pulse 1.1s ease-in-out infinite}",
+    "@keyframes pm-pulse{0%,100%{opacity:1}50%{opacity:.35}}",
+    "#pm-picker .pct{font-size:11.5px;font-weight:600;color:#B4D18A;font-variant-numeric:tabular-nums;",
+    "  flex:none;min-width:34px;text-align:right}",
     "#pm-picker .g-head{padding:18px 22px 0;font-size:10.5px;font-weight:600;letter-spacing:.16em;",
     "  text-transform:uppercase;color:#7E838A}",
     "#pm-picker .grid button.fresh{border-color:#8BA85F}",
@@ -833,9 +886,11 @@
     [].slice.call(document.querySelectorAll("[data-pm-photo]")).forEach(function (el) {
       var b = document.createElement("div");
       b.className = "pm-swap-badge";
-      var isImg = el.tagName === "IMG";
-      b.innerHTML = '<button data-a="swap">' + (isImg ? "Swap" : "+ Add photo") + "</button>" +
-                    (isImg ? '<button data-a="focus">Focus</button>' : "");
+      // a film fills a picture slot exactly as a photograph does, so it gets
+      // the same two buttons; "+ Add photo" is for an empty frame, not for this
+      var isMedia = el.tagName === "IMG" || el.tagName === "VIDEO";
+      b.innerHTML = '<button data-a="swap">' + (isMedia ? "Swap" : "+ Add photo") + "</button>" +
+                    (isMedia ? '<button data-a="focus">Focus</button>' : "");
       b.addEventListener("click", function (ev) {
         var t = ev.target.closest("button"); if (!t) return;
         ev.preventDefault(); ev.stopPropagation();
@@ -881,8 +936,23 @@
     lay.className = "pm-focus";
     lay.style.cssText = "position:fixed;top:" + r.top + "px;left:" + r.left + "px;width:" +
       r.width + "px;height:" + r.height + "px;z-index:99988;cursor:crosshair;";
+    /* Only the axis that overflows can be panned - that is what object-fit
+       cover means, and it is why focus can look broken. A 16:9 photograph in
+       a 1.64:1 hero fills it top to bottom exactly and spills over the sides:
+       left and right move it, up and down have nothing to move. Say which,
+       rather than leaving it to be discovered by dragging. */
+    var nw = img.naturalWidth || img.videoWidth || 0;
+    var nh = img.naturalHeight || img.videoHeight || 0;
+    var hint = "Click the part that should stay in frame";
+    if (nw && nh && r.width && r.height) {
+      var spillX = r.height * (nw / nh) - r.width > 1;
+      var spillY = r.width * (nh / nw) - r.height > 1;
+      if (spillX && !spillY) hint = "This photo fills the frame top to bottom - only left and right move it";
+      else if (spillY && !spillX) hint = "This photo fills the frame side to side - only up and down move it";
+      else if (!spillX && !spillY) hint = "This photo fits the frame exactly - there is nothing to crop";
+    }
     lay.innerHTML = '<div class="pm-focus-dot"></div>' +
-      '<div class="pm-focus-hint">Click the part that should stay in frame &middot; <b>Esc</b> to finish</div>';
+      '<div class="pm-focus-hint">' + hint + ' &middot; <b>Esc</b> to finish</div>';
     document.body.appendChild(lay);
     activeFocus = img; activeFocusLayer = lay;
     [].slice.call(document.querySelectorAll(".pm-swap-badge")).forEach(function (bd) {
@@ -961,6 +1031,10 @@
                 "No photo store is connected yet, so an upload previews in this browser only: the file " +
                 "still has to reach <code>assets/photos/</code> and be pushed.") + "</div>" +
             '<input type="file" accept="image/*,video/mp4,video/webm,video/quicktime" multiple id="pm-file" hidden>' +
+            '<div class="prog" id="pm-prog" hidden>' +
+              '<div class="pbar"><span id="pm-pfill"></span></div>' +
+              '<div class="pct" id="pm-pct"></div>' +
+            "</div>" +
           "</div>" +
           '<div id="pm-lib"></div>' +
         "</div>";
@@ -1013,6 +1087,30 @@
         });
       }
 
+      /* The bar under the Upload button. Two states worth telling apart: bytes
+         still going up, where a percentage is honest, and bytes all sent with
+         the store yet to answer, where it is not - that one pulses instead. */
+      function Bar(root) {
+        var box  = root.querySelector("#pm-prog");
+        var fill = root.querySelector("#pm-pfill");
+        var pct  = root.querySelector("#pm-pct");
+        this.at = function (frac, label) {
+          if (!box) return;
+          var n = Math.max(0, Math.min(1, frac || 0));
+          box.hidden = false;
+          box.classList.toggle("waiting", n >= 1);
+          fill.style.width = (n * 100).toFixed(1) + "%";
+          pct.textContent = n >= 1 ? "" : Math.round(n * 100) + "%";
+          say(label + (n >= 1 ? " &middot; finishing&hellip;" : "&hellip;"));
+        };
+        this.stop = function () {
+          if (!box) return;
+          box.hidden = true;
+          box.classList.remove("waiting");
+          fill.style.width = "0%";
+        };
+      }
+
       function say(msg, bad) {
         var el = wrap.querySelector(".d-txt");
         if (el) el.innerHTML = '<b style="color:' + (bad ? "#E8B48A" : "#B4D18A") + '">' + msg + "</b>";
@@ -1027,15 +1125,28 @@
            one all we can do is read it into this browser as a preview. */
         if (LIVE) {
           var done = 0, urls = [];
-          say("Uploading 0 of " + list.length + "&hellip;");
+          /* One bar for the batch, measured in bytes rather than files: with a
+             single 12MB photograph "0 of 1" never moves until it is over. */
+          var total = list.reduce(function (n, f) { return n + f.size; }, 0);
+          var sent  = list.map(function () { return 0; });
+          var bar   = new Bar(wrap);
+
+          function tick() {
+            var loaded = sent.reduce(function (a, b) { return a + b; }, 0);
+            bar.at(total ? loaded / total : 0,
+                   "Uploading " + Math.min(done + 1, list.length) + " of " + list.length);
+          }
+          tick();
+
           list.forEach(function (f, i) {
-            uploadPhoto(f).then(function (d) {
+            uploadPhoto(f, function (loaded) { sent[i] = loaded; tick(); }).then(function (d) {
               done++;
-              if (d.error) { say(d.error, true); return; }
+              if (d.error) { bar.stop(); say(d.error, true); return; }
               urls[i] = { name: f.name, url: d.url };
               freshUploads.unshift({ name: f.name, url: d.url, live: true });
-              say("Uploading " + done + " of " + list.length + "&hellip;");
+              sent[i] = f.size; tick();
               if (done < list.length) return;
+              bar.stop();
               var ok = urls.filter(Boolean);
               if (ok.length === 1) choose(ok[0].url);          // you meant this slot
               else { say(ok.length + " uploaded - pick one for this slot."); renderLib(); }

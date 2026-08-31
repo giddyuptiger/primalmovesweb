@@ -260,6 +260,14 @@ section.flush{padding:0}
 .phero{position:relative;min-height:clamp(560px,86vh,940px);display:flex;align-items:flex-end;
   overflow:hidden;background:var(--paper-3)}
 .phero>img,.phero>video,.phero>picture>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* A film swapped into a photograph's slot is sized by the frame it landed in,
+   never by its own aspect ratio - the focus point decides what the crop keeps.
+   The heroes wrap their still in <picture>, so cover the case of a film left
+   inside one: the studio panel now replaces the whole <picture>, but a page
+   published before that fix would otherwise draw the film at its native size. */
+.hero>picture>video,.phero>picture>video,.hs-hero>picture>video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .phero::after{content:"";position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(30,28,22,.20) 0%,rgba(30,28,22,.30) 45%,rgba(30,28,22,.78) 100%)}
 .phero-inner{position:relative;z-index:2;width:100%;max-width:1440px;margin:0 auto;

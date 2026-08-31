@@ -1671,7 +1671,7 @@ def events(up, asset):
     <div class="section-head">
       <div><div class="kicker">Private hire</div><h2>Use the floor.</h2></div>
     </div>
-    <p class="lede" style="max-width:40em">11,000 ft², rigging overhead, sauna and cold plunge, a cafe attached. Available for workshops, brand activations, retreat days, team offsites and film shoots. Cherish handles catering.</p>
+    <p class="lede" style="max-width:40em">Primal Moves Venice offers a range of event rentals and full-space buyouts within our 12,000-square-foot venue. From our expansive main floor to intimate private tea room rentals and full studio takeovers, our space is a true blank canvas. We think outside the box and work with you to bring almost any event or experience to life.</p>
     <div class="cta-row" style="margin-top:28px">
       <a class="btn on-dark" href="mailto:events@primalmoves.com?subject=Private%20hire%20enquiry">Enquire about hire</a>
       <a class="btn ghost-dark" href="{up}studio/#space">See the space ↓</a>

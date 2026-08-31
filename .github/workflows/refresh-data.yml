@@ -17,6 +17,8 @@ permissions:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
 
@@ -27,6 +29,7 @@ jobs:
         run: python3 tools/fetch_events.py || echo "::warning::events fetch failed, keeping the last good copy"
 
       - name: Commit whatever changed
+        id: commit
         run: |
           if [ -n "$(git status --porcelain design-9/schedule.json design-9/events.json)" ]; then
             git config user.name  "github-actions[bot]"
@@ -34,6 +37,16 @@ jobs:
             git add design-9/schedule.json design-9/events.json
             git commit -m "refresh: timetable and events"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "nothing moved"
           fi
+
+  # A push made with GITHUB_TOKEN deliberately does not set off other
+  # workflows, so the deploy above would never notice a new timetable. Call it
+  # here instead. Skipped entirely when nothing moved.
+  deploy:
+    needs: refresh
+    if: needs.refresh.outputs.changed == 'true'
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit

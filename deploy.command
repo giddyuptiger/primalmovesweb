@@ -1,7 +1,11 @@
 #!/bin/bash
 # Double-click this in Finder. It unpacks whatever Claude last sent, commits
-# it, and pushes — Cloudflare Pages picks it up and the site is live in about
-# a minute. Nothing to type.
+# it, and pushes. The Deploy Action on GitHub takes it from there and the site
+# is live in about a minute. Nothing to type.
+#
+# This file is only needed when work arrives as a tarball. Anything pushed to
+# main by any other route — Claude pushing directly, an edit on github.com —
+# deploys on its own without this being run.
 cd "$(dirname "$0")" || exit 1
 
 echo "── Primal Moves · deploy ──────────────────────────────"
@@ -92,8 +96,8 @@ fi
 
 if git push -q; then
   echo
-  echo "✓ pushed. Cloudflare is building now."
-  echo "  https://primalmovesweb.pages.dev  (about a minute)"
+  echo "✓ pushed. The Deploy Action is building now."
+  echo "  https://github.com/giddyuptiger/primalmovesweb/actions  (about a minute)"
 else
   echo
   echo "✗ push failed. Open Terminal and run:"

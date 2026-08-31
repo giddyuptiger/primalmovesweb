@@ -11,9 +11,25 @@ Cost: **$0/month** at this size.
 
 ## Deploying, day to day
 
-**Double-click `deploy.command`** in the repo folder. It unpacks whatever
-Claude last sent, commits it, pushes, and Cloudflare rebuilds — about a
-minute, no Terminal.
+**Nothing to click.** `.github/workflows/deploy.yml` deploys the site on every
+push to `main`: it copies `assets/` into `design-9/` and runs `wrangler deploy`.
+There is also a **Run workflow** button on the Actions tab for a deploy without
+a commit, and the timetable refresh calls it after it commits a new schedule.
+
+It needs one secret, set once: **Settings → Secrets and variables → Actions →
+New repository secret**, named `CLOUDFLARE_API_TOKEN`, holding a token made at
+`dash.cloudflare.com/profile/api-tokens` from the **Edit Cloudflare Workers**
+template, scoped to the Primal Moves account. Until that secret exists the
+workflow skips with a warning instead of failing.
+
+**If the Cloudflare dashboard is still connected to this repo**, disconnect it
+once the Action works — Workers & Pages → the project → Settings → Build → Git
+repository. Otherwise every push deploys twice, from both sides.
+
+`deploy.command` still exists for the case it was written for: work that
+arrives as a tarball on the studio Mac. Double-click it and it unpacks,
+commits and pushes — the Action deploys what it pushed. Work that reaches
+`main` any other way needs no click at all.
 
 Photographs don't need any of this: swap them in the EDIT panel and they are
 live immediately.

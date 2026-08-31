@@ -1,0 +1,60 @@
+# Deploying the site, without anyone double-clicking anything.
+#
+# Every push to main lands here: copy the photographs into the deploy root and
+# hand the folder to Cloudflare. Same two steps deploy.command relied on the
+# Cloudflare dashboard to do — just run here instead, where the log is public
+# and a failed deploy is a red mark on the commit rather than silence.
+#
+# One-time setup: repo Settings → Secrets and variables → Actions → New
+# repository secret, named CLOUDFLARE_API_TOKEN. Make the token at
+# dash.cloudflare.com/profile/api-tokens with the "Edit Cloudflare Workers"
+# template, scoped to the Primal Moves account. Until that secret exists this
+# workflow skips with a warning rather than failing — nothing breaks meanwhile.
+#
+# IMPORTANT: if the Cloudflare dashboard is still connected to this repo
+# (Workers & Pages → the project → Settings → Build → Git repository), the site
+# would deploy twice on every push. Disconnect it there once this is working.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  # the "Run workflow" button on the Actions tab — a deploy with no commit
+  workflow_dispatch:
+  # so the refresh and photo-index workflows can redeploy after they commit
+  workflow_call:
+
+# One deploy at a time. A second push while the first is still going waits
+# rather than racing it; a third replaces the one that is waiting.
+concurrency:
+  group: deploy-site
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      # secrets can't be read in an `if:`, so hoist it into env and test that
+      HAS_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && 'yes' || '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Say so if the token is missing, rather than failing
+        if: env.HAS_TOKEN == ''
+        run: |
+          echo "::warning::CLOUDFLARE_API_TOKEN is not set, so nothing was deployed. Add it in Settings → Secrets and variables → Actions."
+
+      # The photographs live in assets/ at the repo root and every page points
+      # at ../assets/photos/… — above the deploy root. Without this copy every
+      # image on the live site 404s. It happens here, so nothing is duplicated
+      # in git (design-9/assets/ is gitignored for exactly this reason).
+      - name: Copy the photographs into the deploy root
+        if: env.HAS_TOKEN != ''
+        run: cp -r assets design-9/
+
+      - name: Deploy to Cloudflare
+        if: env.HAS_TOKEN != ''
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: deploy

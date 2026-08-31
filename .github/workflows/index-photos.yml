@@ -15,10 +15,13 @@ permissions:
 jobs:
   index:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
       - run: python3 tools/index_photos.py
       - name: Commit photos.json if it changed
+        id: commit
         run: |
           if [ -n "$(git status --porcelain design-9/photos.json)" ]; then
             git config user.name  "github-actions[bot]"
@@ -26,6 +29,15 @@ jobs:
             git add design-9/photos.json
             git commit -m "index photos.json"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "photos.json already current"
           fi
+
+  # Same reason as in refresh-data.yml: a GITHUB_TOKEN push sets off nothing,
+  # so the new photos.json has to ask for the deploy itself.
+  deploy:
+    needs: index
+    if: needs.index.outputs.changed == 'true'
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit

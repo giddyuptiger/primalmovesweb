@@ -247,10 +247,6 @@ section.flush{padding:0}
 .hero-sub{color:rgba(251,248,243,.9);font-size:clamp(16px,1.5vw,19px);
   max-width:30em;margin-top:26px;line-height:1.7}
 .hero .cta-row{margin-top:38px}
-/* the hero sits under the nav (flush pulls it up), so this has to clear it —
-   otherwise the palm disappears behind the bar and the two lines look shoved
-   into the corner */
-.hero.flush .hero-meta{top:calc(var(--nav-h,84px) + clamp(20px,3vh,38px))}
 .hero-meta{position:absolute;top:clamp(24px,5vh,52px);right:var(--gut);z-index:2;
   text-align:right;color:rgba(251,248,243,.85);font-size:11px;letter-spacing:.24em;
   text-transform:uppercase;line-height:2.4}
@@ -1140,7 +1136,13 @@ header.site{
   transition:padding .18s ease, box-shadow .18s ease, background .18s ease;
 }
 body{padding-top:var(--nav-h,84px)}
-.hero.flush,.phero.flush{margin-top:calc(var(--nav-h,84px) * -1)}
+/* The heroes used to be pulled up by the nav's height so the photograph ran
+   underneath it. That only pays when the nav is see-through, and this one is
+   deliberately solid (see the note above) - so the top ~104px of every hero
+   photograph was drawn and then covered by an opaque bar. Nobody could see
+   it, and the crop tool was measuring against a strip that included it, so
+   clicking the middle of what you could see stored a point lower than that.
+   The heroes start below the nav now. The nav still travels with the page. */
 header.site.scrolled{box-shadow:0 1px 0 rgba(19,34,56,.10),0 8px 28px rgba(19,34,56,.06)}
 header.site.scrolled .nav-inner{padding-top:15px;padding-bottom:15px}
 @media (max-width:820px){ body{padding-top:var(--nav-h,70px)} }

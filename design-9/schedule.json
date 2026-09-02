@@ -2,7 +2,7 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-09-02T04:41:31.755511Z",
+ "fetchedAt": "2026-09-02T12:48:19.583236Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
   {
@@ -11,6 +11,13 @@
    "staff": "Melissa \ud83d\udc30 Bunny Duffy",
    "minutes": 60,
    "category": "Meditation"
+  },
+  {
+   "start": "2026-09-02T13:15:00Z",
+   "name": "Primal Hybrid (60 Min)",
+   "staff": "Zagreus",
+   "minutes": 60,
+   "category": "Gym classes"
   },
   {
    "start": "2026-09-02T14:30:00Z",
@@ -34,18 +41,32 @@
    "category": "Gym classes"
   },
   {
-   "start": "2026-09-03T00:45:00Z",
-   "name": "Breathwork",
-   "staff": "Chris Plourde",
+   "start": "2026-09-02T19:00:00Z",
+   "name": "Progressions",
+   "staff": "Olivia Jaye Brown",
    "minutes": 60,
-   "category": "Other"
+   "category": "Strength training"
   },
   {
-   "start": "2026-09-03T14:30:00Z",
-   "name": "Primal Foundations (beg)",
+   "start": "2026-09-03T00:45:00Z",
+   "name": "Primal Compound (Guided Weightlifting)",
+   "staff": "Andreas Alfaro",
+   "minutes": 60,
+   "category": "Strength training"
+  },
+  {
+   "start": "2026-09-03T02:00:00Z",
+   "name": "Primal Foundations - Community Class",
    "staff": "Whakapaingia Luke",
-   "minutes": 45,
+   "minutes": 60,
    "category": "Gym classes"
+  },
+  {
+   "start": "2026-09-03T13:15:00Z",
+   "name": "Rise",
+   "staff": "Sabrina Rose",
+   "minutes": 60,
+   "category": "Strength training"
   },
   {
    "start": "2026-09-03T15:45:00Z",
@@ -53,6 +74,13 @@
    "staff": "Zagreus",
    "minutes": 60,
    "category": "Strength training"
+  },
+  {
+   "start": "2026-09-03T17:00:00Z",
+   "name": "Moves - The Signature Practice",
+   "staff": "Olivia Jaye Brown",
+   "minutes": 60,
+   "category": "Gym classes"
   },
   {
    "start": "2026-09-03T19:00:00Z",
@@ -65,6 +93,13 @@
    "start": "2026-09-03T23:30:00Z",
    "name": "Primal Kids",
    "staff": "Travis & Mandyjane",
+   "minutes": 60,
+   "category": "Gym classes"
+  },
+  {
+   "start": "2026-09-04T00:45:00Z",
+   "name": "Primal - The Push/Pull Practice",
+   "staff": "Olivia Jaye Brown",
    "minutes": 60,
    "category": "Gym classes"
   },
@@ -104,18 +139,18 @@
    "category": "Meditation"
   },
   {
+   "start": "2026-09-04T15:45:00Z",
+   "name": "Primal Hybrid (75 min)",
+   "staff": "Jacy Cunningham",
+   "minutes": 60,
+   "category": "Gym classes"
+  },
+  {
    "start": "2026-09-04T17:00:00Z",
    "name": "Primal - The Push/Pull Practice",
    "staff": "Miki Ash",
    "minutes": 60,
    "category": "Gym classes"
-  },
-  {
-   "start": "2026-09-04T19:00:00Z",
-   "name": "Progressions",
-   "staff": "Olivia Jaye Brown",
-   "minutes": 60,
-   "category": "Strength training"
   },
   {
    "start": "2026-09-04T23:00:00Z",
@@ -144,13 +179,6 @@
    "staff": "Olivia Jaye Brown",
    "minutes": 90,
    "category": "Strength training"
-  },
-  {
-   "start": "2026-09-05T19:00:00Z",
-   "name": "Handstands",
-   "staff": "Olivia Jaye Brown",
-   "minutes": 60,
-   "category": "Gymnastics"
   },
   {
    "start": "2026-09-06T14:30:00Z",
@@ -186,6 +214,13 @@
    "staff": "Kelo Vallejo",
    "minutes": 75,
    "category": "Gym classes"
+  },
+  {
+   "start": "2026-09-07T00:00:00Z",
+   "name": "Somatic Sunday",
+   "staff": "Katie Grossman",
+   "minutes": 120,
+   "category": "Other"
   },
   {
    "start": "2026-09-07T14:30:00Z",
@@ -261,6 +296,13 @@
    "start": "2026-09-08T23:30:00Z",
    "name": "Primal Kids",
    "staff": "Travis & Mandyjane",
+   "minutes": 60,
+   "category": "Gym classes"
+  },
+  {
+   "start": "2026-09-09T00:45:00Z",
+   "name": "Primal - The Push/Pull Practice",
+   "staff": "Miki Ash",
    "minutes": 60,
    "category": "Gym classes"
   },

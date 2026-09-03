@@ -2,9 +2,16 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-09-03T04:37:58.856449Z",
+ "fetchedAt": "2026-09-03T12:51:31.941421Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
+  {
+   "start": "2026-09-03T13:15:00Z",
+   "name": "Rise",
+   "staff": "Sabrina Rose",
+   "minutes": 60,
+   "category": "Strength training"
+  },
   {
    "start": "2026-09-03T14:30:00Z",
    "name": "Primal Foundations (beg)",
@@ -20,9 +27,16 @@
    "category": "Strength training"
   },
   {
+   "start": "2026-09-03T17:00:00Z",
+   "name": "Moves - The Signature Practice",
+   "staff": "Olivia Jaye Brown",
+   "minutes": 60,
+   "category": "Gym classes"
+  },
+  {
    "start": "2026-09-03T19:00:00Z",
    "name": "Primal Compound (Guided Weightlifting)",
-   "staff": "Travis Brewer",
+   "staff": "Zagreus",
    "minutes": 60,
    "category": "Strength training"
   },
@@ -74,6 +88,13 @@
    "staff": "Sanjay Amin",
    "minutes": 60,
    "category": "Meditation"
+  },
+  {
+   "start": "2026-09-04T15:45:00Z",
+   "name": "Primal Hybrid (75 min)",
+   "staff": "Jacy Cunningham",
+   "minutes": 60,
+   "category": "Gym classes"
   },
   {
    "start": "2026-09-04T17:00:00Z",
@@ -160,6 +181,13 @@
    "category": "Gym classes"
   },
   {
+   "start": "2026-09-07T00:00:00Z",
+   "name": "Somatic Sunday",
+   "staff": "Katie Grossman",
+   "minutes": 120,
+   "category": "Other"
+  },
+  {
    "start": "2026-09-07T14:30:00Z",
    "name": "Restore",
    "staff": "Miki Ash",
@@ -233,6 +261,13 @@
    "start": "2026-09-08T23:30:00Z",
    "name": "Primal Kids",
    "staff": "Travis & Mandyjane",
+   "minutes": 60,
+   "category": "Gym classes"
+  },
+  {
+   "start": "2026-09-09T00:45:00Z",
+   "name": "Primal - The Push/Pull Practice",
+   "staff": "Miki Ash",
    "minutes": 60,
    "category": "Gym classes"
   },
@@ -328,6 +363,13 @@
    "category": "Gym classes"
   },
   {
+   "start": "2026-09-10T19:00:00Z",
+   "name": "Primal Compound (Guided Weightlifting)",
+   "staff": "Travis Brewer",
+   "minutes": 60,
+   "category": "Strength training"
+  },
+  {
    "start": "2026-09-10T23:30:00Z",
    "name": "Primal Kids",
    "staff": "Travis & Mandyjane",
@@ -335,9 +377,30 @@
    "category": "Gym classes"
   },
   {
+   "start": "2026-09-11T00:45:00Z",
+   "name": "Primal - The Push/Pull Practice",
+   "staff": "Olivia Jaye Brown",
+   "minutes": 60,
+   "category": "Gym classes"
+  },
+  {
    "start": "2026-09-11T02:00:00Z",
    "name": "Acro-Yoga",
    "staff": "Travis & Waka",
+   "minutes": 60,
+   "category": "Yoga"
+  },
+  {
+   "start": "2026-09-11T02:00:00Z",
+   "name": "Intuitive Music Jam",
+   "staff": "Vernon & Bowen",
+   "minutes": 90,
+   "category": "Dance"
+  },
+  {
+   "start": "2026-09-11T03:00:00Z",
+   "name": "Acro Open Gym",
+   "staff": "Whakapaingia Luke",
    "minutes": 60,
    "category": "Yoga"
   }

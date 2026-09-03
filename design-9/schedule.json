@@ -2,23 +2,9 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-09-02T22:41:10.195042Z",
+ "fetchedAt": "2026-09-03T04:37:58.856449Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
-  {
-   "start": "2026-09-03T00:45:00Z",
-   "name": "Breathwork",
-   "staff": "Chris Plourde",
-   "minutes": 60,
-   "category": "Other"
-  },
-  {
-   "start": "2026-09-03T02:00:00Z",
-   "name": "Primal Foundations - Community Class",
-   "staff": "Whakapaingia Luke",
-   "minutes": 60,
-   "category": "Gym classes"
-  },
   {
    "start": "2026-09-03T14:30:00Z",
    "name": "Primal Foundations (beg)",
@@ -112,17 +98,17 @@
   },
   {
    "start": "2026-09-05T15:30:00Z",
-   "name": "Tea Ceremony",
-   "staff": "Zoe & Sanjay",
-   "minutes": 60,
-   "category": "Meditation"
-  },
-  {
-   "start": "2026-09-05T15:30:00Z",
    "name": "Restore",
    "staff": "Angela Kukhan",
    "minutes": 60,
    "category": "Yoga"
+  },
+  {
+   "start": "2026-09-05T15:30:00Z",
+   "name": "Tea Ceremony",
+   "staff": "Zoe & Sanjay",
+   "minutes": 60,
+   "category": "Meditation"
   },
   {
    "start": "2026-09-05T17:00:00Z",
@@ -340,6 +326,20 @@
    "staff": "Olivia Jaye Brown",
    "minutes": 60,
    "category": "Gym classes"
+  },
+  {
+   "start": "2026-09-10T23:30:00Z",
+   "name": "Primal Kids",
+   "staff": "Travis & Mandyjane",
+   "minutes": 60,
+   "category": "Gym classes"
+  },
+  {
+   "start": "2026-09-11T02:00:00Z",
+   "name": "Acro-Yoga",
+   "staff": "Travis & Waka",
+   "minutes": 60,
+   "category": "Yoga"
   }
  ]
 }

@@ -244,8 +244,25 @@ section.flush{padding:0}
   padding:0 var(--gut) clamp(48px,9vh,96px);color:var(--cream)}
 .hero .display{color:var(--cream);max-width:16ch;text-shadow:0 1px 24px rgba(20,18,14,.45)}
 .hero .display em{font-family:var(--serif);font-style:italic;font-weight:300;text-transform:none}
-.hero-sub{color:rgba(251,248,243,.9);font-size:clamp(16px,1.5vw,19px);
-  max-width:30em;margin-top:26px;line-height:1.7}
+/* .hero .hero-sub, not .hero-sub: body.house :is(p,li,...) ties on
+   specificity and sits later in the file, so it was taking both the colour
+   and the weight of this line. */
+.hero .hero-sub,body.house .hero .hero-sub{color:var(--cream);font-size:clamp(16px,1.5vw,19px);
+  max-width:30em;margin-top:26px;line-height:1.7;
+  /* the headline above it has always had this; the line under it did not,
+     and it is the one sitting over the busiest part of the footage */
+  text-shadow:0 1px 18px rgba(20,18,14,.55)}
+
+/* On a phone this line is 16px over moving video and it was losing. Desktop
+   is not actually bolder - it is the same weight three sizes larger, which
+   is why it reads. So the phone gets real weight instead: 600 is the one
+   number that matters here, because Harmonia is self-hosted as Light and
+   SemiBd only - ask for 400 or 500 and CSS font matching walks back down to
+   Light and nothing changes. */
+@media (max-width:820px){
+  .hero .hero-sub,body.house .hero .hero-sub{font-weight:600;font-size:17px;line-height:1.6;
+    text-shadow:0 1px 20px rgba(20,18,14,.7)}
+}
 .hero .cta-row{margin-top:38px}
 .hero-meta{position:absolute;top:clamp(24px,5vh,52px);right:var(--gut);z-index:2;
   text-align:right;color:rgba(251,248,243,.85);font-size:11px;letter-spacing:.24em;

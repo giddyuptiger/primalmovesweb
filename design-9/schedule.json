@@ -2,16 +2,9 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-09-07T19:59:38.861859Z",
+ "fetchedAt": "2026-09-07T22:52:14.654099Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
-  {
-   "start": "2026-09-07T19:00:00Z",
-   "name": "Progressions",
-   "staff": "Angela Kukhan",
-   "minutes": 60,
-   "category": "Strength training"
-  },
   {
    "start": "2026-09-08T13:15:00Z",
    "name": "Rise",
@@ -310,6 +303,13 @@
    "start": "2026-09-15T19:00:00Z",
    "name": "Primal Compound (Guided Weightlifting)",
    "staff": "Travis Brewer",
+   "minutes": 60,
+   "category": "Strength training"
+  },
+  {
+   "start": "2026-09-15T20:00:00Z",
+   "name": "Team Practice (Requires Approval)",
+   "staff": "Olivia Jaye Brown",
    "minutes": 60,
    "category": "Strength training"
   }

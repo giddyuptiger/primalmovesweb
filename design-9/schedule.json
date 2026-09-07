@@ -2,23 +2,9 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-09-06T22:08:53.818438Z",
+ "fetchedAt": "2026-09-07T04:48:52.814203Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
-  {
-   "start": "2026-09-06T22:30:00Z",
-   "name": "Primal Hybrid (75 min)",
-   "staff": "Kelo Vallejo",
-   "minutes": 75,
-   "category": "Gym classes"
-  },
-  {
-   "start": "2026-09-07T00:00:00Z",
-   "name": "Somatic Sunday",
-   "staff": "Katie Grossman",
-   "minutes": 120,
-   "category": "Other"
-  },
   {
    "start": "2026-09-08T13:15:00Z",
    "name": "Rise",
@@ -240,6 +226,13 @@
    "start": "2026-09-14T19:00:00Z",
    "name": "Progressions",
    "staff": "Angela Kukhan",
+   "minutes": 60,
+   "category": "Strength training"
+  },
+  {
+   "start": "2026-09-15T02:00:00Z",
+   "name": "Progressions",
+   "staff": "Gus",
    "minutes": 60,
    "category": "Strength training"
   }

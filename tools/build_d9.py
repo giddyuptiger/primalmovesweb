@@ -4,6 +4,66 @@
  partners, and a calendar built from Luma's ICS feed rather than their embed."""
 import pathlib
 
+# --- structured data ---------------------------------------------------------
+# One HealthClub block on every page. It is what Google reads for the local
+# pack and the knowledge panel, and until now the site had none at all - a
+# neighbourhood gym is exactly the case this markup exists for.
+#
+# Every value here is repeated somewhere a visitor can see: the address in the
+# footer, the hours in the visit table, the prices on the membership cards. If
+# one changes on the page and not here, Google is being told something the site
+# does not say, which is worse than saying nothing. config.js holds the same
+# hours - keep the two in step.
+#
+# geo is deliberately absent. Coordinates I cannot verify would be a guess
+# about where the front door is; the postal address plus the Google Business
+# Profile is what actually places the pin.
+import json as _json
+
+_LD = _json.dumps({
+    "@context": "https://schema.org",
+    "@type": "HealthClub",
+    "@id": "https://venice.primalmoves.com/#studio",
+    "name": "Primal Moves Venice",
+    "description": "A community movement studio in Marina del Rey - daily "
+                   "movement classes, an on-site sauna and cold plunge, and a "
+                   "cafe and tea lounge.",
+    "url": "https://venice.primalmoves.com/",
+    "logo": "https://venice.primalmoves.com/assets/brand/logo-venice.png",
+    "image": "https://venice.primalmoves.com/assets/photos/joy-laughing.jpg",
+    "telephone": "+1-310-800-7061",
+    "email": "hellovenice@primalmoves.com",
+    "priceRange": "$$",
+    "currenciesAccepted": "USD",
+    "parentOrganization": {"@type": "Organization", "name": "Primal Moves",
+                           "url": "https://primalmoves.com/"},
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "1038 Princeton Dr, Ste B",
+        "addressLocality": "Marina del Rey",
+        "addressRegion": "CA",
+        "postalCode": "90292",
+        "addressCountry": "US",
+    },
+    "openingHoursSpecification": [
+        {"@type": "OpeningHoursSpecification",
+         "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+         "opens": "06:30", "closes": "20:00"},
+        {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday",
+         "opens": "08:00", "closes": "15:00"},
+        {"@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday",
+         "opens": "08:00", "closes": "17:00"},
+    ],
+    "sameAs": ["https://www.instagram.com/primalmovesvenice",
+               "https://primalmoves.com/"],
+    "amenityFeature": [
+        {"@type": "LocationFeatureSpecification", "name": "Sauna", "value": True},
+        {"@type": "LocationFeatureSpecification", "name": "Cold plunge", "value": True},
+        {"@type": "LocationFeatureSpecification", "name": "Cafe", "value": True},
+        {"@type": "LocationFeatureSpecification", "name": "Free street parking", "value": True},
+    ],
+}, separators=(",", ":"))
+
 # Two addresses, on purpose:
 #   hellovenice@primalmoves.com   everything else - tours, memberships,
 #                                 families, partners, the legal pages
@@ -63,7 +123,7 @@ def chrome(depth, active, cherish=False, nav_up=None):
       </div>
 
       <div class="foot-block">
-        <h4>Find us</h4>
+        <h2>Find us</h2>
         <p>
           <a href="https://maps.google.com/?q=1038+Princeton+Dr+Ste+B,+Marina+del+Rey,+CA+90292" target="_blank" rel="noopener">
             <span data-pm-text="address1">1038 Princeton Dr, Ste B</span> <br>
@@ -71,17 +131,17 @@ def chrome(depth, active, cherish=False, nav_up=None):
           </a>
         </p>
         <p style="margin-top:14px">
-          <a class="foot-ic" data-pm-link="phoneHref"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span data-pm-text="phone">(310) 800-7061</span></a> <br>
-          <a class="foot-ic" href="sms:+13108007061"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>Text us</a> &middot; <a class="foot-ic" href="https://wa.me/13108007061" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.03 1.02-1.03 2.48s1.06 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.28-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.22-3.74.99 1-3.65-.24-.38a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.43 9.89-9.88 9.89m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.42z"/></svg>WhatsApp</a> <br>
+          <a data-pm-link="phoneHref"><span data-pm-text="phone">(310) 800-7061</span></a> <br>
+          <a href="sms:+13108007061">Text us</a> &middot; <a href="https://wa.me/13108007061" target="_blank" rel="noopener">WhatsApp</a> <br>
           <a data-pm-link="instagramUrl" target="_blank" rel="noopener" class="foot-ig">
             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
               <rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/>
-            </svg>primalmovesvenice</a>
+            </svg>@primalmovesvenice</a>
         </p>
       </div>
 
       <div class="foot-block">
-        <h4>Hours</h4>
+        <h2>Hours</h2>
         <div class="foot-hours" data-pm-hours></div>
       </div>
 
@@ -246,6 +306,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{asset}images/favicon.png">
 <link rel="preload" href="{up}fonts/HarmoniaSansStd-Light.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json">{_LD}</script>
 <link rel="stylesheet" href="{up}style.css">
 <script src="{up}config.js"></script>
 <script src="{up}analytics.js" defer></script>
@@ -267,10 +328,13 @@ document.head.appendChild(s);}})();
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T6LRVCFQ"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+<a class="skip-link" href="#main">Skip to content</a>
 
 {header}
 
+<main id="main" tabindex="-1">
 {body}
+</main>
 
 {footer}
 
@@ -768,8 +832,8 @@ def studio(up, asset):
       <div>
         <div class="kicker">bring less than you think</div>
         <div class="exp-grid" style="grid-template-columns:1fr 1fr">
-          <div class="exp"><div class="n">01</div><h3>Wear</h3><p>Something you can move in. Workouts are done in bare feet.</p></div>
-          <div class="exp"><div class="n">02</div><h3>Bring</h3><p>Water. Towels are provided.</p></div>
+          <div class="exp"><div class="n">01</div><h3>Wear</h3><p>Something you can move in. Bare feet or flat shoes.</p></div>
+          <div class="exp"><div class="n">02</div><h3>Bring</h3><p>Water. A towel if you're using the sauna.</p></div>
           <div class="exp"><div class="n">03</div><h3>Arrive</h3><p>Ten minutes early on your first visit.</p></div>
           <div class="exp"><div class="n">04</div><h3>After</h3><p>Sauna, plunge, or tea at Cherish. Or all three.</p></div>
         </div>
@@ -803,13 +867,13 @@ def studio(up, asset):
     <div class="kicker">FAQs</div>
     <h2 style="margin-bottom:30px">The usual questions.</h2>
     <div class="faq">
-      <details name="faq" open><summary>I've never done anything like this. Am I going to embarrass myself?</summary><div class="a">No. Classes marked “Start here” assume zero experience, everything is scalable, and the room is genuinely unbothered by what anyone else is doing.</div></details>
-      <details name="faq"><summary>How do I book?</summary><div class="a">Through <a href="{up}classes/#schedule" style="text-decoration:underline">the schedule</a> or the Primal Moves app. Both run on the same Mindbody account, so your bookings stay in sync.</div></details>
-      <details name="faq"><summary>What's included in the two-week trial?</summary><div class="a">Unlimited classes across all series, plus sauna and cold plunge. Final trial terms.</div></details>
-      <details name="faq"><summary>Do you have showers?</summary><div class="a">Yes - showers, lockers and a family restroom.</div></details>
-      <details name="faq"><summary>Can I bring my kids?</summary><div class="a">We run Primal Kids classes. Check the schedule for current times.</div></details>
-      <details name="faq"><summary>Can I hire the space?</summary><div class="a">Yes, for workshops, activations, retreats, offsites and shoots. See <a href="{up}events/" style="text-decoration:underline">private hire</a>.</div></details>
-      <details name="faq"><summary>What's your cancellation policy?</summary><div class="a">Cancel or change a booking through the Mindbody app.</div></details>
+      <details open><summary>I've never done anything like this. Am I going to embarrass myself?</summary><div class="a">No. Classes marked “Start here” assume zero experience, everything is scalable, and the room is genuinely unbothered by what anyone else is doing.</div></details>
+      <details><summary>How do I book?</summary><div class="a">Through <a href="{up}classes/#schedule" style="text-decoration:underline">the schedule</a> or the Primal Moves app. Both run on the same Mindbody account, so your bookings stay in sync.</div></details>
+      <details><summary>What's included in the two-week trial?</summary><div class="a">Unlimited classes across all series, plus sauna and cold plunge. Final trial terms.</div></details>
+      <details><summary>Do you have showers?</summary><div class="a">Yes - showers, lockers and a family restroom.</div></details>
+      <details><summary>Can I bring my kids?</summary><div class="a">We run Primal Kids classes. Check the schedule for current times.</div></details>
+      <details><summary>Can I hire the space?</summary><div class="a">Yes, for workshops, activations, retreats, offsites and shoots. See <a href="{up}events/" style="text-decoration:underline">private hire</a>.</div></details>
+      <details><summary>What's your cancellation policy?</summary><div class="a">Cancel or change a booking through the Mindbody app.</div></details>
     </div>
   </div>
 </section>
@@ -845,7 +909,7 @@ def classes(up, asset):
       <div>
         <h2 class="display-sm" style="margin-bottom:20px">One place. One membership. <br>Four types of <span class="ed-it">offerings</span>.</h2>
         <p class="lede">Every class marked <span class="mark" style="font-weight:600">Start here</span> assumes you've never crawled across a floor in your life. You'll be shown what to do, given a version that fits, and left alone about it.</p>
-        <p style="margin-top:16px;color:var(--mid)">Come ten minutes early, wear something you can move in, bring water. Workouts are done in bare feet, and towels are provided. That's genuinely the whole list.</p>
+        <p style="margin-top:16px;color:var(--mid)">Come ten minutes early, wear something you can move in, bring water. Bare feet or flat shoes. That's genuinely the whole list.</p>
         <div class="cta-row" style="margin-top:28px">
           <a class="btn sage lg" href="#schedule">Book Now ↓</a>
         </div>
@@ -969,12 +1033,10 @@ def memberships(up, asset):
         <a class="btn sage" data-pm-link="dayPassUrl" target="_blank" rel="noopener">Try Primal for a day &middot; $40</a>
         <a class="btn" data-pm-link="veniceTrialUrl" target="_blank" rel="noopener">Two weeks &middot; $69</a>
       </div>
-      <p class="embed-note try-more" style="margin:14px 0 0">Also with no commitment:</p>
-      <div class="try-chips">
-        <a class="try-chip" data-pm-link="saunaHourUrl" target="_blank" rel="noopener">A 1-hour sauna &amp; plunge</a>
-        <a class="try-chip" href="{up}classes/#schedule">A tea ceremony</a>
-        <a class="try-chip" data-pm-link="planNomadUrl" target="_blank" rel="noopener">A month on The Nomad</a>
-      </div>
+      <p class="embed-note try-more" style="margin:14px 0 0">Also with no commitment:
+        <a data-pm-link="saunaHourUrl" target="_blank" rel="noopener" style="text-decoration:underline">a 1-hour sauna &amp; plunge</a>,
+        <a href="{up}classes/#schedule" style="text-decoration:underline">a tea ceremony</a>,
+        or <a data-pm-link="planNomadUrl" target="_blank" rel="noopener" style="text-decoration:underline">a single month on The Nomad</a>.</p>
       </div>
     </div>
 
@@ -1018,7 +1080,7 @@ def memberships(up, asset):
 
 
 <div class="mem-view" id="view-cards"{cards_attr}>
-    <h3 class="group-h">Start here</h3>
+    <h2 class="group-h">Start here</h2>
     <p class="group-sub">No long commitment - and something for the family.</p>
     <div class="plans four">
       <div class="plan hero-plan">
@@ -1079,7 +1141,7 @@ def memberships(up, asset):
       </div>
     </div>
 
-    <h3 class="group-h" style="margin-top:clamp(48px,7vw,80px)">Memberships</h3>
+    <h2 class="group-h" style="margin-top:clamp(48px,7vw,80px)">Memberships</h2>
     <p class="group-sub">Monthly autopay. Three-month minimum.</p>
     <div class="plans four">
       <div class="plan">
@@ -1213,11 +1275,11 @@ def memberships(up, asset):
     <div class="kicker">Questions</div>
     <h2 style="margin-bottom:30px">Before you commit.</h2>
     <div class="faq">
-      <details name="faq" open><summary>Can I try before joining?</summary><div class="a">Yes - that's what the two-week trial is for. Unlimited classes, sauna and cold plunge included. Most people join after it, but you're under no obligation.</div></details>
-      <details name="faq"><summary>Do I need experience?</summary><div class="a">No. Classes marked “Start here” assume none at all, and every class has a scaled version of whatever's being taught.</div></details>
-      <details name="faq"><summary>Can I freeze or cancel?</summary><div class="a">Memberships can be paused once, for up to 30 days, on a three-month contract. Ask at the front desk.</div></details>
-      <details name="faq"><summary>Is the sauna and cold plunge included?</summary><div class="a">Yes - with membership and with the two-week trial. Recovery is treated as part of the practice, not an upsell.</div></details>
-      <details name="faq"><summary>What if I travel a lot?</summary><div class="a">The Digital Studio covers you when you're away - live classes and the recorded library, from anywhere.</div></details>
+      <details open><summary>Can I try before joining?</summary><div class="a">Yes - that's what the two-week trial is for. Unlimited classes, sauna and cold plunge included. Most people join after it, but you're under no obligation.</div></details>
+      <details><summary>Do I need experience?</summary><div class="a">No. Classes marked “Start here” assume none at all, and every class has a scaled version of whatever's being taught.</div></details>
+      <details><summary>Can I freeze or cancel?</summary><div class="a">Memberships can be paused once, for up to 30 days, on a three-month contract. Ask at the front desk.</div></details>
+      <details><summary>Is the sauna and cold plunge included?</summary><div class="a">Yes - with membership and with the two-week trial. Recovery is treated as part of the practice, not an upsell.</div></details>
+      <details><summary>What if I travel a lot?</summary><div class="a">The Digital Studio covers you when you're away - live classes and the recorded library, from anywhere.</div></details>
     </div>
   </div>
 </section>
@@ -1673,7 +1735,7 @@ def events(up, asset):
     <div class="section-head">
       <div><div class="kicker">Private hire</div><h2>Use the floor.</h2></div>
     </div>
-    <p class="lede" style="max-width:40em">Primal Moves Venice offers a range of event rentals and full-space buyouts within our 11,000-square-foot venue. From our expansive main floor to intimate private tea room rentals and full studio takeovers, our space is a true blank canvas. We think outside the box and work with you to bring almost any event or experience to life.</p>
+    <p class="lede" style="max-width:40em">11,000 ft², rigging overhead, sauna and cold plunge, a cafe attached. Available for workshops, brand activations, retreat days, team offsites and film shoots. Cherish handles catering.</p>
     <div class="cta-row" style="margin-top:28px">
       <a class="btn on-dark" href="mailto:events@primalmoves.com?subject=Private%20hire%20enquiry">Enquire about hire</a>
       <a class="btn ghost-dark" href="{up}studio/#space">See the space ↓</a>

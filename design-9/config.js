@@ -29,12 +29,10 @@ window.PM_CONFIG = {
   veniceTrialUrl: "https://go.mindbodyonline.com/book/app/pricing/bus_11kV2FCbMt1nMdkxkd/po_11kV2FCbMt1nM8pepZ",
   veniceTrialPriceLabel: "$69",          // shown on the card; edit if it changes
 
-  // Where "Try Primal Online Free" goes. Was app.primalmoves.com/register/trial/,
-  // which 404s - the sign-up flow moved. Points at the digital studio's own
-  // page now, which carries the trial offer and the sign-up from there.
+  // Where "Try Primal Online Free" goes - the digital studio's free week.
   // Note: primalmoves.com currently advertises a 14-DAY free trial, not 7.
-  // Confirm which is right; the label below is what visitors see.
-  onlineTrialUrl: "https://primalmoves.com/digital-studio/",
+  // Confirm which is right before launch; the label below is what visitors see.
+  onlineTrialUrl: "https://app.primalmoves.com/register/trial/",
   onlineTrialLabel: "1 week free",
 
   /* --- BOOKING / SCHEDULE ------------------------------------------------
@@ -288,21 +286,6 @@ window.PM_CONFIG = {
   }
 
   ready(function () {
-    // The FAQ blocks are exclusive accordions: opening one closes the rest.
-    // <details name="faq"> does that natively with no script at all, so this
-    // only steps in for a browser too old to know the attribute - without the
-    // check, two handlers would fight over the same click.
-    if (!("name" in HTMLDetailsElement.prototype)) {
-      document.querySelectorAll("details[name]").forEach(function (d) {
-        d.addEventListener("toggle", function () {
-          if (!d.open) return;
-          document.querySelectorAll(
-            'details[name="' + d.getAttribute("name") + '"]'
-          ).forEach(function (o) { if (o !== d) o.open = false; });
-        });
-      });
-    }
-
     // data-pm-link="key" → href; data-pm-hide removes it when the key is blank
     document.querySelectorAll("[data-pm-link]").forEach(function (el) {
       var url = C[el.getAttribute("data-pm-link")];
@@ -689,11 +672,16 @@ window.PM_CONFIG = {
       } catch (e) { return url; }
     }
 
-    /* Save-Data and 2G are a different question: there the answer is no film
-       at all, and the still the loop was posterised from carries the hero. */
+    /* Three cases want no film at all, and the still the loop was posterised
+       from carries the hero instead: Save-Data, 2G, and - the accessibility
+       one - a visitor who has asked their system for reduced motion. WCAG
+       2.2.2 says motion running longer than five seconds must be stoppable,
+       and for a decorative background loop that setting IS the stop button. */
     function filmRefused(el) {
       try {
         if (!(el.getAttribute && el.getAttribute("src"))) return false;  // no still to fall back to
+        if (window.matchMedia &&
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true;
         var c = navigator.connection || {};
         return !!c.saveData || /^(slow-)?2g$/.test(c.effectiveType || "");
       } catch (e) { return false; }
@@ -1128,10 +1116,29 @@ window.PM_CONFIG = {
     var toggle = document.querySelector(".nav-toggle");
     var menu = document.querySelector(".mobile-menu");
     if (toggle && menu) {
-      toggle.addEventListener("click", function () {
-        var open = menu.classList.toggle("open");
+      /* setTextContent used to write "Close"/"Menu" into this button, which
+         deleted the <span class="burger"> inside it - so after one tap the
+         burger was gone for good and the button read as a word for the rest
+         of the visit. The CSS already turns the burger into an X off
+         aria-expanded; the label is what should change, not the contents. */
+      var setOpen = function (open) {
+        menu.classList.toggle("open", open);
         toggle.setAttribute("aria-expanded", open ? "true" : "false");
-        toggle.textContent = open ? "Close" : "Menu";
+        toggle.setAttribute("aria-label", open ? "Close menu" : "Menu");
+      };
+      toggle.addEventListener("click", function () {
+        setOpen(!menu.classList.contains("open"));
+      });
+      /* Escape closes it and hands focus back to the button that opened it -
+         otherwise a keyboard user has to tab the whole menu to get out. */
+      document.addEventListener("keydown", function (e) {
+        if (e.key !== "Escape" || !menu.classList.contains("open")) return;
+        setOpen(false);
+        toggle.focus();
+      });
+      /* choosing a destination closes it too */
+      menu.addEventListener("click", function (e) {
+        if (e.target.closest("a")) setOpen(false);
       });
     }
 

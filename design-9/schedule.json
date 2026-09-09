@@ -2,22 +2,22 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-09-09T04:48:37.033245Z",
+ "fetchedAt": "2026-09-09T12:59:43.836128Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
-  {
-   "start": "2026-09-09T13:15:00Z",
-   "name": "Tea Ceremony",
-   "staff": "Tyler Gustafson",
-   "minutes": 60,
-   "category": "Meditation"
-  },
   {
    "start": "2026-09-09T13:15:00Z",
    "name": "Primal Hybrid (60 Min)",
    "staff": "Zagreus",
    "minutes": 60,
    "category": "Gym classes"
+  },
+  {
+   "start": "2026-09-09T13:15:00Z",
+   "name": "Tea Ceremony",
+   "staff": "Tyler Gustafson",
+   "minutes": 60,
+   "category": "Meditation"
   },
   {
    "start": "2026-09-09T14:30:00Z",
@@ -125,13 +125,6 @@
    "category": "Dance"
   },
   {
-   "start": "2026-09-11T02:00:00Z",
-   "name": "Acro-Yoga",
-   "staff": "Travis & Waka",
-   "minutes": 60,
-   "category": "Yoga"
-  },
-  {
    "start": "2026-09-11T03:00:00Z",
    "name": "Acro Open Gym",
    "staff": "Whakapaingia Luke",
@@ -172,13 +165,6 @@
    "staff": "Olivia Jaye Brown",
    "minutes": 60,
    "category": "Strength training"
-  },
-  {
-   "start": "2026-09-11T23:00:00Z",
-   "name": "Moves - The Signature Practice",
-   "staff": "Gus",
-   "minutes": 60,
-   "category": "Gym classes"
   },
   {
    "start": "2026-09-12T01:30:00Z",
@@ -244,11 +230,11 @@
    "category": "Strength training"
   },
   {
-   "start": "2026-09-14T13:15:00Z",
-   "name": "Primal Hybrid (60 Min)",
-   "staff": "Kelo Vallejo",
+   "start": "2026-09-13T19:00:00Z",
+   "name": "Handstands",
+   "staff": "Gus",
    "minutes": 60,
-   "category": "Gym classes"
+   "category": "Gymnastics"
   },
   {
    "start": "2026-09-14T14:30:00Z",
@@ -263,13 +249,6 @@
    "staff": "Kelo Vallejo",
    "minutes": 60,
    "category": "Strength training"
-  },
-  {
-   "start": "2026-09-14T17:00:00Z",
-   "name": "Primal - The Push/Pull Practice",
-   "staff": "Jacy Cunningham",
-   "minutes": 60,
-   "category": "Gym classes"
   },
   {
    "start": "2026-09-14T19:00:00Z",
@@ -300,25 +279,11 @@
    "category": "Strength training"
   },
   {
-   "start": "2026-09-15T13:15:00Z",
-   "name": "Rise",
-   "staff": "Sabrina Rose",
-   "minutes": 60,
-   "category": "Strength training"
-  },
-  {
    "start": "2026-09-15T14:30:00Z",
    "name": "Primal - The Push/Pull Practice",
    "staff": "Gus",
    "minutes": 60,
    "category": "Gym classes"
-  },
-  {
-   "start": "2026-09-15T15:45:00Z",
-   "name": "Primal Compound (Guided Weightlifting)",
-   "staff": "Zagreus",
-   "minutes": 60,
-   "category": "Strength training"
   },
   {
    "start": "2026-09-15T17:00:00Z",
@@ -345,13 +310,6 @@
    "start": "2026-09-15T23:30:00Z",
    "name": "Primal Kids",
    "staff": "Travis & Mandyjane",
-   "minutes": 60,
-   "category": "Gym classes"
-  },
-  {
-   "start": "2026-09-16T00:45:00Z",
-   "name": "Primal - The Push/Pull Practice",
-   "staff": "Miki Ash",
    "minutes": 60,
    "category": "Gym classes"
   },
@@ -399,24 +357,17 @@
   },
   {
    "start": "2026-09-17T00:45:00Z",
-   "name": "Primal Compound (Guided Weightlifting)",
-   "staff": "Andreas Alfaro",
-   "minutes": 60,
-   "category": "Strength training"
-  },
-  {
-   "start": "2026-09-17T00:45:00Z",
    "name": "Breathwork",
    "staff": "Chris Plourde",
    "minutes": 60,
    "category": "Other"
   },
   {
-   "start": "2026-09-17T01:00:00Z",
-   "name": "Moves - Community Class",
-   "staff": "Gus",
+   "start": "2026-09-17T00:45:00Z",
+   "name": "Primal Compound (Guided Weightlifting)",
+   "staff": "Andreas Alfaro",
    "minutes": 60,
-   "category": "Gym classes"
+   "category": "Strength training"
   }
  ]
 }

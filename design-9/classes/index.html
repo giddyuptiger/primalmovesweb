@@ -35,7 +35,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{}).texture))document.documentElement.
 }catch(e){}})();</script>
 <script>
 (function(){try{if(localStorage.getItem("pm_admin")!=="1")return;}catch(e){return;}
-var s=document.createElement("script");s.src="../admin.js?v=6";s.defer=true;
+var s=document.createElement("script");s.src="../admin.js?v=7";s.defer=true;
 document.head.appendChild(s);})();
 </script>
 </head>
@@ -248,8 +248,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<!-- ===== THE TEACHERS - the names on the timetable below ===== -->
-<section class="ink" id="teachers">
+<!-- ===== THE TEACHERS - the names on the timetable below =====
+     Switched by data-pm-section, same as the staff grid on /studio/. -->
+<section class="ink" id="teachers" data-pm-section="classes.teachers">
   <div class="wrap-wide">
     <div class="section-head">
       <div>

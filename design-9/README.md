@@ -93,15 +93,36 @@ page already says, so the markup stays the source of truth.
 
 **Copy config** hands you the exact CSS, `photos` and `photoFocus` blocks.
 
-None of it writes to the site. It's Squarespace's editing feel with git as the
-save button — which is the right trade here: nobody can break the live site by
-experimenting, and every change still arrives as a reviewable commit.
+**Sections** is a checkbox per section that can be taken down and put back.
+A tick saves to the shared store, so every visitor sees it within seconds — no
+push, no deploy. Off means the section is *absent*: not an empty grid, not a
+"coming soon", the markup leaves the page entirely, so a crawler and a screen
+reader do not see it either. (While the panel is unlocked it stays in the
+document, hidden, so a tick can put it back without a reload.)
 
-It saves nothing to the site — a static page has no server to write to. Every
-change lives in that person's browser until the copied config is pasted into
-the repo and pushed. Which means anyone can experiment freely without the risk
-of breaking the live site. The upgrade path, when it's worth it, is a git-based
-CMS that commits for them — see `strategy/launch-stack.md`.
+Three are switchable today, and two of them ship **off**:
+
+| Section | Page | Default |
+|---|---|---|
+| Staff | `/studio/` | off — waiting on portraits |
+| Teachers | `/classes/` | off — waiting on portraits |
+| The menu | `/cherish/` | on |
+
+The list comes from the `sections` array in `config.js`: add a record there —
+`key`, `on`, `name`, `page`, `note` — put the matching `data-pm-section="key"`
+on the section in `tools/build_d9.py`, and it appears in the tab. What is in
+`config.js` is the default a fresh browser gets before the store answers; the
+store wins over it.
+
+**What publishes and what does not.** Four things go live for everyone the
+moment they change, through the Worker in `tools/pm-worker.js`: photographs,
+the staff roster, the section switches, and the site default layout. Everything
+else — colour and wording — stays in that person's browser until it is saved
+into a config and pasted back into the repo. That split is deliberate: the
+things the studio changes weekly publish themselves, and the things that decide
+what the site *is* still arrive as a reviewable commit. Nobody can break the
+live site by experimenting with a palette. The upgrade path, when it's worth
+it, is a git-based CMS that commits for them — see `strategy/launch-stack.md`.
 
 ## Photos — how to swap one
 
@@ -169,3 +190,13 @@ See the root `strategy/design-gaps-vs-meeting-notes.md`. The short list:
 brand hex codes, hero video, teacher headshots, class descriptions, the Moss
 signup URL, the Healcode schedule widget ID, the Toast URL, and real
 testimonials.
+
+Two of those now have a switch rather than a placeholder:
+
+- **Teacher and staff headshots** — both people grids are switched off in the
+  Sections tab. Tick them back on when there are portraits.
+- **The Cherish menu** — `photos["cherish.menu"]` is blank, so the slot shows
+  its own label. **Ask Miki for a photograph of the menu board**, then upload it
+  in the EDIT panel's Photos tab; it goes live for every visitor with no push.
+  The Toast button underneath it is already wired to `toastOrderUrl` and stays
+  hidden until that URL is set, so ordering needs no markup change either.

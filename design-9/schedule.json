@@ -2,23 +2,9 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-09-09T22:35:39.770553Z",
+ "fetchedAt": "2026-09-10T04:49:45.146217Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
-  {
-   "start": "2026-09-10T00:45:00Z",
-   "name": "Primal Compound (Guided Weightlifting)",
-   "staff": "Andreas Alfaro",
-   "minutes": 60,
-   "category": "Strength training"
-  },
-  {
-   "start": "2026-09-10T00:45:00Z",
-   "name": "Breathwork",
-   "staff": "Chris Plourde",
-   "minutes": 60,
-   "category": "Other"
-  },
   {
    "start": "2026-09-10T13:15:00Z",
    "name": "Rise",
@@ -347,6 +333,41 @@
    "staff": "Travis Brewer",
    "minutes": 60,
    "category": "Strength training"
+  },
+  {
+   "start": "2026-09-17T23:30:00Z",
+   "name": "Primal Kids",
+   "staff": "Travis & Mandyjane",
+   "minutes": 60,
+   "category": "Gym classes"
+  },
+  {
+   "start": "2026-09-18T00:45:00Z",
+   "name": "Primal - The Push/Pull Practice",
+   "staff": "Olivia Jaye Brown",
+   "minutes": 60,
+   "category": "Gym classes"
+  },
+  {
+   "start": "2026-09-18T02:00:00Z",
+   "name": "Intuitive Music Jam",
+   "staff": "Vernon & Bowen",
+   "minutes": 90,
+   "category": "Dance"
+  },
+  {
+   "start": "2026-09-18T02:00:00Z",
+   "name": "Acro-Yoga",
+   "staff": "Travis & Waka",
+   "minutes": 60,
+   "category": "Yoga"
+  },
+  {
+   "start": "2026-09-18T03:00:00Z",
+   "name": "Acro Open Gym",
+   "staff": "Whakapaingia Luke",
+   "minutes": 60,
+   "category": "Yoga"
   }
  ]
 }

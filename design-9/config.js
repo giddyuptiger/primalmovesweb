@@ -35,6 +35,17 @@ window.PM_CONFIG = {
   onlineTrialUrl: "https://app.primalmoves.com/register/trial/",
   onlineTrialLabel: "1 week free",
 
+  /* --- THE PRIMAL ($315/mo, the hero tier) --------------------------------
+     Supplied by the studio. Set here rather than left to the default below,
+     which is what an unset planPrimalUrl falls back to.
+
+     Note this is a classic-store link and the other five Join buttons go
+     through go.mindbodyonline.com. Both work - classic is still live and is
+     what Mindbody hands you for a contract - they just reach checkout by
+     different routes. To move it onto the same route as the rest: Mindbody >
+     the item > Copy link, and paste whatever that gives back here. */
+  planPrimalUrl: "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=40&prodId=413",
+
   /* --- BOOKING / SCHEDULE ------------------------------------------------
      IMPORTANT: Mindbody's own schedule page (clients.mindbodyonline.com)
      sends `X-Frame-Options: SAMEORIGIN`, so it CANNOT be put in an iframe
@@ -342,13 +353,12 @@ window.PM_CONFIG = {
   if (!C.presetsApi && C.liveApi) C.presetsApi = C.liveApi.replace(/\/+$/, "") + "/presets";
 
   /* Every Join button, straight to that plan's checkout.
-     All six now go through go.mindbodyonline.com, Mindbody's current booking
-     app, rather than the classic clients.mindbodyonline.com store. Two
-     reasons. The classic links were built from prodIds nobody could check -
-     and prodId 413 was standing in for The Primal, which turns out not to be
-     a contract at all but a pricing option, so at least one of them was
-     wrong. And these ids were read off the studio's own public pricing page,
-     where each one's title and price is printed next to it:
+     The Primal is set explicitly at the top of this file, from the link the
+     studio supplied - see the note there. The five below go through
+     go.mindbodyonline.com, Mindbody's current booking app, rather than the
+     classic clients.mindbodyonline.com store, because their ids were read off
+     the studio's own public pricing page, where each one's title and price is
+     printed next to it:
 
        Day Pass                                          $40   po_...8pejU
        2 Week Unlimited Intro                            $69   po_...8pepZ
@@ -357,9 +367,9 @@ window.PM_CONFIG = {
        The Explorer (8 Passes - 3 Month Contract)       $200   cntr_...K1VN
        The Nomad (Unlimited - 1 Month, No Contract)     $375   cntr_...K1XQ
 
-     Each of those matches the price on its card. The Primal (po_...8pgN5) is
-     the one exception: its page does not print a name or price in the HTML,
-     so it is the studio's own Copy link taken on trust and worth one click.
+     Each of those matches the price on its card. The po_...8pgN5 below is the
+     old guess at The Primal, kept only as the fallback if planPrimalUrl is
+     ever blanked; the explicit value at the top of the file wins over it.
      To repoint any of them: Mindbody > the item > Copy link, paste here. */
   (function () {
     var mb = function (id) {

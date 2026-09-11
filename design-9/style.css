@@ -820,6 +820,26 @@ section.ink .pm-cal-list a:hover .pm-what{color:var(--sage-light,var(--accent-so
 /* the family block sits beside four short paragraphs — the default frame
    leaves it towering over its own text, so it runs a size down */
 .photo-slot[data-pm-photo="home.family"]{height:clamp(280px,34vw,440px)}
+/* The cafe menu is a document, not a scene. Every other slot crops to fill its
+   frame, which on a menu board cuts off whatever sits at the edges — so this
+   one does the opposite: the frame takes the photograph's own proportions and
+   the whole board stays readable. Capped so a tall phone shot cannot run to
+   three screens, and centred so a narrow one does not float left.
+
+   The width cap belongs to the photograph, not to the frame: the house layout
+   makes the block a flex column, and an auto side margin on a flex item stops
+   it stretching — the empty frame collapsed to the width of its own label.
+
+   The body.house selector is repeated rather than left to source order:
+   `body.house .photo-slot` sets a fixed height further down this file and
+   out-specifies a bare `.photo-slot.menu-photo`, so height:auto never landed
+   and the frame came out 590px tall whatever the photograph was. */
+.photo-slot.menu-photo,
+body.house .photo-slot.menu-photo{height:auto;min-height:clamp(240px,32vw,360px);align-self:stretch}
+.photo-slot.menu-photo:has(img[data-pm-fill]),
+body.house .photo-slot.menu-photo:has(img[data-pm-fill]){padding:0;min-height:0;background:transparent}
+.photo-slot.menu-photo img[data-pm-fill]{position:static;inset:auto;
+  width:auto;max-width:min(100%,760px);height:auto;max-height:88vh;object-fit:contain}
 .photo-slot span{font-size:10.5px;font-weight:500;letter-spacing:.2em;
   text-transform:uppercase;color:var(--soft);max-width:22ch;line-height:2}
 section.ink .photo-slot{background:rgba(255,255,255,.07)}

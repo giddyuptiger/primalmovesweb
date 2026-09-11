@@ -381,9 +381,11 @@
     "#pm-studio header .sub{font-size:11.5px;color:#8D9198;margin-top:6px}",
 
     /* tabs */
-    "#pm-tabs{display:flex;gap:0;padding:0 22px;border-bottom:1px solid #2A2D31;flex:none}",
-    "#pm-tabs button{flex:1;background:none;border:0;border-bottom:2px solid transparent;color:#8D9198;",
-    "  font:inherit;font-size:12.5px;font-weight:500;padding:14px 4px 12px;cursor:pointer;margin-bottom:-1px}",
+    /* Seven tabs do not fit across 344px, so the row wraps rather than
+       clipping one off the end. Each button is only as wide as its word. */
+    "#pm-tabs{display:flex;flex-wrap:wrap;column-gap:14px;padding:0 22px;border-bottom:1px solid #2A2D31;flex:none}",
+    "#pm-tabs button{flex:0 0 auto;background:none;border:0;border-bottom:2px solid transparent;color:#8D9198;",
+    "  font:inherit;font-size:12.5px;font-weight:500;padding:13px 0 11px;cursor:pointer;margin-bottom:-1px;white-space:nowrap}",
     "#pm-tabs button.on{color:#E8E6E0;border-bottom-color:#8BA85F}",
 
     /* body */
@@ -496,6 +498,16 @@
     "#pm-studio label.tog{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:12.5px;color:#E8E6E0}",
     "#pm-studio label.tog input{accent-color:#8BA85F;width:15px;height:15px}",
     "#pm-studio .p-lab{display:block;font-size:12px;font-weight:500;color:#E8E6E0;margin-bottom:10px}",
+
+    /* sections tab — one row per switchable section */
+    "#pm-studio .sec{background:#1D2024;border:1px solid #26292E;border-radius:5px;",
+    "  padding:13px 14px;margin-bottom:9px}",
+    "#pm-studio .sec label{display:grid;grid-template-columns:15px 1fr;gap:11px;align-items:center;cursor:pointer}",
+    "#pm-studio .sec input{accent-color:#8BA85F;width:15px;height:15px;margin:0}",
+    "#pm-studio .sec b{font-size:12.5px;font-weight:600;color:#E8E6E0}",
+    "#pm-studio .sec .sec-where{font-size:11px;color:#8BA85F;margin-left:7px;font-weight:500}",
+    "#pm-studio .sec .sec-note{grid-column:2;font-size:11.5px;color:#7E838A;line-height:1.5;margin-top:4px}",
+    "#pm-studio .sec.off b{color:#8D9198}",
     "#pm-studio input[type=text]{width:100%;background:#1D2024;border:1px solid #2F3338;border-radius:4px;",
     "  color:#E8E6E0;font:inherit;font-size:12.5px;padding:10px 12px;margin-bottom:8px}",
     "#pm-studio input[type=text]:focus{outline:0;border-color:#8BA85F}",
@@ -626,6 +638,7 @@
     '<button data-tab="photo">Photos</button>' +
     '<button data-tab="copy">Copy</button>' +
     '<button data-tab="staff">Staff</button>' +
+    '<button data-tab="sections">Sections</button>' +
     '<button data-tab="layout">Layout</button>' +
     '<button data-tab="preset">Configs</button></div>' +
     '<div id="pm-body"></div>' +
@@ -1205,6 +1218,89 @@
     });
   }
 
+  /* --------------------------------------------------------- site state --- */
+  /* __site__ is one record in the shared store holding every site-wide
+     default: which layout visitors get, and which sections are drawn. A POST
+     replaces that record by name, so a save has to carry the keys it is NOT
+     changing or it deletes them. Hence read-then-merge-then-write: the panel
+     may have been open since before someone else changed the other key. */
+  function saveSite(patch, ok, fail) {
+    var h = writeHeaders({ "Content-Type": "application/json" });
+    fail = fail || function (m) { toast(m, true); };
+    if (!h || !api()) { fail("No store connected - nothing to save to."); return; }
+    fetch(api(), { cache: "no-store" })
+      .then(function (r) { return r.json(); })
+      .then(function (p) {
+        var cur = ((p && p.presets) || []).filter(function (x) { return x.name === "__site__"; })[0];
+        var copy = Object.assign({}, (cur && cur.copy) || {}, patch);
+        return fetch(api(), { method: "POST", headers: h,
+          body: JSON.stringify({ name: "__site__", note: "site-wide defaults", copy: copy }) })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            if (d.error) throw new Error(d.error);
+            if (ok) ok(d);
+          });
+      })
+      .catch(function (e) { fail((e && e.message) || "Store not answering."); });
+  }
+
+  /* ----------------------------------------------------------- sections --- */
+  /* Whole sections, on or off, for every visitor. The list comes from
+     PM_CONFIG.sections so adding a switchable section is one record in
+     config.js and nothing here. The live state is PM_CONFIG.sectionState,
+     which config.js keeps and repaints. */
+  function sectionDefs() {
+    var d = (window.PM_CONFIG || {}).sections;
+    return Array.isArray(d) ? d : [];
+  }
+  function sectionState() {
+    return (window.PM_CONFIG || {}).sectionState || {};
+  }
+  function renderSections() {
+    var body = document.getElementById("pm-body");
+    var defs = sectionDefs(), state = sectionState();
+    if (!defs.length) {
+      body.innerHTML = '<p class="pm-note">No switchable sections. Add one to the ' +
+        "<code>sections</code> list in <code>config.js</code>.</p>";
+      return;
+    }
+    body.innerHTML =
+      '<div class="field"><p class="pm-note">Sections you can take down and put back. ' +
+      "A change saves to the shared store and <b>every visitor</b> sees it within " +
+      "seconds - no push, no deploy. Switched off, the section is not on the page at " +
+      "all: no empty grid, no &ldquo;coming soon&rdquo;. " +
+      '<span id="pm-sec-save" class="pm-save"></span></p></div>' +
+      defs.map(function (s) {
+        var on = state[s.key] !== false;
+        return '<div class="sec' + (on ? "" : " off") + '" data-key="' + s.key + '">' +
+          "<label><input type=\"checkbox\"" + (on ? " checked" : "") + ">" +
+          "<span><b>" + s.name + '</b><span class="sec-where">' + s.page + "</span></span>" +
+          '<span class="sec-note">' + (s.note || "") + "</span></label></div>";
+      }).join("") +
+      '<p class="pm-note" style="margin-top:14px">To change what a fresh browser sees ' +
+      "before the store answers, set <code>on</code> in the <code>sections</code> list " +
+      "in <code>config.js</code>.</p>";
+
+    var chip = document.getElementById("pm-sec-save");
+    body.addEventListener("change", function (e) {
+      var row = e.target.closest(".sec"); if (!row) return;
+      var key = row.getAttribute("data-key"), on = e.target.checked;
+      row.classList.toggle("off", !on);
+
+      // paint it immediately, so the tick and the page agree before the save
+      var map = {};
+      sectionDefs().forEach(function (s) { map[s.key] = sectionState()[s.key] !== false; });
+      map[key] = on;
+      if (window.PM_APPLY_SECTIONS) window.PM_APPLY_SECTIONS(map);
+      [].slice.call(document.querySelectorAll(".pm-swap-badge")).forEach(function (x) { if (x._place) x._place(); });
+
+      chip.className = "pm-save busy"; chip.textContent = "saving…";
+      saveSite({ __sections__: JSON.stringify(map) },
+        function () { chip.className = "pm-save ok"; chip.textContent = "saved ✓ · live for everyone"; },
+        function (m) { chip.className = "pm-save err"; chip.textContent = m; });
+    });
+  }
+
   /* ------------------------------------------------------------- layout --- */
 
   var LAYOUTS = [
@@ -1229,19 +1325,16 @@
   ];
 
   function setSiteDefault(id, btn) {
-    var h = writeHeaders({ "Content-Type": "application/json" });
-    if (!h || !api()) { toast("No store - can't set the default.", true); return; }
     btn.textContent = "Setting\u2026";
-    fetch(api(), { method: "POST", headers: h,
-      body: JSON.stringify({ name: "__site__", note: "site-wide defaults",
-        copy: { __layout__: id } }) })
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        if (d.error) { toast(d.error, true); btn.textContent = "Make this the site default"; return; }
+    // through saveSite, which merges: writing the layout used to replace the
+    // whole __site__ record and took the section switches with it.
+    saveSite({ __layout__: id },
+      function () {
+        window.PM_SITE_LAYOUT = id;
         toast("Done - every visitor now gets this layout.");
         renderLayout();
-      })
-      .catch(function () { toast("Store not answering.", true); btn.textContent = "Make this the site default"; });
+      },
+      function (m) { toast(m, true); btn.textContent = "Make this the site default"; });
   }
 
   function renderLayout() {
@@ -1842,6 +1935,7 @@
     else if (b.dataset.tab === "photo") renderPhoto();
     else if (b.dataset.tab === "copy") renderCopy();
     else if (b.dataset.tab === "staff") renderStaff();
+    else if (b.dataset.tab === "sections") renderSections();
     else if (b.dataset.tab === "layout") renderLayout();
     else renderPresets();
   });
@@ -1918,10 +2012,10 @@
   if (LIVE) {
     loadLive().then(function () {
       var sub = document.getElementById("pm-sub");
-      if (sub) sub.innerHTML = "Photos, staff and layout go live &middot; colour and wording save to configs";
+      if (sub) sub.innerHTML = "Photos, staff, sections and layout go live &middot; colour and wording save to configs";
       var fn = document.getElementById("pm-foot-note");
-      if (fn) fn.innerHTML = "<b>Live for everyone:</b> photographs, the staff roster, the site default " +
-        "layout. <b>Only you:</b> colour and wording, until they are saved into a config.";
+      if (fn) fn.innerHTML = "<b>Live for everyone:</b> photographs, the staff roster, which sections are " +
+        "drawn, the site default layout. <b>Only you:</b> colour and wording, until they are saved into a config.";
       var on = document.querySelector("#pm-tabs button.on");
       if (on && on.dataset.tab === "photo") renderPhoto();
     });

@@ -35,6 +35,17 @@ window.PM_CONFIG = {
   onlineTrialUrl: "https://app.primalmoves.com/register/trial/",
   onlineTrialLabel: "1 week free",
 
+  /* --- THE PRIMAL ($315/mo, the hero tier) --------------------------------
+     Supplied by the studio. Set here rather than left to the default below,
+     which is what an unset planPrimalUrl falls back to.
+
+     Note this is a classic-store link and the other five Join buttons go
+     through go.mindbodyonline.com. Both work - classic is still live and is
+     what Mindbody hands you for a contract - they just reach checkout by
+     different routes. To move it onto the same route as the rest: Mindbody >
+     the item > Copy link, and paste whatever that gives back here. */
+  planPrimalUrl: "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=40&prodId=413",
+
   /* --- BOOKING / SCHEDULE ------------------------------------------------
      IMPORTANT: Mindbody's own schedule page (clients.mindbodyonline.com)
      sends `X-Frame-Options: SAMEORIGIN`, so it CANNOT be put in an iframe
@@ -95,6 +106,31 @@ window.PM_CONFIG = {
   texture: true,          // true = limewash · "faint" = a lighter coat · false = off
 
   layout: "house",
+
+  /* --- SECTIONS, ON OR OFF ------------------------------------------------
+     Whole sections the studio can take down and put back without a deploy.
+     `on: false` means the section is not drawn at all - not hidden behind a
+     "coming soon", not an empty grid, simply absent, the way /partners/ and
+     /shop/ were dealt with.
+
+     What is here is the COMMITTED default. The EDIT panel's Sections tab
+     writes its own map to the shared store, and the store wins: tick a box
+     there and every visitor sees the change within seconds, with no push and
+     no deploy. Add a record here and it appears in that tab automatically.
+
+     `key` must match a data-pm-section="..." attribute in the markup, which
+     tools/build_d9.py stamps on the section element.                      */
+  sections: [
+    { key: "studio.staff", on: false,
+      name: "Staff", page: "The Studio",
+      note: "The grid under \u201cThe people at the door\u201d. Off until there are portraits." },
+    { key: "classes.teachers", on: false,
+      name: "Teachers", page: "Classes",
+      note: "The coach grid above the timetable. Off until there are portraits." },
+    { key: "cherish.menu", on: true,
+      name: "The menu", page: "Cherish",
+      note: "The menu photograph. Change the picture itself in the Photos tab." }
+  ],
 
   /* --- DESIGN STUDIO ------------------------------------------------------
      true  = the EDIT tab shows for ANYONE who loads the site. Right for
@@ -171,6 +207,10 @@ window.PM_CONFIG = {
     "memberships.hero":       "boat-collective.jpg",
     "events.hero":            "space-floor-night.jpg",
     "cherish.hero":           "tea-room.jpg",          // <-- needs a real CAFE shot
+    // The menu, as a photograph of the board. Blank until someone uploads one
+    // in the EDIT panel's Photos tab - the slot then shows its own label
+    // rather than a broken picture. Ask Miki for the shot.
+    "cherish.menu":           "",
     "partners.hero":          "compound-dumbbells-crop.jpg",
     "partners.pitch":         "bands-effort.jpg",
     "shop.hero":              "barbell-joy.jpg"
@@ -237,6 +277,73 @@ window.PM_CONFIG = {
   }
   try { mergeLive(JSON.parse(localStorage.getItem(LIVE_CACHE) || "null")); } catch (e) {}
 
+  /* ---- sections, on or off ----------------------------------------------
+     A section the studio has switched off must never flash onto the screen
+     and then vanish, so this is a stylesheet written while we are still in
+     <head> - before the body exists - rather than a pass over the DOM. The
+     store's answer arrives a moment later and rewrites the same rule; the
+     store's map is cached here so a returning visitor gets it on the first
+     paint too.
+
+     display:none is only the first half. For an ordinary visitor the element
+     is then taken out of the document entirely on DOMContentLoaded, so a
+     section that is off is not read by a screen reader or indexed by a
+     crawler. While the EDIT panel is unlocked it stays in the document,
+     hidden, so a tick in the Sections tab can put it back instantly. */
+  var SEC_CACHE = "pm_live_sections";
+  if (!Array.isArray(C.sections)) C.sections = [];
+  var secOn = {};
+  C.sections.forEach(function (s) { if (s && s.key) secOn[s.key] = s.on !== false; });
+  try {
+    var stored = JSON.parse(localStorage.getItem(SEC_CACHE) || "null");
+    if (stored && typeof stored === "object") {
+      Object.keys(stored).forEach(function (k) { secOn[k] = stored[k] !== false; });
+    }
+  } catch (e) {}
+  C.sectionState = secOn;
+
+  function paintSections() {
+    var off = Object.keys(C.sectionState).filter(function (k) { return !C.sectionState[k]; });
+    var el = document.getElementById("pm-sections-css");
+    if (!el) {
+      el = document.createElement("style");
+      el.id = "pm-sections-css";
+      (document.head || document.documentElement).appendChild(el);
+    }
+    el.textContent = off.map(function (k) {
+      return '[data-pm-section="' + k + '"]{display:none !important}';
+    }).join("");
+  }
+  paintSections();
+
+  // Only an UNLOCKED panel keeps a switched-off section in the document -
+  // studioOpenToAll deliberately does not count. Someone browsing in design
+  // mode cannot save a section back on without the write key, so there is no
+  // reason to leave the markup in their page either.
+  var editing = false;
+  try { editing = localStorage.getItem("pm_admin") === "1"; } catch (e) {}
+
+  function pruneSections() {
+    if (editing) return;
+    document.querySelectorAll("[data-pm-section]").forEach(function (el) {
+      if (!C.sectionState[el.getAttribute("data-pm-section")]) el.remove();
+    });
+  }
+
+  /* Called by admin.js when a box is ticked, and below when the store answers.
+     `map` is the full on/off map as the store holds it. */
+  window.PM_APPLY_SECTIONS = function (map, cache) {
+    if (map) {
+      Object.keys(map).forEach(function (k) { C.sectionState[k] = map[k] !== false; });
+      if (cache !== false) {
+        try { localStorage.setItem(SEC_CACHE, JSON.stringify(map)); } catch (e) {}
+      }
+    }
+    paintSections();
+    pruneSections();
+    return C.sectionState;
+  };
+
   C.mindbodyScheduleUrl =
     "https://clients.mindbodyonline.com/classic/ws?studioid=" + C.mindbodySiteId +
     "&stype=-7&sView=week&sLoc=0&sTG=0";
@@ -246,13 +353,12 @@ window.PM_CONFIG = {
   if (!C.presetsApi && C.liveApi) C.presetsApi = C.liveApi.replace(/\/+$/, "") + "/presets";
 
   /* Every Join button, straight to that plan's checkout.
-     All six now go through go.mindbodyonline.com, Mindbody's current booking
-     app, rather than the classic clients.mindbodyonline.com store. Two
-     reasons. The classic links were built from prodIds nobody could check -
-     and prodId 413 was standing in for The Primal, which turns out not to be
-     a contract at all but a pricing option, so at least one of them was
-     wrong. And these ids were read off the studio's own public pricing page,
-     where each one's title and price is printed next to it:
+     The Primal is set explicitly at the top of this file, from the link the
+     studio supplied - see the note there. The five below go through
+     go.mindbodyonline.com, Mindbody's current booking app, rather than the
+     classic clients.mindbodyonline.com store, because their ids were read off
+     the studio's own public pricing page, where each one's title and price is
+     printed next to it:
 
        Day Pass                                          $40   po_...8pejU
        2 Week Unlimited Intro                            $69   po_...8pepZ
@@ -261,9 +367,9 @@ window.PM_CONFIG = {
        The Explorer (8 Passes - 3 Month Contract)       $200   cntr_...K1VN
        The Nomad (Unlimited - 1 Month, No Contract)     $375   cntr_...K1XQ
 
-     Each of those matches the price on its card. The Primal (po_...8pgN5) is
-     the one exception: its page does not print a name or price in the HTML,
-     so it is the studio's own Copy link taken on trust and worth one click.
+     Each of those matches the price on its card. The po_...8pgN5 below is the
+     old guess at The Primal, kept only as the fallback if planPrimalUrl is
+     ever blanked; the explicit value at the top of the file wins over it.
      To repoint any of them: Mindbody > the item > Copy link, paste here. */
   (function () {
     var mb = function (id) {
@@ -286,6 +392,10 @@ window.PM_CONFIG = {
   }
 
   ready(function () {
+    // a switched-off section leaves the document before anything else runs, so
+    // no later pass wastes work on markup nobody will ever see
+    pruneSections();
+
     // data-pm-link="key" → href; data-pm-hide removes it when the key is blank
     document.querySelectorAll("[data-pm-link]").forEach(function (el) {
       var url = C[el.getAttribute("data-pm-link")];
@@ -393,6 +503,13 @@ window.PM_CONFIG = {
               try { applyRoster(JSON.parse(hit.copy.__roster__)); } catch (e) {}
             }
             var site = ((p && p.presets) || []).filter(function (x) { return x.name === "__site__"; })[0];
+            var secs = site && site.copy && site.copy.__sections__;
+            if (secs) {
+              try { window.PM_APPLY_SECTIONS(JSON.parse(secs)); } catch (e) {}
+            } else {
+              // nothing stored: the cache is stale and config.js is the truth
+              try { localStorage.removeItem(SEC_CACHE); } catch (e) {}
+            }
             var lay = site && site.copy && site.copy.__layout__;
             if (lay && lay !== C.layout && !localStorage.getItem("pm_studio_layout")) {
               window.PM_SITE_LAYOUT = lay;

@@ -72,7 +72,11 @@ _LD = _json.dumps({
 #                                 private-hire block
 # Both are plain mailto: links in the markup below; grep before changing one.
 
-ROOT = pathlib.Path("/tmp/primalmovesweb/design-9")
+# Resolved from this file, not hard-coded: the script lives in tools/, so the
+# design folder is its sibling. It used to name an absolute /tmp path left over
+# from one person's machine, which meant a build silently wrote the pages
+# somewhere outside the repo and the checkout was never touched.
+ROOT = pathlib.Path(__file__).resolve().parent.parent / "design-9"
 
 NAV = [
     ("practice/",    "Our Method"),
@@ -319,7 +323,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{{}}).texture))document.documentElemen
 }}catch(e){{}}}})();</script>
 <script>
 (function(){{try{{if(localStorage.getItem("pm_admin")!=="1")return;}}catch(e){{return;}}
-var s=document.createElement("script");s.src="{up}admin.js?v=6";s.defer=true;
+var s=document.createElement("script");s.src="{up}admin.js?v=7";s.defer=true;
 document.head.appendChild(s);}})();
 </script>
 </head>
@@ -788,8 +792,11 @@ def studio(up, asset):
   </div>
 </section>
 
-<!-- ===== THE TEAM ===== -->
-<section class="ink" id="teachers">
+<!-- ===== THE TEAM =====
+     data-pm-section is the switch: config.js / the EDIT panel's Sections tab
+     decides whether this is drawn at all. Off and it leaves the document
+     entirely, rather than standing here as an empty grid. -->
+<section class="ink" id="teachers" data-pm-section="studio.staff">
   <div class="wrap-wide">
     <div class="section-head">
       <div>
@@ -937,8 +944,9 @@ def classes(up, asset):
   </div>
 </section>
 
-<!-- ===== THE TEACHERS - the names on the timetable below ===== -->
-<section class="ink" id="teachers">
+<!-- ===== THE TEACHERS - the names on the timetable below =====
+     Switched by data-pm-section, same as the staff grid on /studio/. -->
+<section class="ink" id="teachers" data-pm-section="classes.teachers">
   <div class="wrap-wide">
     <div class="section-head">
       <div>
@@ -1750,7 +1758,15 @@ def events(up, asset):
 
 # =============================================================== CHERISH =====
 def cherish(up, asset):
-    """Placeholder until the permits clear and the Toast site is live."""
+    """The cafe page. The menu is a photograph of the board rather than an
+    "online ordering is coming" notice: a picture of the real menu is something
+    a visitor can act on today, and a notice that ordering will exist one day
+    is not. The slot publishes through the photo store like every other
+    photograph, so the menu is changed from the EDIT panel - no deploy.
+
+    The Toast button is still wired to toastOrderUrl and still carries
+    data-pm-hide, so it simply is not drawn until that URL is set. Nothing to
+    change here on the day ordering goes live."""
     return f'''{phero(asset, "photos/tea-room.jpg", "Slow down <br>with us.", "The cafe and tea lounge inside Primal Moves Venice.", "Cafe &amp; tea lounge", slot="cherish.hero")}
 
 <section class="light">
@@ -1760,10 +1776,19 @@ def cherish(up, asset):
     <p style="font-size:clamp(17px,1.6vw,20px);line-height:1.7">Cherish is the cafe and tea lounge inside the studio - coffee in the morning, somewhere to sit and work through the day, tea when you&rsquo;re done. It is the reason a day here can be a whole day rather than an hour.</p>
     <p style="margin-top:18px;color:var(--soft)">Nourishment is not only what we consume, but how we experience it. Presence. Ritual. Nourishment.</p>
 
-    <div class="embed-placeholder" style="margin-top:clamp(40px,6vw,64px)">
-      <div class="ph-title">Online ordering is coming</div>
-      <p>Cherish is opening ordering and catering through Toast. Until the permits clear, come and see us in person - we&rsquo;re open whenever the studio is.</p>
-      <div class="cta-row" style="justify-content:center;margin-top:24px">
+    <div class="menu-block" data-pm-section="cherish.menu" style="margin-top:clamp(40px,6vw,64px)">
+      <!-- Explicit copy keys, not the auto-numbered ones. tag_copy numbers by
+           position, so a new heading here would renumber every h2 after it and
+           quietly re-point any stored override - including the footer's. -->
+      <div class="kicker" data-pm-copy="cherish.menu-kicker">The menu</div>
+      <h2 class="display-sm" data-pm-copy="cherish.menu-h2" style="margin:10px 0 22px">what&rsquo;s <span class="ed-it">on</span></h2>
+      <!-- A frame, not an <img>: an empty slot shows its own label instead of a
+           broken picture, and becomes the photograph the moment one is
+           uploaded. .menu-photo fits the whole board rather than cropping to
+           fill - a menu has to be readable end to end. -->
+      <div class="photo-slot menu-photo" data-pm-photo="cherish.menu"><span>The menu &middot; add the photograph in the EDIT panel</span></div>
+      <p class="embed-note" style="margin-top:14px">Prices and pours change with what is good that week. Come and see us in person - we&rsquo;re open whenever the studio is.</p>
+      <div class="cta-row" style="margin-top:22px">
         <a class="btn sage" data-pm-link="toastOrderUrl" data-pm-hide target="_blank" rel="noopener">Order online &rarr;</a>
         <a class="btn" href="{up}studio/#visit">Find us</a>
       </div>

@@ -2,16 +2,9 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-09-11T22:38:12.815784Z",
+ "fetchedAt": "2026-09-12T04:41:14.321428Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
-  {
-   "start": "2026-09-11T23:00:00Z",
-   "name": "Moves - The Signature Practice",
-   "staff": "Gus",
-   "minutes": 60,
-   "category": "Gym classes"
-  },
   {
    "start": "2026-09-12T15:30:00Z",
    "name": "Tea Ceremony",

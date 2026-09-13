@@ -757,7 +757,7 @@ def studio(up, asset):
     <div class="section-head">
       <div>
         <div class="kicker">The space</div>
-        <h2 class="display-sm">Eleven thousand <br>square <span class="ed-it">feet</span>.</h2>
+        <h2 class="display-sm">Twelve thousand <br>square <span class="ed-it">feet</span>.</h2>
       </div>
       <p class="lede" style="max-width:24em">One open floor, a sauna, a plunge, a lounge and a cafe. It is not laid out like a gym because it is not one.</p>
     </div>
@@ -779,7 +779,7 @@ def studio(up, asset):
     </div>
     <div class="kicker">Room by room</div>
     <div class="info-list">
-      <div class="info-row"><div class="i-label">Main floor</div><div class="i-val">11,000 ft² of open practice space - rigging, rings, bars, stall bars, racks and free weights. Where every class happens.</div></div>
+      <div class="info-row"><div class="i-label">Main floor</div><div class="i-val">12,000 ft² of open practice space - rigging, rings, bars, stall bars, racks and free weights. Where every class happens.</div></div>
       <div class="info-row"><div class="i-label">The lounge</div><div class="i-val">Sofas, rugs, a disco ball and a set of decks. Where people end up after class, and where events start.</div></div>
       <div class="info-row"><div class="i-label">Sauna</div><div class="i-val">On-site wood sauna. Included with membership and the two-week trial. <a data-pm-link="saunaHourUrl" target="_blank" rel="noopener" style="text-decoration:underline">Book a 1-hour sauna session →</a></div></div>
       <div class="info-row"><div class="i-label">Cold plunge</div><div class="i-val">Two tubs, outdoors, in the sun. The other half of the sauna.</div></div>
@@ -1475,7 +1475,7 @@ def house_home(up, asset):
       {card("classes.hero", "compound-dumbbells.jpg", "Practice",
             "Classes", "Ten classes a week, from complete beginner to handstand.", hup + "classes/")}
       {card("studio.hero", "space-rings-wide.jpg", "The space",
-            "The Studio", "11,000 ft², rigging overhead, sauna and cold plunge.", hup + "studio/")}
+            "The Studio", "12,000 ft², rigging overhead, sauna and cold plunge.", hup + "studio/")}
       {card("cherish.hero", "tea-room.jpg", "Cafe &amp; tea",
             "Cherish", "Coffee in the morning, tea when you&rsquo;re done, a seat all day.", hup + "cherish/")}
       {card("events.hero", "space-floor-night.jpg", "What&rsquo;s on",
@@ -1604,14 +1604,14 @@ def house_studio(up, asset):
     hup = "" if up == "../" else "../"   # stay inside /house/
     return (
       hs_hero(asset, "studio.hero", "space-rings-wide.jpg", "The studio",
-              "Eleven thousand square feet, rigging overhead, and a sauna.") +
+              "Twelve thousand square feet, rigging overhead, and a sauna.") +
       hs_statement("One room that changes shape",
         "An open floor with rings, bars, stall bars, racks and free weights. Every class happens "
         "here, and most evenings it turns into something else entirely.") +
       hs_band(asset, "house.studio.band-1", "space-bus-rings.jpg") +
       hs_cards(asset, "Room by room", [
         ("studio.room-main-floor", "space-bus-rings.jpg", "The floor", "Main floor",
-         "11,000 ft² of open practice space. Where every class happens.", "#"),
+         "12,000 ft² of open practice space. Where every class happens.", "#"),
         ("studio.room-lounge", "space-lounge-rugs.jpg", "After class", "The lounge",
          "Sofas, rugs, a disco ball and a set of decks.", "#"),
         ("studio.room-sauna", "sauna-still.jpg", "Heat", "Sauna",
@@ -1743,7 +1743,7 @@ def events(up, asset):
     <div class="section-head">
       <div><div class="kicker">Private hire</div><h2>Use the floor.</h2></div>
     </div>
-    <p class="lede" style="max-width:40em">11,000 ft², rigging overhead, sauna and cold plunge, a cafe attached. Available for workshops, brand activations, retreat days, team offsites and film shoots. Cherish handles catering.</p>
+    <p class="lede" style="max-width:40em">Primal Moves Venice offers a range of event rentals and full-space buyouts within our 12,000-square-foot venue. From our expansive main floor to intimate private tea room rentals and full studio takeovers, our space is a true blank canvas. We think outside the box and work with you to bring almost any event or experience to life.</p>
     <div class="cta-row" style="margin-top:28px">
       <a class="btn on-dark" href="mailto:events@primalmoves.com?subject=Private%20hire%20enquiry">Enquire about hire</a>
       <a class="btn ghost-dark" href="{up}studio/#space">See the space ↓</a>
@@ -1899,7 +1899,7 @@ page("index.html", 0, None,
 page("practice/index.html", 1, "practice/", "The Method - Primal Moves Venice",
      "The Primal Moves method: stability, strength, mobility and muscle tone, in four series.", practice, body_cls="page-method")
 page("studio/index.html", 1, "studio/", "The Studio - Primal Moves Venice",
-     "Inside the 11,000 ft² studio room by room, the coaching team, and everything you need for your first visit.", studio, body_cls="page-studio")
+     "Inside the 12,000 ft² studio room by room, the coaching team, and everything you need for your first visit.", studio, body_cls="page-studio")
 page("classes/index.html", 1, "classes/", "Classes &amp; Schedule - Primal Moves Venice",
      "Every class we run, who it's for, where to start, and the live schedule to book it.", classes, body_cls="page-classes")
 page("memberships/index.html", 1, "memberships/", "Membership - Primal Moves Venice",
@@ -1924,7 +1924,7 @@ HOUSE = [
     ("house/classes/index.html", 2, "classes/", "Classes & Schedule - Primal Moves Venice",
      "Every class we run, and the live timetable.", house_classes),
     ("house/studio/index.html", 2, "studio/", "The Studio - Primal Moves Venice",
-     "Inside the 11,000 ft² studio, room by room.", house_studio),
+     "Inside the 12,000 ft² studio, room by room.", house_studio),
     ("house/memberships/index.html", 2, "memberships/", "Membership - Primal Moves Venice",
      "Memberships and passes, side by side.", house_memberships),
     ("house/cherish/index.html", 2, "cherish/", "Cherish - Cafe & Tea Lounge", 

@@ -1786,8 +1786,13 @@ def cherish(up, asset):
            broken picture, and becomes the photograph the moment one is
            uploaded. .menu-photo fits the whole board rather than cropping to
            fill - a menu has to be readable end to end. -->
-      <div class="photo-slot menu-photo" data-pm-photo="cherish.menu"><span>The menu &middot; add the photograph in the EDIT panel</span></div>
-      <p class="embed-note" style="margin-top:14px">Prices and pours change with what is good that week. Come and see us in person - we&rsquo;re open whenever the studio is.</p>
+      <div class="photo-slot menu-photo" data-pm-photo="cherish.menu"
+           data-pm-alt="The Cherish menu board - coffee, tea, cacao, smoothies and bites, with prices."><span>The menu &middot; add the photograph in the EDIT panel</span></div>
+      <!-- A three-column menu board shrunk to a phone is unreadable however it
+           is scaled, so there is a way to open it at full size. Plain link, no
+           lightbox - it also gives the photograph an accessible name. -->
+      <p class="embed-note" style="margin-top:12px"><a href="{asset}photos/cherish-menu.jpg" target="_blank" rel="noopener" style="text-decoration:underline">Open the menu full size &#8599;</a></p>
+      <p class="embed-note" style="margin-top:10px">Prices and pours change with what is good that week. Come and see us in person - we&rsquo;re open whenever the studio is.</p>
       <div class="cta-row" style="margin-top:22px">
         <a class="btn sage" data-pm-link="toastOrderUrl" data-pm-hide target="_blank" rel="noopener">Order online &rarr;</a>
         <a class="btn" href="{up}studio/#visit">Find us</a>

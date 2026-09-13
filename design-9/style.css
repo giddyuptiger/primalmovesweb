@@ -839,7 +839,10 @@ body.house .photo-slot.menu-photo{height:auto;min-height:clamp(240px,32vw,360px)
 .photo-slot.menu-photo:has(img[data-pm-fill]),
 body.house .photo-slot.menu-photo:has(img[data-pm-fill]){padding:0;min-height:0;background:transparent}
 .photo-slot.menu-photo img[data-pm-fill]{position:static;inset:auto;
-  width:auto;max-width:min(100%,760px);height:auto;max-height:88vh;object-fit:contain}
+  /* 760px was a photograph's width. This is a menu board 1596px wide with
+     8pt type on it - every pixel of width is legibility, and the 88vh cap
+     still stops it running past the fold. */
+  width:auto;max-width:min(100%,1180px);height:auto;max-height:88vh;object-fit:contain}
 .photo-slot span{font-size:10.5px;font-weight:500;letter-spacing:.2em;
   text-transform:uppercase;color:var(--soft);max-width:22ch;line-height:2}
 section.ink .photo-slot{background:rgba(255,255,255,.07)}

@@ -212,10 +212,13 @@ window.PM_CONFIG = {
     "memberships.hero":       "boat-collective.jpg",
     "events.hero":            "space-floor-night.jpg",
     "cherish.hero":           "tea-room.jpg",          // <-- needs a real CAFE shot
-    // The menu, as a photograph of the board. Blank until someone uploads one
-    // in the EDIT panel's Photos tab - the slot then shows its own label
-    // rather than a broken picture. Ask Miki for the shot.
-    "cherish.menu":           "",
+    /* The menu board, committed rather than uploaded. Everything else in this
+       map can be swapped from the EDIT panel; this one is the cafe's prices,
+       so it belongs in the repository where it is versioned and cannot vanish
+       if the photo store has a bad day. Replace the file, not this line.
+       (There were briefly two "cherish.menu" keys in this object and the
+       later one won, which is a silent way to lose an afternoon.) */
+    "cherish.menu":           "cherish-menu.jpg",
     "partners.hero":          "compound-dumbbells-crop.jpg",
     "partners.pitch":         "bands-effort.jpg",
     "shop.hero":              "barbell-joy.jpg"
@@ -940,7 +943,10 @@ window.PM_CONFIG = {
             if (!inner) {
               inner = document.createElement("img");
               inner.setAttribute("data-pm-fill", "");
-              inner.alt = "";
+              /* Empty alt is right for a decorative portrait frame and wrong
+                 for the cafe menu, which is a document with prices in it. A
+                 slot can name itself with data-pm-alt. */
+              inner.alt = el.getAttribute("data-pm-alt") || "";
               el.textContent = "";                       // drop the "PORTRAIT" label
               el.appendChild(inner);
             }

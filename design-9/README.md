@@ -3,7 +3,11 @@
 **The agreed build.** design-8's warmth, carrying every decision from the
 working session.
 
-Live: `https://giddyuptiger.github.io/primalmovesweb/design-9/`
+Live: <https://venice.primalmoves.com> — served by Cloudflare from `design-9/`.
+
+> **This file is out of date in places** (the accent colour section below
+> predates the chartreuse swap). `CLAUDE.md` at the repo root is the maintained
+> orientation; treat this one as design notes from the build.
 
 ## What this is
 
@@ -54,13 +58,16 @@ A panel for trying colours, photographs and copy on the live pages without
 touching code. The **EDIT** tab on the right edge opens and closes it; the page
 and the nav both narrow so nothing sits underneath.
 
-**While we're designing it's open to everyone** — no passphrase, the tab shows
-on every page, and the panel starts closed so a visitor sees an untouched page.
+**The panel is invisible to visitors.** `admin.js` is not even fetched unless
+the browser has logged in at `/admin/` — the built pages gate the script tag on
+`localStorage.pm_admin`, and `admin.js` fails closed on the same check at the
+top of the file. Staff reach it through `/admin/` and the passphrase; saving
+anything additionally needs the worker's write key.
 
-> **Before launch, set `studioOpenToAll: false` in `config.js`.** Nothing the
-> studio does can change what other people see, but a public EDIT tab on a real
-> business site looks unfinished. With it off, the studio is reachable only via
-> `/admin/`.
+> Earlier versions of this file said the tab showed for everyone and told you to
+> set `studioOpenToAll: false` before launch. That was true before the loader
+> gate was added and is not true now — `studioOpenToAll` is never read. See
+> `CLAUDE.md` at the repo root.
 
 **Colour** assigns any brand colour to any role and warns when a choice drops
 below 4.5:1.

@@ -139,9 +139,14 @@ window.PM_CONFIG = {
              nothing else until they open it.
      false = hidden unless someone goes to /admin/ and enters the passphrase.
 
-     >>> FLIP THIS TO false BEFORE THE SITE GOES LIVE. <<<
-     Nothing the studio does can change what other people see - it's all
-     preview - but a public EDIT tab on a real business site looks unfinished. */
+     DEAD CONFIG - this value is never reached, whatever it says.
+     Two gates were added after this comment was written, and both run first:
+     the built pages only fetch admin.js at all when localStorage pm_admin is
+     "1", and admin.js itself returns on the same check at the top of the file,
+     before studioOpenToAll is read. A visitor gets no tab and no panel either
+     way. This used to say "FLIP THIS TO false BEFORE LAUNCH" and that advice
+     sent a later session hunting for a problem that no longer exists. Left in
+     place only because admin.js still references it; safe to remove with it. */
   studioOpenToAll: true,
 
   /* --- COPY OVERRIDES -----------------------------------------------------

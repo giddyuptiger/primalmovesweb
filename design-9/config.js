@@ -202,11 +202,17 @@ window.PM_CONFIG = {
     "method.series-4":        "handstand-wall.jpg",
 
     "studio.hero":            "space-rings-wide.jpg",
-    "studio.room-main-floor": "space-bus-rings.jpg",
+    /* The six tiles under "Twelve thousand square feet", in the order they
+       are drawn. room-lounge and room-plunge are not tiles - they are the
+       room-by-room list further down the same page. */
+    "studio.room-main-floor": "collective-downdog.jpg",   // Movement Space
+    "studio.room-gym":        "compound-dumbbells.jpg",   // Gym
+    "studio.room-wellness":   "assist-hands.jpg",         // Wellness
+    "studio.room-cafe":       "space-lounge-rugs.jpg",    // Cafe
+    "studio.room-tea":        "tea-room.jpg",             // Tea Lounge
+    "studio.room-sauna":      "sauna-still.jpg",          // Sauna + Cold Plunge
     "studio.room-lounge":     "space-lounge-rugs.jpg",
-    "studio.room-sauna":      "sauna-still.jpg",
     "studio.room-plunge":     "plunge-two.jpg",
-    "studio.room-tea":        "tea-room.jpg",
 
     "classes.hero":           "collective-downdog.jpg",
     "memberships.hero":       "boat-collective.jpg",

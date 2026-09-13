@@ -283,7 +283,6 @@ section.flush{padding:0}
   padding:0 var(--gut) clamp(34px,5vh,58px);color:var(--cream)}
 .phero .display-sm,.phero .display{color:var(--cream);text-shadow:0 1px 20px rgba(20,18,14,.5)}
 .phero p{color:rgba(251,248,243,.9);margin-top:16px;max-width:32em}
-.phero .kicker{color:rgba(251,248,243,.7)!important}
 
 /* ------------------------------------------------------- TWO WAYS IN ----- */
 .ways{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line)}
@@ -1914,7 +1913,6 @@ body.house .hero .kicker{font-size:11px;font-weight:400;letter-spacing:.22em;
 body.house .phero :is(h1,.display,.display-sm){
   text-transform:uppercase;font-weight:200;letter-spacing:.015em;
   font-size:clamp(38px,6vw,84px);line-height:1.04;color:var(--cream)}
-body.house .phero .kicker{display:none}
 
 
 /* the mobile menu follows the same rule as the rest of House: caps, light */
@@ -2082,8 +2080,8 @@ body.house .cls-groups .cls-group{text-align:center}
   margin-top:clamp(26px,3.5vw,40px);padding-top:22px;border-top:1px solid var(--line)}
 .online-nudge p{margin:0;color:var(--mid);font-size:15.5px}
 
-/* the four spaces of the studio — squares, labelled */
-.spaces{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,1.4vw,20px)}
+/* the six spaces of the studio — squares, labelled. 3 across, 2 on a phone. */
+.spaces{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.4vw,20px);row-gap:clamp(18px,2.2vw,30px)}
 .spaces figure{margin:0}
 .spaces img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:6px;display:block}
 .spaces figcaption{margin-top:10px;font-size:11px;font-weight:600;letter-spacing:.2em;
@@ -2102,7 +2100,6 @@ body.house .cls-groups .cls-group{text-align:center}
    ========================================================================== */
 .kicker{font-size:12px;font-weight:600;color:var(--mid)}
 section.ink .kicker,.statement .kicker{color:var(--accent-soft)}
-.phero .kicker{color:rgba(251,248,243,.85)!important}
 
 .foot-top :is(h2,h4){font-size:12.5px;font-weight:700;color:var(--cream)}
 .foot-block :is(h2,h4){font-size:12.5px;font-weight:700;color:var(--cream)}

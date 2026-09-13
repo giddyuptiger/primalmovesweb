@@ -353,13 +353,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     print("wrote", p)
 
 
-def phero(asset, img, title, sub="", kicker="", slot=""):
-    k = f'<div class="kicker" style="color:rgba(255,255,255,.75)">{kicker}</div>' if kicker else ""
+def phero(asset, img, title, sub="", slot=""):
+    """A page hero: photograph, H1, one line of sub.
+
+    There used to be an eyebrow above the H1 - "JOIN" over "memberships",
+    "WHERE IT HAPPENS" over "the studio". It restated the title in smaller
+    letters and earned nothing, so it is gone rather than hidden: no markup,
+    no text for a screen reader to read out twice.
+    """
     s = f"<p>{sub}</p>" if sub else ""
     sl = f' data-pm-photo="{slot}"' if slot else ""
     return f'''<section class="phero flush">
   <img{sl} src="{asset}{img}" alt="">
-  <div class="phero-inner">{k}
+  <div class="phero-inner">
     <h1 class="display-sm">{title}</h1>
     {s}
   </div>
@@ -749,7 +755,7 @@ PARTNERS = []
 def studio(up, asset):
     people = '<div data-pm-people="staff">' + people_grid(STAFF) + "</div>"
 
-    return f'''{phero(asset, "photos/space-rings-wide.jpg", "The Studio", "The room, the people who hold it, and everything you need to walk in the door.", "Where it happens", slot="studio.hero")}
+    return f'''{phero(asset, "photos/space-rings-wide.jpg", "The Studio", "The room, the people who hold it, and everything you need to walk in the door.", slot="studio.hero")}
 
 <!-- ===== THE SPACE ===== -->
 <section id="space">
@@ -761,10 +767,16 @@ def studio(up, asset):
       </div>
       <p class="lede" style="max-width:24em">One open floor, a sauna, a plunge, a lounge and a cafe. It is not laid out like a gym because it is not one.</p>
     </div>
-    <!-- Four spaces, four squares - the collage gave way to one photo per
-         part of the studio, each labelled and each still a live photo slot. -->
+    <!-- Six parts of the studio, one photograph each, every one a live photo
+         slot the EDIT panel can republish. This was four until the movement
+         space and the gym were pulled apart and wellness given its own tile -
+         they are different rooms and different reasons to come in. Six sits
+         as 3x2 on a desktop and 2x3 on a phone; nothing is ever orphaned on
+         a row of its own. -->
     <div class="spaces" style="margin-bottom:44px">
-      <figure><img data-pm-photo="studio.room-main-floor" src="{asset}photos/space-bus-rings.jpg" alt="The movement space and gym"><figcaption>Movement Space + Gym</figcaption></figure>
+      <figure><img data-pm-photo="studio.room-main-floor" src="{asset}photos/collective-downdog.jpg" alt="A class practising on the open floor"><figcaption>Movement Space</figcaption></figure>
+      <figure><img data-pm-photo="studio.room-gym" src="{asset}photos/compound-dumbbells.jpg" alt="Free weights on the main floor"><figcaption>Gym</figcaption></figure>
+      <figure><img data-pm-photo="studio.room-wellness" src="{asset}photos/assist-hands.jpg" alt="Hands-on bodywork"><figcaption>Wellness</figcaption></figure>
       <figure><img data-pm-photo="studio.room-cafe" src="{asset}photos/space-lounge-rugs.jpg" alt="The cafe"><figcaption>Cafe</figcaption></figure>
       <figure><img data-pm-photo="studio.room-tea" src="{asset}photos/tea-room.jpg" alt="The tea lounge"><figcaption>Tea Lounge</figcaption></figure>
       <figure><img data-pm-photo="studio.room-sauna" src="{asset}photos/sauna-still.jpg" alt="The sauna and cold plunge"><figcaption>Sauna + Cold Plunge</figcaption></figure>
@@ -908,7 +920,7 @@ def classes(up, asset):
     <div class="cls-list">{"".join(tile(*r) for r in grows)}
     </div>''' for gname, grows in CLASS_GROUPS)
 
-    return f'''{phero(asset, "photos/collective-downdog.jpg", "Classes &amp; Schedule", "What's on, who it's for, and how to book it.", "Find your entry point", slot="classes.hero")}
+    return f'''{phero(asset, "photos/collective-downdog.jpg", "Classes &amp; Schedule", "What's on, who it's for, and how to book it.", slot="classes.hero")}
 
 <section class="pad-sm">
   <div class="wrap-wide">
@@ -1022,7 +1034,7 @@ def memberships(up, asset):
                       bc="on" if MEM_VIEW == "compare" else "") if MEM_TOGGLE else ""
     cmp_attr   = "" if MEM_VIEW == "compare" else " hidden"
     cards_attr = "" if MEM_VIEW == "cards" else " hidden"
-    return f'''{phero(asset, "photos/boat-collective.jpg", "Memberships", "The natural next step - after you've felt what this is.", "Join", slot="memberships.hero")}
+    return f'''{phero(asset, "photos/boat-collective.jpg", "Memberships", "The natural next step - after you've felt what this is.", slot="memberships.hero")}
 
 <section class="pad-sm">
   <div class="wrap-wide">
@@ -1706,7 +1718,7 @@ def events(up, asset):
         <div class="go-cell"><a class="link-arrow" data-pm-link="lumaPageUrl" target="_blank" rel="noopener">Register →</a></div>
       </div>''' for mon, day, name, meta, tag, cat in evs)
 
-    return f'''{phero(asset, "photos/space-floor-night.jpg", "Events", "Workshops, tea, music, community - and a lot of it free.", "What's on", slot="events.hero")}
+    return f'''{phero(asset, "photos/space-floor-night.jpg", "Events", "Workshops, tea, music, community - and a lot of it free.", slot="events.hero")}
 
 <section class="pad-sm">
   <div class="wrap-wide">
@@ -1767,7 +1779,7 @@ def cherish(up, asset):
     The Toast button is still wired to toastOrderUrl and still carries
     data-pm-hide, so it simply is not drawn until that URL is set. Nothing to
     change here on the day ordering goes live."""
-    return f'''{phero(asset, "photos/tea-room.jpg", "Slow down <br>with us.", "The cafe and tea lounge inside Primal Moves Venice.", "Cafe &amp; tea lounge", slot="cherish.hero")}
+    return f'''{phero(asset, "photos/tea-room.jpg", "Slow down <br>with us.", "The cafe and tea lounge inside Primal Moves Venice.", slot="cherish.hero")}
 
 <section class="light">
   <div class="wrap">
@@ -1823,7 +1835,7 @@ def partners(up, asset):
   </div>
 </section>'''
 
-    return f'''{phero(asset, "photos/compound-dumbbells-crop.jpg", "Primal Partners", "Brands, studios and people we actually work with.", "Collaborate", slot="partners.hero")}
+    return f'''{phero(asset, "photos/compound-dumbbells-crop.jpg", "Primal Partners", "Brands, studios and people we actually work with.", slot="partners.hero")}
 
 <section class="pad-sm">
   <div class="wrap">
@@ -1857,7 +1869,7 @@ def partners(up, asset):
 
 # ================================================================== SHOP =====
 def shop(up, asset):
-    return f'''{phero(asset, "photos/barbell-joy.jpg", "Shop", "Merch treated like a cultural campaign, not a gym tee.", "Wear it", slot="shop.hero")}
+    return f'''{phero(asset, "photos/barbell-joy.jpg", "Shop", "Merch treated like a cultural campaign, not a gym tee.", slot="shop.hero")}
 
 <section class="pad-sm">
   <div class="wrap-wide">

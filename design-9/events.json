@@ -1,16 +1,9 @@
 {
  "source": "luma",
  "calendarId": "cal-CRQbJyS4jRRrfsN",
- "fetchedAt": "2026-09-14T05:02:28.908160Z",
+ "fetchedAt": "2026-09-14T15:03:35.427949Z",
  "calendarUrl": "https://luma.com/user/PrimalMoves",
  "events": [
-  {
-   "title": "Spa Party \u2014 Decompression + Integration (Post-Burn)",
-   "start": "2026-09-13T23:00:00Z",
-   "allDay": false,
-   "url": "https://luma.com/8szb6j0d",
-   "location": "Primal Moves, 1038 Princeton Dr Ste B, Marina Del Rey, CA 90292, USA"
-  },
   {
    "title": "EMDR Dance. Primal Moves. All Women. This Time with Feeling\u2728",
    "start": "2026-09-23T02:00:00Z",

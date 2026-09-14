@@ -907,10 +907,10 @@ def classes(up, asset):
         return f'''
       <div class="cls">
         <div class="n">{n}</div>
-        <a class="cls-head" href="#schedule">
+        <div class="cls-head">
           <h3>{name}</h3>
           <div class="cls-meta"><span class="lvl{' beginner' if beg else ''}">{lvl}</span><span class="lvl dur">{dur}</span></div>
-        </a>
+        </div>
         <button class="cls-more" aria-expanded="false" aria-label="What {name} involves"></button>
         <div class="desc"><span>{desc}</span></div>
       </div>'''
@@ -1569,9 +1569,9 @@ def house_classes(up, asset):
     def _tile(n, name, desc, lvl, beg, dur):
         return f'''
       <div class="cls">
-        <a class="cls-head" href="#schedule"><h3>{name}</h3>
+        <div class="cls-head"><h3>{name}</h3>
           <div class="cls-meta"><span class="lvl{' beginner' if beg else ''}">{lvl}</span><span class="lvl dur">{dur}</span></div>
-        </a>
+        </div>
         <button class="cls-more" aria-expanded="false" aria-label="What {name} involves"></button>
         <div class="desc"><span>{desc}</span></div>
       </div>'''

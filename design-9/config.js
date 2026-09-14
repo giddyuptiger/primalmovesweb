@@ -776,8 +776,15 @@ window.PM_CONFIG = {
        page instead gave /studio/joy-laughing.jpg. That 404s quietly, which is
        why published portraits appeared for nobody. */
     function assetBase() {
-      var any = document.querySelector("img[data-pm-photo][src]");
-      if (any) return (any.getAttribute("src") || "").replace(/[^/]+$/, "");
+      /* Only a repo photograph says where repo photographs live. Once the
+         live set lands, a slot can hold a published upload - an absolute
+         pm-studio /img/ URL - and borrowing that folder sent the cafe menu
+         to pm-studio.../img/cherish-menu.jpg, a broken image. */
+      var imgs = document.querySelectorAll("img[data-pm-photo][src]");
+      for (var i = 0; i < imgs.length; i++) {
+        var s = imgs[i].getAttribute("src") || "";
+        if (!/^([a-z]+:|\/\/)/i.test(s)) return s.replace(/[^/]+$/, "");
+      }
       var css = (document.querySelector('link[rel="stylesheet"][href*="style.css"]') || {}).href || "";
       /* Strip the stylesheet's filename and go up one - do not look for a
          "design-9/" segment. Cloudflare publishes design-9 AS the site root,
@@ -1225,12 +1232,21 @@ window.PM_CONFIG = {
       show(location.hash === "#cards" ? "tab-cards" : "tab-compare", false);
     }
 
-    // class cards: the description opens on the plus, nowhere else.
+    /* class cards: a tap anywhere on the card opens its description. The
+       head used to be a link to #schedule, so tapping a class name jumped
+       down the page instead of saying what the class is. The plus stays as
+       the keyboard control and carries aria-expanded. Taps inside an open
+       description don't close it (people select and re-read that text), and
+       the EDIT panel's copy mode is left alone so text can be edited. */
     document.addEventListener("click", function (e) {
-      var b = e.target.closest(".cls-more");
-      if (!b) return;
-      var card = b.closest(".cls");
+      var card = e.target.closest(".cls");
       if (!card) return;
+      if (document.body.classList.contains("pm-copy-mode")) return;
+      if (e.target.closest("a[href], [contenteditable=true]")) return;
+      var b = card.querySelector(".cls-more");
+      if (!b) return;
+      if (!e.target.closest(".cls-more") && card.classList.contains("open") &&
+          e.target.closest(".desc")) return;
       // one at a time - two open tiles both claim a full row on a phone and
       // push everything else off the screen
       var wasOpen = card.classList.contains("open");

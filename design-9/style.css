@@ -374,7 +374,7 @@ section.ink .cls{background:transparent;border-color:rgba(255,255,255,.18)}
    made the grid so tall there in the first place. */
 .cls.open .desc{grid-template-rows:1fr;opacity:1;margin-top:12px}
 
-.cls{position:relative;cursor:default}
+.cls{position:relative;cursor:pointer}
 .cls-head{text-decoration:none;color:inherit}
 .cls-more{position:absolute;top:8px;right:8px;width:30px;height:30px;padding:0;
   border:0;background:transparent;color:var(--soft);cursor:pointer;

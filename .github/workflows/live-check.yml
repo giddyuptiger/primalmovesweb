@@ -1,0 +1,74 @@
+# Cloudflare Pages deploys main on every push, until it doesn't. The Git
+# integration stopped silently on 10 September and the site served a stale
+# build for three days. When it was reconnected, the first build failed on a
+# typo, and again nothing said so.
+#
+# Every hour: fetch key pages from the live site and compare them byte for byte
+# with main (tools/check_live.py). Reads the public site only, no Cloudflare
+# credentials. A mismatch fails this run and opens a GitHub issue (labelled
+# live-site), so it lands in notifications. A non-200 or a bot challenge
+# counts as inconclusive and only warns. The issue closes itself on the next
+# clean run.
+name: Live site matches main
+
+on:
+  schedule:
+    - cron: "47 * * * *"        # 30 min after the refresh Action, clear of its deploy
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: live-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0          # the report names which commit live is stuck on
+
+      - name: Compare the live site with main
+        id: live
+        run: |
+          set -o pipefail
+          python3 tools/check_live.py | tee "$RUNNER_TEMP/report.md"
+
+      - name: Open or update the issue
+        if: failure() && steps.live.outputs.outcome == 'diverged'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Live site is not serving main"
+          RUN="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          {
+            echo "The hourly live check found the live site out of step with \`main\`."
+            echo "Most likely the Cloudflare Pages build failed or the Git integration disconnected."
+            echo "Check the Cloudflare Pages check run on the latest commit, and the project's"
+            echo "build settings: build command \`cp -r assets design-9/\`, output directory \`design-9\`."
+            echo
+            echo "Run: $RUN"
+            echo
+            cat "$RUNNER_TEMP/report.md"
+          } > "$RUNNER_TEMP/body.md"
+          gh label create live-site --color B60205 --description "Live site check" --force
+          N=$(gh issue list --label live-site --state open --json number --jq '.[0].number // empty')
+          if [ -n "$N" ]; then
+            gh issue comment "$N" --body-file "$RUNNER_TEMP/body.md"
+          else
+            gh issue create --title "$TITLE" --label live-site --body-file "$RUNNER_TEMP/body.md"
+          fi
+
+      - name: Close the issue once live matches again
+        if: success() && steps.live.outputs.outcome == 'ok'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for N in $(gh issue list --label live-site --state open --json number --jq '.[].number'); do
+            gh issue close "$N" --comment "Live matches \`main\` again as of ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          done

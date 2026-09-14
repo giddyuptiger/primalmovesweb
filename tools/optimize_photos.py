@@ -19,8 +19,8 @@ from PIL import Image
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "assets" / "photos"
-# Alongside the masters, because wrangler.toml's build step is
-#   cp -r assets design-9/ && npx wrangler deploy
+# Alongside the masters, because the Cloudflare Pages build command is
+#   cp -r assets design-9/
 # and design-9 is what gets served. Anything not under assets/ never reaches
 # the site.
 OPT = SRC / "opt"

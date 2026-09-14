@@ -7,7 +7,7 @@
 # minutes of footage to watch a few seconds of it.
 #
 # The 128s master lives in masters/, not in assets/: the Cloudflare build is
-# `cp -r assets design-9/ && npx wrangler deploy`, so anything under assets/
+# `cp -r assets design-9/`, so anything under assets/
 # is public, and there is no reason to serve 14MB nobody asks for. Three files come out
 # of one window: the film desktop plays, a phone-sized version of the same
 # window, and the loop's own first frame as the poster.

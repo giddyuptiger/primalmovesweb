@@ -1,13 +1,25 @@
-# THE WEBSITE ITSELF, served as a Worker with static assets.
-# This is Cloudflare's current recommendation over a Pages project, and it is
-# what the dashboard's "Create a Worker → Connect to Git" flow expects to find
-# at the repo root. Deploy command in that flow: npx wrangler deploy
+# NOT HOW THE SITE DEPLOYS. Read this before running anything.
 #
-# Locally:  npx wrangler deploy
+# venice.primalmoves.com is a Cloudflare PAGES project ("primalmovesweb")
+# connected to this repo's main branch. Its build settings are exactly:
+#   Build command:           cp -r assets design-9/
+#   Build output directory:  design-9
+# Pages uploads design-9 itself. There is no wrangler step. Putting
+# `npx wrangler deploy` in that build command deploys a SEPARATE Worker from
+# this file on top of the site, and it cost a lot of time once already.
 #
-# The OTHER Worker — the photo store, with KV and R2 — is a separate config
-# at tools/wrangler.toml. They are two different Workers on purpose: one
-# serves pages to the public, one holds the photographs. Deploy that one with
+# Pages ignores this file: it has no pages_build_output_dir, and the build log
+# says it is skipping it. What is below is a Worker-with-static-assets config
+# kept for a possible future move from Pages to Workers. Nothing reads it today.
+# Don't run `npx wrangler deploy` against it unless you are making that move
+# on purpose.
+#
+# The photographs live in assets/ at the repo root and the pages reference
+# ../assets/photos/…, above design-9. That is what the `cp` in the Pages build
+# command is for.
+#
+# The OTHER Worker, the photo store with KV and R2, is a real, deployed Worker
+# with its own config at tools/wrangler.toml. Deploy that one with
 #   npx wrangler deploy -c tools/wrangler.toml
 
 account_id = "0d725810f652de83db7340b6e2bbdf3c"
@@ -15,14 +27,7 @@ account_id = "0d725810f652de83db7340b6e2bbdf3c"
 name = "primalmovesweb"
 compatibility_date = "2026-08-01"
 
-# The photographs live in assets/ at the repo root and the pages reference
-# ../assets/photos/… — above this directory. So before deploying, from the
-# repo root:  cp -r assets design-9/
-# (Workers Builds: put that in the build command. Locally it is one line.)
-
 [assets]
-# design-9 is the site. The other design-N folders stay in the repo and stop
-# being served the moment this deploys.
 directory = "./design-9"
 # a missing path serves the 404 page rather than the homepage
 not_found_handling = "404-page"

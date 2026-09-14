@@ -45,28 +45,54 @@ those directly — the build does not generate them.
 
 ## How a deploy actually works
 
-`wrangler.toml` at the repo root defines a Cloudflare Worker with
-`[assets] directory = "./design-9"`. The build command on Cloudflare is:
+The site is a **Cloudflare Pages** project, `primalmovesweb`, connected to this
+repo's `main` branch (custom domain `venice.primalmoves.com`, also served at
+`primalmovesweb.pages.dev`). Its build settings are exactly:
 
-```
-cp -r assets design-9/ && npx wrangler deploy
-```
+| | |
+|---|---|
+| Build command | `cp -r assets design-9/` |
+| Build output directory | `design-9` |
+| Root directory | empty |
+
+**There is no `wrangler deploy` in the build.** Pages uploads the output
+directory itself. Adding `npx wrangler deploy` would deploy a *separate* Worker
+on top, not the site. The root `wrangler.toml` is not used by Pages. The build
+log says it is skipping the file because it has no `pages_build_output_dir`,
+and that line is harmless.
 
 That `cp` is why **`design-9/assets/` is gitignored** — it is a build-time copy
 of `assets/`, not something to commit. Anything a page needs to serve must live
-under `assets/` or it never reaches the site.
+under `assets/` or it never reaches the site. The pages reference
+`../assets/…`, above the deploy root, so without the copy every photo 404s.
 
 Pushing to `main` is the deploy. Cloudflare builds in about a minute.
+
+**The Git integration can fail without telling anyone.** The last
+successful deploy before it stopped was `796a6fd` (10 September, 12:57 UTC).
+The site then served that build while 23 commits landed on `main`. It was
+reconnected on 13 September, and the first build failed on a typo in the build
+command (`p -r …`). Neither showed up anywhere you would look. Don't trust the
+dashboard. Check the live site:
+
+- `.github/workflows/live-check.yml` runs hourly. It fetches key pages from
+  the live site and fails, and opens a GitHub issue, when they don't match
+  `main`. A non-200 or a bot challenge counts as inconclusive, not as a failure.
+- The Cloudflare Pages check run on each commit on GitHub shows whether that
+  commit's build succeeded.
 
 ### deploy.command
 
 Jeremy double-clicks `deploy.command` in Finder. It:
 
-1. unpacks the newest `pm-*.tar.gz` in the folder, if there is one, then deletes it
-2. deletes any paths listed in `pm-remove.txt` (a tarball can add files but never remove one)
-3. restores `design-9/schedule.json` and `design-9/events.json` from git
-4. commits everything as `site update <date>`
-5. `git pull --rebase --autostash`, then pushes
+1. unpacks **every** `pm-*.tar.gz` in the folder, oldest first, so a newer
+   package overwrites an older one. After each one it deletes any paths listed
+   in `pm-remove.txt` (a tarball can add files but never remove one), then
+   deletes that tarball. If one fails to unpack it stops, and that tarball and
+   every later one stay in the folder.
+2. restores `design-9/schedule.json` and `design-9/events.json` from git
+3. commits everything as `site update <date>`
+4. `git pull --rebase --autostash`, then pushes
 
 **So: if you want work deployed, hand Jeremy a `pm-*.tar.gz` in the repo folder.
 Do not push a branch and expect `deploy.command` to find it** — it only commits
@@ -156,6 +182,9 @@ site is backed by something you ran:
 
 Kept short and current. Delete lines as they are done.
 
+- GitHub Pages is still building this repo on every push
+  (`pages-build-deployment`). It serves nothing we use. Turn it off in
+  Settings → Pages.
 - `planPrimalUrl` in `config.js` points at a Mindbody link Jeremy reports does
   not work. The other five booking links are verified by name and price.
 - Six photos uploaded through the panel return 404 from the `pm-studio` worker.

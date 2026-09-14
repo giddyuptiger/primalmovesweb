@@ -17,23 +17,12 @@ restore_generated() {
   done
 }
 
-# newest pm-*.tar.gz sitting in this folder, if any
-TAR=$(ls -t pm-*.tar.gz 2>/dev/null | head -1)
-if [ -n "$TAR" ]; then
-  echo "unpacking $TAR"
-  tar xzf "$TAR" || { echo "✗ could not unpack $TAR"; read -r -p "press return"; exit 1; }
-  rm -f pm-*.tar.gz
-else
-  echo "no new package — committing whatever has changed"
-fi
-
-restore_generated
-
 # A tarball can add and replace files but never remove one. When a package
 # retires a page, it carries pm-remove.txt - one path per line, each inside
-# design-9/ - and those get deleted here before the commit. Anything outside
-# design-9/, or containing "..", is ignored.
-if [ -f pm-remove.txt ]; then
+# design-9/ - and those get deleted right after that package is unpacked.
+# Anything outside design-9/, or containing "..", is ignored.
+apply_removals() {
+  [ -f pm-remove.txt ] || return 0
   while IFS= read -r p; do
     case "$p" in
       ""|"#"*) continue ;;
@@ -44,7 +33,36 @@ if [ -f pm-remove.txt ]; then
     if [ -e "$p" ]; then echo "removing $p"; rm -rf "$p"; fi
   done < pm-remove.txt
   rm -f pm-remove.txt
+}
+
+# Every pm-*.tar.gz in this folder, oldest first, so a newer package overwrites
+# an older one. Each tarball is deleted only after it has been unpacked and its
+# removals applied, and never by a glob: if one fails, it and every later one
+# stay in the folder untouched. (This used to unpack only the newest and then
+# delete them all, which threw away any package sent before it.)
+TARS=$(ls -tr pm-*.tar.gz 2>/dev/null)
+if [ -n "$TARS" ]; then
+  apply_removals   # a pm-remove.txt left over from an earlier, interrupted run
+  OLDIFS=$IFS; IFS='
+'
+  for TAR in $TARS; do
+    IFS=$OLDIFS
+    echo "unpacking $TAR"
+    if ! tar xzf "$TAR"; then
+      echo "✗ could not unpack $TAR"
+      echo "  it and any newer packages are still in the folder; nothing was committed"
+      read -r -p "press return"; exit 1
+    fi
+    apply_removals
+    rm -f -- "$TAR"
+  done
+  IFS=$OLDIFS
+else
+  echo "no new package — committing whatever has changed"
+  apply_removals
 fi
+
+restore_generated
 
 if [ -z "$(git status --porcelain)" ]; then
   echo "✓ nothing to deploy, the repo already matches"

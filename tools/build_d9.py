@@ -323,7 +323,7 @@ if(t==="1"||(t===null&&(window.PM_CONFIG||{{}}).texture))document.documentElemen
 }}catch(e){{}}}})();</script>
 <script>
 (function(){{try{{if(localStorage.getItem("pm_admin")!=="1")return;}}catch(e){{return;}}
-var s=document.createElement("script");s.src="{up}admin.js?v=7";s.defer=true;
+var s=document.createElement("script");s.src="{up}admin.js?v=8";s.defer=true;
 document.head.appendChild(s);}})();
 </script>
 </head>

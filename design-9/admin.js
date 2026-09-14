@@ -63,9 +63,11 @@
 
   /* ---------------------------------------------------------------- live --
      Photographs are the one thing that publishes. Swap or upload one and it
-     is live for every visitor within seconds - no push, no deploy. Colour
-     and wording deliberately do NOT work this way: they are saved into
-     configs so people can try things without moving the real site.
+     previews on this page; press Publish on the bar that appears and it is
+     live for every visitor within seconds - no push, no deploy. Nothing
+     reaches the store until that press. Colour and wording deliberately do
+     NOT work this way: they are saved into configs so people can try things
+     without moving the real site.
      The store is the Worker in tools/pm-worker.js.                       */
 
   var LIVE = String(CFG.liveApi || "").replace(/\/+$/, "");
@@ -190,6 +192,72 @@
     if (!t.parentNode) document.body.appendChild(t);
     t.classList.add("on");
     clearTimeout(t._h); t._h = setTimeout(function () { t.classList.remove("on"); }, 3200);
+  }
+
+  /* The gate between a preview and the live site. A pick only changes this
+     browser; the bar stays on screen until the person presses the primary
+     button (which does the write) or the cancel. One bar at a time. */
+  function closeConfirm() {
+    var b = document.getElementById("pm-confirm");
+    if (b) b.remove();
+  }
+  function confirmBar(o) {
+    closeConfirm();
+    var bar = document.createElement("div");
+    bar.id = "pm-confirm";
+    bar.setAttribute("role", "dialog");
+    bar.innerHTML = '<div class="msg">' + o.html + "</div>" +
+      '<div class="acts"><button class="go">' + o.primary + "</button>" +
+      '<button class="no">' + (o.cancel || "Cancel") + "</button></div>";
+    document.body.appendChild(bar);
+    var go = bar.querySelector(".go"), no = bar.querySelector(".no");
+    go.addEventListener("click", function () {
+      go.disabled = true; no.disabled = true; go.textContent = o.busy || "Publishing\u2026";
+      o.onPrimary(function () { closeConfirm(); },
+                  function () { go.disabled = false; no.disabled = false; go.textContent = o.primary; });
+    });
+    no.addEventListener("click", function () { closeConfirm(); if (o.onCancel) o.onCancel(); });
+    requestAnimationFrame(function () { bar.classList.add("on"); });
+    go.focus();
+  }
+
+  // Put a slot back to what this browser showed before the pick. `prev` is
+  // the earlier local override, if there was one; `prevSrc` the URL the
+  // element was actually showing. With neither, a reload is the honest way
+  // back to what the page ships.
+  function revertPreview(slot, prev, prevSrc) {
+    if (prev !== undefined) {
+      photos[slot] = prev;
+      try { ls(KEY_PHOTOS, JSON.stringify(photos)); } catch (e) {}
+      applyPhotos(); showBadges();
+      return;
+    }
+    delete photos[slot];
+    try { ls(KEY_PHOTOS, JSON.stringify(photos)); } catch (e) {}
+    if (prevSrc) {
+      photos[slot] = prevSrc; applyPhotos(); delete photos[slot];
+      showBadges();
+      return;
+    }
+    location.reload();
+  }
+
+  // Ask before a preview becomes the live photograph in `slot`.
+  function offerPublish(slot, src, prev, prevSrc) {
+    confirmBar({
+      html: "<b>Preview.</b> Only you see this until you publish.",
+      primary: "Publish to the live site",
+      cancel: "Undo",
+      onPrimary: function (done, fail) {
+        publishSlot(slot, src).then(function (d) {
+          if (d.error) { toast(d.error, true); fail(); return; }
+          done();
+          toast("Published. Everyone sees this now.");
+          renderPhoto();
+        });
+      },
+      onCancel: function () { revertPreview(slot, prev, prevSrc); renderPhoto(); }
+    });
   }
 
   /* ---------------------------------------------------------------- data -- */
@@ -574,6 +642,26 @@
     "  transition:opacity .18s ease,transform .18s ease;max-width:min(520px,86vw);text-align:center}",
     "#pm-toast.on{opacity:1;transform:translate(-50%,0)}",
     "#pm-toast.bad{background:#2A1E1A;color:#F0C6AE;border-color:#B4694A}",
+    /* the publish gate. Sits above the toast so an error can show under it */
+    "#pm-confirm{position:fixed;left:50%;bottom:84px;transform:translate(-50%,14px);z-index:99999;",
+    "  background:#15171A;color:#E8E6E0;border:1px solid #8BA85F;border-radius:6px;padding:12px 14px 12px 18px;",
+    "  font:500 12.5px/1.45 'Helvetica Neue',Arial,sans-serif;display:flex;gap:16px;align-items:center;",
+    "  max-width:min(600px,92vw);opacity:0;transition:opacity .18s ease,transform .18s ease;",
+    "  box-shadow:0 10px 34px rgba(0,0,0,.5)}",
+    "#pm-confirm.on{opacity:1;transform:translate(-50%,0)}",
+    "#pm-confirm .msg b{color:#B9C79E;font-weight:600}",
+    "#pm-confirm .acts{display:flex;gap:6px;flex:none}",
+    "#pm-confirm button{font:inherit;font-size:12px;border-radius:4px;padding:8px 13px;cursor:pointer;",
+    "  border:1px solid transparent;white-space:nowrap}",
+    "#pm-confirm .go{background:#8BA85F;color:#11140E;font-weight:600}",
+    "#pm-confirm .go:hover{background:#9DBB6E}",
+    "#pm-confirm .no{background:none;color:#C9CBCF;border-color:#3A3F45}",
+    "#pm-confirm .no:hover{border-color:#D08A72;color:#D08A72}",
+    "#pm-confirm button:disabled{opacity:.55;cursor:default}",
+    "@media (max-width:600px){#pm-confirm{flex-direction:column;align-items:stretch;text-align:center;gap:10px}",
+    "  #pm-confirm .acts{justify-content:center}}",
+    "#pm-studio .slot .tagline.pend{color:#E0C878}",
+    "#pm-studio .slot .tagline.pend .p-reset{color:#E0C878}",
     /* configs */
     "#pm-studio .preset.cfg.on{border-color:#8BA85F;background:#1F241B}",
     "#pm-studio .p-meta{font-size:10.5px;color:#6E737A;margin-top:7px;letter-spacing:.02em}",
@@ -807,8 +895,8 @@
       "Or swap any photograph from the list below, wherever you are on the site.</p>" +
       '<div class="live-state' + (LIVE ? " on" : "") + '">' +
         (LIVE
-          ? "<b>Photographs are live.</b> A swap or an upload here changes the site for every visitor " +
-            "within seconds - no push, no deploy." +
+          ? "<b>Photographs are live.</b> A swap shows on this page first. Press Publish and every " +
+            "visitor sees it within seconds, no push, no deploy." +
             (when ? "<span>Last change " + when + (livePhotos.by ? " by " + livePhotos.by : "") + "</span>" : "") +
             (liveOpen ? "<span style=\"color:#E8B48A\">Open: anyone with this link can change photographs. " +
                         "Lock it down before launch.</span>" : "") +
@@ -825,22 +913,50 @@
         else file = String(file).split("/").pop().replace(/^[0-9a-f]{8,32}-/, "");
         var f = focus[slot] ? " &middot; focus " + focus[slot] : "";
         var isLive = LIVE && livePhotos.photos[slot];
+        var cur = photos[slot];
+        var isPending = LIVE && cur && String(cur).indexOf("data:") !== 0 && cur !== livePhotos.photos[slot];
         return '<div class="slot" data-slot="' + slot + '"><b>' + slot + "</b><span>" + file + f + "</span>" +
-          (isLive ? '<span class="tagline">Published &middot; <button class="p-reset">put the original back</button></span>' : "") +
+          (isPending ? '<span class="tagline pend">Preview in this browser only &middot; ' +
+                       '<button class="p-reset p-publish">publish to the live site</button> &middot; ' +
+                       '<button class="p-reset p-drop">discard</button></span>' : "") +
+          (isLive && !isPending ? '<span class="tagline">Published &middot; <button class="p-reset">put the original back</button></span>' : "") +
           '<button class="act ghost slot-swap" data-slot="' + slot + '">Swap</button>' +
           "</div>";
       }).join("") : '<p class="pm-note">No photo slots on this page.</p>') + "</div>" +
       "";
 
-    body.querySelectorAll(".p-reset").forEach(function (btn) {
-      btn.addEventListener("click", function () {
+    body.querySelectorAll(".p-publish").forEach(function (btn) {
+      btn.addEventListener("click", function (ev) {
+        ev.stopPropagation();
         var slot = btn.closest(".slot").getAttribute("data-slot");
-        publishSlot(slot, "").then(function (d) {
-          if (d.error) { toast(d.error, true); return; }
-          delete photos[slot];
-          ls(KEY_PHOTOS, JSON.stringify(photos));
-          toast("Back to the photograph in the repo.");
-          location.reload();
+        offerPublish(slot, photos[slot], undefined, "");
+      });
+    });
+    body.querySelectorAll(".p-drop").forEach(function (btn) {
+      btn.addEventListener("click", function (ev) {
+        ev.stopPropagation();
+        var slot = btn.closest(".slot").getAttribute("data-slot");
+        revertPreview(slot, undefined, "");
+      });
+    });
+    body.querySelectorAll(".p-reset:not(.p-publish):not(.p-drop)").forEach(function (btn) {
+      btn.addEventListener("click", function (ev) {
+        ev.stopPropagation();
+        var slot = btn.closest(".slot").getAttribute("data-slot");
+        confirmBar({
+          html: "<b>" + slot + "</b> goes back to the photograph in the repo, for every visitor.",
+          primary: "Put the original back",
+          cancel: "Cancel",
+          onPrimary: function (done, fail) {
+            publishSlot(slot, "").then(function (d) {
+              if (d.error) { toast(d.error, true); fail(); return; }
+              delete photos[slot];
+              ls(KEY_PHOTOS, JSON.stringify(photos));
+              done();
+              toast("Back to the photograph in the repo.");
+              location.reload();
+            });
+          }
         });
       });
     });
@@ -850,7 +966,7 @@
     [].slice.call(body.querySelectorAll(".slot")).forEach(function (card) {
       card.style.cursor = "pointer";
       card.addEventListener("click", function (e) {
-        if (e.target.closest(".p-reset")) return;
+        if (e.target.closest("button")) return;
         var el = document.querySelector('[data-pm-photo="' + card.getAttribute("data-slot") + '"]');
         if (!el) return;
         el.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -1039,7 +1155,7 @@
             '<button class="up" id="pm-up">Upload photos</button>' +
             '<div class="d-txt">' + (LIVE
               ? "<b>Drag them anywhere in this window</b> - as many as you like. " +
-                "They upload to the photo store and go live for every visitor as soon as you pick one."
+                "They upload to the photo store. Nothing goes live until you press Publish."
               : "<b>Drag them anywhere in this window</b> - as many as you like. " +
                 "No photo store is connected yet, so an upload previews in this browser only: the file " +
                 "still has to reach <code>assets/photos/</code> and be pushed.") + "</div>" +
@@ -1086,18 +1202,22 @@
       renderLib();
 
       function choose(src) {
+        // remember what was showing, so Undo on the bar can put it back
+        var prev = photos[slot];
+        var el = [].slice.call(document.querySelectorAll('[data-pm-photo="' + slot + '"]'))
+          .filter(function (e) { return !(e.classList && e.classList.contains("s-ava")); })[0];
+        var prevSrc = el && (el.tagName === "IMG" || el.tagName === "VIDEO")
+          ? (el.currentSrc || el.src || "") : "";
         photos[slot] = src;
         try { ls(KEY_PHOTOS, JSON.stringify(photos)); }
         catch (e) { /* a data: URL can overflow the quota - the preview still works */ }
         applyPhotos(); showBadges();
         wrap.remove();
-        if (!LIVE) { renderPhoto(); return; }
-        if (String(src).indexOf("data:") === 0) { renderPhoto(); return; }  // never publishable
-        publishSlot(slot, src).then(function (d) {
-          if (d.error) toast(d.error, true);
-          else toast("Published - everyone sees this now.");
-          renderPhoto();
-        });
+        renderPhoto();
+        if (!LIVE) return;
+        if (String(src).indexOf("data:") === 0) return;  // never publishable
+        // the page now shows the pick; nothing is live until the bar's Publish
+        offerPublish(slot, src, prev, prevSrc);
       }
 
       /* The bar under the Upload button. Two states worth telling apart: bytes

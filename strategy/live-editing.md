@@ -4,7 +4,7 @@
 
 | What you change in the EDIT panel | Who sees it |
 |---|---|
-| **A photograph** — swapped or uploaded | **Everyone, within seconds.** No push, no deploy. |
+| **A photograph** — swapped or uploaded | **Everyone, within seconds of pressing Publish.** A pick previews on your page first; the bar under it asks before anything goes live. No push, no deploy. |
 | Colour | You, until it's saved into a config and someone pushes it |
 | Wording | Same — a config, then a push |
 | Layout (A / Tightened) | Same |
@@ -56,12 +56,16 @@ remembered in that browser afterwards.
 ## Day to day
 
 - **Swap a photo:** open the panel, hit **Swap** on any picture, pick or upload.
-  It's live for everyone the moment you choose it.
+  The page shows it to you first. Press **Publish to the live site** on the bar
+  and it's live for everyone; **Undo** puts the old picture back. A preview you
+  walk away from stays in your browser only, marked *Preview in this browser
+  only* on the Photos tab, with publish and discard next to it.
 - **Upload a batch:** drag them all onto the picker. They go to R2 immediately;
   assign them to slots one at a time.
 - **Move the crop:** the focus dot publishes too, about a second after you stop
   clicking.
-- **Put one back:** Photos tab → *put the original back* on that slot.
+- **Put one back:** Photos tab → *put the original back* on that slot. It asks
+  before it does it, because that is a live change too.
 - **Undo a mistake:** *Undo the last photo change* rolls back one step.
 
 ## Keeping the repo honest

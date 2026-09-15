@@ -1232,6 +1232,13 @@ window.PM_CONFIG = {
       show(location.hash === "#cards" ? "tab-cards" : "tab-compare", false);
     }
 
+    /* The studio's six space tiles are links. While staff are swapping
+       photographs in the EDIT panel, a tap on a tile must not leave the page. */
+    document.addEventListener("click", function (e) {
+      if (!document.body.classList.contains("pm-photos-on")) return;
+      if (e.target.closest(".spaces figure > a")) e.preventDefault();
+    });
+
     /* class cards: a tap anywhere on the card opens its description. The
        head used to be a link to #schedule, so tapping a class name jumped
        down the page instead of saying what the class is. The plus stays as

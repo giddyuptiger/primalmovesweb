@@ -2083,6 +2083,10 @@ body.house .cls-groups .cls-group{text-align:center}
 /* the six spaces of the studio — squares, labelled. 3 across, 2 on a phone. */
 .spaces{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.4vw,20px);row-gap:clamp(18px,2.2vw,30px)}
 .spaces figure{margin:0}
+/* each tile links to its part of the site; the whole square is the target */
+.spaces figure > a{display:block}
+.spaces figure > a:hover figcaption{text-decoration:underline;text-underline-offset:4px}
+.spaces figure > a:focus-visible{outline:2px solid var(--sage);outline-offset:4px;border-radius:6px}
 .spaces img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:6px;display:block}
 .spaces figcaption{margin-top:10px;font-size:11px;font-weight:600;letter-spacing:.2em;
   text-transform:uppercase;color:var(--soft)}

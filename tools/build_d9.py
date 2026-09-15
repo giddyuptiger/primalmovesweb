@@ -772,14 +772,15 @@ def studio(up, asset):
          space and the gym were pulled apart and wellness given its own tile -
          they are different rooms and different reasons to come in. Six sits
          as 3x2 on a desktop and 2x3 on a phone; nothing is ever orphaned on
-         a row of its own. -->
+         a row of its own. Each tile goes where that part of the studio lives:
+         a class group, the cafe page, or Keie Club, who run the wellness side. -->
     <div class="spaces" style="margin-bottom:44px">
-      <figure><img data-pm-photo="studio.room-main-floor" src="{asset}photos/collective-downdog.jpg" alt="A class practising on the open floor"><figcaption>Movement Space</figcaption></figure>
-      <figure><img data-pm-photo="studio.room-gym" src="{asset}photos/compound-dumbbells.jpg" alt="Free weights on the main floor"><figcaption>Gym</figcaption></figure>
-      <figure><img data-pm-photo="studio.room-wellness" src="{asset}photos/assist-hands.jpg" alt="Hands-on bodywork"><figcaption>Wellness</figcaption></figure>
-      <figure><img data-pm-photo="studio.room-cafe" src="{asset}photos/space-lounge-rugs.jpg" alt="The cafe"><figcaption>Cafe</figcaption></figure>
-      <figure><img data-pm-photo="studio.room-tea" src="{asset}photos/tea-room.jpg" alt="The tea lounge"><figcaption>Tea Lounge</figcaption></figure>
-      <figure><img data-pm-photo="studio.room-sauna" src="{asset}photos/sauna-still.jpg" alt="The sauna and cold plunge"><figcaption>Sauna + Cold Plunge</figcaption></figure>
+      <figure><a href="{up}classes/#movement"><img data-pm-photo="studio.room-main-floor" src="{asset}photos/collective-downdog.jpg" alt="A class practising on the open floor"><figcaption>Movement Space</figcaption></a></figure>
+      <figure><a href="{up}classes/#weightlifting"><img data-pm-photo="studio.room-gym" src="{asset}photos/compound-dumbbells.jpg" alt="Free weights on the main floor"><figcaption>Gym</figcaption></a></figure>
+      <figure><a href="https://www.thekeieclub.com" target="_blank" rel="noopener"><img data-pm-photo="studio.room-wellness" src="{asset}photos/assist-hands.jpg" alt="Hands-on bodywork"><figcaption>Wellness</figcaption></a></figure>
+      <figure><a href="{up}cherish/"><img data-pm-photo="studio.room-cafe" src="{asset}photos/space-lounge-rugs.jpg" alt="The cafe"><figcaption>Cafe</figcaption></a></figure>
+      <figure><a href="{up}classes/#stillness"><img data-pm-photo="studio.room-tea" src="{asset}photos/tea-room.jpg" alt="The tea lounge"><figcaption>Tea Lounge</figcaption></a></figure>
+      <figure><a href="{up}classes/#recovery"><img data-pm-photo="studio.room-sauna" src="{asset}photos/sauna-still.jpg" alt="The sauna and cold plunge"><figcaption>Sauna + Cold Plunge</figcaption></a></figure>
     </div>
     <div class="info-list" style="margin-bottom:clamp(40px,6vw,70px)">
       <div class="info-row">
@@ -916,7 +917,7 @@ def classes(up, asset):
       </div>'''
     body = "".join(
         f'''
-    <h3 class="cls-group">{gname}</h3>
+    <h3 class="cls-group" id="{gname.lower()}">{gname}</h3>
     <div class="cls-list">{"".join(tile(*r) for r in grows)}
     </div>''' for gname, grows in CLASS_GROUPS)
 

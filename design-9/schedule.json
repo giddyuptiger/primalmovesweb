@@ -2,7 +2,7 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-09-20T04:58:25.066422Z",
+ "fetchedAt": "2026-09-20T13:04:38.673650Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
   {
@@ -266,17 +266,17 @@
   },
   {
    "start": "2026-09-26T15:30:00Z",
-   "name": "Tea Ceremony",
-   "staff": "Zoe & Tyler",
-   "minutes": 75,
-   "category": "Meditation"
-  },
-  {
-   "start": "2026-09-26T15:30:00Z",
    "name": "Restore",
    "staff": "Angela Kukhan",
    "minutes": 60,
    "category": "Yoga"
+  },
+  {
+   "start": "2026-09-26T15:30:00Z",
+   "name": "Tea Ceremony",
+   "staff": "Zoe & Tyler",
+   "minutes": 75,
+   "category": "Meditation"
   },
   {
    "start": "2026-09-26T17:00:00Z",

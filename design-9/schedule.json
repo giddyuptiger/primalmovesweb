@@ -2,44 +2,9 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-09-24T13:35:17.939606Z",
+ "fetchedAt": "2026-09-24T20:00:13.859551Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
-  {
-   "start": "2026-09-24T13:15:00Z",
-   "name": "Rise",
-   "staff": "Sabrina Rose",
-   "minutes": 60,
-   "category": "Strength training"
-  },
-  {
-   "start": "2026-09-24T14:30:00Z",
-   "name": "Primal Foundations (beg)",
-   "staff": "Olivia Jaye Brown",
-   "minutes": 45,
-   "category": "Gym classes"
-  },
-  {
-   "start": "2026-09-24T15:45:00Z",
-   "name": "Primal Compound (Guided Weightlifting)",
-   "staff": "Zagreus",
-   "minutes": 60,
-   "category": "Strength training"
-  },
-  {
-   "start": "2026-09-24T17:00:00Z",
-   "name": "Moves - The Signature Practice",
-   "staff": "Olivia Jaye Brown",
-   "minutes": 60,
-   "category": "Gym classes"
-  },
-  {
-   "start": "2026-09-24T19:00:00Z",
-   "name": "Primal Compound (Guided Weightlifting)",
-   "staff": "Travis Brewer",
-   "minutes": 60,
-   "category": "Strength training"
-  },
   {
    "start": "2026-09-24T23:30:00Z",
    "name": "Primal Kids",
@@ -284,6 +249,13 @@
    "staff": "Vernon & Bowen",
    "minutes": 90,
    "category": "Dance"
+  },
+  {
+   "start": "2026-10-02T14:30:00Z",
+   "name": "Primal Hybrid (75 min)",
+   "staff": "Gus",
+   "minutes": 75,
+   "category": "Gym classes"
   }
  ]
 }

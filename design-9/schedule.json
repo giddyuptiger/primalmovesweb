@@ -2,29 +2,15 @@
  "source": "mindbody-public",
  "siteId": "5745965",
  "days": 8,
- "fetchedAt": "2026-09-25T23:19:46.300778Z",
+ "fetchedAt": "2026-09-26T05:05:32.687119Z",
  "bookUrl": "https://clients.mindbodyonline.com/classic/ws?studioid=5745965&stype=-7&sView=day&sLoc=0&sTG=0",
  "classes": [
-  {
-   "start": "2026-09-25T23:00:00Z",
-   "name": "Moves - The Signature Practice",
-   "staff": "Gus",
-   "minutes": 60,
-   "category": "Gym classes"
-  },
   {
    "start": "2026-09-26T15:30:00Z",
    "name": "Restore",
    "staff": "Angela Kukhan",
    "minutes": 60,
    "category": "Yoga"
-  },
-  {
-   "start": "2026-09-26T15:30:00Z",
-   "name": "Tea Ceremony",
-   "staff": "Zoe & Tyler",
-   "minutes": 75,
-   "category": "Meditation"
   },
   {
    "start": "2026-09-26T17:00:00Z",
@@ -34,32 +20,11 @@
    "category": "Strength training"
   },
   {
-   "start": "2026-09-26T19:00:00Z",
-   "name": "Handstands",
-   "staff": "Olivia Jaye Brown",
-   "minutes": 60,
-   "category": "Gymnastics"
-  },
-  {
    "start": "2026-09-27T15:30:00Z",
    "name": "Tea Ceremony",
    "staff": "Tyler Gustafson",
    "minutes": 75,
    "category": "Meditation"
-  },
-  {
-   "start": "2026-09-27T15:45:00Z",
-   "name": "Primal Compound (Guided Weightlifting)",
-   "staff": "Jacy Cunningham",
-   "minutes": 60,
-   "category": "Strength training"
-  },
-  {
-   "start": "2026-09-27T16:00:00Z",
-   "name": "Primal Foundations (beg)",
-   "staff": "Whakapaingia Luke",
-   "minutes": 45,
-   "category": "Gym classes"
   },
   {
    "start": "2026-09-27T17:00:00Z",
@@ -111,13 +76,6 @@
    "category": "Gym classes"
   },
   {
-   "start": "2026-09-28T19:00:00Z",
-   "name": "Progressions",
-   "staff": "Angela Kukhan",
-   "minutes": 60,
-   "category": "Strength training"
-  },
-  {
    "start": "2026-09-29T00:45:00Z",
    "name": "Primal Compound (Guided Weightlifting)",
    "staff": "Andreas Alfaro",
@@ -167,25 +125,11 @@
    "category": "Gym classes"
   },
   {
-   "start": "2026-09-29T19:00:00Z",
-   "name": "Primal Compound (Guided Weightlifting)",
-   "staff": "Travis Brewer",
-   "minutes": 60,
-   "category": "Strength training"
-  },
-  {
    "start": "2026-09-29T20:00:00Z",
    "name": "Team Practice (Requires Approval)",
    "staff": "Olivia Jaye Brown",
    "minutes": 60,
    "category": "Strength training"
-  },
-  {
-   "start": "2026-09-29T23:30:00Z",
-   "name": "Primal Kids",
-   "staff": "Travis & Mandyjane",
-   "minutes": 60,
-   "category": "Gym classes"
   },
   {
    "start": "2026-09-30T00:45:00Z",
@@ -230,13 +174,6 @@
    "category": "Gym classes"
   },
   {
-   "start": "2026-09-30T19:00:00Z",
-   "name": "Progressions",
-   "staff": "Olivia Jaye Brown",
-   "minutes": 60,
-   "category": "Strength training"
-  },
-  {
    "start": "2026-10-01T00:45:00Z",
    "name": "Breathwork",
    "staff": "Chris Plourde",
@@ -249,13 +186,6 @@
    "staff": "Andreas Alfaro",
    "minutes": 60,
    "category": "Strength training"
-  },
-  {
-   "start": "2026-10-01T02:00:00Z",
-   "name": "Primal Foundations - Community Class",
-   "staff": "Whakapaingia Luke",
-   "minutes": 60,
-   "category": "Gym classes"
   },
   {
    "start": "2026-10-01T13:15:00Z",
@@ -314,13 +244,6 @@
    "category": "Yoga"
   },
   {
-   "start": "2026-10-02T02:00:00Z",
-   "name": "Intuitive Music Jam",
-   "staff": "Vernon & Bowen",
-   "minutes": 90,
-   "category": "Dance"
-  },
-  {
    "start": "2026-10-02T03:00:00Z",
    "name": "Acro Open Gym",
    "staff": "Whakapaingia Luke",
@@ -375,13 +298,6 @@
    "staff": "Zoe & Tyler",
    "minutes": 75,
    "category": "Meditation"
-  },
-  {
-   "start": "2026-10-03T15:30:00Z",
-   "name": "Restore",
-   "staff": "Angela Kukhan",
-   "minutes": 60,
-   "category": "Yoga"
   },
   {
    "start": "2026-10-03T17:00:00Z",
